@@ -15,8 +15,9 @@ const UploadLessonPage = ({ setCurrLesson }: UploadLessonProps) => {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const [timestamps, setTimestamps] = useState<number[]>([]);
+  const [timestamps, setTimestamps] = useState<number[]>([0.0]);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [currTime, setCurrTime] = useState<number | null>(null);
 
   const {
     transcript,
@@ -25,6 +26,8 @@ const UploadLessonPage = ({ setCurrLesson }: UploadLessonProps) => {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+
+  useEffect(() => {});
 
   const handleStartRecording = async () => {
     SpeechRecognition.startListening({ continuous: true, language: "iw-IL" });
@@ -84,13 +87,15 @@ const UploadLessonPage = ({ setCurrLesson }: UploadLessonProps) => {
   useEffect(() => {
     if (!startTime) return;
 
-    const transLength = transcript.split(" ").length;
-    const currTransLength = currentTranscript?.split(" ").length || 0;
-
+    const transLength = transcript ? transcript.split(" ").length : 0;
+    const currTransLength = currentTranscript
+      ? currentTranscript?.split(" ").length
+      : 0;
+    console.log({ transcript });
     console.log({ transLength });
-    console.log({ currTransLength });
 
     if (transLength > currTransLength) {
+      console.log("should addddddddddddd");
       setTimestamps((prevTimestamps) => [
         ...prevTimestamps,
         (Date.now() - startTime) / 1000,
@@ -128,6 +133,7 @@ const UploadLessonPage = ({ setCurrLesson }: UploadLessonProps) => {
       <div>
         <h3>Transcript</h3>
         <p>{currentTranscript}</p>
+        <p>{transcript}</p>
       </div>
       <div>
         <h3>Timestamps</h3>
