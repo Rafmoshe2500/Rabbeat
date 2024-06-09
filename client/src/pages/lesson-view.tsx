@@ -3,7 +3,7 @@ import TranslatorLibrary from "../components/lesson-test";
 import { convertBase64ToBlob } from "../utils/audio-parser";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import { lesson1, lesson2, lesson3 } from "../mocks/fakeData";
+import { lesson1, lesson2, lesson3, lesson4 } from "../mocks/fakeData";
 
 type LessonViewProps = {
   currLesson?: FormattedLesson | undefined;
@@ -14,7 +14,7 @@ const LessonView = ({ currLesson }: LessonViewProps) => {
   const [lesso, setLesso] = useState<FormattedLesson>();
   const navigate = useNavigate();
   useEffect(() => {
-    setLesso(id === "1" ? lesson1 : lesson3);
+    setLesso(id === "1" ? lesson1 : lesson4);
   }, []);
 
   const lesson = lesso
