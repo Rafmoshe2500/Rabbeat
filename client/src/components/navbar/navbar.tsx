@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, MouseEvent } from "react";
 import { useUser } from "../../contexts/user-context";
+import styles from "./navbar.module.css";
 
 const studentPages = [
   { label: "דף בית", path: "/" },
@@ -75,7 +76,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" style={{ direction: "rtl" }}>
+    <AppBar position="static" className={styles["app-bar"]}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
