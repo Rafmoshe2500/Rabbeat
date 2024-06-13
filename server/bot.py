@@ -1,13 +1,37 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
-tokenizer = AutoTokenizer.from_pretrained("yam-peleg/Hebrew-Mistral-7B")
-model = AutoModelForCausalLM.from_pretrained("yam-peleg/Hebrew-Mistral-7B")
+device = "cuda"  # the device to load the model onto
 
-input_text = "שלום! מה שלומך היום?"
-input_ids = tokenizer(input_text, return_tensors="pt")
+model = AutoModelForCausalLM.from_pretrained("dicta-il/dictalm2.0-instruct", torch_dtype=torch.dtype,
+                                             device_map=device)
+tokenizer = AutoTokenizer.from_pretrained("dicta-il/dictalm2.0-instruct")
 
-outputs = model.generate(**input_ids)
-print(tokenizer.decode(outputs[0]))
+messages = [
+    {"role": "user", "content": "איזה רוטב אהוב עליך?"},
+    {"role": "assistant",
+     "content": "טוב, אני די מחבב כמה טיפות מיץ לימון סחוט טרי. זה מוסיף בדיוק את הכמות הנכונה של טעם חמצמץ לכל מה שאני מבשל במטבח!"},
+    {"role": "user", "content": "האם יש לך מתכונים למיונז?"}
+]
+
+encoded = tokenizer.apply_chat_template(messages, return_tensors="pt").to(device)
+
+generated_ids = model.generate(encoded, max_new_tokens=50, do_sample=True)
+decoded = tokenizer.batch_decode(generated_ids)
+print(decoded[0])
+
+# from transformers import AutoTokenizer, AutoModelForCausalLM
+#
+# tokenizer = AutoTokenizer.from_pretrained("yam-peleg/Hebrew-Mistral-7B")
+# model = AutoModelForCausalLM.from_pretrained("yam-peleg/Hebrew-Mistral-7B")
+#
+# input_text = "שלום! מה שלומך היום?"
+# input_ids = tokenizer(input_text, return_tensors="pt")
+#
+# outputs = model.generate(**input_ids)
+# print(tokenizer.decode(outputs[0]))
+
+
 # import vertexai
 # from vertexai.generative_models import GenerativeModel
 # import os
