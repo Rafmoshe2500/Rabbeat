@@ -1,10 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
 
-device = "cuda"  # the device to load the model onto
-
-model = AutoModelForCausalLM.from_pretrained("dicta-il/dictalm2.0-instruct", torch_dtype=torch.dtype,
-                                             device_map=device)
+model = AutoModelForCausalLM.from_pretrained("dicta-il/dictalm2.0-instruct")
 tokenizer = AutoTokenizer.from_pretrained("dicta-il/dictalm2.0-instruct")
 
 messages = [
@@ -14,7 +10,7 @@ messages = [
     {"role": "user", "content": "האם יש לך מתכונים למיונז?"}
 ]
 
-encoded = tokenizer.apply_chat_template(messages, return_tensors="pt").to(device)
+encoded = tokenizer.apply_chat_template(messages, return_tensors="pt")
 
 generated_ids = model.generate(encoded, max_new_tokens=50, do_sample=True)
 decoded = tokenizer.batch_decode(generated_ids)
