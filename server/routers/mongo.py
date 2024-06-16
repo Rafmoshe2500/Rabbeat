@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
-from models.mongo import Audio, Teacher, Student, StudentLesson, Comment, Comments
+from models.mongo import Lesson, Teacher, Student, StudentLessons, Comment, LessonsComments
 from routers import mongo_router
 from tools.consts import MONGO_DB_NAME, MONGO_URI
 from tools.utils import object_id_str
@@ -26,7 +26,7 @@ except ConnectionFailure:
 
 # Audio routes
 @mongo_router.post("/audio/", tags=['Audio'])
-async def create_audio(audio: Audio):
+async def create_audio(audio: Lesson):
     try:
         result = db.audio.insert_one(audio.dict())
         return {"id": str(result.inserted_id)}
@@ -108,7 +108,7 @@ async def delete_student(student_id: str):
 
 # Student Lessons routes
 @mongo_router.post("/student_lesson/", tags=['Lessons'])
-async def create_student_lesson(student_lesson: StudentLesson):
+async def create_student_lesson(student_lesson: StudentLessons):
     result = db.student_lesson.insert_one(student_lesson.dict())
     return {"id": str(result.inserted_id)}
 
@@ -131,7 +131,7 @@ async def delete_student_lesson(student_id: str, teacher_id: str):
 
 # Comments routes
 @mongo_router.post("/comments/", tags=['Comments'])
-async def create_comments(comments: Comments):
+async def create_comments(comments: LessonsComments):
     result = db.comments.insert_one(comments.dict())
     return {"id": str(result.inserted_id)}
 
