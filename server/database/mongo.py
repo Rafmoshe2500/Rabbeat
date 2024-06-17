@@ -7,13 +7,10 @@ try:
     client = MongoClient(MONGO_URI)
     db = client[MONGO_DB_NAME]
     # Create unique indexes
-    db.lesson.create_index([("id", ASCENDING)], unique=True)
     db.teacher.create_index([("id", ASCENDING)], unique=True)
     db.teacher.create_index([("email", ASCENDING)], unique=True)
     db.student.create_index([("id", ASCENDING)], unique=True)
     db.student.create_index([("email", ASCENDING)], unique=True)
-    db.student_lesson.create_index([("id", ASCENDING)], unique=True)
-    db.comments.create_index([("id", ASCENDING)], unique=True)
     print("Connected to MongoDB")
 except ConnectionFailure:
     print("Failed to connect to MongoDB")

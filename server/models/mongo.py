@@ -1,5 +1,5 @@
 # Pydantic models
-import datetime
+from datetime import datetime
 from typing import Optional, List, Dict
 
 from pydantic import BaseModel
@@ -54,10 +54,15 @@ class TeacherLessons(BaseModel):
     lessonId: str
 
 
+class Comment(BaseModel):
+    time: float
+    text: str
+
+
 class LessonsComments(BaseModel):
     studentId: str
     lessonId: str
-    comments: Dict[float, str]
+    comments: List[Comment]
 
 
 class LessonStatus(BaseModel):
@@ -67,7 +72,13 @@ class LessonStatus(BaseModel):
     finish: bool
 
 
+class Message(BaseModel):
+    text: str
+    user: str
+    datetime: datetime
+
+
 class ChatBotMessages(BaseModel):
     lessonId: str
     studentId: str
-    message: Dict[str, str, datetime]
+    message: Message

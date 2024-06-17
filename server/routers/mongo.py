@@ -3,7 +3,7 @@ from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from models.mongo import Lesson, Teacher, Student, StudentLessons, Comment, LessonsComments
-from routers import mongo_router
+# from routers import mongo_router
 from tools.consts import MONGO_DB_NAME, MONGO_URI
 from tools.utils import object_id_str
 
