@@ -19,3 +19,12 @@ async def get_chatbot_messages(studentId: str, lessonId: str):
     for chatbot_message in chatbot_messages:
         chatbot_message["_id"] = str(chatbot_message["_id"])
     return chatbot_messages
+
+
+@router.delete("/chatbot-messages/")
+async def delete_chatbot_messages(lessonId: str, studentId: str):
+    delete_result = await db.chatbot_messages.delete_many({"lessonId": lessonId, "studentId": studentId})
+    if delete_result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="No Chatbot Messages found for the given lessonId and studentId")
+
+    return {"message": f"{delete_result.deleted_count} Chatbot Messages successfully deleted"}
