@@ -1,19 +1,24 @@
 # Pydantic models
-from typing import Optional, List
+from datetime import datetime
+from typing import Optional, List, Dict
 
 from pydantic import BaseModel
 
 
-class Audio(BaseModel):
-    id: str
-    teacherId: str
+class Word(BaseModel):
+    word: str
+    start: float
+
+
+class Lesson(BaseModel):
+    title: str
     audio: str
     startChapter: str
     startVerse: str
     endChapter: str
     endVers: str
     pentateuch: str
-    text: str
+    words: List[Word]
 
 
 class Teacher(BaseModel):
@@ -26,7 +31,7 @@ class Teacher(BaseModel):
     brithDay: str
     dialects: List[str]
     picture: Optional[str]
-    description: str
+    description: Optional[str]
 
 
 class Student(BaseModel):
@@ -39,21 +44,42 @@ class Student(BaseModel):
     birthDay: str
 
 
-class StudentLesson(BaseModel):
+class StudentLessons(BaseModel):
     studentId: str
+    lessonId: str
+
+
+class TeacherLessons(BaseModel):
     teacherId: str
-    audios: List[str]
+    lessonId: str
 
 
-class Comment(BaseModel):
-    sender: str
-    id: str
+class LessonsComments(BaseModel):
+    studentId: str
+    lessonId: str
+    time: float
     text: str
-    time: Optional[str]
 
 
-class Comments(BaseModel):
+class LessonStatus(BaseModel):
+    lessonId: str
     studentId: str
-    teacherId: str
-    audioId: str
-    comments: List[str]
+    inProgress: bool
+    finish: bool
+
+
+class UpdateLessonStatusModel(BaseModel):
+    inProgress: Optional[bool] = None
+    finish: Optional[bool] = None
+
+
+class Message(BaseModel):
+    text: str
+    user: str
+    datetime: datetime
+
+
+class ChatBotMessages(BaseModel):
+    lessonId: str
+    studentId: str
+    message: Message
