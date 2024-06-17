@@ -54,15 +54,11 @@ class TeacherLessons(BaseModel):
     lessonId: str
 
 
-class Comment(BaseModel):
-    time: float
-    text: str
-
-
 class LessonsComments(BaseModel):
     studentId: str
     lessonId: str
-    comments: List[Comment]
+    time: float
+    text: str
 
 
 class LessonStatus(BaseModel):
@@ -70,6 +66,11 @@ class LessonStatus(BaseModel):
     studentId: str
     inProgress: bool
     finish: bool
+
+
+class UpdateLessonStatusModel(BaseModel):
+    inProgress: Optional[bool] = None
+    finish: Optional[bool] = None
 
 
 class Message(BaseModel):

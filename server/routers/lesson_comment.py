@@ -1,3 +1,4 @@
+from bson import ObjectId
 from fastapi import APIRouter, HTTPException
 from models.mongo import LessonsComments
 from database.mongo import db
@@ -19,3 +20,12 @@ async def get_lesson_comments(studentId: str, lessonsId: str):
     for lesson_comment in lesson_comments:
         lesson_comment["_id"] = str(lesson_comment["_id"])
     return lesson_comments
+
+
+@router.delete("/lesson-comments/{id}")
+async def delete_lesson_comment(id: str):
+    delete_result = await db.lesson_comments.delete_one({"_id": ObjectId(id)})
+    if delete_result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Comment not found")
+
+    return {"message": "Comment successfully deleted"}
