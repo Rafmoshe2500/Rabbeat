@@ -24,7 +24,7 @@ app.include_router(teacher_lesson.router, prefix="/api")
 app.include_router(lesson_comment.router, prefix="/api")
 app.include_router(lesson_status.router, prefix="/api")
 app.include_router(lesson_chatbot.router, prefix="/api")
-app.include_router(client.router, prefix="/api")
+app.include_router(user.router, prefix="/api")
 
 # app.include_router(chat_router)
 uvicorn.run(app, host="0.0.0.0", port=80)
