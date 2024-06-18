@@ -7,7 +7,7 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/lesson-status/")
 async def create_lesson_status(lesson_status: LessonStatus):
-    result = await db.lesson_status.insert_one(lesson_status.dict())
+    result = db.lesson_status.insert_one(lesson_status.dict())
     if result.inserted_id:
         return {"id": str(result.inserted_id)}
     raise HTTPException(status_code=500, detail="Lesson Status not created")
@@ -15,7 +15,7 @@ async def create_lesson_status(lesson_status: LessonStatus):
 
 @router.get("/lesson-status/{lessonId}/student/{studentId}")
 async def get_lesson_status(studentId: str, lessonId: str):
-    lesson_status = await db.lesson_status.find_one({"studentId": studentId, "lessonId": lessonId})
+    lesson_status = db.lesson_status.find_one({"studentId": studentId, "lessonId": lessonId})
     if lesson_status:
         lesson_status["_id"] = str(lesson_status["_id"])
         return lesson_status
@@ -28,7 +28,7 @@ async def update_lesson_status(update: LessonStatus):
     if not update_data:
         raise HTTPException(status_code=400, detail="No update parameters provided")
 
-    update_result = await db.lesson_status.update_one(
+    update_result = db.lesson_status.update_one(
         {"lessonId": update.lessonId, "studentId": update.studentId},
         {"$set": update_data}
     )

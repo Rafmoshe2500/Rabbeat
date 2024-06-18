@@ -8,7 +8,7 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/lesson-comments/")
 async def create_lesson_comment(lesson_comment: LessonsComments):
-    result = await db.lesson_comments.insert_one(lesson_comment.dict())
+    result = db.lesson_comments.insert_one(lesson_comment.dict())
     if result.inserted_id:
         return {"id": str(result.inserted_id)}
     raise HTTPException(status_code=500, detail="Lesson Comment not created")
@@ -24,7 +24,7 @@ async def get_lesson_comments(studentId: str, lessonsId: str):
 
 @router.delete("/lesson-comments/{id}")
 async def delete_lesson_comment(id: str):
-    delete_result = await db.lesson_comments.delete_one({"_id": ObjectId(id)})
+    delete_result = db.lesson_comments.delete_one({"_id": ObjectId(id)})
     if delete_result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Comment not found")
 

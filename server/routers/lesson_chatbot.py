@@ -7,7 +7,7 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/chatbot-messages/")
 async def create_chatbot_message(chatbot_message: ChatBotMessages):
-    result = await db.chatbot_messages.insert_one(chatbot_message.dict())
+    result = db.chatbot_messages.insert_one(chatbot_message.dict())
     if result.inserted_id:
         return {"id": str(result.inserted_id)}
     raise HTTPException(status_code=500, detail="Chatbot Message not created")
