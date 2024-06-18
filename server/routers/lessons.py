@@ -6,7 +6,7 @@ from bson import ObjectId
 router = APIRouter(tags=['Lesson'])
 
 
-@router.post("/lessons/")
+@router.post("/lesson/")
 async def create_lesson(lesson: Lesson):
     result = db.lessons.insert_one(lesson.dict())
     if result.inserted_id:
@@ -14,7 +14,7 @@ async def create_lesson(lesson: Lesson):
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 
-@router.get("/lessons/{id}")
+@router.get("/lesson/{id}")
 async def get_lesson(id: str):
     lesson = db.lessons.find_one({"_id": ObjectId(id)})
     if lesson:

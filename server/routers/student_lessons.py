@@ -5,7 +5,7 @@ from database.mongo import db
 router = APIRouter(tags=['Student-Lessons', 'Student'])
 
 
-@router.post("/student-lessons/")
+@router.post("/student-lesson/")
 async def create_student_lesson(student_lesson: StudentLessons):
     result = db.student_lessons.insert_one(student_lesson.dict())
     if result.inserted_id:
@@ -15,13 +15,13 @@ async def create_student_lesson(student_lesson: StudentLessons):
 
 @router.get("/student-lessons/{studentId}")
 async def get_student_lessons(studentId: str):
-    student_lessons =  (db.student_lessons.find({"studentId": studentId}))
+    student_lessons = (db.student_lessons.find({"studentId": studentId}))
     for student_lesson in student_lessons:
         student_lesson["_id"] = str(student_lesson["_id"])
     return student_lessons
 
 
-@router.delete("/lessons/")
+@router.delete("/student-lesson/")
 async def delete_student_lesson(student: StudentLessons):
     # Delete related student lessons
     db.student_lessons.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})

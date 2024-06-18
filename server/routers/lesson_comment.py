@@ -1,12 +1,13 @@
 from bson import ObjectId
 from fastapi import APIRouter, HTTPException
-from models.mongo import LessonsComments
+
 from database.mongo import db
+from models.mongo import LessonsComments
 
-router = APIRouter(tags=['Student-Lessons'])
+router = APIRouter(tags=['Student-Lessons | Additives'])
 
 
-@router.post("/lesson-comments/")
+@router.post("/lesson-comment/")
 async def create_lesson_comment(lesson_comment: LessonsComments):
     result = db.lesson_comments.insert_one(lesson_comment.dict())
     if result.inserted_id:
@@ -16,13 +17,13 @@ async def create_lesson_comment(lesson_comment: LessonsComments):
 
 @router.get("/lesson-comments/{lessonsId}/student/{studentId}")
 async def get_lesson_comments(studentId: str, lessonsId: str):
-    lesson_comments =  list(db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
+    lesson_comments = list(db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
     for lesson_comment in lesson_comments:
         lesson_comment["_id"] = str(lesson_comment["_id"])
     return lesson_comments
 
 
-@router.delete("/lesson-comments/{id}")
+@router.delete("/lesson-comment/{id}")
 async def delete_lesson_comment(id: str):
     delete_result = db.lesson_comments.delete_one({"_id": ObjectId(id)})
     if delete_result.deleted_count == 0:

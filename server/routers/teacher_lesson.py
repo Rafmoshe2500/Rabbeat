@@ -6,7 +6,7 @@ from models.mongo import TeacherLessons
 router = APIRouter(tags=['Teacher-Lessons'])
 
 
-@router.post("/teacher-lessons/")
+@router.post("/teacher-lesson/")
 async def create_teacher_lesson(teacher_lesson: TeacherLessons):
     result = db.teacher_lessons.insert_one(teacher_lesson.dict())
     if result.inserted_id:

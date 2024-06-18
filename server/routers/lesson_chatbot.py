@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException
 from models.mongo import ChatBotMessages
 from database.mongo import db
 
-router = APIRouter(tags=['Student-Lessons'])
+router = APIRouter(tags=['Student-Lessons | Additives'])
 
 
-@router.post("/chatbot-messages/")
+@router.post("/chatbot-message/")
 async def create_chatbot_message(chatbot_message: ChatBotMessages):
     result = db.chatbot_messages.insert_one(chatbot_message.dict())
     if result.inserted_id:
