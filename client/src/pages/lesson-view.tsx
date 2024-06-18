@@ -4,12 +4,9 @@ import { convertBase64ToBlob } from "../utils/audio-parser";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { lesson1, lesson2, lesson3, lesson4 } from "../mocks/fakeData";
+import { getLessonsByUser } from "../api/endpoints/lesson";
 
-type LessonViewProps = {
-  currLesson?: FormattedLesson | undefined;
-};
-
-const LessonView = ({ currLesson }: LessonViewProps) => {
+const LessonView = () => {
   const { id } = useParams<{ id: string }>();
   const [lesso, setLesso] = useState<FormattedLesson>();
   const navigate = useNavigate();
@@ -38,7 +35,7 @@ const LessonView = ({ currLesson }: LessonViewProps) => {
         justifyContent: "center",
       }}
     >
-      <LessonContent lesson={lesson} />
+      {/* <LessonContent lesson={lesson} /> */}
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון
       </Button>
