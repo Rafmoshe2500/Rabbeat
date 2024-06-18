@@ -5,9 +5,19 @@ type FormattedLesson = {
 };
 
 type Lesson = {
-  text: string;
+  title: string,
+  version: LessonVersion,
+  startChapter: string,
+  startVerse: string,
+  endChapter: string,
+  endVers: string,
+  pentateuch: string,
   audio: Blob;
   highlightsTimestamps?: Array<number>;
+};
+
+type LessonForView = Lesson & {
+  text: string
 };
 
 const lessonStatus = ["not-started", "in-progress", "finished"] as const;
@@ -19,3 +29,5 @@ type LessonDetails = {
   id: string;
   status: LessonStatus;
 };
+
+type LessonVersion = "Spanish" | "Ashkenaz";
