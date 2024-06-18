@@ -7,7 +7,7 @@ import styles from "./lesson-content.module.css";
 import { Box, Container } from "@mui/material";
 
 interface LessonContentProps {
-  lesson?: Lesson;
+  lesson?: LessonForView;
 }
 
 interface NoteData {
