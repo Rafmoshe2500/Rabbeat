@@ -1,13 +1,8 @@
 # Pydantic models
 from datetime import datetime
-from typing import Optional, List, Dict
+from typing import Optional, List
 
 from pydantic import BaseModel, EmailStr
-
-
-class Word(BaseModel):
-    word: str
-    start: float
 
 
 class Lesson(BaseModel):
@@ -18,30 +13,7 @@ class Lesson(BaseModel):
     endChapter: str
     endVers: str
     pentateuch: str
-    words: List[Word]
-
-
-class Teacher(BaseModel):
-    id: str
-    email: str
-    phoneNumber: str
-    address: str
-    firstName: str
-    lastName: str
-    brithDay: str
-    dialects: List[str]
-    picture: Optional[str]
-    description: Optional[str]
-
-
-class Student(BaseModel):
-    id: str
-    email: str
-    firstName: str
-    lastName: str
-    phoneNumber: str
-    address: str
-    birthDay: str
+    times: List[float]
 
 
 class StudentLessons(BaseModel):
@@ -85,7 +57,7 @@ class ChatBotMessages(BaseModel):
     message: Message
 
 
-class Client(BaseModel):
+class User(BaseModel):
     id: str
     firstName: str
     lastName: str

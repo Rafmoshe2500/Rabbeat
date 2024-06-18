@@ -3,7 +3,7 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
 # from routers.chat import chat_router
-from routers import lessons, student_lessons, teacher_lesson, lesson_comment, lesson_status, lesson_chatbot, client
+from routers import lessons, student_lessons, teacher_lesson, lesson_comment, lesson_status, lesson_chatbot, user
 from routers.torah import torah_router
 # from routers.mongo import mongo_router
 
