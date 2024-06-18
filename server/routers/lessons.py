@@ -21,3 +21,13 @@ async def get_lesson(id: str):
         lesson["_id"] = str(lesson["_id"])
         return lesson
     raise HTTPException(status_code=404, detail="Lesson not found")
+
+
+@router.get("/lessons/")
+async def get_all_lessons():
+    lessons = list(db.lessons.find())
+    if not lessons:
+        raise HTTPException(status_code=404, detail="No lessons found")
+    for lesson in lessons:
+        lesson["_id"] = str(lesson["_id"])
+    return lessons
