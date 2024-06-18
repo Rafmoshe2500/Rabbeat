@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import TranslatorLibrary from "../components/lesson-test";
+import LessonContent from "../components/lesson-content";
 import { convertBase64ToBlob } from "../utils/audio-parser";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
@@ -38,7 +38,7 @@ const LessonView = ({ currLesson }: LessonViewProps) => {
         justifyContent: "center",
       }}
     >
-      <TranslatorLibrary lesson={lesson} />
+      <LessonContent lesson={lesson} />
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון
       </Button>

@@ -3,9 +3,10 @@ import "regenerator-runtime/runtime";
 import "./lesson-tesr.css";
 import Note from "./note/note";
 import Panel from "./panel/panel";
-import styles from "./lesson-test.module.css";
+import styles from "./lesson-content.module.css";
+import { Box, Container } from "@mui/material";
 
-interface TranslatorLibraryProps {
+interface LessonContentProps {
   lesson?: Lesson;
 }
 
@@ -15,7 +16,7 @@ interface NoteData {
   text: string;
 }
 
-const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
+const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(-1);
@@ -96,8 +97,7 @@ const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
 
   return (
     <div>
-      <Panel
-      header='ההערות שלי'>
+      <Panel header="ההערות שלי">
         {notes.map((note) => (
           <Note
             key={note.id}
@@ -119,8 +119,16 @@ const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
           </audio>
         )}
 
-        <div>
-          <div className={`${styles['text']} stam-font`}>
+        {/* <Container maxWidth="sm">
+        <Box className="stam-font" sx={{ bgcolor: "#cfe8fc", height: "100vh" }}>
+        </Box>
+      </Container> */}
+
+        <Container maxWidth="sm">
+          <Box
+            className={`${styles["text"]} stam-font`}
+            sx={{ bgcolor: "#cfe8fc" }}
+          >
             {words.map((word, index) => (
               <span
                 key={index}
@@ -131,8 +139,8 @@ const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
                 {word}{" "}
               </span>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Container>
 
         <div>
           <button onClick={addNote}>Add Note</button>
@@ -142,7 +150,7 @@ const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
   );
 };
 
-export default TranslatorLibrary;
+export default LessonContent;
 
 // import React, { useState, useRef, useEffect } from "react";
 // import "regenerator-runtime/runtime";
