@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
 import "./lesson-tesr.css";
-import Note from "./note/note";
-import Panel from "./panel/panel";
+import Note from "../../note/note";
+import Panel from "../../panel/panel";
 import styles from "./lesson-content.module.css";
 import { Box, Container } from "@mui/material";
 

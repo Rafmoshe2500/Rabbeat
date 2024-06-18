@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import LessonContent from "../components/lesson-content";
+import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import { convertBase64ToBlob } from "../utils/audio-parser";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
