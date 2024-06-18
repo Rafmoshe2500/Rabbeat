@@ -70,3 +70,14 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@font-face {
+  font-family: 'StamFont';
+  src: url('/src/assets/fonts/stamsefaradclm-webfont.ttf') format('truetype'),
+       url('/src/assets/fonts/stamsefaradclm-webfont.woff') format('woff'),
+}
+
+.stam-font {
+  font-family: 'StamFont';
+  font-size: xx-large;
+}

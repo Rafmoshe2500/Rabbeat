@@ -1,3 +1,7 @@
+.text {
+  max-width: 400px;   
+}
+
 .highlight {
     color: white;
     border: 2px solid blue;
@@ -5,15 +9,5 @@
     background-color: blue;
     padding: 2px;
   }
-  
 
-@font-face {
-  font-family: 'StamFont';
-  src: url('/src/assets/fonts/stamsefaradclm-webfont.ttf') format('truetype'),
-       url('/src/assets/fonts/stamsefaradclm-webfont.woff') format('woff'),
-}
-
-.stam-font {
-  font-family: 'StamFont';
-  font-size: xx-large;
-}
+ 

@@ -96,7 +96,8 @@ const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
 
   return (
     <div>
-      <Panel>
+      <Panel
+      header='ההערות שלי'>
         {notes.map((note) => (
           <Note
             key={note.id}
@@ -119,7 +120,7 @@ const TranslatorLibrary: React.FC<TranslatorLibraryProps> = ({ lesson }) => {
         )}
 
         <div>
-          <div className={styles["stam-font"]}>
+          <div className={`${styles['text']} stam-font`}>
             {words.map((word, index) => (
               <span
                 key={index}
