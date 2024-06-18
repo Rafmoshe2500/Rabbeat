@@ -11,6 +11,21 @@ from sel import get_full_text_return_verse_with_nikud
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
 def get_verses(pentateuch, startCh, startVerse, endCh, endVerse):
+    """
+    <h4><ul>
+    <li>pentateuch: חומש</li>
+    <li>startCh: פרק התחלה</li>
+    <li>startVerse: פסוק התחלה</li>
+    <li>endCh: פרק סופי</li>
+    <li>endVerse: פסוק סופי</li>
+    </h4></ul<
+    :param pentateuch:
+    :param startCh:
+    :param startVerse:
+    :param endCh:
+    :param endVerse:
+    :return:
+    """
     try:
         response = defaultdict(dict)
         with open(f"Torah/{pentateuch}.json", "r", encoding="utf-8") as f:

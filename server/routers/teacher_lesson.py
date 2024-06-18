@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from models.mongo import TeacherLessons
 from database.mongo import db
 
-router = APIRouter(tags=['Lesson', 'Teacher'])
+router = APIRouter(tags=['Teacher-Lessons'])
 
 
 @router.post("/teacher-lessons/")
