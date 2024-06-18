@@ -16,7 +16,7 @@ async def create_teacher_lesson(teacher_lesson: TeacherLessons):
 
 @router.get("/teacher-lessons/{teacherId}")
 async def get_teacher_lessons(teacherId: str):
-    teacher_lessons = db.teacher_lessons.find({"teacherId": teacherId}).to_list(500)
+    teacher_lessons = list(db.teacher_lessons.find({"teacherId": teacherId}))
     for teacher_lesson in teacher_lessons:
         teacher_lesson["_id"] = str(teacher_lesson["_id"])
     return teacher_lessons

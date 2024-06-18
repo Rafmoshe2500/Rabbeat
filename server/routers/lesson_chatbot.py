@@ -15,7 +15,7 @@ async def create_chatbot_message(chatbot_message: ChatBotMessages):
 
 @router.get("/chatbot-messages/{lessonId}/student/{studentId}")
 async def get_chatbot_messages(studentId: str, lessonId: str):
-    chatbot_messages = await db.chatbot_messages.find({"studentId": studentId, "lessonId": lessonId}).to_list(100)
+    chatbot_messages = await list(db.chatbot_messages.find({"studentId": studentId, "lessonId": lessonId}))
     for chatbot_message in chatbot_messages:
         chatbot_message["_id"] = str(chatbot_message["_id"])
     return chatbot_messages
