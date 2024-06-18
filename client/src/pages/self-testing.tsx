@@ -59,9 +59,7 @@ const SelfTesting = () => {
     <div>
       כאן בודקים
       <div>
-          <p className="stam-font">
-          {lesson?.text}
-          </p>
+        <p className="stam-font">{lesson?.text}</p>
       </div>
       <div>
         <button onClick={resetTranscript}>Reset</button>
