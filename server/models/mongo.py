@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Optional, List, Dict
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class Word(BaseModel):
@@ -83,3 +83,14 @@ class ChatBotMessages(BaseModel):
     lessonId: str
     studentId: str
     message: Message
+
+
+class Client(BaseModel):
+    id: str
+    firstName: str
+    lastName: str
+    email: EmailStr
+    phoneNumber: str
+    address: str
+    birthDay: str
+    type: str  # (student/teacher)
