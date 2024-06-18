@@ -16,7 +16,7 @@ async def create_lesson_comment(lesson_comment: LessonsComments):
 
 @router.get("/lesson-comments/{lessonsId}/student/{studentId}")
 async def get_lesson_comments(studentId: str, lessonsId: str):
-    lesson_comments = await list(db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
+    lesson_comments =  list(db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
     for lesson_comment in lesson_comments:
         lesson_comment["_id"] = str(lesson_comment["_id"])
     return lesson_comments

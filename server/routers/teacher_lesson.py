@@ -1,7 +1,7 @@
-from bson import ObjectId
 from fastapi import APIRouter, HTTPException
-from models.mongo import TeacherLessons
+
 from database.mongo import db
+from models.mongo import TeacherLessons
 
 router = APIRouter(tags=['Teacher-Lessons'])
 
