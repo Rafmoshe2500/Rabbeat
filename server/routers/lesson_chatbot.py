@@ -22,7 +22,7 @@ async def get_chatbot_messages(studentId: str, lessonId: str):
 
 
 @router.delete("/chatbot-messages/")
-async def delete_chatbot_messages(lessonId: str, studentId: str):
+async def clear_chatbot(lessonId: str, studentId: str):
     delete_result = db.chatbot_messages.delete_many({"lessonId": lessonId, "studentId": studentId})
     if delete_result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="No Chatbot Messages found for the given lessonId and studentId")

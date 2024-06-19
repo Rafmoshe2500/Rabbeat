@@ -6,7 +6,7 @@ router = APIRouter(tags=['Student-Lessons', 'Student'])
 
 
 @router.post("/student-lesson/")
-async def create_student_lesson(student_lesson: StudentLessons):
+async def associate_student_to_lesson(student_lesson: StudentLessons):
     result = db.student_lessons.insert_one(student_lesson.dict())
     status = LessonStatus(studentId=student_lesson.studentId, lessonId=student_lesson.lessonId)
     db.lesson_status.insert_one(status.dict())
@@ -16,7 +16,7 @@ async def create_student_lesson(student_lesson: StudentLessons):
 
 
 @router.get("/student-lessons/{studentId}")
-async def get_student_lessons(studentId: str):
+async def get_all_student_lessons_by_student_id(studentId: str):
     student_lessons = list(db.student_lessons.find({"studentId": studentId}))
     for student_lesson in student_lessons:
         student_lesson["_id"] = str(student_lesson["_id"])
@@ -24,7 +24,7 @@ async def get_student_lessons(studentId: str):
 
 
 @router.delete("/student-lesson/")
-async def delete_student_lesson(student: StudentLessons):
+async def disassociate_student_lesson(student: StudentLessons):
     # Delete related student lessons
     db.student_lessons.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
 

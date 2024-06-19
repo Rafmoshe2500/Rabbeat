@@ -14,7 +14,7 @@ async def create_lesson_status(lesson_status: LessonStatus):
 
 
 @router.get("/lesson-status/{lessonId}/student/{studentId}")
-async def get_lesson_status(studentId: str, lessonId: str):
+async def get_lesson_status_by_ids(studentId: str, lessonId: str):
     lesson_status = db.lesson_status.find_one({"studentId": studentId, "lessonId": lessonId})
     if lesson_status:
         lesson_status["_id"] = str(lesson_status["_id"])
@@ -23,7 +23,7 @@ async def get_lesson_status(studentId: str, lessonId: str):
 
 
 @router.get("/lesson-statuses/")
-async def get_lesson_status():
+async def get_all_lesson_statuses():
     lesson_statuses = list(db.lesson_status.find())
     if not lesson_statuses:
         raise HTTPException(status_code=404, detail="No lessons found")

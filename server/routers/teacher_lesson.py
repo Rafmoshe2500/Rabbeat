@@ -7,7 +7,7 @@ router = APIRouter(tags=['Teacher-Lessons'])
 
 
 @router.post("/teacher-lesson/")
-async def create_teacher_lesson(teacher_lesson: TeacherLessons):
+async def associate_teacher_to_lesson(teacher_lesson: TeacherLessons):
     result = db.teacher_lessons.insert_one(teacher_lesson.dict())
     if result.inserted_id:
         return {"id": str(result.inserted_id)}
@@ -15,7 +15,7 @@ async def create_teacher_lesson(teacher_lesson: TeacherLessons):
 
 
 @router.get("/teacher-lessons/{teacherId}")
-async def get_teacher_lessons(teacherId: str):
+async def get_all_teacher_lessons_by_teacher_id(teacherId: str):
     teacher_lessons = list(db.teacher_lessons.find({"teacherId": teacherId}))
     for teacher_lesson in teacher_lessons:
         teacher_lesson["_id"] = str(teacher_lesson["_id"])

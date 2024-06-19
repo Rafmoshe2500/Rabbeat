@@ -16,7 +16,7 @@ async def create_lesson_comment(lesson_comment: LessonsComments):
 
 
 @router.get("/lesson-comments/{lessonsId}/student/{studentId}")
-async def get_lesson_comments(studentId: str, lessonsId: str):
+async def get_lesson_comments_by_ids(studentId: str, lessonsId: str):
     lesson_comments = list(db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
     for lesson_comment in lesson_comments:
         lesson_comment["_id"] = str(lesson_comment["_id"])
@@ -24,7 +24,7 @@ async def get_lesson_comments(studentId: str, lessonsId: str):
 
 
 @router.delete("/lesson-comment/{id}")
-async def delete_lesson_comment(id: str):
+async def delete_lesson_comment_by_id(id: str):
     delete_result = db.lesson_comments.delete_one({"_id": ObjectId(id)})
     if delete_result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Comment not found")

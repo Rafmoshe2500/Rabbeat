@@ -20,7 +20,7 @@ async def create_lesson(lesson: Lesson):
 
 
 @router.get("/lesson/{id}")
-async def get_lesson(id: str):
+async def get_lesson_by_id(id: str):
     lesson = db.lessons.find_one({"_id": ObjectId(id)})
     if lesson:
         lesson["_id"] = str(lesson["_id"])
@@ -49,7 +49,7 @@ async def get_all_lessons_metadata():
 
 
 @router.get("/lessons/{student_id}", response_model=List[LessonResponse])
-async def get_lessons(student_id: str):
+async def get_lessons_metadata_by_student_id(student_id: str):
     try:
         student_lessons = list(db.student_lessons.find({"studentId": student_id}))
         if not student_lessons:
