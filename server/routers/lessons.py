@@ -60,7 +60,7 @@ async def get_lessons(student_id: str):
             lesson_id = student_lesson["lessonId"]
 
             # Get metadata
-            metadata = db.lessons_metadata.find_one({"lessonId": lesson_id})
+            metadata = db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
             if not metadata:
                 continue  # skip if metadata is not found
 
