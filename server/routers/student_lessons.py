@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.mongo import StudentLessons
+from models.mongo import StudentLessons, LessonStatus
 from database.mongo import db
 
 router = APIRouter(tags=['Student-Lessons', 'Student'])
@@ -8,6 +8,8 @@ router = APIRouter(tags=['Student-Lessons', 'Student'])
 @router.post("/student-lesson/")
 async def create_student_lesson(student_lesson: StudentLessons):
     result = db.student_lessons.insert_one(student_lesson.dict())
+    status = LessonStatus(studentId=student_lesson.studentId, lessonId=student_lesson.lessonId)
+    db.lesson_status.insert_one(status.dict())
     if result.inserted_id:
         return {"id": str(result.inserted_id)}
     raise HTTPException(status_code=500, detail="Student Lesson not created")

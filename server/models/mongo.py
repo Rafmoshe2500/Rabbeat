@@ -5,15 +5,20 @@ from typing import Optional, List
 from pydantic import BaseModel, EmailStr
 
 
-class Lesson(BaseModel):
+class LessonMetadata(BaseModel):
     title: str
-    audio: str
     startChapter: str
     startVerse: str
     endChapter: str
     endVers: str
     pentateuch: str
-    times: List[float]
+    creationDate: datetime = datetime.now()
+
+
+class Lesson(BaseModel):
+    audio: str
+    highlightsTimestamps: List[float]
+    metadata: LessonMetadata
 
 
 class StudentLessons(BaseModel):
@@ -36,8 +41,8 @@ class LessonsComments(BaseModel):
 class LessonStatus(BaseModel):
     lessonId: str
     studentId: str
-    inProgress: bool
-    finish: bool
+    inProgress: bool = False
+    finish: bool = False
 
 
 class UpdateLessonStatusModel(BaseModel):
@@ -66,3 +71,10 @@ class User(BaseModel):
     address: str
     birthDay: str
     type: str  # (student/teacher)
+
+
+class LessonResponse(BaseModel):
+    lessonId: str
+    studentId: str
+    metadata: LessonMetadata
+    status: LessonStatus

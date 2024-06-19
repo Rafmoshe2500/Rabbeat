@@ -22,6 +22,16 @@ async def get_lesson_status(studentId: str, lessonId: str):
     raise HTTPException(status_code=404, detail="Lesson status not found")
 
 
+@router.get("/lesson-statuses/")
+async def get_lesson_status():
+    lesson_statuses = list(db.lesson_status.find())
+    if not lesson_statuses:
+        raise HTTPException(status_code=404, detail="No lessons found")
+    for lesson_status in lesson_statuses:
+        lesson_status["_id"] = str(lesson_status["_id"])
+    return lesson_statuses
+
+
 @router.patch("/lesson-status/")
 async def update_lesson_status(update: LessonStatus):
     update_data = update.dict(exclude_unset=True)
