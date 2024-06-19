@@ -19,13 +19,13 @@ async def create_lesson(lesson: Lesson):
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 
-# @router.get("/lesson/{id}")
-# async def get_lesson(id: str):
-#     lesson = db.lessons.find_one({"_id": ObjectId(id)})
-#     if lesson:
-#         lesson["_id"] = str(lesson["_id"])
-#         return lesson
-#     raise HTTPException(status_code=404, detail="Lesson not found")
+@router.get("/lesson/{id}")
+async def get_lesson(id: str):
+    lesson = db.lessons.find_one({"_id": ObjectId(id)})
+    if lesson:
+        lesson["_id"] = str(lesson["_id"])
+        return lesson
+    raise HTTPException(status_code=404, detail="Lesson not found")
 
 
 @router.get("/lessons/")
