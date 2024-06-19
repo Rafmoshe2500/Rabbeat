@@ -8,12 +8,13 @@ import {
   lesson4Details,
   lesson5Details,
 } from "../mocks/fakeData";
+import { useLessonsByUser } from "../hooks/useLessonsByUser";
+import { useUser } from "../contexts/user-context";
 
-type StudentPersonalAreaProps = {
-  currLesson?: FormattedLesson | undefined;
-};
-
-const StudentPersonalArea = ({ currLesson }: StudentPersonalAreaProps) => {
+const StudentPersonalArea = () => {
+  const {userDetails} = useUser();
+  const {data: lessons1, isLoading, isError} = useLessonsByUser(userDetails!.id);
+  
   const [lessons, setLessons] = useState<Array<LessonDetails>>([
     lesson1Details,
     lesson2Details,
@@ -25,7 +26,7 @@ const StudentPersonalArea = ({ currLesson }: StudentPersonalAreaProps) => {
     <div>
       <div style={{ marginBottom: "8rem" }}>אזור אישי לתלמיד</div>
 
-      {lessons ? <LessonsList lessons={lessons} /> : <p>אין לך שיעורים כרגע</p>}
+      {lessons ? <LessonsList lessons={lessons1} /> : <p>אין לך שיעורים כרגע</p>}
 
       {/* <LessonView currLesson={currLesson} /> */}
     </div>
