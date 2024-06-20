@@ -22,19 +22,16 @@ const ChatComponent: React.FC = () => {
   };
 
   const handleSendMessage = () => {
-    if(inputRef.current){
-    if (inputRef.current.value.trim() === '') return;
+    if (inputMessage1.trim() === '') return;
 
     const userMessage: Message = {
       sender: 'user',
-      text: inputRef.current.value,
+      text: inputMessage1,
     };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setInputMessage1(inputRef.current.value)
     setTriggerSendMessage(true);
-    inputRef.current.value = '';
-  }
+    setInputMessage1('');
   };
 
   const messageData = { message: inputMessage1, conversation_topic: 'בראשית, פרק כח פסוק י, עד פרק כח פסוק יז' };
@@ -50,12 +47,6 @@ const ChatComponent: React.FC = () => {
       setLoadingMessageIndex(messages.length); // Set the index of the loading message
     }
   }, [isLoading, triggerSendMessage]);
-
-  const a = (value: string) => {
-    if(inputRef.current){
-      inputRef.current.value = value;
-    }
-  }
 
   useEffect(() => {
     if (triggerSendMessage && !isLoading && (data || error)) {
@@ -109,12 +100,12 @@ const ChatComponent: React.FC = () => {
             <input
               ref={inputRef}
               type="text"
-              value={inputRef.current?.value}
-              onChange={(e) => a(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter'}
+              value={inputMessage1}
+              onChange={(e) => setInputMessage1(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="הכנס כאן שאלות על הפרשה..."
             />
-            <button onClick={handleSendMessage}></button>
+            <button onClick={handleSendMessage}>Send</button>
           </div>
         </div>
       )}

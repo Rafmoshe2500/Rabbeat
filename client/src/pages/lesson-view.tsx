@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { lesson1, lesson2, lesson3, lesson4 } from "../mocks/fakeData";
 import { getLessonsByUser } from "../api/endpoints/lesson";
+import ChatComponent from '../components/chatbot/ChatComponent';
 
 const LessonView = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +40,7 @@ const LessonView = () => {
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון
       </Button>
+      <ChatComponent />
     </div>
   );
 };

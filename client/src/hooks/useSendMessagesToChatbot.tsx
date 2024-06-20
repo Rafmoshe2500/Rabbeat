@@ -4,7 +4,7 @@ import { sendMessageToChatbot } from "../api/endpoints/chatbot";
 const createQueryKey = (keys: string[]) => [...keys] as const;
 
 export const useSendMessageToChatbot = (message: ChatBotMessage) => {
-  const queryKey = createQueryKey([message.message, message.conversation_topic]);
+  const queryKey = createQueryKey(["sendMessageToChatBot"]);
 
   return useQuery<ChatBotMessage[], Error>({
     queryKey,
