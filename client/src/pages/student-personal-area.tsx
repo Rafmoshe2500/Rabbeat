@@ -11,6 +11,7 @@ import {
 import { useLessonsByUser } from "../hooks/useLessonsByUser";
 import { useUser } from "../contexts/user-context";
 
+
 const StudentPersonalArea = () => {
   const {userDetails} = useUser();
   const {data: lessons1, isLoading, isError} = useLessonsByUser(userDetails!.id);
