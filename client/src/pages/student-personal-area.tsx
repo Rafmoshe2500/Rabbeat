@@ -10,7 +10,6 @@ import {
 } from "../mocks/fakeData";
 import { useLessonsByUser } from "../hooks/useLessonsByUser";
 import { useUser } from "../contexts/user-context";
-import ChatComponent from '../components/chatbot/ChatComponent';
 
 
 const StudentPersonalArea = () => {
@@ -31,7 +30,6 @@ const StudentPersonalArea = () => {
       {lessons ? <LessonsList lessons={lessons1} /> : <p>אין לך שיעורים כרגע</p>}
 
       {/* <LessonView currLesson={currLesson} /> */}
-      <ChatComponent />
     </div>
   );
 };

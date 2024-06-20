@@ -13,6 +13,7 @@ import {
   unloggedRoutes,
 } from "./utils/routes.utils";
 import { useUser } from "./contexts/user-context";
+import ChatComponent from './components/chatbot/ChatComponent';
 
 const App: React.FC = () => {
   const login = true;
@@ -45,6 +46,9 @@ const App: React.FC = () => {
   return (
     <>
       <RouterProvider router={router} />
+      <div>
+        <ChatComponent />
+      </div>
     </>
   );
 };

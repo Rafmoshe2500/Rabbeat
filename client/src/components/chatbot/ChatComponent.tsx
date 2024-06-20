@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatComponent.module.scss';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { useSendMessageToChatbot } from '../../hooks/useSendMessagesToChatbot'; // Adjust the import path as needed
 
 interface Message {
   sender: 'user' | 'bot';
@@ -12,52 +12,70 @@ interface Message {
 const ChatComponent: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputMessage1, setInputMessage1] = useState<string>('');
+  const [triggerSendMessage, setTriggerSendMessage] = useState<boolean>(false);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState<number | null>(null);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
 
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() === '') return;
+  const handleSendMessage = () => {
+    if(inputRef.current){
+    if (inputRef.current.value.trim() === '') return;
 
     const userMessage: Message = {
       sender: 'user',
-      text: inputMessage,
+      text: inputRef.current.value,
     };
 
-    setMessages([...messages, userMessage]);
-    setInputMessage('');
-    try {
-      const url = 'http://localhost:8000/chat/';
-      const data = {
-        message: inputMessage,
-        conversation_topic: 'ספר בראשית, פרק כח פסוק י, עד פרק כח פסוק יז', // Replace with actual topic if available
-      };
-
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-
-      const response = await axios.post(url, data, options);
-      const generatedText = response.data.message;
-
-      const botMessage: Message = {
-        sender: 'bot',
-        text: generatedText,
-      };
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      const botMessage: Message = {
-        sender: 'bot',
-        text: "Some error occurred",
-      };
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
-    }
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setInputMessage1(inputRef.current.value)
+    setTriggerSendMessage(true);
+    inputRef.current.value = '';
+  }
   };
+
+  const messageData = { message: inputMessage1, conversation_topic: 'בראשית, פרק כח פסוק י, עד פרק כח פסוק יז' };
+  const { data, error, isLoading } = useSendMessageToChatbot(messageData);
+
+  useEffect(() => {
+    if (triggerSendMessage && isLoading) {
+      const loadingMessage: Message = {
+        sender: 'bot',
+        text: 'מעבד את הנתונים...',
+      };
+      setMessages((prevMessages) => [...prevMessages, loadingMessage]);
+      setLoadingMessageIndex(messages.length); // Set the index of the loading message
+    }
+  }, [isLoading, triggerSendMessage]);
+
+  const a = (value: string) => {
+    if(inputRef.current){
+      inputRef.current.value = value;
+    }
+  }
+
+  useEffect(() => {
+    if (triggerSendMessage && !isLoading && (data || error)) {
+      setMessages((prevMessages) => {
+        const updatedMessages = [...prevMessages];
+        const botMessage: Message = {
+          sender: 'bot',
+          text: error ? 'אופס, משהו השתבש בדרך.' : data ? data[0].message : 'Unknown error',
+        };
+        if (loadingMessageIndex !== null) {
+          updatedMessages[loadingMessageIndex] = botMessage; // Replace the loading message
+        } else {
+          updatedMessages.push(botMessage);
+        }
+        return updatedMessages;
+      });
+      setTriggerSendMessage(false);
+      setLoadingMessageIndex(null); // Reset the loading message index
+    }
+  }, [data, error, isLoading, triggerSendMessage, loadingMessageIndex]);
 
   const createMarkup = (text: string) => {
     const rawMarkup = marked(text);
@@ -89,10 +107,11 @@ const ChatComponent: React.FC = () => {
           </div>
           <div className={styles.chatInput}>
             <input
+              ref={inputRef}
               type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+              value={inputRef.current?.value}
+              onChange={(e) => a(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter'}
               placeholder="הכנס כאן שאלות על הפרשה..."
             />
             <button onClick={handleSendMessage}></button>
