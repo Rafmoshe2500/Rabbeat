@@ -1,9 +1,11 @@
+import logging
+from pymongo import MongoClient, ASCENDING
+from pymongo.errors import ConnectionFailure, DuplicateKeyError
 from bson import ObjectId
-from pymongo import ASCENDING, MongoClient
-from pymongo.errors import ConnectionFailure
 
-from models.mongo import LessonResponse, LessonMetadata, LessonStatus, StudentLessons, TeacherLessons, LessonsComments, \
-    ChatBotMessages, Lesson
+# Assuming the data models are defined as dataclasses
+from models.mongo import StudentLessons, LessonResponse, LessonMetadata, LessonStatus, TeacherLessons, Lesson, \
+    LessonsComments, ChatBotMessages
 
 
 class MongoDB:
@@ -16,110 +18,194 @@ class MongoDB:
         try:
             client = MongoClient(self.mongo_uri)
             db = client[self.mongo_db]
-            # Create unique indexes
+            # Ensure indexes exist
+            self.__ensure_indexes(db)
+            logging.info("Connected to MongoDB")
+            return db
+        except ConnectionFailure as e:
+            logging.error(f"Failed to connect to MongoDB: {e}")
+            raise e
+
+    def __ensure_indexes(self, db):
+        try:
             db.users.create_index([("id", ASCENDING)], unique=True)
             db.users.create_index([("email", ASCENDING)], unique=True)
-            print("Connected to MongoDB")
-            return db
-        except ConnectionFailure:
-            print("Failed to connect to MongoDB")
+        except DuplicateKeyError as e:
+            logging.warning(f"Index creation skipped due to duplication: {e}")
 
     def get_lessons_metadata_by_student_id(self, student_id: str):
-        student_lessons = list(self._db.student_lessons.find({"studentId": student_id}))
-        if not student_lessons:
-            return
+        try:
+            student_lessons = list(self._db.student_lessons.find({"studentId": student_id}))
+            if not student_lessons:
+                return []
 
-        lessons = []
-        for student_lesson in student_lessons:
-            lesson_id = student_lesson["lessonId"]
+            lessons = []
+            for student_lesson in student_lessons:
+                lesson_id = student_lesson["lessonId"]
 
-            # Get metadata
-            metadata = self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
-            if not metadata:
-                continue  # skip if metadata is not found
+                metadata = self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
+                if not metadata:
+                    continue
 
-            # Get status
-            status = self._db.lesson_status.find_one({"lessonId": lesson_id, "studentId": student_id})
-            if not status:
-                continue  # skip if status is not found
+                status = self._db.lesson_status.find_one({"lessonId": lesson_id, "studentId": student_id})
+                if not status:
+                    continue
 
-            lesson_response = LessonResponse(
-                lessonId=lesson_id,
-                studentId=student_id,
-                metadata=LessonMetadata(**metadata),
-                status=LessonStatus(**status)
-            )
-            lessons.append(lesson_response)
+                lesson_response = LessonResponse(
+                    lessonId=lesson_id,
+                    studentId=student_id,
+                    metadata=LessonMetadata(**metadata),
+                    status=LessonStatus(**status)
+                )
+                lessons.append(lesson_response)
 
-        return lessons
+            return lessons
+        except Exception as e:
+            logging.error(f"Error getting lesson metadata by student ID: {e}")
+            return []
 
     def disassociate_student_from_lesson(self, student: StudentLessons):
-        self._db.student_lessons.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
-        self._db.lesson_status.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
-        self._db.lesson_comments.delete_many({"lessonsId": student.lessonId, "studentId": student.studentId})
-        self._db.chatbot_messages.delete_many({"lessonId": student.lessonId, "studentId": student.studentId})
+        try:
+            self._db.student_lessons.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
+            self._db.lesson_status.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
+            self._db.lesson_comments.delete_many({"lessonsId": student.lessonId, "studentId": student.studentId})
+            self._db.chatbot_messages.delete_many({"lessonId": student.lessonId, "studentId": student.studentId})
+        except Exception as e:
+            logging.error(f"Error disassociating student from lesson: {e}")
 
     def associate_student_to_lesson(self, student_lesson: StudentLessons):
-        result = self._db.student_lessons.insert_one(student_lesson.dict())
-        status = LessonStatus(studentId=student_lesson.studentId, lessonId=student_lesson.lessonId)
-        self._db.lesson_status.insert_one(status.dict())
-        return result
+        try:
+            result = self._db.student_lessons.insert_one(student_lesson.dict())
+            status = LessonStatus(studentId=student_lesson.studentId, lessonId=student_lesson.lessonId)
+            self._db.lesson_status.insert_one(status.dict())
+            return result
+        except Exception as e:
+            logging.error(f"Error associating student to lesson: {e}")
+            return None
 
     def associate_teacher_to_lesson(self, teacher_lesson: TeacherLessons):
-        return self._db.teacher_lessons.insert_one(teacher_lesson.dict())
+        try:
+            return self._db.teacher_lessons.insert_one(teacher_lesson.dict())
+        except Exception as e:
+            logging.error(f"Error associating teacher to lesson: {e}")
+            return None
 
     def add_lesson(self, lesson: Lesson):
-        only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps'})
-        result = self._db.lessons.insert_one(only_lesson)
-        metadata_lesson = {**lesson.metadata.dict(), '_id': result.inserted_id}
-        result_metadata = self._db.lessons_metadata.insert_one(metadata_lesson)
-        if result.inserted_id and result_metadata.inserted_id and result_metadata.inserted_id == result.inserted_id:
-            return result.inserted_id
+        try:
+            only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps'})
+            result = self._db.lessons.insert_one(only_lesson)
+            metadata_lesson = {**lesson.metadata.dict(), '_id': result.inserted_id}
+            result_metadata = self._db.lessons_metadata.insert_one(metadata_lesson)
+            if result.inserted_id and result_metadata.inserted_id == result.inserted_id:
+                return result.inserted_id
+        except Exception as e:
+            logging.error(f"Error adding lesson: {e}")
+            return None
 
     def get_all_lessons_metadata(self):
-        return list(self._db.lessons_metadata.find())
+        try:
+            return list(self._db.lessons_metadata.find())
+        except Exception as e:
+            logging.error(f"Error getting all lessons metadata: {e}")
+            return []
 
     def get_all_lessons(self):
-        return list(self._db.lessons.find())
+        try:
+            return list(self._db.lessons.find())
+        except Exception as e:
+            logging.error(f"Error getting all lessons: {e}")
+            return []
 
     def get_lesson_by_id(self, id: str):
-        return self._db.lessons.find_one({"_id": ObjectId(id)})
+        try:
+            return self._db.lessons.find_one({"_id": ObjectId(id)})
+        except Exception as e:
+            logging.error(f"Error getting lesson by ID: {e}")
+            return None
 
     def update_lesson_status(self, update: LessonStatus):
-        return self._db.lesson_status.update_one(
-            {"lessonId": update.lessonId, "studentId": update.studentId},
-            {"$set": update.dict()}
-        )
+        try:
+            return self._db.lesson_status.update_one(
+                {"lessonId": update.lessonId, "studentId": update.studentId},
+                {"$set": update.dict()}
+            )
+        except Exception as e:
+            logging.error(f"Error updating lesson status: {e}")
+            return None
 
     def get_all_lesson_statuses(self):
-        return list(self._db.lesson_status.find())
+        try:
+            return list(self._db.lesson_status.find())
+        except Exception as e:
+            logging.error(f"Error getting all lesson statuses: {e}")
+            return []
 
     def get_lesson_status_by_ids(self, student_id: str, lesson_id: str):
-        return self._db.lesson_status.find_one({"studentId": student_id, "lessonId": lesson_id})
+        try:
+            return self._db.lesson_status.find_one({"studentId": student_id, "lessonId": lesson_id})
+        except Exception as e:
+            logging.error(f"Error getting lesson status by IDs: {e}")
+            return None
 
     def add_lesson_status(self, lesson_status: LessonStatus):
-        return self._db.lesson_status.insert_one(lesson_status.dict())
+        try:
+            return self._db.lesson_status.insert_one(lesson_status.dict())
+        except Exception as e:
+            logging.error(f"Error adding lesson status: {e}")
+            return None
 
     def delete_lesson_comment_by_id(self, id: str):
-        return self._db.lesson_comments.delete_one({"_id": ObjectId(id)})
+        try:
+            return self._db.lesson_comments.delete_one({"_id": ObjectId(id)})
+        except Exception as e:
+            logging.error(f"Error deleting lesson comment by ID: {e}")
+            return None
 
     def get_lesson_comments_by_ids(self, studentId: str, lessonsId: str):
-        return list(self._db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
+        try:
+            return list(self._db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
+        except Exception as e:
+            logging.error(f"Error getting lesson comments by IDs: {e}")
+            return []
 
     def add_lesson_comment(self, lesson_comment: LessonsComments):
-        return self._db.lesson_comments.insert_one(lesson_comment.dict())
+        try:
+            return self._db.lesson_comments.insert_one(lesson_comment.dict())
+        except Exception as e:
+            logging.error(f"Error adding lesson comment: {e}")
+            return None
 
     def clear_chatbot(self, lessonId: str, studentId: str):
-        return self._db.chatbot_messages.delete_many({"lessonId": lessonId, "studentId": studentId})
+        try:
+            return self._db.chatbot_messages.delete_many({"lessonId": lessonId, "studentId": studentId})
+        except Exception as e:
+            logging.error(f"Error clearing chatbot messages: {e}")
+            return None
 
     def get_chatbot_messages(self, studentId: str, lessonId: str):
-        return list(self._db.chatbot_messages.find({"studentId": studentId, "lessonId": lessonId}))
+        try:
+            return list(self._db.chatbot_messages.find({"studentId": studentId, "lessonId": lessonId}))
+        except Exception as e:
+            logging.error(f"Error getting chatbot messages: {e}")
+            return []
 
     def add_chatbot_message(self, chatbot_message: ChatBotMessages):
-        return self._db.chatbot_messages.insert_one(chatbot_message.dict())
+        try:
+            return self._db.chatbot_messages.insert_one(chatbot_message.dict())
+        except Exception as e:
+            logging.error(f"Error adding chatbot message: {e}")
+            return None
 
     def get_all_student_lessons_by_student_id(self, studentId: str):
-        return list(self._db.student_lessons.find({"studentId": studentId}))
+        try:
+            return list(self._db.student_lessons.find({"studentId": studentId}))
+        except Exception as e:
+            logging.error(f"Error getting all student lessons by student ID: {e}")
+            return []
 
     def get_all_teacher_lessons_by_teacher_id(self, teacherId: str):
-        return list(self._db.teacher_lessons.find({"teacherId": teacherId}))
+        try:
+            return list(self._db.teacher_lessons.find({"teacherId": teacherId}))
+        except Exception as e:
+            logging.error(f"Error getting all teacher lessons by teacher ID: {e}")
+            return []

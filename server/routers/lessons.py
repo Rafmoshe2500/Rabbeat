@@ -10,9 +10,9 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/lesson/")
 async def create_lesson(lesson: Lesson):
-    result = mongo_db.add_lesson(lesson)
-    if result.inserted_id:
-        return {"id": str(result.inserted_id)}
+    lesson_id = mongo_db.add_lesson(lesson)
+    if lesson_id:
+        return {"id": str(lesson_id)}
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 

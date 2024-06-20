@@ -1,25 +1,26 @@
-import bcrypt
+import json
+from collections import defaultdict
+from copy import deepcopy
 
+from hebrew import Hebrew
 
-def hash_password(password: str) -> str:
-    # Generate a salt
-    salt = bcrypt.gensalt()
-    # Hash the password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    # Return the hashed password as a string
-    return hashed_password.decode('utf-8')
+d = defaultdict(dict)
 
+pentateuchs = ['בראשית', 'שמות', 'ויקרא', 'במדבר', 'דברים']
+for pentateuch in pentateuchs:
 
-# Example usage
-plain_password = "my_secure_password"
-hashed_password = hash_password(plain_password)
-print(f"Hashed password: {hashed_password}")
+    with open(f"Torah/both/{pentateuch}.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
 
+    for k,v in data.items():
+        d[pentateuch][str(Hebrew.from_number(int(k)))] = [str(Hebrew.from_number(int(num))) for num in v.keys()]
 
-def check_password(plain_password: str, hashed_password: str) -> bool:
-    # Verify the password
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+json_c = json.dumps(d, ensure_ascii=False, indent=2)
 
-
-is_correct = check_password(plain_password, hashed_password)
-print(f"Password is correct: {is_correct}")
+with open("./all_chars_and_vers.json", "w", encoding="utf-8") as f:
+    f.write(json_c)
+# print(d)
+# for k,v in d.items():
+#     print(k)
+#     for p,s in v.items():
+#         print(f'\t{p} : {s}')

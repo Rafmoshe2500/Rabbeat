@@ -9,7 +9,7 @@ router = APIRouter(tags=['Student-Lessons', 'Student'])
 @router.post("/student-lesson/")
 async def associate_student_to_lesson(student_lesson: StudentLessons):
     result = mongo_db.associate_student_to_lesson(student_lesson)
-    if result.inserted_id:
+    if result:
         return {"id": str(result.inserted_id)}
     raise HTTPException(status_code=500, detail="Student Lesson not created")
 

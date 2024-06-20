@@ -9,7 +9,7 @@ router = APIRouter(tags=['Student-Lessons | Additives'])
 @router.post("/lesson-status/")
 async def create_lesson_status(lesson_status: LessonStatus):
     result = mongo_db.add_lesson_status(lesson_status)
-    if result.inserted_id:
+    if result:
         return {"id": str(result.inserted_id)}
     raise HTTPException(status_code=500, detail="Lesson Status not created")
 
@@ -36,6 +36,8 @@ async def get_all_lesson_statuses():
 @router.patch("/lesson-status/")
 async def update_lesson_status(update: LessonStatus):
     update_result = mongo_db.update_lesson_status(update)
+    if not update_result:
+        raise HTTPException(status_code=404, detail="Something went wrong")
     if update_result.matched_count == 0:
         raise HTTPException(status_code=404, detail="LessonStatus not found")
     if update_result.modified_count == 0:
