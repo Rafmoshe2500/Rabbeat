@@ -27,8 +27,8 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
     :param endVerse:
     :return:
     """
-    startCh, startVerse, endCh, endVerse = str(Hebrew(startCh).gematria()), str(Hebrew(startVerse).gematria()), str(
-        Hebrew(endCh).gematria()), str(Hebrew(endVerse).gematria())
+    startCh, startVerse = str(Hebrew(startCh).gematria()), str(Hebrew(startVerse).gematria())
+    endCh, endVerse = str(Hebrew(endCh).gematria()), str(Hebrew(endVerse).gematria())
     try:
         response = get_all_torah_text_variants(pentateuch, startCh, startVerse, endCh, endVerse)
         return JSONResponse(content=response)
