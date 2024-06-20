@@ -2,14 +2,14 @@ from bson import ObjectId
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
 
-from models.mongo import User
+from models.mongo import User, UserRegister
 from database.mongo import db
 
 router = APIRouter(tags=["User"])
 
 
 @router.post("/user/")
-async def create_user(user: User):
+async def register(user: UserRegister):
     try:
         user_dict = user.dict()
         result = db.users.insert_one(user_dict)

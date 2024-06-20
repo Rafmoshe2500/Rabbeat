@@ -1,41 +1,25 @@
-import json
-from collections import defaultdict
-from copy import deepcopy
+import bcrypt
 
-from hebrew import Hebrew
 
-both = {}
-nikud = {}
-none = {}
+def hash_password(password: str) -> str:
+    # Generate a salt
+    salt = bcrypt.gensalt()
+    # Hash the password
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    # Return the hashed password as a string
+    return hashed_password.decode('utf-8')
 
-pentateuchs = ['בראשית', 'שמות', 'ויקרא', 'במדבר', 'דברים']
-for pentateuch in pentateuchs:
-    with open(f"Torah/both/{pentateuch}.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
 
-    teamim, nikud, none = deepcopy(data), deepcopy(data), deepcopy(data)
-    for k, v in none.items():
-        for ke, va in v.items():
-            none[k][ke] = str(Hebrew(va).text_only())
+# Example usage
+plain_password = "my_secure_password"
+hashed_password = hash_password(plain_password)
+print(f"Hashed password: {hashed_password}")
 
-    json_object = json.dumps(none, ensure_ascii=False, indent=2)
-    with open(f"Torah/none/{pentateuch}.json", "w", encoding="utf-8") as f:
-        f.write(json_object)
 
-    #  No Nikud only Taamim
-    for k, v in teamim.items():
-        for ke, va in v.items():
-            teamim[k][ke] = str(Hebrew(va).no_niqqud())
+def check_password(plain_password: str, hashed_password: str) -> bool:
+    # Verify the password
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
-    json_object = json.dumps(teamim, ensure_ascii=False, indent=2)
-    with open(f"Torah/teamim/{pentateuch}.json", "w", encoding="utf-8") as f:
-        f.write(json_object)
 
-    #  No Taamim Only Nikud
-    for k, v in nikud.items():
-        for ke, va in v.items():
-            nikud[k][ke] = str(Hebrew(va).no_taamim())
-
-    json_object = json.dumps(nikud, ensure_ascii=False, indent=2)
-    with open(f"Torah/nikud/{pentateuch}.json", "w", encoding="utf-8") as f:
-        f.write(json_object)
+is_correct = check_password(plain_password, hashed_password)
+print(f"Password is correct: {is_correct}")

@@ -73,6 +73,16 @@ class User(BaseModel):
     type: str  # (student/teacher)
 
 
+class UserRegister(User):
+    password: str
+    confirm_password: str
+
+
+class UserCredentials(BaseModel):
+    email: EmailStr
+    password: str
+
+
 class LessonResponse(BaseModel):
     lessonId: str
     studentId: str
