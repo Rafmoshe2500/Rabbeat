@@ -7,7 +7,3 @@ interface Chapter {
 type TorahSection = {
   [chapter: string]: Chapter;
 };
-
-// type TorahSection = {
-//   [book: string]: Pentateuch;
-// };
