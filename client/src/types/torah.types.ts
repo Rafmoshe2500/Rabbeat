@@ -1,7 +1,13 @@
+type Verse = string;
+
+interface Chapter {
+  [verse: string]: Verse;
+}
+
 type TorahSection = {
-  pentateuch: string;
-  startCh: number;
-  startVerse: number;
-  endCh: number;
-  endVerse: number;
+  [chapter: string]: Chapter;
 };
+
+// type TorahSection = {
+//   [book: string]: Pentateuch;
+// };
