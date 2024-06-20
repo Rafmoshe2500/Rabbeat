@@ -2,6 +2,9 @@ import { useReducer } from "react";
 import { Bible } from "../../constants/bible.constants";
 import AutoWidthSelect from "../select/auto-width-select";
 import styles from "./bible-selector.module.scss";
+import { useTorahSection } from "../../hooks/useTorahSection";
+import Book from "../bible-displayer/book";
+import Chapter from "../bible-displayer/chapter";
 
 type State = {
   book: string;
@@ -72,6 +75,16 @@ const BibleSelector = () => {
   const fromVerses = fromChapterObject ? fromChapterObject.verses : [];
   const toChapterObject = chapters.find((c) => c.name === toChapter);
   const toVerses = toChapterObject ? toChapterObject.verses : [];
+
+  const { data, isLoading, error } = useTorahSection(
+    book,
+    fromChapter,
+    fromVerse,
+    toChapter,
+    toVerse
+  );
+
+  console.log(data);
 
   return (
     <div className={styles["selectors-container"]}>
@@ -145,6 +158,22 @@ const BibleSelector = () => {
         <p>
           ספר: {book}, מ: {fromChapter}:{fromVerse}, ועד: {toChapter}:{toVerse}
         </p>
+      </div>
+
+      <div>
+        {isLoading && <p>Loading...</p>}
+        {error && <p>Error loading data</p>}
+        {data && (
+          <div>
+            {Object.entries(data).map(([chapterKey, chapter]) => (
+              <Chapter
+                key={chapterKey}
+                chapterKey={chapterKey}
+                chapter={chapter}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
