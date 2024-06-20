@@ -1,4 +1,4 @@
-import apiClient from '../config';
+import apiClient from "../config";
 
 export const getUser = async (id: string): Promise<User> => {
   try {
@@ -9,9 +9,9 @@ export const getUser = async (id: string): Promise<User> => {
   }
 };
 
-export const createUser = async (user: User): Promise<User> => {
+export const createUserOrUpdate = async (user: User): Promise<User> => {
   try {
-    const response = await apiClient.post<User>('/users', user);
+    const response = await apiClient.post<User>("/users", user);
     return response.data;
   } catch (error) {
     throw error;

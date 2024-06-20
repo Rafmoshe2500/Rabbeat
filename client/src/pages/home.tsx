@@ -15,8 +15,12 @@ const Home: React.FC = () => {
     <div>
       {allLessons?.map((lesson) => {
         return Object.entries(lesson).map(([key, value]) => {
-          return <p>{key}:{value.toString()}</p>
-        })
+          return (
+            <p>
+              {key}:{value.toString()}
+            </p>
+          );
+        });
       })}
     </div>
   );

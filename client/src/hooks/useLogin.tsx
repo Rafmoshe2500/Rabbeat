@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLessonsByUser } from "../api/endpoints/lesson";
+import { getUser } from "../api/endpoints/user";
 
 const createQueryKey = (queryName: string, userId: string) => {
   return [queryName, userId] as const;
@@ -7,12 +7,12 @@ const createQueryKey = (queryName: string, userId: string) => {
 
 type QueryKey = ReturnType<typeof createQueryKey>;
 
-// Fetch lessons by user
+// Fetch user
 export const useLessonsByUser = (userId: string) => {
-  const queryKey = createQueryKey("lessons", userId);
+  const queryKey = createQueryKey("user", userId);
 
-  return useQuery<Lesson[], Error, any, QueryKey>({
+  return useQuery<User, Error, any, QueryKey>({
     queryKey,
-    queryFn: (context) => getLessonsByUser(context.queryKey[1]),
+    queryFn: (context) => getUser(context.queryKey[1]),
   });
 };
