@@ -3,7 +3,6 @@ import { Bible } from "../../constants/bible.constants";
 import AutoWidthSelect from "../select/auto-width-select";
 import styles from "./bible-selector.module.scss";
 import { useTorahSection } from "../../hooks/useTorahSection";
-import Book from "../bible-displayer/book";
 import Chapter from "../bible-displayer/chapter";
 
 type State = {
