@@ -2,17 +2,17 @@ from bson import ObjectId
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
 
-from models.mongo import User
-from database.mongo import db
+from models.mongo import UserRegister
+from tools.utils import mongo_db
+from workflows.register import RegisterWorkflow
 
 router = APIRouter(tags=["User"])
 
 
-@router.post("/user/")
-async def create_user(user: User):
+@router.post("/register/")
+async def register(user: UserRegister):
     try:
-        user_dict = user.dict()
-        result = db.users.insert_one(user_dict)
+        result = RegisterWorkflow(user).run()
         if result.inserted_id:
             return {"message": "User successfully created", "id": str(result.inserted_id)}
     except DuplicateKeyError:
@@ -22,7 +22,7 @@ async def create_user(user: User):
 
 @router.get("/user/{id}")
 async def get_user_by_id(id: str):
-    user = db.users.find_one({"_id": ObjectId(id)})
+    user = mongo_db.get_user_by_id(id)
     if user:
         user["_id"] = str(user["_id"])
         return user
@@ -31,7 +31,7 @@ async def get_user_by_id(id: str):
 
 @router.get("/users/")
 async def get_all_users():
-    users = list(db.users.find())
+    users = mongo_db.get_all_users()
     if not users:
         raise HTTPException(status_code=404, detail="No users found")
     for user in users:
