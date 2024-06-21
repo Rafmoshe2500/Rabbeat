@@ -21,18 +21,13 @@ class Lesson(BaseModel):
     metadata: LessonMetadata
 
 
-class StudentLessons(BaseModel):
-    studentId: str
-    lessonId: str
-
-
-class TeacherLessons(BaseModel):
-    teacherId: str
+class UserLessons(BaseModel):
+    userId: str
     lessonId: str
 
 
 class LessonsComments(BaseModel):
-    studentId: str
+    userId: str
     lessonId: str
     time: float
     text: str
@@ -40,7 +35,7 @@ class LessonsComments(BaseModel):
 
 class LessonStatus(BaseModel):
     lessonId: str
-    studentId: str
+    userId: str
     inProgress: bool = False
     finish: bool = False
 
@@ -58,7 +53,7 @@ class Message(BaseModel):
 
 class ChatBotMessages(BaseModel):
     lessonId: str
-    studentId: str
+    userId: str
     message: Message
 
 
@@ -85,8 +80,11 @@ class UserCredentials(BaseModel):
 
 class LessonResponse(BaseModel):
     lessonId: str
-    studentId: str
+    userId: str
     metadata: LessonMetadata
+
+
+class ExtendLessonResponse(LessonResponse):
     status: LessonStatus
 
 # TODO Split to files

@@ -1,11 +1,12 @@
 import logging
+
+from bson import ObjectId
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
-from bson import ObjectId
 
 # Assuming the data models are defined as dataclasses
-from models.mongo import StudentLessons, LessonResponse, LessonMetadata, LessonStatus, TeacherLessons, Lesson, \
-    LessonsComments, ChatBotMessages, UserRegister, User, UserCredentials
+from models.mongo import LessonResponse, LessonMetadata, LessonStatus, Lesson, \
+    LessonsComments, ChatBotMessages, User, UserCredentials, UserLessons
 
 
 class MongoDBApi:
@@ -34,59 +35,58 @@ class MongoDBApi:
         except DuplicateKeyError as e:
             logging.warning(f"Index creation skipped due to duplication: {e}")
 
-    def get_lessons_metadata_by_student_id(self, student_id: str):
+    def get_lessons_by_user_id(self, user_id: str):
+        return list(self._db.user_lessons.find({"userId": user_id}))
+    
+    def get_lessons_metadata_by_user_id(self, lesson_id):
+        return self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
+    
+    # def get_lessons_metadata_by_user_id(self, user_id: str):
+    #     try:
+    #         user_lessons = list(self._db.user_lessons.find({"userId": user_id}))
+    #         if not user_lessons:
+    #             return []
+    #
+    #         lessons = []
+    #         for student_lesson in user_lessons:
+    #             lesson_id = student_lesson["lessonId"]
+    #
+    #             metadata = self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
+    #             if not metadata:
+    #                 continue
+    #
+    #             status = self._db.lesson_status.find_one({"lessonId": lesson_id, "userId": user_id})
+    #             if not status:
+    #                 continue
+    #
+    #             lesson_response = LessonResponse(
+    #                 lessonId=lesson_id,
+    #                 userId=user_id,
+    #                 metadata=LessonMetadata(**metadata),
+    #                 status=LessonStatus(**status)
+    #             )
+    #             lessons.append(lesson_response)
+    #
+    #         return lessons
+    #     except Exception as e:
+    #         logging.error(f"Error getting lesson metadata by user ID: {e}")
+    #         return []
+
+    def remove_all_lesson_data_from_user(self, user_lesson: UserLessons):
         try:
-            student_lessons = list(self._db.student_lessons.find({"studentId": student_id}))
-            if not student_lessons:
-                return []
-
-            lessons = []
-            for student_lesson in student_lessons:
-                lesson_id = student_lesson["lessonId"]
-
-                metadata = self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
-                if not metadata:
-                    continue
-
-                status = self._db.lesson_status.find_one({"lessonId": lesson_id, "studentId": student_id})
-                if not status:
-                    continue
-
-                lesson_response = LessonResponse(
-                    lessonId=lesson_id,
-                    studentId=student_id,
-                    metadata=LessonMetadata(**metadata),
-                    status=LessonStatus(**status)
-                )
-                lessons.append(lesson_response)
-
-            return lessons
+            self._db.user_lessons.delete_one({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
+            self._db.lesson_status.delete_one({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
+            self._db.lesson_comments.delete_many({"lessonsId": user_lesson.lessonId, "userId": user_lesson.userId})
+            self._db.chatbot_messages.delete_many({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
         except Exception as e:
-            logging.error(f"Error getting lesson metadata by student ID: {e}")
-            return []
+            logging.error(f"Error disassociating user from lesson: {e}")
 
-    def remove_all_lesson_data_from_student(self, student: StudentLessons):
+    def associate_user_to_lesson(self, user_lesson: UserLessons):
         try:
-            self._db.student_lessons.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
-            self._db.lesson_status.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
-            self._db.lesson_comments.delete_many({"lessonsId": student.lessonId, "studentId": student.studentId})
-            self._db.chatbot_messages.delete_many({"lessonId": student.lessonId, "studentId": student.studentId})
-        except Exception as e:
-            logging.error(f"Error disassociating student from lesson: {e}")
-
-    def associate_student_to_lesson(self, student_lesson: StudentLessons):
-        try:
-            result = self._db.student_lessons.insert_one(student_lesson.dict())
+            result = self._db.user_lessons.insert_one(user_lesson.dict())
             return result
         except Exception as e:
-            logging.error(f"Error associating student to lesson: {e}")
-            return None
-
-    def add_lesson_to_teacher(self, teacher_lesson: TeacherLessons):
-        try:
-            return self._db.teacher_lessons.insert_one(teacher_lesson.dict())
-        except Exception as e:
-            logging.error(f"Error associating teacher to lesson: {e}")
+            logging.error(f"Error associating user to lesson: {e}")
             return None
 
     def add_lesson(self, lesson: Lesson):
@@ -125,7 +125,7 @@ class MongoDBApi:
     def update_lesson_status(self, update: LessonStatus):
         try:
             return self._db.lesson_status.update_one(
-                {"lessonId": update.lessonId, "studentId": update.studentId},
+                {"lessonId": update.lessonId, "userId": update.userId},
                 {"$set": update.dict()}
             )
         except Exception as e:
@@ -139,9 +139,9 @@ class MongoDBApi:
             logging.error(f"Error getting all lesson statuses: {e}")
             return []
 
-    def get_lesson_status_by_ids(self, student_id: str, lesson_id: str):
+    def get_lesson_status_by_ids(self, user_id: str, lesson_id: str):
         try:
-            return self._db.lesson_status.find_one({"studentId": student_id, "lessonId": lesson_id})
+            return self._db.lesson_status.find_one({"userId": user_id, "lessonId": lesson_id})
         except Exception as e:
             logging.error(f"Error getting lesson status by IDs: {e}")
             return None
@@ -160,9 +160,9 @@ class MongoDBApi:
             logging.error(f"Error deleting lesson comment by ID: {e}")
             return None
 
-    def get_lesson_comments_by_ids(self, studentId: str, lessonsId: str):
+    def get_lesson_comments_by_ids(self, userId: str, lessonsId: str):
         try:
-            return list(self._db.lesson_comments.find({"lessonsId": lessonsId, "studentId": studentId}))
+            return list(self._db.lesson_comments.find({"lessonsId": lessonsId, "userId": userId}))
         except Exception as e:
             logging.error(f"Error getting lesson comments by IDs: {e}")
             return []
@@ -174,16 +174,16 @@ class MongoDBApi:
             logging.error(f"Error adding lesson comment: {e}")
             return None
 
-    def delete_lesson_messages(self, lessonId: str, studentId: str):
+    def delete_lesson_messages(self, lessonId: str, userId: str):
         try:
-            return self._db.chatbot_messages.delete_many({"lessonId": lessonId, "studentId": studentId})
+            return self._db.chatbot_messages.delete_many({"lessonId": lessonId, "userId": userId})
         except Exception as e:
             logging.error(f"Error clearing chatbot messages: {e}")
             return None
 
-    def get_lesson_messages(self, studentId: str, lessonId: str):
+    def get_lesson_messages(self, userId: str, lessonId: str):
         try:
-            return list(self._db.chatbot_messages.find({"studentId": studentId, "lessonId": lessonId}))
+            return list(self._db.chatbot_messages.find({"userId": userId, "lessonId": lessonId}))
         except Exception as e:
             logging.error(f"Error getting chatbot messages: {e}")
             return []
@@ -195,18 +195,11 @@ class MongoDBApi:
             logging.error(f"Error adding chatbot message: {e}")
             return None
 
-    def get_all_student_lessons_by_student_id(self, studentId: str):
+    def get_all_user_lessons_by_user_id(self, userId: str):
         try:
-            return list(self._db.student_lessons.find({"studentId": studentId}))
+            return list(self._db.user_lessons.find({"userId": userId}))
         except Exception as e:
-            logging.error(f"Error getting all student lessons by student ID: {e}")
-            return []
-
-    def get_all_teacher_lessons_by_teacher_id(self, teacherId: str):
-        try:
-            return list(self._db.teacher_lessons.find({"teacherId": teacherId}))
-        except Exception as e:
-            logging.error(f"Error getting all teacher lessons by teacher ID: {e}")
+            logging.error(f"Error getting all user lessons by user ID: {e}")
             return []
 
     def get_user_by_id(self, id: str):

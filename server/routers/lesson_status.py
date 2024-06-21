@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from models.mongo import LessonStatus
 from tools.utils import mongo_db
 
-router = APIRouter(tags=['Student-Lessons | Additives'])
+router = APIRouter(tags=['User-Lessons | Additives'])
 
 
 @router.post("/lesson-status/")
@@ -14,9 +14,9 @@ async def create_lesson_status(lesson_status: LessonStatus):
     raise HTTPException(status_code=500, detail="Lesson Status not created")
 
 
-@router.get("/lesson-status/{lessonId}/student/{studentId}")
-async def get_lesson_status_by_ids(studentId: str, lessonId: str):
-    lesson_status = mongo_db.get_lesson_status_by_ids(studentId, lessonId)
+@router.get("/user-status/{lessonId}/user/{userId}")
+async def get_lesson_status_by_ids(userId: str, lessonId: str):
+    lesson_status = mongo_db.get_lesson_status_by_ids(userId, lessonId)
     if lesson_status:
         lesson_status["_id"] = str(lesson_status["_id"])
         return lesson_status
