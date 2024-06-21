@@ -18,7 +18,7 @@ class RegisterWorkflow(BaseWorkflow):
         return hashed_password.decode('utf-8')
 
     def _add_cred_to_mongo(self, user_cred: UserCredentials):
-        return mongo_db.add_user_cred(user_cred.dict())
+        return mongo_db.add_user_cred(user_cred)
 
     def _add_user_to_mongo(self, user: User):
         return mongo_db.add_user(user)

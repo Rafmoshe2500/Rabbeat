@@ -14,7 +14,7 @@ router = APIRouter(tags=["User"])
 async def register(user: UserRegister):
     try:
         result = RegisterWorkflow(user).run()
-        if result.inserted_id:
+        if result:
             return {"message": "User successfully created", "id": str(result.inserted_id)}
     except DuplicateKeyError:
         raise HTTPException(status_code=400, detail="Mail or Id in use.")
@@ -25,6 +25,7 @@ async def register(user: UserRegister):
 async def login(user_cred: UserCredentials):
     result = LoginWorkflow(user_cred).run()
     if result:
+        result['_id'] = str(result['_id'])
         return result
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to create user")
 
