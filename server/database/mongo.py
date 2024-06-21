@@ -37,40 +37,9 @@ class MongoDBApi:
 
     def get_lessons_by_user_id(self, user_id: str):
         return list(self._db.user_lessons.find({"userId": user_id}))
-    
+
     def get_lessons_metadata_by_user_id(self, lesson_id):
         return self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
-    
-    # def get_lessons_metadata_by_user_id(self, user_id: str):
-    #     try:
-    #         user_lessons = list(self._db.user_lessons.find({"userId": user_id}))
-    #         if not user_lessons:
-    #             return []
-    #
-    #         lessons = []
-    #         for student_lesson in user_lessons:
-    #             lesson_id = student_lesson["lessonId"]
-    #
-    #             metadata = self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
-    #             if not metadata:
-    #                 continue
-    #
-    #             status = self._db.lesson_status.find_one({"lessonId": lesson_id, "userId": user_id})
-    #             if not status:
-    #                 continue
-    #
-    #             lesson_response = LessonResponse(
-    #                 lessonId=lesson_id,
-    #                 userId=user_id,
-    #                 metadata=LessonMetadata(**metadata),
-    #                 status=LessonStatus(**status)
-    #             )
-    #             lessons.append(lesson_response)
-    #
-    #         return lessons
-    #     except Exception as e:
-    #         logging.error(f"Error getting lesson metadata by user ID: {e}")
-    #         return []
 
     def remove_all_lesson_data_from_user(self, user_lesson: UserLessons):
         try:
