@@ -2,9 +2,10 @@ import bcrypt
 
 from models.mongo import UserRegister, UserCredentials, User
 from tools.utils import mongo_db
+from workflows.base import BaseWorkflow
 
 
-class RegisterWorkflow:
+class RegisterWorkflow(BaseWorkflow):
     def __init__(self, user: UserRegister):
         self.__user = user
 

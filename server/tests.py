@@ -13,7 +13,7 @@ for pentateuch in pentateuchs:
         data = json.load(f)
 
     for k,v in data.items():
-        d[pentateuch][str(Hebrew.from_number(int(k)).text_only())] = [str(Hebrew.from_number(int(num)).text_only()) for num in v.keys()]
+        d[pentateuch][str(Hebrew.from_number(int(k)))] = [str(Hebrew.from_number(int(num))) for num in v.keys()]
 
 json_c = json.dumps(d, ensure_ascii=False, indent=2)
 
