@@ -5,31 +5,32 @@ from bson import ObjectId
 
 # Assuming the data models are defined as dataclasses
 from models.mongo import StudentLessons, LessonResponse, LessonMetadata, LessonStatus, TeacherLessons, Lesson, \
-    LessonsComments, ChatBotMessages
+    LessonsComments, ChatBotMessages, UserRegister, User, UserCredentials
 
 
-class MongoDB:
+class MongoDBApi:
     def __init__(self, mongo_db, mongo_uri):
         self.mongo_db = mongo_db
         self.mongo_uri = mongo_uri
         self._db = self.__connect()
+        self.__ensure_indexes()
 
     def __connect(self):
         try:
             client = MongoClient(self.mongo_uri)
             db = client[self.mongo_db]
             # Ensure indexes exist
-            self.__ensure_indexes(db)
             logging.info("Connected to MongoDB")
             return db
         except ConnectionFailure as e:
             logging.error(f"Failed to connect to MongoDB: {e}")
             raise e
 
-    def __ensure_indexes(self, db):
+    def __ensure_indexes(self):
         try:
-            db.users.create_index([("id", ASCENDING)], unique=True)
-            db.users.create_index([("email", ASCENDING)], unique=True)
+            self._db.users.create_index([("id", ASCENDING)], unique=True)
+            self._db.users.create_index([("email", ASCENDING)], unique=True)
+            self._db.user_credentials.create_index([("email", ASCENDING)], unique=True)
         except DuplicateKeyError as e:
             logging.warning(f"Index creation skipped due to duplication: {e}")
 
@@ -64,7 +65,7 @@ class MongoDB:
             logging.error(f"Error getting lesson metadata by student ID: {e}")
             return []
 
-    def disassociate_student_from_lesson(self, student: StudentLessons):
+    def remove_all_lesson_data_from_student(self, student: StudentLessons):
         try:
             self._db.student_lessons.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
             self._db.lesson_status.delete_one({"lessonId": student.lessonId, "studentId": student.studentId})
@@ -76,14 +77,12 @@ class MongoDB:
     def associate_student_to_lesson(self, student_lesson: StudentLessons):
         try:
             result = self._db.student_lessons.insert_one(student_lesson.dict())
-            status = LessonStatus(studentId=student_lesson.studentId, lessonId=student_lesson.lessonId)
-            self._db.lesson_status.insert_one(status.dict())
             return result
         except Exception as e:
             logging.error(f"Error associating student to lesson: {e}")
             return None
 
-    def associate_teacher_to_lesson(self, teacher_lesson: TeacherLessons):
+    def add_lesson_to_teacher(self, teacher_lesson: TeacherLessons):
         try:
             return self._db.teacher_lessons.insert_one(teacher_lesson.dict())
         except Exception as e:
@@ -175,21 +174,21 @@ class MongoDB:
             logging.error(f"Error adding lesson comment: {e}")
             return None
 
-    def clear_chatbot(self, lessonId: str, studentId: str):
+    def delete_lesson_messages(self, lessonId: str, studentId: str):
         try:
             return self._db.chatbot_messages.delete_many({"lessonId": lessonId, "studentId": studentId})
         except Exception as e:
             logging.error(f"Error clearing chatbot messages: {e}")
             return None
 
-    def get_chatbot_messages(self, studentId: str, lessonId: str):
+    def get_lesson_messages(self, studentId: str, lessonId: str):
         try:
             return list(self._db.chatbot_messages.find({"studentId": studentId, "lessonId": lessonId}))
         except Exception as e:
             logging.error(f"Error getting chatbot messages: {e}")
             return []
 
-    def add_chatbot_message(self, chatbot_message: ChatBotMessages):
+    def add_lesson_message(self, chatbot_message: ChatBotMessages):
         try:
             return self._db.chatbot_messages.insert_one(chatbot_message.dict())
         except Exception as e:
@@ -209,3 +208,38 @@ class MongoDB:
         except Exception as e:
             logging.error(f"Error getting all teacher lessons by teacher ID: {e}")
             return []
+
+    def get_user_by_id(self, id: str):
+        try:
+            return self._db.users.find_one({"_id": ObjectId(id)})
+        except Exception as e:
+            logging.error(f"Error getting user by ID: {e}")
+            return None
+
+    def get_all_users(self):
+        try:
+            return list(self._db.users.find())
+        except Exception as e:
+            logging.error(f"Error getting all users: {e}")
+            return []
+
+    def add_user(self, user: User):
+        try:
+            return self._db.users.insert_one(user.dict())
+        except Exception as e:
+            logging.error(f"Error adding new user: {e}")
+            return None
+
+    def add_user_cred(self, user_cred: UserCredentials):
+        try:
+            return self._db.user_credentials.insert_one(user_cred.dict())
+        except Exception as e:
+            logging.error(f"Error adding new user credentials: {e}")
+            return None
+
+    def remove_user_cred(self, user_cred: UserCredentials):
+        try:
+            return self._db.user_credentials.delete_one(user_cred.dict())
+        except Exception as e:
+            logging.error(f"Error deleting new user credentials: {e}")
+            return None

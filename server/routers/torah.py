@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 
 from routers import torah_router
 from sel import get_full_text_return_verse_with_nikud
-from workflows.get_torah import get_all_torah_text_variants
+from workflows.get_torah import get_all_torah_text_variants_workflow
 
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
@@ -30,7 +30,7 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
     startCh, startVerse = str(Hebrew(startCh).gematria()), str(Hebrew(startVerse).gematria())
     endCh, endVerse = str(Hebrew(endCh).gematria()), str(Hebrew(endVerse).gematria())
     try:
-        response = get_all_torah_text_variants(pentateuch, startCh, startVerse, endCh, endVerse)
+        response = get_all_torah_text_variants_workflow(pentateuch, startCh, startVerse, endCh, endVerse)
         return JSONResponse(content=response)
     except Exception as e:
         print(e)

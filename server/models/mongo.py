@@ -88,3 +88,5 @@ class LessonResponse(BaseModel):
     studentId: str
     metadata: LessonMetadata
     status: LessonStatus
+
+# TODO Split to files
