@@ -216,6 +216,13 @@ class MongoDBApi:
             logging.error(f"Error getting user by ID: {e}")
             return None
 
+    def get_user_by_email(self, email: str):
+        try:
+            return self._db.users.find_one({"email": email})
+        except Exception as e:
+            logging.error(f"Error getting user by email: {e}")
+            return None
+
     def get_all_users(self):
         try:
             return list(self._db.users.find())
@@ -242,4 +249,11 @@ class MongoDBApi:
             return self._db.user_credentials.delete_one(user_cred.dict())
         except Exception as e:
             logging.error(f"Error deleting new user credentials: {e}")
+            return None
+
+    def get_user_cred_by_email(self, email: str):
+        try:
+            return self._db.user_credentials.find_one({"email": email})
+        except Exception as e:
+            logging.error(f"Error getting user credentials by email: {e}")
             return None
