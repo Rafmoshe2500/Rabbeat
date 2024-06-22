@@ -1,47 +1,24 @@
 # Pydantic models
 from datetime import datetime
-from typing import Optional, List, Dict
+from typing import Optional, List
 
-from pydantic import BaseModel
-
-
-class Word(BaseModel):
-    word: str
-    start: float
+from pydantic import BaseModel, EmailStr
 
 
-class Lesson(BaseModel):
+class LessonMetadata(BaseModel):
     title: str
-    audio: str
     startChapter: str
     startVerse: str
     endChapter: str
     endVers: str
     pentateuch: str
-    words: List[Word]
+    creationDate: datetime = datetime.now()
 
 
-class Teacher(BaseModel):
-    id: str
-    email: str
-    phoneNumber: str
-    address: str
-    firstName: str
-    lastName: str
-    brithDay: str
-    dialects: List[str]
-    picture: Optional[str]
-    description: Optional[str]
-
-
-class Student(BaseModel):
-    id: str
-    email: str
-    firstName: str
-    lastName: str
-    phoneNumber: str
-    address: str
-    birthDay: str
+class Lesson(BaseModel):
+    audio: str
+    highlightsTimestamps: List[float]
+    metadata: LessonMetadata
 
 
 class StudentLessons(BaseModel):
@@ -64,8 +41,8 @@ class LessonsComments(BaseModel):
 class LessonStatus(BaseModel):
     lessonId: str
     studentId: str
-    inProgress: bool
-    finish: bool
+    inProgress: bool = False
+    finish: bool = False
 
 
 class UpdateLessonStatusModel(BaseModel):
@@ -83,3 +60,33 @@ class ChatBotMessages(BaseModel):
     lessonId: str
     studentId: str
     message: Message
+
+
+class User(BaseModel):
+    id: str
+    firstName: str
+    lastName: str
+    email: EmailStr
+    phoneNumber: str
+    address: str
+    birthDay: str
+    type: str  # (student/teacher)
+
+
+class UserRegister(User):
+    password: str
+    confirm_password: str
+
+
+class UserCredentials(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class LessonResponse(BaseModel):
+    lessonId: str
+    studentId: str
+    metadata: LessonMetadata
+    status: LessonStatus
+
+# TODO Split to files

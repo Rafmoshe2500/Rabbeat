@@ -7,38 +7,34 @@ from starlette.responses import JSONResponse
 
 from routers import torah_router
 from sel import get_full_text_return_verse_with_nikud
+from workflows.get_torah import get_all_torah_text_variants_workflow
 
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
-def get_verses(pentateuch, startCh, startVerse, endCh, endVerse):
+def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVerse: str):
+    """
+    <h4><ul>
+    <li>pentateuch: חומש</li>
+    <li>startCh: פרק התחלה</li>
+    <li>startVerse: פסוק התחלה</li>
+    <li>endCh: פרק סופי</li>
+    <li>endVerse: פסוק סופי</li>
+    </h4></ul<
+    :param pentateuch:
+    :param startCh:
+    :param startVerse:
+    :param endCh:
+    :param endVerse:
+    :return:
+    """
+    startCh, startVerse = str(Hebrew(startCh).gematria()), str(Hebrew(startVerse).gematria())
+    endCh, endVerse = str(Hebrew(endCh).gematria()), str(Hebrew(endVerse).gematria())
     try:
-        response = defaultdict(dict)
-        with open(f"Torah/{pentateuch}.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-        def add_verses(chapter, start, end):
-            for i in range(int(start), int(end) + 1):
-                he_chapter = str(Hebrew(str(Hebrew.from_number(int(chapter)))).text_only())
-                he_verse = str(Hebrew(str(Hebrew.from_number(i))).text_only())
-                response[he_chapter][he_verse] = data[chapter][str(i)]
-
-        if startCh == endCh:
-            add_verses(startCh, startVerse, endVerse)
-        else:
-            add_verses(startCh, startVerse, len(data[startCh]))
-            startChapter = int(startCh)
-            endChapter = int(endCh)
-            startChapter += 1
-            while startChapter <= endChapter:
-                if startChapter < endChapter:
-                    add_verses(str(startChapter), 1, len(data[str(startChapter)]))
-                else:
-                    add_verses(str(startChapter), 1, endVerse)
-                startChapter += 1
+        response = get_all_torah_text_variants_workflow(pentateuch, startCh, startVerse, endCh, endVerse)
         return JSONResponse(content=response)
     except Exception as e:
         print(e)
-        raise HTTPException(400, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
+        raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
 
 
 @torah_router.post('/Nikud')
