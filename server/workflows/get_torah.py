@@ -7,6 +7,7 @@ from tools.consts import TEXT_VARIANTS
 
 
 def get_all_torah_text_variants_workflow(pentateuch, start_chapter, start_verse, end_chapter, end_verse):
+    #  TODO Refactor to class inherit from BaseWorkflow
     response = defaultdict(dict)
     for text_type in TEXT_VARIANTS:
         new_data = defaultdict(dict)

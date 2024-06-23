@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from starlette.responses import JSONResponse
 
 from models.mongo import LessonsComments
 from tools.utils import mongo_db
@@ -10,7 +11,7 @@ router = APIRouter(tags=['User-Lessons | Additives'])
 async def create_lesson_comment(lesson_comment: LessonsComments):
     result = mongo_db.add_lesson_comment(lesson_comment)
     if result:
-        return {"id": str(result.inserted_id)}
+        return JSONResponse(status_code=201, content=str(result.inserted_id))
     raise HTTPException(status_code=500, detail="Lesson Comment not created")
 
 

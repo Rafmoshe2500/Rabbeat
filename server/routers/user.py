@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
 from starlette import status
+from starlette.responses import JSONResponse
 
 from models.mongo import UserRegister, UserCredentials
 from tools.utils import mongo_db
@@ -15,7 +16,9 @@ async def register(user: UserRegister):
     try:
         result = RegisterWorkflow(user).run()
         if result:
-            return {"message": "User successfully created", "id": str(result.inserted_id)}
+            user = mongo_db.get_user_by_id(str(result.inserted_id))
+            user['_id'] = str(user['_id'])
+            return JSONResponse(status_code=201, content=user)
     except DuplicateKeyError:
         raise HTTPException(status_code=400, detail="Mail or Id in use.")
     raise HTTPException(status_code=500, detail="Failed to create user")

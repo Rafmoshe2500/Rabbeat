@@ -8,6 +8,7 @@ from pydantic import BaseModel, EmailStr
 class LessonMetadata(BaseModel):
     title: str
     startChapter: str
+    version: str
     startVerse: str
     endChapter: str
     endVers: str

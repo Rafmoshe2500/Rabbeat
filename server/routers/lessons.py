@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException
+from starlette.responses import JSONResponse
 
 from models.mongo import Lesson, LessonResponse, LessonMetadata, LessonStatus, ExtendLessonResponse
 from tools.utils import mongo_db
@@ -12,7 +13,7 @@ router = APIRouter(tags=['Lesson'])
 async def create_lesson(lesson: Lesson):
     lesson_id = mongo_db.add_lesson(lesson)
     if lesson_id:
-        return {"id": str(lesson_id)}
+        return JSONResponse(status_code=201, content=str(lesson_id))
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 
