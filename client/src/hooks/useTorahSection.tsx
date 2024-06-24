@@ -31,7 +31,7 @@ export const useTorahSection = (
     endVerse
   );
 
-  return useQuery<TorahSection, Error, TorahSection, QueryKey>({
+  return useQuery<TorahSections, Error, TorahSections, QueryKey>({
     queryKey,
     queryFn: (context) =>
       getTorahSection(

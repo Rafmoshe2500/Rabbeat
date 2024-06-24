@@ -4,7 +4,7 @@ import { createOrUpdateLesson } from "../api/endpoints/lesson";
 export const useCreateOrUpdateLesson = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Lesson, Error, Lesson>({
+  return useMutation<FormattedLesson, Error, FormattedLesson>({
     mutationFn: createOrUpdateLesson,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allLessons"] });
