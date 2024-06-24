@@ -1,23 +1,15 @@
-type FormattedLesson = {
-  text: string;
-  audioInBase64: string;
+type FormattedLesson = LessonDetails & {
+  audio: string;
   highlightsTimestamps?: Array<number>;
 };
 
-type Lesson = {
-  title: string,
-  version: LessonVersion,
-  startChapter: string,
-  startVerse: string,
-  endChapter: string,
-  endVers: string,
-  pentateuch: string,
+type Lesson = LessonDetails & {
   audio: Blob;
   highlightsTimestamps?: Array<number>;
 };
 
 type LessonForView = Lesson & {
-  text: string
+  text: TorahSection;
 };
 
 const lessonStatus = ["not-started", "in-progress", "finished"] as const;
@@ -25,8 +17,17 @@ const lessonStatus = ["not-started", "in-progress", "finished"] as const;
 type LessonStatus = (typeof lessonStatus)[number];
 
 type LessonDetails = {
-  name: string;
-  id: string;
+  title: string;
+  startChapter: string;
+  startVerse: string;
+  endChapter: string;
+  endVers: string;
+  pentateuch: string;
+  version: LessonVersion;
+  creationDate: string;
+};
+
+type LessonDetailsWIthStatus = LessonDetails & {
   status: LessonStatus;
 };
 
