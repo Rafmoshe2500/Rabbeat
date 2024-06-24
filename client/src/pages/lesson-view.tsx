@@ -5,6 +5,7 @@ import { useTorahSection } from "../hooks/useTorahSection";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
 import { useMemo } from "react";
+import ChatComponent from '../components/chatbot/ChatComponent';
 
 const LessonView = () => {
   const { id } = useParams<{ id: string }>();
@@ -63,6 +64,7 @@ const LessonView = () => {
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון
       </Button>
+      <ChatComponent />
     </div>
   );
 };
