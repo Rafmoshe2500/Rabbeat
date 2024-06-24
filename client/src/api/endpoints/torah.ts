@@ -6,10 +6,10 @@ export const getTorahSection = async (
   startVerse: string,
   endCh: string,
   endVerse: string
-): Promise<TorahSection> => {
+): Promise<TorahSections> => {
   try {
-    const response = await apiClient.get<TorahSection>(
-      `/torah/pentateuch/Bereshit/1/1/2/1`
+    const response = await apiClient.get<TorahSections>(
+      `/torah/pentateuch/${pentateuch}/${startCh}/${startVerse}/${endCh}/${endVerse}`
     );
     return response.data;
   } catch (error) {
