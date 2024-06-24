@@ -4,6 +4,9 @@ import AutoWidthSelect from "../select/auto-width-select";
 import styles from "./bible-selector.module.scss";
 import { useTorahSection } from "../../hooks/useTorahSection";
 import Chapter from "../bible-displayer/chapter";
+import gematriya from "gematriya";
+import { values } from "regenerator-runtime";
+import { findWord } from "../../utils/utils";
 
 type State = {
   book: string;
@@ -70,9 +73,10 @@ const BibleSelector = () => {
 
   const selectedBook = Bible.find((b) => b.name === book);
   const chapters = selectedBook ? selectedBook.chapters : [];
-  const fromChapterObject = chapters.find((c) => c.name === fromChapter);
+  const fromChapterObject =
+    chapters[gematriya(fromChapter, { order: true }) - 1];
   const fromVerses = fromChapterObject ? fromChapterObject.verses : [];
-  const toChapterObject = chapters.find((c) => c.name === toChapter);
+  const toChapterObject = chapters[gematriya(toChapter, { order: true }) - 1];
   const toVerses = toChapterObject ? toChapterObject.verses : [];
 
   const { data, isLoading, error } = useTorahSection(
@@ -82,8 +86,21 @@ const BibleSelector = () => {
     toChapter,
     toVerse
   );
+  const a = data && findWord(data.nikud, 2);
+  const b = a && data.nikud[a.chapter][a.verse];
+  const c = b?.split(" ") || [];
+  console.log(a);
+  console.log(b);
+  console.log(c[a?.word || 0]);
 
-  console.log(data);
+  // const allWords = Object.values(data || {}).flatMap((chapter) => {
+  //   const versesContent = Object.values(chapter);
+  //   return versesContent.flatMap(
+  //     (verseContent) => verseContent.split(" ") || []
+  //   );
+  // });
+
+  // console.log(allWords);
 
   return (
     <div className={styles["selectors-container"]}>
@@ -92,7 +109,7 @@ const BibleSelector = () => {
         value={book}
         options={Bible.map((b) => b.name)}
         onChange={(e) =>
-          dispatch({ type: "SET_BOOK", payload: e.target.value as string })
+          dispatch({ type: "SET_BOOK", payload: e.target.value })
         }
       />
 
@@ -100,11 +117,13 @@ const BibleSelector = () => {
         <AutoWidthSelect
           label="מפרק"
           value={fromChapter}
-          options={chapters.map((ch) => ch.name)}
+          options={chapters.map((_, index) =>
+            gematriya(index + 1, { geresh: false, punctuate: false })
+          )}
           onChange={(e) =>
             dispatch({
               type: "SET_FROM_CHAPTER",
-              payload: e.target.value as string,
+              payload: e.target.value,
             })
           }
         />
@@ -118,7 +137,7 @@ const BibleSelector = () => {
           onChange={(e) =>
             dispatch({
               type: "SET_FROM_VERSE",
-              payload: e.target.value as string,
+              payload: e.target.value,
             })
           }
         />
@@ -128,11 +147,13 @@ const BibleSelector = () => {
         <AutoWidthSelect
           label="עד פרק"
           value={toChapter}
-          options={chapters.map((ch) => ch.name)}
+          options={chapters.map((_, index) =>
+            gematriya(index + 1, { geresh: false, punctuate: false })
+          )}
           onChange={(e) =>
             dispatch({
               type: "SET_TO_CHAPTER",
-              payload: e.target.value as string,
+              payload: e.target.value,
             })
           }
         />
@@ -146,7 +167,7 @@ const BibleSelector = () => {
           onChange={(e) =>
             dispatch({
               type: "SET_TO_VERSE",
-              payload: e.target.value as string,
+              payload: e.target.value,
             })
           }
         />
@@ -164,7 +185,7 @@ const BibleSelector = () => {
         {error && <p>Error loading data</p>}
         {data && (
           <div>
-            {Object.entries(data).map(([chapterKey, chapter]) => (
+            {Object.entries(data.none).map(([chapterKey, chapter]) => (
               <Chapter
                 key={chapterKey}
                 chapterKey={chapterKey}
