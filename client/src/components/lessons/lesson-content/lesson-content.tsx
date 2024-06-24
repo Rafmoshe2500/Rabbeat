@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import "./lesson-tesr.css";
+import "./lesson-content.module.css";
 import Note from "../../note/note";
 import Panel from "../../panel/panel";
 import styles from "./lesson-content.module.css";
@@ -75,7 +75,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
           (timestamp) => currentTime < timestamp
         ) - 1;
       console.log({ wordIndex });
-      console.log(words[wordIndex]);
+      // console.log(words[wordIndex]);
 
       setCurrentWordIndex(
         wordIndex >= 0 ? wordIndex : lesson.highlightsTimestamps.length - 1
@@ -93,7 +93,8 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
     }
   }, [audioURL]);
 
-  const words = lesson?.text.split(" ") || [];
+  // const words = lesson?.text.split(" ") || [];
+  const words1 = lesson?.text;
 
   return (
     <div>
@@ -129,7 +130,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
             className={`${styles["text"]} stam-font`}
             sx={{ bgcolor: "#cfe8fc" }}
           >
-            {words.map((word, index) => (
+            {/* {words.map((word, index) => (
               <span
                 key={index}
                 className={
@@ -138,7 +139,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
               >
                 {word}{" "}
               </span>
-            ))}
+            ))} */}
           </Box>
         </Container>
 

@@ -127,6 +127,7 @@ const Navbar = () => {
             >
               {pages.map((page) => (
                 <Link
+                  key={page.label}
                   to={page.path}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >

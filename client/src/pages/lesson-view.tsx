@@ -1,30 +1,49 @@
 import { useNavigate, useParams } from "react-router-dom";
-import LessonContent from "../components/lessons/lesson-content/lesson-content";
-import { convertBase64ToBlob } from "../utils/audio-parser";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
-import { lesson1, lesson2, lesson3, lesson4 } from "../mocks/fakeData";
-import { getLessonsByUser } from "../api/endpoints/lesson";
+import { useLessonsById } from "../hooks/useLessonById";
+import { useTorahSection } from "../hooks/useTorahSection";
+import LessonContent from "../components/lessons/lesson-content/lesson-content";
+import Loader from "../components/common/loader";
+import { useMemo } from "react";
 
 const LessonView = () => {
   const { id } = useParams<{ id: string }>();
-  const [lesso, setLesso] = useState<FormattedLesson>();
+  // const [lesso, setLesso] = useState<FormattedLesson>();
   const navigate = useNavigate();
-  useEffect(() => {
-    setLesso(id === "1" ? lesson1 : lesson4);
-  }, []);
+  // useEffect(() => {
+  //   setLesso(id === "1" ? lesson1 : lesson4);
+  // }, []);
 
-  const lesson = lesso
+  const { data: lesson, isLoading, isError } = useLessonsById(id!);
+
+  const {
+    data: text,
+    isLoading: isLoadingText,
+    isError: asdwe,
+  } = useTorahSection(
+    lesson?.pentateuch || "",
+    lesson?.startChapter || "",
+    lesson?.startVerse || "",
+    lesson?.endChapter || "",
+    lesson?.endVers || ""
+  );
+
+  const convertedLesson = lesson
     ? {
-        audio: convertBase64ToBlob(lesso.audioInBase64),
-        text: lesso.text,
-        highlightsTimestamps: lesso.highlightsTimestamps,
+        audio: lesson?.audio,
+        text: text,
+        highlightsTimestamps: lesson.highlightsTimestamps,
       }
     : undefined;
 
   const handleNavigate = () => {
-    navigate("/student-self-testing", { state: { lesson } });
+    navigate("/student-self-testing", { state: { lesson: convertedLesson } });
   };
+
+  const lessonForView = useMemo(
+    () => ({ ...(lesson || {}), text: text || {} } as LessonForView),
+    [lesson, text]
+  );
 
   return (
     <div
@@ -35,7 +54,12 @@ const LessonView = () => {
         justifyContent: "center",
       }}
     >
-      {/* <LessonContent lesson={lesson} /> */}
+      {isLoadingText && isLoading ? (
+        <LessonContent lesson={lessonForView} />
+      ) : (
+        <Loader />
+      )}
+
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון
       </Button>

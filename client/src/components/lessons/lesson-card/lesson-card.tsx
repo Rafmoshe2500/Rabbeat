@@ -9,7 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 
-const LessonCard = ({ id, name, status }: LessonDetails) => {
+type LessonCardProps = Partial<LessonDetailsWIthStatus>;
+
+const LessonCard = ({ id, title, status }: LessonCardProps) => {
   const navigate = useNavigate();
   const { userDetails } = useUser();
 
@@ -31,7 +33,7 @@ const LessonCard = ({ id, name, status }: LessonDetails) => {
         <CardActionArea onClick={onClick}>
           <CardContent className={status}>
             <Typography variant="h5" component="div" gutterBottom>
-              {name}
+              {title}
             </Typography>
             <Typography sx={{ fontSize: 14 }} color="text.secondary">
               {status}

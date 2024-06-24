@@ -1,12 +1,12 @@
 import React from "react";
-import { useAllLessons } from "../hooks/useAllLessons";
+import { useAllLessonsDetails } from "../hooks/useAllLessonsDetails";
 
 const Home: React.FC = () => {
   const {
     data: allLessons,
     isLoading: isLoadingAll,
     isError: isErrorAll,
-  } = useAllLessons();
+  } = useAllLessonsDetails();
 
   if (isLoadingAll) return <div>Loading...</div>;
   if (isErrorAll) return <div>Error loading lessons</div>;
@@ -14,13 +14,17 @@ const Home: React.FC = () => {
   return (
     <div>
       {allLessons?.map((lesson) => {
-        return Object.entries(lesson).map(([key, value]) => {
-          return (
-            <p>
-              {key}:{value.toString()}
-            </p>
-          );
-        });
+        return lesson ? (
+          Object.entries(lesson).map(([key, value]) => {
+            return (
+              <p>
+                {key}:{value.toString()}
+              </p>
+            );
+          })
+        ) : (
+          <p> Less</p>
+        );
       })}
     </div>
   );
