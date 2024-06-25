@@ -4,6 +4,7 @@ from collections import defaultdict
 from hebrew import Hebrew
 
 from tools.consts import TEXT_VARIANTS
+from tools.utils import no_p_and_s
 
 
 def get_all_torah_text_variants_workflow(pentateuch, start_chapter, start_verse, end_chapter, end_verse):
@@ -18,7 +19,7 @@ def get_all_torah_text_variants_workflow(pentateuch, start_chapter, start_verse,
             for i in range(int(start), int(end) + 1):
                 he_chapter = str(Hebrew(str(Hebrew.from_number(int(chapter)))).text_only())
                 he_verse = str(Hebrew(str(Hebrew.from_number(i))).text_only())
-                new_data[he_chapter][he_verse] = data[chapter][str(i)]
+                new_data[he_chapter][he_verse] = no_p_and_s(str(Hebrew(data[chapter][str(i)]).no_maqaf()))
 
         if start_chapter == end_chapter:
             add_verses(start_chapter, start_verse, end_verse)
