@@ -1,32 +1,30 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useLessonsById } from "../hooks/useLessonById";
 import { useTorahSection } from "../hooks/useTorahSection";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
 import { useMemo } from "react";
-import ChatComponent from '../components/chatbot/ChatComponent';
+import ChatComponent from "../components/chatbot/ChatComponent";
 
 const LessonView = () => {
+  const location = useLocation();
+  const lessonDetails: LessonDetailsWIthStatus = location.state?.lessonDetails;
   const { id } = useParams<{ id: string }>();
-  // const [lesso, setLesso] = useState<FormattedLesson>();
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   setLesso(id === "1" ? lesson1 : lesson4);
-  // }, []);
 
+  const navigate = useNavigate();
   const { data: lesson, isLoading, isError } = useLessonsById(id!);
 
   const {
     data: text,
     isLoading: isLoadingText,
-    isError: asdwe,
+    isError: isTextError,
   } = useTorahSection(
-    lesson?.pentateuch || "",
-    lesson?.startChapter || "",
-    lesson?.startVerse || "",
-    lesson?.endChapter || "",
-    lesson?.endVers || ""
+    lessonDetails?.pentateuch || "",
+    lessonDetails?.startChapter || "",
+    lessonDetails?.startVerse || "",
+    lessonDetails?.endChapter || "",
+    lessonDetails?.endVerse || ""
   );
 
   const convertedLesson = lesson
@@ -42,8 +40,13 @@ const LessonView = () => {
   };
 
   const lessonForView = useMemo(
-    () => ({ ...(lesson || {}), text: text || {} } as LessonForView),
-    [lesson, text]
+    () =>
+      ({
+        ...(lesson || {}),
+        ...(lessonDetails || {}),
+        text: text || {},
+      } as LessonForView),
+    [lesson, lessonDetails, text]
   );
 
   return (
@@ -55,10 +58,10 @@ const LessonView = () => {
         justifyContent: "center",
       }}
     >
-      {isLoadingText && isLoading ? (
-        <LessonContent lesson={lessonForView} />
-      ) : (
+      {isLoadingText || isLoading ? (
         <Loader />
+      ) : (
+        <LessonContent lesson={lessonForView} />
       )}
 
       <Button variant="contained" color="primary" onClick={handleNavigate}>
