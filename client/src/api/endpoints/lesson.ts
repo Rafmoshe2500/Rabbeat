@@ -30,11 +30,12 @@ export const getLessonsDetailsByUser = async (
       const les = Object.values(response.data)[i] as unknown as any;
 
       lessons.push({
+        id: les.lessonId,
         creationDate: les.metadata.creationDate,
         version: "Ashkenaz",
         pentateuch: les.metadata.pentateuch,
         endChapter: les.metadata.endChapter,
-        endVers: les.metadata.endVers,
+        endVerse: les.metadata.endVerse,
         startChapter: les.metadata.startChapter,
         startVerse: les.metadata.startVerse,
         title: les.metadata.title,
@@ -69,7 +70,7 @@ export const createOrUpdateLesson = async (
   lesson: FormattedLesson
 ): Promise<FormattedLesson> => {
   try {
-    const a = {
+    const dbLesson = {
       audio: lesson.audio,
       highlightsTimestamps: lesson.highlightsTimestamps,
       metadata: {
@@ -77,13 +78,13 @@ export const createOrUpdateLesson = async (
         startChapter: lesson.startChapter,
         startVerse: lesson.startVerse,
         endChapter: lesson.endChapter,
-        endVers: lesson.endVers,
+        endVerse: lesson.endVerse,
         pentateuch: lesson.pentateuch,
         creationDate: lesson.creationDate,
+        version: lesson.version,
       },
     };
-    const response = await apiClient.post<FormattedLesson>("/lesson", a);
-    console.log(a);
+    const response = await apiClient.post<FormattedLesson>("/lesson", dbLesson);
 
     return response.data as FormattedLesson;
   } catch (error) {
