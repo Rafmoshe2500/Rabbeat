@@ -34,6 +34,3 @@ class RegisterWorkflow(BaseWorkflow):
                 else:
                     mongo_db.remove_user_cred(user_cred)
         return None
-
-# TODO Finish register user with credential table + user table
-# TODO Login route check email and password in credential table and return user from user table
