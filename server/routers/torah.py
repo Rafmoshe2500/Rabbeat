@@ -45,12 +45,19 @@ def set_vers_nikud(string):
 @torah_router.post('/CompareReadingToRealVerse')
 def set_vers_nikud(real_verse, reading):
     response = defaultdict(dict)
-    counter = 0
-    verse = str(Hebrew(real_verse).no_taamim())
-    reading_verse = get_full_text_return_verse_with_nikud(reading)
-    for word in verse.split(" "):
-        for reading_word in reading_verse.split(" "):
-            if word == reading_word:
-                response[counter].update({"word": word, "status": True})
-            elif word == 'יהוה'
-        counter += 1
+    original_words = str(Hebrew(real_verse).no_taamim().no_sof_passuk().no_maqaf()).split(" ")
+    words = str(Hebrew(real_verse).text_only().no_sof_passuk().no_maqaf()).split(" ")
+    reading_words = str(Hebrew(get_full_text_return_verse_with_nikud(reading)).text_only()).split(" ")
+    for i in range(len(words)):
+        if words[i] == reading_words[i]:
+            response[i].update({"word": original_words[i], "status": True})
+        elif 'יהוה' in str(Hebrew(words[i]).text_only()):
+            if 'אדני' in str(Hebrew(reading_words[i]).text_only()) or 'אדוני' in str(
+                    Hebrew(reading_words[i]).text_only()):
+                response[i].update({"word": original_words[i], "status": True})
+            else:
+                response[i].update({"word": original_words[i], "status": False})
+        else:
+            response[i].update({"word": original_words[i], "status": False})
+    return response
+

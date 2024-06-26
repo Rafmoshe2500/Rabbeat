@@ -2,7 +2,7 @@ import logging
 
 from bson import ObjectId
 from pymongo import MongoClient, ASCENDING
-from pymongo.errors import ConnectionFailure, DuplicateKeyError
+from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelectionTimeoutError
 
 # Assuming the data models are defined as dataclasses
 from models.mongo import LessonResponse, LessonMetadata, LessonStatus, Lesson, \
@@ -25,7 +25,11 @@ class MongoDBApi:
             return db
         except ConnectionFailure as e:
             logging.error(f"Failed to connect to MongoDB: {e}")
-            raise e
+            print(e)
+        except ServerSelectionTimeoutError as e:
+            print(e)
+        except Exception as e:
+            print(e)
 
     def __ensure_indexes(self):
         try:

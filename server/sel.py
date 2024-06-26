@@ -29,7 +29,7 @@ def get_full_text_return_verse_with_nikud(string):
         # Find the element with class 'space' and get its text
         space_element = driver.find_element(By.CLASS_NAME, "space")
         space_text = space_element.text
-
+        driver.quit()
         return space_text
     finally:
         driver.quit()
