@@ -1,7 +1,7 @@
 .lessons-container {
-    width: 100%;
-    height: 100%;
+    direction: rtl;
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;   
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
 }

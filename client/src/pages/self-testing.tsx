@@ -59,7 +59,7 @@ const SelfTesting = () => {
     <div>
       כאן בודקים
       <div>
-        <div>הטקסט הרצוי הינו: {lesson?.text}</div>
+        <p className="stam-font">{lesson?.text}</p>
       </div>
       <div>
         <button onClick={resetTranscript}>Reset</button>
@@ -70,7 +70,7 @@ const SelfTesting = () => {
       <div>
         <p>Spoken Text: {currentTranscript}</p>
       </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className="check-text stam-font">
         {currentTranscript &&
           getWrongWords(currentTranscript, lesson?.text ?? "").map(
             (word, index) => (

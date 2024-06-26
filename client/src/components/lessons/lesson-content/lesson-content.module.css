@@ -1,0 +1,12 @@
+.text {
+  max-width: 400px;
+  border-radius: 2px;
+}
+
+.highlight {
+    color: white;
+    border: 2px solid blue;
+    border-radius: 4px;
+    background-color: blue;
+    padding: 2px;
+  }
