@@ -32,7 +32,7 @@ export const getLessonsDetailsByUser = async (
       lessons.push({
         id: les.lessonId,
         creationDate: les.metadata.creationDate,
-        version: "Ashkenaz",
+        version: les.metadata.version,
         pentateuch: les.metadata.pentateuch,
         endChapter: les.metadata.endChapter,
         endVerse: les.metadata.endVerse,
