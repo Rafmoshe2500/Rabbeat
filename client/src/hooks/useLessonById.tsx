@@ -11,7 +11,7 @@ type QueryKey = ReturnType<typeof createQueryKey>;
 export const useLessonsById = (lessonId: string) => {
   const queryKey = createQueryKey("lessons", lessonId);
 
-  return useQuery<Lesson, Error, Lesson, QueryKey>({
+  return useQuery<LessonContent, Error, LessonContent, QueryKey>({
     queryKey,
     queryFn: (context) => getLessonsById(context.queryKey[1]),
   });
