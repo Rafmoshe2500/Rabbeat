@@ -14,7 +14,6 @@ const UploadLessonPage = () => {
   const audioChunksRef = useRef<Blob[]>([]);
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
   const [startTime, setStartTime] = useState<number | null>(null);
-  const [currTime, setCurrTime] = useState<number | null>(null);
 
   const {
     transcript,
@@ -55,13 +54,6 @@ const UploadLessonPage = () => {
     mediaRecorderRef.current?.stop();
   };
 
-  const handleUploadAudio = async () => {
-    if (audioBlob) {
-      const base64Audio = await convertBlobToBase64(audioBlob);
-      // You can handle the audio upload here if needed
-    }
-  };
-
   useEffect(() => {
     if (!startTime) return;
 
@@ -69,14 +61,11 @@ const UploadLessonPage = () => {
     const currTransLength = currentTranscript
       ? currentTranscript?.split(" ").length
       : 0;
-    console.log({ transcript });
-    console.log({ transLength });
 
     if (transLength > currTransLength) {
-      console.log("should addddddddddddd");
       setTimestamps((prevTimestamps) => [
         ...prevTimestamps,
-        (Date.now() - startTime) / 1000,
+        (Date.now() - startTime - 500) / 1000,
       ]);
     } else if (transLength < currTransLength) {
       setTimestamps((prevTimestamps) => prevTimestamps.slice(0, -1));
@@ -89,17 +78,20 @@ const UploadLessonPage = () => {
     string | undefined
   >(undefined);
 
-  const [lesson, setLesson] = useState<FormattedLesson>({
+  const [lesson, setLesson] = useState({
     title: "",
-    startChapter: "",
-    startVerse: "",
-    endChapter: "",
-    endVers: "",
-    pentateuch: "",
     version: "Spanish",
     creationDate: "",
     audio: "",
     highlightsTimestamps: [],
+  });
+
+  const [torahSection, setTorahSection] = useState({
+    startChapter: "",
+    startVerse: "",
+    endChapter: "",
+    endVerse: "",
+    pentateuch: "",
   });
 
   const handleChange = (
@@ -114,22 +106,20 @@ const UploadLessonPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    mutate({
+    const lessonToUpload = {
       ...lesson,
+      ...torahSection,
       creationDate: new Date().toISOString(),
       audio: await convertBlobToBase64(audioBlob!),
       highlightsTimestamps: timestamps,
-    });
+    } as FormattedLesson;
+    mutate(lessonToUpload);
   };
 
   const isFormComplete = (): boolean => {
     return (
       !!lesson.title &&
-      !!lesson.startChapter &&
-      !!lesson.startVerse &&
-      !!lesson.endChapter &&
-      !!lesson.endVers &&
-      !!lesson.pentateuch &&
+      !!torahSection.endVerse &&
       !!lesson.version &&
       audioURL !== null &&
       timestamps.length > 1 // Ensure there is at least one highlight besides the initial 0.0
@@ -140,7 +130,7 @@ const UploadLessonPage = () => {
     <div>
       <div>העלאת שיעורים</div>
 
-      <BibleSelector />
+      <BibleSelector setTorahSection={setTorahSection} />
 
       <form onSubmit={handleSubmit}>
         <div>
@@ -149,56 +139,6 @@ const UploadLessonPage = () => {
             type="text"
             name="title"
             value={lesson.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Start Chapter:</label>
-          <input
-            type="text"
-            name="startChapter"
-            value={lesson.startChapter}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Start Verse:</label>
-          <input
-            type="text"
-            name="startVerse"
-            value={lesson.startVerse}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>End Chapter:</label>
-          <input
-            type="text"
-            name="endChapter"
-            value={lesson.endChapter}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>End Verse:</label>
-          <input
-            type="text"
-            name="endVers"
-            value={lesson.endVers}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Pentateuch:</label>
-          <input
-            type="text"
-            name="pentateuch"
-            value={lesson.pentateuch}
             onChange={handleChange}
             required
           />
@@ -230,7 +170,6 @@ const UploadLessonPage = () => {
       {audioURL && (
         <div>
           <audio controls src={audioURL}></audio>
-          <button onClick={handleUploadAudio}>Upload Audio</button>
         </div>
       )}
       <div>
