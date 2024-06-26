@@ -27,7 +27,7 @@ async def get_lesson_by_id(id: str):
         lesson["_id"] = str(lesson["_id"])
         text = get_words_with_times_and_variants(lesson_metadata["pentateuch"], lesson_metadata["startChapter"],
                                                  lesson_metadata["startVerse"], lesson_metadata["endChapter"],
-                                                 lesson_metadata["endVers"], lesson["highlightsTimestamps"])
+                                                 lesson_metadata["endVerse"], lesson["highlightsTimestamps"])
         lesson.update({"text": text})
         return lesson
     raise HTTPException(status_code=404, detail="Lesson not found")
