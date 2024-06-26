@@ -42,10 +42,7 @@ const flattenTorahSection = (
   return flattened;
 };
 
-export const findWord = (
-  torahSection: TorahSection,
-  length: number
-): { chapter: string; verse: string; word: number } | null => {
+export const findWord = (torahSection: TorahSection, length: number) => {
   const flattened = flattenTorahSection(torahSection);
 
   let wordCount = 0;
@@ -76,6 +73,4 @@ export const findWord = (
       }
     }
   }
-
-  return null;
 };
