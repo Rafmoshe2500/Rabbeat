@@ -42,7 +42,6 @@ const flattenTorahSection = (
   return flattened;
 };
 
-// Function to find the location of a word based on a given length
 export const findWord = (
   torahSection: TorahSection,
   length: number
@@ -50,13 +49,31 @@ export const findWord = (
   const flattened = flattenTorahSection(torahSection);
 
   let wordCount = 0;
+  let wordOccurrenceMap: { [key: string]: number } = {};
+
   for (const { chapter, verse, word } of flattened) {
+    const verseWords = torahSection[chapter][verse].split(" ");
+
+    if (!wordOccurrenceMap[`${chapter}-${verse}-${word}`]) {
+      wordOccurrenceMap[`${chapter}-${verse}-${word}`] = 0;
+    }
+
+    wordOccurrenceMap[`${chapter}-${verse}-${word}`]++;
     wordCount++;
 
     if (wordCount === length) {
-      const verseWords = torahSection[chapter][verse].split(" ");
-      const wordIndex = verseWords.indexOf(word);
-      return { chapter, verse, word: wordIndex };
+      const occurrence = wordOccurrenceMap[`${chapter}-${verse}-${word}`];
+      let currentOccurrence = 0;
+
+      for (let wordIndex = 0; wordIndex < verseWords.length; wordIndex++) {
+        if (verseWords[wordIndex] === word) {
+          currentOccurrence++;
+        }
+
+        if (currentOccurrence === occurrence) {
+          return { chapter, verse, word: wordIndex };
+        }
+      }
     }
   }
 
