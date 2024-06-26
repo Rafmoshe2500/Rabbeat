@@ -43,7 +43,14 @@ def set_vers_nikud(string):
 
 
 @torah_router.post('/CompareReadingToRealVerse')
-def set_vers_nikud(realVerse, reading):
-    if str(Hebrew(realVerse).no_taamim()) == get_full_text_return_verse_with_nikud(reading):
-        return True
-    return False
+def set_vers_nikud(real_verse, reading):
+    response = defaultdict(dict)
+    counter = 0
+    verse = str(Hebrew(real_verse).no_taamim())
+    reading_verse = get_full_text_return_verse_with_nikud(reading)
+    for word in verse.split(" "):
+        for reading_word in reading_verse.split(" "):
+            if word == reading_word:
+                response[counter].update({"word": word, "status": True})
+            elif word == 'יהוה'
+        counter += 1
