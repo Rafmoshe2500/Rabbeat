@@ -5,6 +5,7 @@ from starlette.responses import JSONResponse
 
 from models.mongo import Lesson, LessonResponse, LessonMetadata, LessonStatus, ExtendLessonResponse
 from tools.utils import mongo_db
+from workflows.get_torah import get_words_with_times_and_variants
 
 router = APIRouter(tags=['Lesson'])
 
@@ -20,8 +21,14 @@ async def create_lesson(lesson: Lesson):
 @router.get("/lesson/{id}")
 async def get_lesson_by_id(id: str):
     lesson = mongo_db.get_lesson_by_id(id)
+    lesson_metadata = mongo_db.get_lesson_metadata_by_id(id)
+
     if lesson:
         lesson["_id"] = str(lesson["_id"])
+        text = get_words_with_times_and_variants(lesson_metadata["pentateuch"], lesson_metadata["startChapter"],
+                                                 lesson_metadata["startVerse"], lesson_metadata["endChapter"],
+                                                 lesson_metadata["endVers"], lesson["highlightsTimestamps"])
+        lesson.update({"text": text})
         return lesson
     raise HTTPException(status_code=404, detail="Lesson not found")
 

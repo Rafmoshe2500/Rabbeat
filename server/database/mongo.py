@@ -91,6 +91,13 @@ class MongoDBApi:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
 
+    def get_lesson_metadata_by_id(self, id: str):
+        try:
+            return self._db.lessons_metadata.find_one({"_id": ObjectId(id)})
+        except Exception as e:
+            logging.error(f"Error getting lesson by ID: {e}")
+            return None
+
     def update_lesson_status(self, update: LessonStatus):
         try:
             return self._db.lesson_status.update_one(

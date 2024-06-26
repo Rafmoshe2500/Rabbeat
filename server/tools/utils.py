@@ -8,7 +8,7 @@ def object_id_str(obj):
 
 
 def no_p_and_s(text: str):
-    text = text.replace('(פ)', '')
+    text = text.replace(' (פ)', '')
     text = text.replace(' (ס)', '')
     return text
 
