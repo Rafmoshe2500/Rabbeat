@@ -47,14 +47,19 @@ export const getLessonsDetailsByUser = async (
   }
 };
 
-export const getLessonsById = async (lessonId: string): Promise<Lesson> => {
+export const getLessonsById = async (
+  lessonId: string
+): Promise<LessonContent> => {
   try {
-    const response = await apiClient.get<FormattedLesson>(
-      `/lessons/${lessonId}`
-    );
-    const audio = convertBase64ToBlob(response.data.audio);
-    const lesson: Lesson = { ...response.data, audio };
-    return lesson;
+    const response = await apiClient.get<
+      Pick<FormattedLesson, "audio" | "highlightsTimestamps">
+    >(`/lesson/${lessonId}`);
+    const { audio, highlightsTimestamps } = response.data;
+
+    return {
+      audio: convertBase64ToBlob(audio),
+      highlightsTimestamps,
+    };
   } catch (error) {
     throw error;
   }
