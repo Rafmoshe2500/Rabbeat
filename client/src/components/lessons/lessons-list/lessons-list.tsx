@@ -11,10 +11,11 @@ const LessonsList = ({ lessons }: LessonListProps) => {
       {lessons?.map((lesson) => (
         <LessonCard
           key={lesson.creationDate}
+          lessonDetails={lesson}
           // key={lesson.id}
           // id={lesson.id}
-          title={lesson.title}
-          status={lesson.status}
+          // title={lesson.title}
+          // status={lesson.status}
         />
       ))}
     </div>

@@ -9,17 +9,20 @@ import {
   Typography,
 } from "@mui/material";
 
-type LessonCardProps = Partial<LessonDetailsWIthStatus>;
+type LessonCardProps = {
+  lessonDetails: Partial<LessonDetailsWIthStatus>;
+};
 
-const LessonCard = ({ id, title, status }: LessonCardProps) => {
+const LessonCard = ({ lessonDetails }: LessonCardProps) => {
   const navigate = useNavigate();
   const { userDetails } = useUser();
+  const { id, status, title } = lessonDetails;
 
   const onClick = () => {
     const route =
       userDetails?.type === "student" ? `/lesson/${id}` : "/upload-lesson";
 
-    navigate(route, { state: { id } });
+    navigate(route, { state: { id, lessonDetails } });
   };
 
   return (
