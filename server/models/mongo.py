@@ -11,7 +11,7 @@ class LessonMetadata(BaseModel):
     version: str
     startVerse: str
     endChapter: str
-    endVers: str
+    endVerse: str
     pentateuch: str
     creationDate: datetime = datetime.now()
 
