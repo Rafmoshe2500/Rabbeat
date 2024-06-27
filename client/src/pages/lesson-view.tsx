@@ -67,7 +67,15 @@ const LessonView = () => {
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון
       </Button>
-      <ChatComponent />
+      <ChatComponent
+        messageContext={{
+          pentateuch: lessonDetails.pentateuch,
+          startChapter: lessonDetails.startChapter,
+          startVerse: lessonDetails.startVerse,
+          endChapter: lessonDetails.endChapter,
+          endVerse: lessonDetails.endVerse,
+        }}
+      />
     </div>
   );
 };
