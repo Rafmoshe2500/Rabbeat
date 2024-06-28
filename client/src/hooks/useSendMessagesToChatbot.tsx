@@ -1,17 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+// useSendMessagesToChatbot.tsx
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { sendMessageToChatbot } from "../api/endpoints/chatbot";
 
-const createQueryKey = (keys: string[]) => [...keys] as const;
-
-export const useSendMessageToChatbot = (message: ChatBotMessage) => {
-  const queryKey = createQueryKey(["sendMessageToChatBot"]);
-
-  return useQuery<ChatBotMessage[], Error>({
-    queryKey,
-    queryFn: async () => {
-      const response = await sendMessageToChatbot(message);
-      return [response];
-    },
-    enabled: !!message.message && !!message.conversation_topic
+export const useSendMessageToChatbot = (): UseMutationResult<ChatBotMessage, Error, ChatBotMessage, unknown> => {
+  return useMutation({
+    mutationFn: (message: ChatBotMessage) => sendMessageToChatbot(message),
   });
 };
