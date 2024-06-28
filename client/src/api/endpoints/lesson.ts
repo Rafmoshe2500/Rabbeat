@@ -52,14 +52,15 @@ export const getLessonsById = async (
   lessonId: string
 ): Promise<LessonContent> => {
   try {
-    const response = await apiClient.get<
-      Pick<FormattedLesson, "audio" | "highlightsTimestamps">
-    >(`/lesson/${lessonId}`);
-    const { audio, highlightsTimestamps } = response.data;
+    const response = await apiClient.get<FormattedLessonContent>(
+      `/lesson/${lessonId}`
+    );
+    const { audio, highlightsTimestamps, text } = response.data;
 
     return {
       audio: convertBase64ToBlob(audio),
       highlightsTimestamps,
+      text,
     };
   } catch (error) {
     throw error;
