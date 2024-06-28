@@ -13,6 +13,7 @@ class LessonMetadata(BaseModel):
     endChapter: str
     endVerse: str
     pentateuch: str
+    stt_text: str
     creationDate: datetime = datetime.now()
 
 

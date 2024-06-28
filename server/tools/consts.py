@@ -1,7 +1,7 @@
 # MongoDB connection setup
 from urllib.parse import quote_plus
 
-import keyring as keyring
+import keyring
 
 MONGO_HOST = "10.10.248.125"
 MONGO_PORT = "21771"
