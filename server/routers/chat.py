@@ -1,4 +1,4 @@
-from bot import get_answer
+from chatbot.bot import get_answer
 from models.chat import ChatModule
 from routers import chat_router
 
