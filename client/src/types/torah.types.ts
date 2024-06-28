@@ -14,3 +14,25 @@ type TorahSections = {
   nikud: TorahSection;
   teamim: TorahSection;
 };
+
+type Version = "none" | "nikud" | "teamim" | "both";
+
+type TextVersion = {
+  time: number;
+  both: string;
+  none: string;
+  nikud: string;
+  teamim: string;
+};
+
+type DetailedVerse = {
+  [wordIndex: string]: TextVersion;
+};
+
+type DetailedChapter = {
+  [verseIndex: string]: DetailedVerse;
+};
+
+type TextSection = {
+  [chapterIndex: string]: DetailedChapter;
+};

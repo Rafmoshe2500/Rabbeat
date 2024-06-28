@@ -1,7 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useLessonsById } from "../hooks/useLessonById";
-import { useTorahSection } from "../hooks/useTorahSection";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
 import { useMemo } from "react";
@@ -15,28 +14,8 @@ const LessonView = () => {
   const navigate = useNavigate();
   const { data: lesson, isLoading, isError } = useLessonsById(id!);
 
-  const {
-    data: text,
-    isLoading: isLoadingText,
-    isError: isTextError,
-  } = useTorahSection(
-    lessonDetails?.pentateuch || "",
-    lessonDetails?.startChapter || "",
-    lessonDetails?.startVerse || "",
-    lessonDetails?.endChapter || "",
-    lessonDetails?.endVerse || ""
-  );
-
-  const convertedLesson = lesson
-    ? {
-        audio: lesson?.audio,
-        text: text,
-        highlightsTimestamps: lesson.highlightsTimestamps,
-      }
-    : undefined;
-
   const handleNavigate = () => {
-    navigate("/student-self-testing", { state: { lesson: convertedLesson } });
+    navigate("/student-self-testing", { state: { lesson: lesson } });
   };
 
   const lessonForView = useMemo(
@@ -44,9 +23,8 @@ const LessonView = () => {
       ({
         ...(lesson || {}),
         ...(lessonDetails || {}),
-        text: text || {},
-      } as LessonForView),
-    [lesson, lessonDetails, text]
+      } as Lesson),
+    [lesson, lessonDetails]
   );
 
   return (
@@ -58,11 +36,7 @@ const LessonView = () => {
         justifyContent: "center",
       }}
     >
-      {isLoadingText || isLoading ? (
-        <Loader />
-      ) : (
-        <LessonContent lesson={lessonForView} />
-      )}
+      {isLoading ? <Loader /> : <LessonContent lesson={lessonForView} />}
 
       <Button variant="contained" color="primary" onClick={handleNavigate}>
         עבור לנסיון

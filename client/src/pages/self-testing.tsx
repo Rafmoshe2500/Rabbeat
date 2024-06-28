@@ -1,20 +1,15 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { getWrongWords } from "../utils/utils";
-
-type SelfTestingProps = {
-  lesson?: {
-    audio: Blob;
-    text: string;
-  };
-};
+import DisplayText from "../components/display-lesson-text/display-lesson-text";
+import { useFlattedLessonText } from "../hooks/useFlattedLessonText";
 
 const SelfTesting = () => {
   const location = useLocation();
-  const lesson = location.state?.lesson as SelfTestingProps["lesson"];
+  const lesson: Lesson = location.state?.lesson;
   const {
     transcript,
     isMicrophoneAvailable,
@@ -24,13 +19,15 @@ const SelfTesting = () => {
   } = useSpeechRecognition();
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [currentTranscript, setCurrentTranscript] = useState<string>("");
+  const { flattedText, length } = useFlattedLessonText(lesson?.text);
 
   useEffect(() => {
     setCurrentTranscript(transcript);
   }, [transcript]);
 
   useEffect(() => {
-    if (currentTranscript.length === lesson?.text.length) {
+    const transcriptWords = currentTranscript.split(" ");
+    if (transcriptWords.length === length) {
       SpeechRecognition.stopListening();
       setIsSpeaking(false);
     }
@@ -58,9 +55,7 @@ const SelfTesting = () => {
   return (
     <div>
       כאן בודקים
-      <div>
-        <p className="stam-font">{lesson?.text}</p>
-      </div>
+      <div>{lesson && <DisplayText text={lesson.text!} />}</div>
       <div>
         <button onClick={resetTranscript}>Reset</button>
         <button onClick={handleOnRecord}>
@@ -70,23 +65,31 @@ const SelfTesting = () => {
       <div>
         <p>Spoken Text: {currentTranscript}</p>
       </div>
-      <div className="check-text stam-font">
+      <div
+        style={{
+          direction: "rtl",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {currentTranscript &&
-          getWrongWords(currentTranscript, lesson?.text ?? "").map(
-            (word, index) => (
-              <div
-                key={index}
-                style={{ paddingLeft: "3px" }}
-                className={!word.isCorrect ? "redText" : "greenText"}
-              >
-                {word.text}
-              </div>
-            )
-          )}
+          getWrongWords(currentTranscript, flattedText).map((word, index) => (
+            <div
+              key={index}
+              style={{
+                paddingLeft: "3px",
+                color: !word.isCorrect ? "red" : "green",
+              }}
+              className={!word.isCorrect ? "redText" : "greenText"}
+            >
+              {word.text}
+            </div>
+          ))}
       </div>
       <div>
         {currentTranscript &&
-          (currentTranscript === lesson?.text ? "הצלחת" : "נסה שוב")}
+          (currentTranscript === flattedText ? "הצלחת" : "נסה שוב")}
       </div>
     </div>
   );
