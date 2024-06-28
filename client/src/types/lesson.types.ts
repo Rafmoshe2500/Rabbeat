@@ -1,18 +1,18 @@
-type FormattedLesson = LessonDetails & {
+type FormattedLesson = LessonDetails & FormattedLessonContent;
+
+type FormattedLessonContent = {
   audio: string;
   highlightsTimestamps?: Array<number>;
+  text?: TextSection;
 };
 
 type LessonContent = {
   audio: Blob;
   highlightsTimestamps?: Array<number>;
+  text?: TextSection;
 };
 
 type Lesson = LessonDetails & LessonContent;
-
-type LessonForView = Lesson & {
-  text: TorahSections;
-};
 
 const lessonStatus = ["not-started", "in-progress", "finished"] as const;
 

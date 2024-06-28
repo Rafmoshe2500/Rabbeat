@@ -5,11 +5,10 @@ import Note from "../../note/note";
 import Panel from "../../panel/panel";
 import styles from "./lesson-content.module.css";
 import { Box, Container } from "@mui/material";
-import Chapter from "../../bible-displayer/chapter";
-import { findWord } from "../../../utils/utils";
+import DisplayText from "../../display-lesson-text/display-lesson-text";
 
 interface LessonContentProps {
-  lesson?: LessonForView;
+  lesson?: Lesson;
 }
 
 interface NoteData {
@@ -21,7 +20,7 @@ interface NoteData {
 const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [audioURL, setAudioURL] = useState<string | null>(null);
-  const [wordToMArk, setWordToMark] = useState<WordToMark>();
+  const [highlightedWord, setHighlightedWord] = useState<WordToMark>();
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const noteIdRef = useRef<number>(0);
@@ -67,14 +66,27 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   };
 
   const handleTimeUpdate = () => {
-    if (audioRef.current && lesson?.highlightsTimestamps?.length) {
+    if (audioRef.current && lesson?.text) {
       const currentTime = audioRef.current.currentTime;
-      const wordIndex =
-        lesson.highlightsTimestamps.findIndex(
-          (timestamp) => currentTime < timestamp
-        ) - 1;
+      let latestWord: WordToMark | undefined = undefined;
+      const { text } = lesson;
 
-      setWordToMark(findWord(lesson!.text!.nikud, wordIndex));
+      Object.keys(text).forEach((chapterKey) => {
+        Object.keys(text[chapterKey]).forEach((verseKey) => {
+          Object.keys(text[chapterKey][verseKey]).forEach((wordIndex) => {
+            const word = text[chapterKey][verseKey][wordIndex];
+            if (word.time <= currentTime) {
+              latestWord = {
+                chapter: chapterKey,
+                verse: verseKey,
+                word: parseInt(wordIndex),
+              };
+            }
+          });
+        });
+      });
+
+      setHighlightedWord(latestWord);
     }
   };
 
@@ -112,33 +124,14 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
           </audio>
         )}
 
-        {/* <Container maxWidth="sm">
-        <Box className="stam-font" sx={{ bgcolor: "#cfe8fc", height: "100vh" }}>
-        </Box>
-      </Container> */}
-
         <Container maxWidth="sm">
-          <Box
-            className={`${styles["text"]} stam-font`}
-            sx={{ bgcolor: "#cfe8fc" }}
-          >
+          <Box className={`${styles["text"]}`} sx={{ bgcolor: "#cfe8fc" }}>
             {lesson?.text && (
               <div>
-                {/* TODO: extract to another componentttttttttttttttttttttttttttttttttttttttttttttttttttt */}
-                {Object.entries(lesson?.text.both).map(
-                  ([chapterKey, chapter]) => (
-                    <Chapter
-                      key={chapterKey}
-                      chapterKey={chapterKey}
-                      chapter={chapter}
-                      wordToMark={
-                        wordToMArk?.chapter === chapterKey
-                          ? wordToMArk
-                          : undefined
-                      }
-                    />
-                  )
-                )}
+                <DisplayText
+                  highlightedWord={highlightedWord}
+                  text={lesson.text}
+                />
               </div>
             )}
           </Box>
