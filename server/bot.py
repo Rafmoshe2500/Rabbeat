@@ -42,4 +42,5 @@ model = GenerativeModel(model_name="gemini-1.5-flash-001")
 
 
 def get_answer(question, topic):
-    return model.generate_content([f'על הנושא {topic} יש לי שאלה {question} אשמח לתשובה לא ארוכה!'])
+    text = f"אשמח שתענה לי בקצרה בנושא {topic} על השאלה: {question}"
+    return model.generate_content([text])
