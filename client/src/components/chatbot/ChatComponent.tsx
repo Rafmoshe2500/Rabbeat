@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import styles from "./ChatComponent.module.scss";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import { useSendMessageToChatbot } from "../../hooks/useSendMessagesToChatbot"; // Adjust the import path as needed
+import { useSendMessageToChatbot } from "../../hooks/useSendMessagesToChatbot";
 
 interface Message {
   sender: "user" | "bot";
@@ -10,79 +10,66 @@ interface Message {
 }
 
 type ChatComponentProps = {
-  messageContext: messageContext;
+  messageContext: {
+    pentateuch: string;
+    startChapter: number;
+    startVerse: number;
+    endChapter: number;
+    endVerse: number;
+  };
 };
 
 const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputMessage1, setInputMessage1] = useState<string>("");
-  const [triggerSendMessage, setTriggerSendMessage] = useState<boolean>(false);
-  const [loadingMessageIndex, setLoadingMessageIndex] = useState<number | null>(
-    null
-  );
+  const [inputMessage, setInputMessage] = useState<string>("");
+
+  const { mutate: sendMessage, isPending } = useSendMessageToChatbot();
+
+  const isInputEmpty = inputMessage.trim() === "";
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
 
   const handleSendMessage = () => {
-    if (inputMessage1.trim() === "") return;
+    if (isInputEmpty) return;
 
     const userMessage: Message = {
       sender: "user",
-      text: inputMessage1,
+      text: inputMessage,
     };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setTriggerSendMessage(true);
-    setInputMessage1("");
-  };
 
-  const messageData = {
-    message: inputMessage1,
-    conversation_topic: `${messageContext.pentateuch}, פרק ${messageContext.startChapter} פסוק ${messageContext.startVerse}, עד פרק ${messageContext.endChapter} פסוק ${messageContext.endVerse}`,
-  };
-  const { data, error, isLoading } = useSendMessageToChatbot(messageData);
+    const messageData = {
+      message: inputMessage,
+      conversation_topic: `${messageContext.pentateuch}, פרק ${messageContext.startChapter} פסוק ${messageContext.startVerse}, עד פרק ${messageContext.endChapter} פסוק ${messageContext.endVerse}`,
+    };
 
-  useEffect(() => {
-    if (triggerSendMessage && isLoading) {
-      const loadingMessage: Message = {
-        sender: "bot",
-        text: "מעבד את הנתונים...",
-      };
-      setMessages((prevMessages) => [...prevMessages, loadingMessage]);
-      setLoadingMessageIndex(messages.length); // Set the index of the loading message
-    }
-  }, [isLoading, triggerSendMessage]);
-
-  useEffect(() => {
-    if (triggerSendMessage && !isLoading && (data || error)) {
-      setMessages((prevMessages) => {
-        const updatedMessages = [...prevMessages];
+    sendMessage(messageData, {
+      onSuccess: (data) => {
         const botMessage: Message = {
           sender: "bot",
-          text: error
-            ? "אופס, משהו השתבש בדרך."
-            : data
-            ? data[0].message
-            : "Unknown error",
+          text: data.message,
         };
-        if (loadingMessageIndex !== null) {
-          updatedMessages[loadingMessageIndex] = botMessage; // Replace the loading message
-        } else {
-          updatedMessages.push(botMessage);
-        }
-        return updatedMessages;
-      });
-      setTriggerSendMessage(false);
-      setLoadingMessageIndex(null); // Reset the loading message index
-    }
-  }, [data, error, isLoading, triggerSendMessage, loadingMessageIndex]);
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      },
+      onError: (error) => {
+        const errorMessage: Message = {
+          sender: "bot",
+          text: "אופס, משהו השתבש בדרך.",
+        };
+        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      },
+    });
+
+    setInputMessage("");
+  };
 
   const createMarkup = (text: string) => {
-    const rawMarkup = marked(text) as string;
+    const rawMarkup = marked(text);
     const cleanMarkup = DOMPurify.sanitize(rawMarkup);
     return { __html: cleanMarkup };
   };
@@ -119,12 +106,24 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
             <input
               ref={inputRef}
               type="text"
-              value={inputMessage1}
-              onChange={(e) => setInputMessage1(e.target.value)}
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="הכנס כאן שאלות על הפרשה..."
             />
-            <button onClick={handleSendMessage}>Send</button>
+            <button
+              onClick={handleSendMessage}
+              disabled={isInputEmpty || isPending}
+              className={`${styles.sendButton} ${
+                isInputEmpty ? styles.disabled : ""
+              } ${isPending ? styles.loading : ""}`}
+            >
+              {isPending ? (
+                <div className={styles.loadingCircle}></div>
+              ) : (
+                "➤"
+              )}
+            </button>
           </div>
         </div>
       )}
