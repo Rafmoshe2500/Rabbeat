@@ -1,4 +1,4 @@
-// import Home from "../pages/home";
+import Home from "../pages/home";
 import LessonView from "../pages/lesson-view";
 import NotFound from "../pages/not-found";
 import Profile from "../pages/profile";
@@ -9,10 +9,10 @@ import UploadLessonPage from "../pages/upload-lesson";
 import AuthForm from "../pages/auth"
 
 const baseRoutes = [
-  // {
-  //   path: "/home",
-  //   element: <Home />,
-  // },
+  {
+    path: "/home",
+    element: <Home />,
+  },
   {
     path: "/profile",
     element: <Profile />,
