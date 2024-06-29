@@ -8,6 +8,7 @@ import SelfTesting from "../pages/self-testing";
 import StudentPersonalArea from "../pages/student-personal-area";
 import TeacherPersonalArea from "../pages/teacher-personal-area";
 import UploadLessonPage from "../pages/upload-lesson";
+import AuthForm from "../pages/auth"
 
 const baseRoutes = [
   {
@@ -57,6 +58,10 @@ export const teacherRoutes = [
 ];
 
 export const unloggedRoutes = [
+  {
+    path: "/auth",
+    element: <AuthForm />
+  },
   {
     path: "/login",
     element: <Login />,
