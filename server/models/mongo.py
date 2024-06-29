@@ -13,13 +13,13 @@ class LessonMetadata(BaseModel):
     endChapter: str
     endVerse: str
     pentateuch: str
-    stt_text: str
     creationDate: datetime = datetime.now()
 
 
 class Lesson(BaseModel):
     audio: str
     highlightsTimestamps: List[float]
+    sttText: str
     metadata: LessonMetadata
 
 
