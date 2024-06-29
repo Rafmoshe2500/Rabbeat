@@ -73,11 +73,10 @@ const AuthForm: React.FC = () => {
 
   const handleSuccess = (user: User) => {
     setMessage({ text: isLogin ? 'התחברת בהצלחה!' : 'נרשמת בהצלחה!', isError: false });
-    setUserDetails(user); 
     setTimeout(() => {
-      setMessage(null);
-      navigate('/home');
-    }, 2000);
+      setMessage(null), 2000});
+    setUserDetails(user);
+    navigate('/home')
   };
 
   const handleError = (errorMessage: string) => {
