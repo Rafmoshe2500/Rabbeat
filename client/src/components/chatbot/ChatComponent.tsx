@@ -12,10 +12,10 @@ interface Message {
 type ChatComponentProps = {
   messageContext: {
     pentateuch: string;
-    startChapter: number;
-    startVerse: number;
-    endChapter: number;
-    endVerse: number;
+    startChapter: string;
+    startVerse: string;
+    endChapter: string;
+    endVerse: string;
   };
 };
 
@@ -118,11 +118,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
                 isInputEmpty ? styles.disabled : ""
               } ${isPending ? styles.loading : ""}`}
             >
-              {isPending ? (
-                <div className={styles.loadingCircle}></div>
-              ) : (
-                "➤"
-              )}
+              {isPending ? <div className={styles.loadingCircle}></div> : "➤"}
             </button>
           </div>
         </div>
