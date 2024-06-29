@@ -76,7 +76,7 @@ const AuthForm: React.FC = () => {
     setUserDetails(user); 
     setTimeout(() => {
       setMessage(null);
-      navigate('/home', { state: { user } });
+      navigate('/');
     }, 2000);
   };
 
