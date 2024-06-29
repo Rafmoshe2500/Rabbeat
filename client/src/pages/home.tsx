@@ -1,33 +1,37 @@
-import React from "react";
-import { useAllLessonsDetails } from "../hooks/useAllLessonsDetails";
+import React from 'react';
+import { Typography, Box, Paper } from '@mui/material';
+import { useLocation, Navigate } from 'react-router-dom';
 
-const Home: React.FC = () => {
-  const {
-    data: allLessons,
-    isLoading: isLoadingAll,
-    isError: isErrorAll,
-  } = useAllLessonsDetails();
+interface LocationState {
+  user: LoginUser;
+}
 
-  if (isLoadingAll) return <div>Loading...</div>;
-  if (isErrorAll) return <div>Error loading lessons</div>;
+const HomePage: React.FC = () => {
+  const location = useLocation();
+  const state = location.state as LocationState;
+
+  if (!state || !state.user) {
+    return <Navigate to="/" replace />;
+  }
+
+  const { user } = state;
 
   return (
-    <div>
-      {allLessons?.map((lesson) => {
-        return lesson ? (
-          Object.entries(lesson).map(([key, value]) => {
-            return (
-              <p>
-                {key}:{value.toString()}
-              </p>
-            );
-          })
-        ) : (
-          <p> Less</p>
-        );
-      })}
-    </div>
+    <Box sx={{ padding: 3, direction: 'rtl' }}>
+      <Paper elevation={3} sx={{ padding: 3 }}>
+        <Typography variant="h4" gutterBottom>ברוך הבא, {user.firstName} {user.lastName}!</Typography>
+        <Typography variant="body1">פרטי המשתמש שלך:</Typography>
+        <Box component="ul" sx={{ listStyleType: 'none', padding: 0 }}>
+          <li><Typography>תעודת זהות: {user.id}</Typography></li>
+          <li><Typography>אימייל: {user.email}</Typography></li>
+          <li><Typography>טלפון: {user.phoneNumber}</Typography></li>
+          <li><Typography>כתובת: {user.address}</Typography></li>
+          <li><Typography>תאריך לידה: {user.birthDay}</Typography></li>
+          <li><Typography>סוג משתמש: {user.type === 'student' ? 'תלמיד' : 'מורה'}</Typography></li>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
-export default Home;
+export default HomePage;

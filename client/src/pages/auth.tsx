@@ -74,7 +74,7 @@ const AuthForm: React.FC = () => {
     setMessage({ text: isLogin ? 'התחברת בהצלחה!' : 'נרשמת בהצלחה!', isError: false });
     setTimeout(() => {
       setMessage(null);
-      navigate('/', { state: { user } });
+      navigate('/home', { state: { user } });
     }, 2000);
   };
 

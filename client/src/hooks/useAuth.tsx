@@ -5,7 +5,7 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loginUser = async (credentials: UserCredentials): Promise<LoginUser | null> => {
+  const loginUser = async (credentials: UserCredentials): Promise<User | null> => {
     setLoading(true);
     setError(null);
     try {
@@ -28,7 +28,7 @@ export const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const registerUser = async (userData: UserRegister): Promise<LoginUser | null> => {
+  const registerUser = async (userData: UserRegister): Promise<User | null> => {
     setLoading(true);
     setError(null);
     try {

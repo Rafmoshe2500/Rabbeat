@@ -3,7 +3,7 @@ import { TextField, Typography, Box } from '@mui/material';
 import { useLogin } from '../../hooks/useAuth.tsx';
 
 interface LoginFormProps {
-  onSuccess: (user: LoginUser) => void;
+  onSuccess: (user: User) => void;
   onError: (message: string) => void;
 }
 
