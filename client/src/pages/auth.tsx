@@ -11,12 +11,16 @@ interface AuthFormProps {
 }
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(({ isflipped }) => ({
-  width: 800,
-  height: 600,
+  width: '100%',
+  maxWidth: 800,
+  minHeight: 600,
   position: 'relative',
   transformStyle: 'preserve-3d',
   transition: 'transform 0.6s',
   transform: isflipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+  margin: '20px auto',
+  borderRadius: '16px',
+  boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
 }));
 
 const FormSide = styled('div')({
@@ -27,7 +31,7 @@ const FormSide = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: '24px',
+  // padding: '24px',
   overflowY: 'auto',
 });
 
@@ -41,14 +45,11 @@ const BackSide = styled(FormSide)({
 });
 
 const ButtonContainer = styled('div')({
-  position: 'absolute',
-  bottom: '60px',
-  left: '50%',
-  transform: 'translateX(-50%)',
   display: 'flex',
   justifyContent: 'center',
   gap: '16px',
-  zIndex: 3,
+  marginTop: 'auto', // This will push the buttons to the bottom
+  paddingTop: '24px', // Add some space above the buttons
 });
 
 const MessageOverlay = styled('div')<{ isError?: boolean }>(({ isError }) => ({
@@ -103,38 +104,44 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm }) => {
   };
 
   return (
-    <RotatingPaper isflipped={!isLogin} elevation={3} sx={{alignItems: 'center', justifyContent: 'center'}}>
-      <FrontSide>
-        {message && <MessageOverlay sx={{direction: 'rtl'}} isError={message.isError}>{message.text}</MessageOverlay>}
-        <LoginForm 
-          onSuccess={handleSuccess}
-          onError={handleError}
-        />
-        <ButtonContainer>
-          <Button variant="contained" color="primary" type="submit" form="login-form">
-            התחבר
-          </Button>
-          <Button onClick={toggleForm}>
-            להרשמה
-          </Button>
-        </ButtonContainer>
-      </FrontSide>
-      <BackSide>
-        {message && <MessageOverlay sx={{direction: 'rtl'}} isError={message.isError}>{message.text}</MessageOverlay>}
-        <RegisterForm 
-          onSuccess={handleSuccess}
-          onError={handleError}
-        />
-        <ButtonContainer>
-          <Button variant="contained" color="primary" type="submit" form="register-form">
-            הרשם
-          </Button>
-          <Button onClick={toggleForm}>
-            להתחברות
-          </Button>
-        </ButtonContainer>
-      </BackSide>
-    </RotatingPaper>
+    <div className="auth-container">
+      <RotatingPaper isflipped={!isLogin} elevation={3}>
+        <FrontSide>
+          {message && <MessageOverlay isError={message.isError}>{message.text}</MessageOverlay>}
+          <div className="form-content">
+            <LoginForm 
+              onSuccess={handleSuccess}
+              onError={handleError}
+            />
+            <ButtonContainer>
+              <Button variant="contained" color="primary" type="submit" form="login-form">
+                התחבר
+              </Button>
+              <Button onClick={toggleForm}>
+                להרשמה
+              </Button>
+            </ButtonContainer>
+          </div>
+        </FrontSide>
+        <BackSide>
+          {message && <MessageOverlay isError={message.isError}>{message.text}</MessageOverlay>}
+          <div className="form-content">
+            <RegisterForm 
+              onSuccess={handleSuccess}
+              onError={handleError}
+            />
+            <ButtonContainer>
+              <Button variant="contained" color="primary" type="submit" form="register-form">
+                הרשם
+              </Button>
+              <Button onClick={toggleForm}>
+                להתחברות
+              </Button>
+            </ButtonContainer>
+          </div>
+        </BackSide>
+      </RotatingPaper>
+    </div>
   );
 };
 
