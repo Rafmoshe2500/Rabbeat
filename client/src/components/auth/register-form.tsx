@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { TextField, Typography, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Grid } from '@mui/material';
+import { Typography, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Grid } from '@mui/material';
 import { useRegister } from '../../hooks/useAuth.tsx';
+import RTLTextField from '../../utils/rtl-text-field'
 
 interface RegisterFormProps {
   onSuccess: (user: User) => void;
@@ -52,15 +53,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <TextField fullWidth margin="normal" sx={{direction: 'rtl'}} name="id" label='ת"ז' value={userData.id} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" sx={{direction: 'rtl'}} name="firstName" label="שם פרטי" value={userData.firstName} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" sx={{direction: 'rtl'}} name="lastName" label="שם משפחה" value={userData.lastName} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" type="email" name="email" label='דוא"ל' value={userData.email} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" sx={{direction: 'rtl'}} name="phoneNumber" label="פלאפון" value={userData.phoneNumber} onChange={handleChange} required />
+          <RTLTextField fullWidth margin="normal" name="id" label='ת"ז' value={userData.id} onChange={handleChange} required />
+          <RTLTextField fullWidth margin="normal" name="firstName" label="שם פרטי" value={userData.firstName} onChange={handleChange} required />
+          <RTLTextField fullWidth margin="normal" name="lastName" label="שם משפחה" value={userData.lastName} onChange={handleChange} required />
+          <RTLTextField fullWidth margin="normal" type="email" name="email" label='דוא"ל' value={userData.email} onChange={handleChange} required />
+          <RTLTextField fullWidth margin="normal" name="phoneNumber" label="פלאפון" value={userData.phoneNumber} onChange={handleChange} required />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField fullWidth margin="normal" sx={{direction: 'rtl'}} name="address" label="כתובת מגורים" value={userData.address} onChange={handleChange} required />
-          <TextField
+          <RTLTextField fullWidth margin="normal" name="address" label="כתובת מגורים" value={userData.address} onChange={handleChange} required />
+          <RTLTextField
             fullWidth
             margin="normal"
             type="date"
@@ -78,8 +79,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
               <MenuItem value="teacher">מורה</MenuItem>
             </Select>
           </FormControl>
-          <TextField fullWidth margin="normal" type="password" name="password" label="סיסמא" value={userData.password} onChange={handleChange} required />
-          <TextField
+          <RTLTextField fullWidth margin="normal" type="password" name="password" label="סיסמא" value={userData.password} onChange={handleChange} required />
+          <RTLTextField
             fullWidth
             margin="normal"
             type="password"

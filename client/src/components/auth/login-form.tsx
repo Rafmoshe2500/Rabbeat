@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { TextField, Typography, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { useLogin } from '../../hooks/useAuth.tsx';
+import RTLTextField from '../../utils/rtl-text-field'
 
 interface LoginFormProps {
   onSuccess: (user: User) => void;
@@ -34,7 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
       <Typography variant="h4" gutterBottom sx={{direction: 'rtl', textAlign: 'center'}}>
         התחברות
       </Typography>
-      <TextField
+      <RTLTextField
         fullWidth
         margin="normal"
         type="email"
@@ -44,7 +45,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
         onChange={handleChange}
         required
       />
-      <TextField
+      <RTLTextField
         fullWidth
         margin="normal"
         type="password"
