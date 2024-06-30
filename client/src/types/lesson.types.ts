@@ -4,12 +4,14 @@ type FormattedLessonContent = {
   audio: string;
   highlightsTimestamps?: Array<number>;
   text?: TextSection;
+  sttText: string;
 };
 
 type LessonContent = {
   audio: Blob;
   highlightsTimestamps?: Array<number>;
   text?: TextSection;
+  sttText: string;
 };
 
 type Lesson = LessonDetails & LessonContent;
