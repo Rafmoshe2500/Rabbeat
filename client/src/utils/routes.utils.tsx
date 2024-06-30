@@ -49,6 +49,14 @@ export const teacherRoutes = [
 
 export const unloggedRoutes = [
   {
+    path: "/login",
+    element: <AuthForm initialForm="login" />
+  },
+  {
+    path: "/register",
+    element: <AuthForm initialForm="register" />
+  },
+  {
     path: "/auth",
     element: <AuthForm />
   },

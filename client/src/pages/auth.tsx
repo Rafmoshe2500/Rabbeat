@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Paper, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LoginForm from '../components/auth/login-form';
 import RegisterForm from '../components/auth/register-form';
 import { useUser } from '../contexts/user-context'; // Import UserContext
+
+interface AuthFormProps {
+  initialForm?: 'login' | 'register';
+}
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(({ isflipped }) => ({
   width: 800,
@@ -61,14 +65,26 @@ const MessageOverlay = styled('div')<{ isError?: boolean }>(({ isError }) => ({
   textAlign: 'center',
 }));
 
-const AuthForm: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
+const AuthForm: React.FC<AuthFormProps> = ({ initialForm }) => {
+  const [isLogin, setIsLogin] = useState(initialForm === 'register' ? false : true);
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUserDetails } = useUser(); 
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const form = searchParams.get('form');
+    if (form === 'register') {
+      setIsLogin(false);
+    } else if (form === 'login') {
+      setIsLogin(true);
+    }
+  }, [location]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    navigate(`/auth?form=${isLogin ? 'register' : 'login'}`);
   };
 
   const handleSuccess = (user: User) => {
