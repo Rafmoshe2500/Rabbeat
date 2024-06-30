@@ -1,4 +1,3 @@
-import json
 from collections import defaultdict
 
 from fastapi import HTTPException
@@ -7,7 +6,7 @@ from starlette.responses import JSONResponse
 
 from routers import torah_router
 from sel import get_full_text_return_verse_with_nikud
-from workflows.get_torah import get_all_torah_text_variants_workflow
+from workflows.get_torah import TorahTextProcessor  # Import the new class
 
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
@@ -19,7 +18,7 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
     <li>startVerse: פסוק התחלה</li>
     <li>endCh: פרק סופי</li>
     <li>endVerse: פסוק סופי</li>
-    </h4></ul<
+    </h4></ul
     :param pentateuch:
     :param startCh:
     :param startVerse:
@@ -27,10 +26,11 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
     :param endVerse:
     :return:
     """
+    torah_processor = TorahTextProcessor(pentateuch)
     startCh, startVerse = str(Hebrew(startCh).gematria()), str(Hebrew(startVerse).gematria())
     endCh, endVerse = str(Hebrew(endCh).gematria()), str(Hebrew(endVerse).gematria())
     try:
-        response = get_all_torah_text_variants_workflow(pentateuch, startCh, startVerse, endCh, endVerse)
+        response = torah_processor.get_all_torah_text_variants(startCh, startVerse, endCh, endVerse)
         return JSONResponse(content=response)
     except Exception as e:
         print(e)
@@ -60,4 +60,3 @@ def set_vers_nikud(real_verse, reading):
         else:
             response[i].update({"word": original_words[i], "status": False})
     return response
-

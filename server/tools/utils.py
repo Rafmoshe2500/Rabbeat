@@ -1,4 +1,5 @@
-# Helper function to convert ObjectId to string
+from typing import List, Tuple
+
 from database.mongo import MongoDBApi
 from tools.consts import MONGO_URI, MONGO_DB_NAME
 
@@ -8,71 +9,55 @@ def object_id_str(obj):
 
 
 def no_p_and_s(text: str):
-    text = text.replace(' (פ)', '')
-    text = text.replace(' (ס)', '')
+    text = str(text).replace(' (פ)', '')
+    text = str(text).replace(' (ס)', '')
     return text
 
 
-def merge_or_trim_lists(numbers, words):
-    len_numbers = len(numbers)
-    len_words = len(words)
+def merge_or_trim_lists(numbers: List[float], words: List[str]) -> Tuple[List[float], List[str]]:
+    len_numbers, len_words = len(numbers), len(words)
     difference = len_words - len_numbers
 
+    if difference == 0:
+        return numbers, words
+
     if difference > 0:
-        # Find the smallest differences between numbers
-        diff_pairs = []
-        for i in range(len_numbers - 1):
-            for j in range(i + 1, len_numbers):
-                diff_pairs.append((abs(numbers[i] - numbers[j]), i, j))
+        return merge_words(numbers, words, difference)
+    else:
+        return trim_numbers(numbers, words, -difference)
 
-        # Sort pairs by the smallest difference
-        diff_pairs.sort()
 
-        # Use a set to keep track of merged indices
-        merged_indices = set()
+def merge_words(numbers: List[float], words: List[str], difference: int) -> Tuple[List[float], List[str]]:
+    # Create a list of (difference, index) pairs
+    diffs = [(abs(numbers[i] - numbers[i + 1]), i) for i in range(len(numbers) - 1)]
 
-        # Merge words based on the selected pairs
-        for i in range(difference):
-            _, idx1, idx2 = diff_pairs[i]
-            if idx1 not in merged_indices and idx2 not in merged_indices and idx1 < len_words - 1:
-                words[idx1] += " " + words[idx1 + 1]
-                merged_indices.add(idx1 + 1)
+    # Sort the diffs list based on the difference
+    diffs.sort(key=lambda x: x[0])
 
-        # Remove the merged words
-        words = [word for idx, word in enumerate(words) if idx not in merged_indices]
+    # Create a set to keep track of merged indices
+    merged_indices = set()
 
-    elif difference < 0:
-        # Convert difference to positive
-        difference = abs(difference)
+    # Merge words based on the smallest differences
+    for _, idx in diffs[:difference]:
+        if idx not in merged_indices and idx + 1 not in merged_indices:
+            words[idx] += " " + words[idx + 1]
+            merged_indices.add(idx + 1)
 
-        # Find the smallest differences between numbers
-        diff_pairs = []
-        for i in range(len_numbers - 1):
-            for j in range(i + 1, len_numbers):
-                diff_pairs.append((abs(numbers[i] - numbers[j]), i, j))
+    # Remove the merged words
+    return numbers, [word for i, word in enumerate(words) if i not in merged_indices]
 
-        # Sort pairs by the smallest difference
-        diff_pairs.sort()
 
-        # Remove the largest numbers based on the indices from diff_pairs
-        removed_indices = set()
-        for i in range(difference):
-            _, idx1, idx2 = diff_pairs[i]
-            if idx1 not in removed_indices and idx2 not in removed_indices:
-                if numbers[idx1] > numbers[idx2]:
-                    removed_indices.add(idx1)
-                else:
-                    removed_indices.add(idx2)
+def trim_numbers(numbers: List[float], words: List[str], difference: int) -> Tuple[List[float], List[str]]:
+    # Create a list of (number, index) pairs
+    numbered = list(enumerate(numbers))
 
-        # Remove identified numbers
-        numbers = [num for idx, num in enumerate(numbers) if idx not in removed_indices]
+    # Sort the list based on the numbers in descending order
+    numbered.sort(key=lambda x: x[1], reverse=True)
 
-    # Ensure the lists are now the same length
-    min_length = min(len(numbers), len(words))
-    numbers = numbers[:min_length]
-    words = words[:min_length]
+    # Remove the largest numbers
+    removed_indices = set(idx for idx, _ in numbered[:difference])
 
-    return numbers, words
+    return [num for i, num in enumerate(numbers) if i not in removed_indices], words
 
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)
