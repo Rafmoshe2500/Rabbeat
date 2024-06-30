@@ -3,7 +3,7 @@ import { TextField, Typography, Box, Select, MenuItem, FormControl, InputLabel, 
 import { useRegister } from '../../hooks/useAuth.tsx';
 
 interface RegisterFormProps {
-  onSuccess: (user: LoginUser) => void;
+  onSuccess: (user: User) => void;
   onError: (message: string) => void;
 }
 
