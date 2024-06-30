@@ -64,7 +64,7 @@ class MongoDBApi:
 
     def add_lesson(self, lesson: Lesson):
         try:
-            only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps'})
+            only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps', 'sttText'})
             result = self._db.lessons.insert_one(only_lesson)
             metadata_lesson = {**lesson.metadata.dict(), '_id': result.inserted_id}
             result_metadata = self._db.lessons_metadata.insert_one(metadata_lesson)
