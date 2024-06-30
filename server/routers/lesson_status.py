@@ -22,11 +22,10 @@ async def get_lesson_status_by_ids(userId: str, lessonId: str):
         lesson_status["_id"] = str(lesson_status["_id"])
     return lesson_status
 
+
 @router.get("/lesson-statuses/")
 async def get_all_lesson_statuses():
     lesson_statuses = mongo_db.get_all_lesson_statuses()
-    if not lesson_statuses:
-        raise HTTPException(status_code=404, detail="No lessons found")
     for lesson_status in lesson_statuses:
         lesson_status["_id"] = str(lesson_status["_id"])
     return lesson_statuses
