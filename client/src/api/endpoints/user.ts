@@ -17,3 +17,13 @@ export const createUserOrUpdate = async (user: User): Promise<User> => {
     throw error;
   }
 };
+
+export const login = async (credentials: UserCredentials) => {
+  const response = await apiClient.post<User>(`/login`, credentials);
+    return response.data;
+};
+
+export const register = async (userData: UserRegister) => {
+  const response = await apiClient.post<User>(`/register`, userData);
+  return response.data;
+};
