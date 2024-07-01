@@ -1,7 +1,7 @@
 import re
+from abc import ABC, abstractmethod
 from difflib import SequenceMatcher
 from typing import List, Tuple, Set, Dict
-from abc import ABC, abstractmethod
 
 
 class BaseWorkflow(ABC):
@@ -12,11 +12,10 @@ class BaseWorkflow(ABC):
 
 
 class HebrewTextComparator(BaseWorkflow):
-    def __init__(self, source: str, stt: str, threshold: float = 0.7):
+    def __init__(self, source: str, stt: str, threshold: float = 0.85):
         self.source = source
         self.stt = stt
         self.threshold = threshold
-        self.result = {}
 
         self.nikud_pattern = re.compile(r'[\u0591-\u05C7]')
         self.final_forms = {'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ'}
@@ -137,28 +136,4 @@ class HebrewTextComparator(BaseWorkflow):
         return result
 
     def run(self):
-        self.result = self.compare_hebrew_strings()
-        return self.result
-
-    def print_results(self):
-        for word, matched in self.result.items():
-            print(f"{word}: {'אמת' if matched else 'שקר'}")
-
-        true_count = sum(1 for matched in self.result.values() if matched)
-        false_count = sum(1 for matched in self.result.values() if not matched)
-        print(f"\nTotal words: {len(self.result)}")
-        print(f"Matched (אמת): {true_count}")
-        print(f"Not matched (שקר): {false_count}")
-
-
-def main():
-    source = """ויפגע במקום וילן שם כי בא השמש ויקח מאבני המקום וישם מראשתיו וישכב במקום ההוא ויחלם והנה סלם מצב ארצה וראשו מגיע השמימה והנה מלאכי אלהים עלים וירדים בו"""
-    stt = """ויפגע במקום וילין שם כי בא השמש ויקח מאבנו המקום והיו שם מראשותיו וישכב במקום ההוא ויחלם לם והנה סולם מוצב ארצה ורעושו מגיע השוממה והנה מלאכי אלוקים עלים ויורדעמים בו"""
-
-    comparator = HebrewTextComparator(source, stt, threshold=0.85)
-    comparator.run()
-    comparator.print_results()
-
-
-if __name__ == "__main__":
-    main()
+        return self.compare_hebrew_strings()
