@@ -55,12 +55,13 @@ export const getLessonsById = async (
     const response = await apiClient.get<FormattedLessonContent>(
       `/lesson/${lessonId}`
     );
-    const { audio, highlightsTimestamps, text } = response.data;
+    const { audio, highlightsTimestamps, text, sttText } = response.data;
 
     return {
       audio: convertBase64ToBlob(audio),
       highlightsTimestamps,
       text,
+      sttText,
     };
   } catch (error) {
     throw error;
@@ -74,6 +75,7 @@ export const createOrUpdateLesson = async (
     const dbLesson = {
       audio: lesson.audio,
       highlightsTimestamps: lesson.highlightsTimestamps,
+      sttText: lesson.sttText,
       metadata: {
         title: lesson.title,
         startChapter: lesson.startChapter,

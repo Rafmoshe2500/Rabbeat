@@ -1,11 +1,9 @@
-from typing import List, Optional
-
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
 from models.mongo import Lesson, LessonResponse, LessonMetadata, LessonStatus, ExtendLessonResponse
 from tools.utils import mongo_db
-from workflows.get_torah import get_words_with_times_and_variants
+from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
 
@@ -25,9 +23,18 @@ async def get_lesson_by_id(id: str):
 
     if lesson:
         lesson["_id"] = str(lesson["_id"])
-        text = get_words_with_times_and_variants(lesson_metadata["pentateuch"], lesson_metadata["startChapter"],
-                                                 lesson_metadata["startVerse"], lesson_metadata["endChapter"],
-                                                 lesson_metadata["endVerse"], lesson["highlightsTimestamps"])
+
+        # Set the pentateuch for this request
+        torah_processor = TorahTextProcessor(lesson_metadata["pentateuch"])
+
+        text = torah_processor.get_words_with_times_and_variants(
+            start_chapter=lesson_metadata["startChapter"],
+            start_verse=lesson_metadata["startVerse"],
+            end_chapter=lesson_metadata["endChapter"],
+            end_verse=lesson_metadata["endVerse"],
+            times=lesson["highlightsTimestamps"]
+        )
+
         lesson.update({"text": text})
         return lesson
     raise HTTPException(status_code=404, detail="Lesson not found")

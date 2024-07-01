@@ -26,6 +26,8 @@ const UploadLessonPage = () => {
   const { mutate } = useCreateOrUpdateLesson();
 
   const handleStartRecording = async () => {
+    resetTranscript();
+    setTimestamps([0.0]);
     SpeechRecognition.startListening({ continuous: true, language: "iw-IL" });
     setIsRecording(true);
     audioChunksRef.current = [];
@@ -112,6 +114,7 @@ const UploadLessonPage = () => {
       creationDate: new Date().toISOString(),
       audio: await convertBlobToBase64(audioBlob!),
       highlightsTimestamps: timestamps,
+      sttText: transcript,
     } as FormattedLesson;
     mutate(lessonToUpload);
   };

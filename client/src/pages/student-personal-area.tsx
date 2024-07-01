@@ -1,13 +1,4 @@
-import { useState } from "react";
-import LessonView from "./lesson-view";
 import LessonsList from "../components/lessons/lessons-list/lessons-list";
-// import {
-//   lesson1Details,
-//   lesson2Details,
-//   lesson3Details,
-//   lesson4Details,
-//   lesson5Details,
-// } from "../mocks/fakeData";
 import { useLessonsDetailsByUser } from "../hooks/useLessonsDetailsByUser";
 import { useUser } from "../contexts/user-context";
 import Loader from "../components/common/loader";
@@ -20,13 +11,6 @@ const StudentPersonalArea = () => {
     isError,
   } = useLessonsDetailsByUser(userDetails!.id);
 
-  // const [lessons, setLessons] = useState<Array<LessonDetails>>([
-  //   lesson1Details,
-  //   lesson2Details,
-  //   lesson3Details,
-  //   lesson4Details,
-  //   lesson5Details,
-  // ]);
   return (
     <div>
       <div style={{ marginBottom: "8rem" }}>אזור אישי לתלמיד</div>
@@ -42,8 +26,6 @@ const StudentPersonalArea = () => {
           )}
         </p>
       )}
-
-      {/* <LessonView currLesson={currLesson} /> */}
     </div>
   );
 };
