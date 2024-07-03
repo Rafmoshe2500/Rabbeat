@@ -38,8 +38,7 @@ class LessonsComments(BaseModel):
 class LessonStatus(BaseModel):
     lessonId: str
     userId: str
-    inProgress: bool = False
-    finish: bool = False
+    status: str
 
 
 class UpdateLessonStatusModel(BaseModel):
@@ -87,6 +86,6 @@ class LessonResponse(BaseModel):
 
 
 class ExtendLessonResponse(LessonResponse):
-    status: LessonStatus
+    status: str
 
 # TODO Split to files

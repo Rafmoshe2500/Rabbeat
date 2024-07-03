@@ -75,7 +75,7 @@ async def get_lessons_metadata_by_user_id(user_id: str):
             )
             if user['type'] == 'student':
                 status = mongo_db.get_lesson_status_by_ids(user_id, lesson_id['lessonId'])
-                lesson_response = ExtendLessonResponse(**lesson_response.dict(), status=LessonStatus(**status))
+                lesson_response = ExtendLessonResponse(**lesson_response.dict(), status=status['status'])
             lessons.append(lesson_response)
 
         return lessons
