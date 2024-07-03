@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
 from starlette import status
@@ -13,7 +11,7 @@ from workflows.register import RegisterWorkflow
 router = APIRouter(tags=["User"])
 
 
-@router.post("/register", response_model=User, include_in_schema=False)
+@router.post("/register", include_in_schema=False)
 async def register(user: UserRegister):
     try:
         result = RegisterWorkflow(user).run()
@@ -26,7 +24,7 @@ async def register(user: UserRegister):
     raise HTTPException(status_code=500, detail="Failed to create user")
 
 
-@router.post("/login", response_model=User, include_in_schema=False)
+@router.post("/login", include_in_schema=False)
 async def login(user_cred: UserCredentials):
     result = LoginWorkflow(user_cred).run()
     if result:
@@ -35,7 +33,7 @@ async def login(user_cred: UserCredentials):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to create user")
 
 
-@router.get("/user/{id}", response_model=User)
+@router.get("/user/{id}")
 async def get_user_by_id(id: str):
     user = mongo_db.get_user_by_id(id)
     if user:
@@ -44,7 +42,7 @@ async def get_user_by_id(id: str):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
 
-@router.get("/users", response_model=List[User])
+@router.get("/users")
 async def get_all_users():
     users = mongo_db.get_all_users()
     if not users:

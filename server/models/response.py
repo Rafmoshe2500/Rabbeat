@@ -3,6 +3,8 @@ from typing import List, Dict, Any
 
 from pydantic import BaseModel
 
+from models.mongo import User
+
 
 class LessonDetail(BaseModel):
     _id: str

@@ -7,7 +7,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelection
 
 # Assuming the data models are defined as dataclasses
 from models.mongo import LessonResponse, LessonMetadata, LessonStatus, Lesson, \
-    LessonsComments, ChatBotMessages, User, UserCredentials, UserLessons
+    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons
 
 
 class MongoDBApi:
@@ -142,12 +142,12 @@ class MongoDBApi:
 
     def get_lesson_comments_by_ids(self, userId: str, lessonsId: str):
         try:
-            return list(self._db.lesson_comments.find({"lessonsId": lessonsId, "userId": userId}))
+            return list(self._db.lesson_comments.find({"lessonId": lessonsId, "userId": userId}))
         except Exception as e:
             logging.error(f"Error getting lesson comments by IDs: {e}")
             return []
 
-    def add_lesson_comment(self, lesson_comment: LessonsComments):
+    def add_lesson_comment(self, lesson_comment: LessonComments):
         try:
             return self._db.lesson_comments.insert_one(lesson_comment.dict())
         except Exception as e:

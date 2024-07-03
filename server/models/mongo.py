@@ -1,8 +1,8 @@
 # Pydantic models
 from datetime import datetime
-from typing import Optional, List
+from typing import List
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class LessonMetadata(BaseModel):
@@ -28,7 +28,7 @@ class UserLessons(BaseModel):
     lessonId: str
 
 
-class LessonsComments(BaseModel):
+class LessonComments(BaseModel):
     userId: str
     lessonId: str
     time: float
@@ -39,11 +39,6 @@ class LessonStatus(BaseModel):
     lessonId: str
     userId: str
     status: str = 'not-started'
-
-
-class UpdateLessonStatusModel(BaseModel):
-    inProgress: Optional[bool] = None
-    finish: Optional[bool] = None
 
 
 class Message(BaseModel):
