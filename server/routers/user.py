@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
 from starlette import status
@@ -33,7 +35,7 @@ async def login(user_cred: UserCredentials):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to create user")
 
 
-@router.get("/user/{id}")
+@router.get("/user/{id}", response_model=User)
 async def get_user_by_id(id: str):
     user = mongo_db.get_user_by_id(id)
     if user:
@@ -42,7 +44,7 @@ async def get_user_by_id(id: str):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
 
-@router.get("/users/")
+@router.get("/users", response_model=List[User])
 async def get_all_users():
     users = mongo_db.get_all_users()
     if not users:
