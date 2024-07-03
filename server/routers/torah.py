@@ -5,8 +5,8 @@ from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
 from routers import torah_router
-from sel import get_full_text_return_verse_with_nikud
 from workflows.get_torah import TorahTextProcessor  # Import the new class
+from workflows.text_comparator import HebrewTextComparator
 
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
@@ -37,26 +37,11 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
         raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
 
 
-@torah_router.post('/Nikud')
-def set_vers_nikud(string):
-    return {'result': get_full_text_return_verse_with_nikud(string)}
+@torah_router.post('/compare-two-texts/')
+def compare_two_texts(source, need_to_compare):
+    try:
+        text_comparator = HebrewTextComparator(source, need_to_compare).run()
+        return JSONResponse(content=text_comparator)
+    except Exception as e:
+        raise HTTPException(500, 'אופס, נראה שמשהו השתבש במהלך האנליזה של ההקלטה... סליחה על אי הנוחות')
 
-
-@torah_router.post('/CompareReadingToRealVerse')
-def set_vers_nikud(real_verse, reading):
-    response = defaultdict(dict)
-    original_words = str(Hebrew(real_verse).no_taamim().no_sof_passuk().no_maqaf()).split(" ")
-    words = str(Hebrew(real_verse).text_only().no_sof_passuk().no_maqaf()).split(" ")
-    reading_words = str(Hebrew(get_full_text_return_verse_with_nikud(reading)).text_only()).split(" ")
-    for i in range(len(words)):
-        if words[i] == reading_words[i]:
-            response[i].update({"word": original_words[i], "status": True})
-        elif 'יהוה' in str(Hebrew(words[i]).text_only()):
-            if 'אדני' in str(Hebrew(reading_words[i]).text_only()) or 'אדוני' in str(
-                    Hebrew(reading_words[i]).text_only()):
-                response[i].update({"word": original_words[i], "status": True})
-            else:
-                response[i].update({"word": original_words[i], "status": False})
-        else:
-            response[i].update({"word": original_words[i], "status": False})
-    return response
