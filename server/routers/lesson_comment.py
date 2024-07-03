@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
@@ -7,7 +9,7 @@ from tools.utils import mongo_db
 router = APIRouter(tags=['User-Lessons | Additives'])
 
 
-@router.post("/lesson-comment/")
+@router.post("/lesson-comment", response_model=str)
 async def create_lesson_comment(lesson_comment: LessonsComments):
     result = mongo_db.add_lesson_comment(lesson_comment)
     if result:
@@ -15,7 +17,7 @@ async def create_lesson_comment(lesson_comment: LessonsComments):
     raise HTTPException(status_code=500, detail="Lesson Comment not created")
 
 
-@router.get("/lesson-comments/{lessonsId}/user/{userId}")
+@router.get("/lesson-comments/{lessonsId}/user/{userId}", response_model=List[LessonsComments])
 async def get_lesson_comments_by_ids(userId: str, lessonsId: str):
     lesson_comments = mongo_db.get_lesson_comments_by_ids(userId, lessonsId)
     for lesson_comment in lesson_comments:

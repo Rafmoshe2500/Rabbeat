@@ -3,7 +3,7 @@ from pymongo.errors import DuplicateKeyError
 from starlette import status
 from starlette.responses import JSONResponse
 
-from models.mongo import UserRegister, UserCredentials
+from models.mongo import UserRegister, UserCredentials, User
 from tools.utils import mongo_db
 from workflows.login import LoginWorkflow
 from workflows.register import RegisterWorkflow
@@ -11,7 +11,7 @@ from workflows.register import RegisterWorkflow
 router = APIRouter(tags=["User"])
 
 
-@router.post("/register/")
+@router.post("/register", response_model=User, include_in_schema=False)
 async def register(user: UserRegister):
     try:
         result = RegisterWorkflow(user).run()
@@ -24,7 +24,7 @@ async def register(user: UserRegister):
     raise HTTPException(status_code=500, detail="Failed to create user")
 
 
-@router.post("/login/")
+@router.post("/login", response_model=User, include_in_schema=False)
 async def login(user_cred: UserCredentials):
     result = LoginWorkflow(user_cred).run()
     if result:

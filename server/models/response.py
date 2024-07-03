@@ -4,7 +4,9 @@ from typing import List, Dict, Any
 from pydantic import BaseModel
 
 
-class LessonResponse(BaseModel):
+class LessonDetail(BaseModel):
+    _id: str
     audio: str
     highlightsTimestamps: List[float]
-    text: Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
+    sttText: str
+    text: Dict[str, Any]

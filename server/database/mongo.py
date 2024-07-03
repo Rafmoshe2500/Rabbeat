@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 from bson import ObjectId
 from pymongo import MongoClient, ASCENDING
@@ -31,7 +32,7 @@ class MongoDBApi:
         except Exception as e:
             print(e)
 
-    def __ensure_indexes(self):
+    def __ensure_indexes(self) -> None:
         try:
             self._db.users.create_index([("id", ASCENDING)], unique=True)
             self._db.users.create_index([("email", ASCENDING)], unique=True)
@@ -39,13 +40,13 @@ class MongoDBApi:
         except DuplicateKeyError as e:
             logging.warning(f"Index creation skipped due to duplication: {e}")
 
-    def get_lessons_by_user_id(self, user_id: str):
+    def get_lessons_by_user_id(self, user_id: str) -> List[Lesson]:
         return list(self._db.user_lessons.find({"userId": user_id}))
 
-    def get_lessons_metadata_by_user_id(self, lesson_id):
+    def get_lessons_metadata_by_user_id(self, lesson_id) -> List[LessonMetadata]:
         return self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
 
-    def remove_all_lesson_data_from_user(self, user_lesson: UserLessons):
+    def remove_all_lesson_data_from_user(self, user_lesson: UserLessons) -> None:
         try:
             self._db.user_lessons.delete_one({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
             self._db.lesson_status.delete_one({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
@@ -62,7 +63,7 @@ class MongoDBApi:
             logging.error(f"Error associating user to lesson: {e}")
             return None
 
-    def add_lesson(self, lesson: Lesson):
+    def add_lesson(self, lesson: Lesson) -> str:
         try:
             only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps', 'sttText'})
             result = self._db.lessons.insert_one(only_lesson)
@@ -72,16 +73,15 @@ class MongoDBApi:
                 return result.inserted_id
         except Exception as e:
             logging.error(f"Error adding lesson: {e}")
-            return None
 
-    def get_all_lessons_metadata(self):
+    def get_all_lessons_metadata(self) -> List[LessonMetadata]:
         try:
             return list(self._db.lessons_metadata.find())
         except Exception as e:
             logging.error(f"Error getting all lessons metadata: {e}")
             return []
 
-    def get_all_lessons(self):
+    def get_all_lessons(self) -> List[Lesson]:
         try:
             return list(self._db.lessons.find())
         except Exception as e:
