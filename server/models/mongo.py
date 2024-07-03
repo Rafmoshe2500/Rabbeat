@@ -38,7 +38,7 @@ class LessonsComments(BaseModel):
 class LessonStatus(BaseModel):
     lessonId: str
     userId: str
-    status: str
+    status: str = 'not-started'
 
 
 class UpdateLessonStatusModel(BaseModel):
