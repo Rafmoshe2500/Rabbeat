@@ -2,7 +2,7 @@ import LessonCard from "../lesson-card/lesson-card";
 import "./lesson-list.css";
 
 type LessonListProps = {
-  lessons: Array<Partial<LessonDetailsWIthStatus>>;
+  lessons: Array<Partial<LessonDetails>>;
 };
 
 const LessonsList = ({ lessons }: LessonListProps) => {

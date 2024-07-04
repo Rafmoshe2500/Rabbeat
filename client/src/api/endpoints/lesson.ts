@@ -39,6 +39,7 @@ export const getLessonsDetailsByUser = async (
         startChapter: les.metadata.startChapter,
         startVerse: les.metadata.startVerse,
         title: les.metadata.title,
+        status: les.status,
       } as LessonDetails);
     }
 
