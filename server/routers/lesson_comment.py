@@ -23,7 +23,9 @@ async def get_lesson_comments_by_ids(userId: str, lessonsId: str):
     for lesson_comment in lesson_comments:
         lesson_comment["id"] = str(lesson_comment["_id"])
         del lesson_comment["_id"]
-    return lesson_comments
+    sorted_comments = sorted(lesson_comments, key=lambda x: x['time'])
+
+    return sorted_comments
 
 
 @router.delete("/lesson-comment/{id}")
