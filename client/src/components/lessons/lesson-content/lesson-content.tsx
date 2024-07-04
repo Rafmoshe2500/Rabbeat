@@ -11,12 +11,6 @@ interface LessonContentProps {
   lesson?: Lesson;
 }
 
-interface NoteData {
-  id: number;
-  timestamp: number;
-  text: string;
-}
-
 const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [audioURL, setAudioURL] = useState<string | null>(null);
