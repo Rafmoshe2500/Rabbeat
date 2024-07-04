@@ -7,7 +7,7 @@ from tools.utils import mongo_db
 router = APIRouter(tags=['User-Lessons | Additives'])
 
 
-@router.post("/chatbot-message/")
+@router.post("/chatbot-message/", include_in_schema=False)
 async def create_lesson_message(chatbot_message: ChatBotMessages):
     result = mongo_db.add_lesson_message(chatbot_message)
     if result:
@@ -15,7 +15,7 @@ async def create_lesson_message(chatbot_message: ChatBotMessages):
     raise HTTPException(status_code=500, detail="Chatbot Message not created")
 
 
-@router.get("/chatbot-messages/{lessonId}/user/{userId}")
+@router.get("/chatbot-messages/{lessonId}/user/{userId}", include_in_schema=False)
 async def get_all_lesson_messages_from_lesson_by_user_id(userId: str, lessonId: str):
     chatbot_messages = mongo_db.get_lesson_messages(userId, lessonId)
     for chatbot_message in chatbot_messages:
@@ -23,7 +23,7 @@ async def get_all_lesson_messages_from_lesson_by_user_id(userId: str, lessonId: 
     return chatbot_messages
 
 
-@router.delete("/chatbot-messages/")
+@router.delete("/chatbot-messages/", include_in_schema=False)
 async def delete_all_lesson_messages_from_lesson_by_user_id(lessonId: str, userId: str):
     delete_result = mongo_db.delete_lesson_messages(lessonId, userId)
     if not delete_result:

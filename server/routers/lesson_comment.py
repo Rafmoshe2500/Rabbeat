@@ -1,14 +1,16 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.mongo import LessonsComments
+from models.mongo import LessonComments
 from tools.utils import mongo_db
 
 router = APIRouter(tags=['User-Lessons | Additives'])
 
 
-@router.post("/lesson-comment/")
-async def create_lesson_comment(lesson_comment: LessonsComments):
+@router.post("/lesson-comment", response_model=str)
+async def create_lesson_comment(lesson_comment: LessonComments):
     result = mongo_db.add_lesson_comment(lesson_comment)
     if result:
         return JSONResponse(status_code=201, content=str(result.inserted_id))
