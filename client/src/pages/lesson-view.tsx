@@ -8,7 +8,7 @@ import ChatComponent from "../components/chatbot/ChatComponent";
 
 const LessonView = () => {
   const location = useLocation();
-  const lessonDetails: LessonDetailsWIthStatus = location.state?.lessonDetails;
+  const lessonDetails: LessonDetails = location.state?.lessonDetails;
   const { id } = useParams<{ id: string }>();
 
   const navigate = useNavigate();

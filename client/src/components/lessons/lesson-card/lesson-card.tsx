@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 type LessonCardProps = {
-  lessonDetails: Partial<LessonDetailsWIthStatus>;
+  lessonDetails: Partial<LessonDetails>;
 };
 
 const LessonCard = ({ lessonDetails }: LessonCardProps) => {
