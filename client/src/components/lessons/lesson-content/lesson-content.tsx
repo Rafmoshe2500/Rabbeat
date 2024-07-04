@@ -12,7 +12,7 @@ interface LessonContentProps {
 }
 
 const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
-  const [notes, setNotes] = useState<NoteData[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [highlightedWord, setHighlightedWord] = useState<WordToMark>();
 
@@ -32,7 +32,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const addNote = () => {
     if (audioRef.current) {
       const timestamp = audioRef.current.currentTime;
-      const newNote: NoteData = {
+      const newNote: Note = {
         id: noteIdRef.current++,
         timestamp,
         text: "currentTranscript",
