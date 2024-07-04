@@ -30,10 +30,7 @@ type LessonDetails = {
   pentateuch: string;
   version: LessonVersion;
   creationDate: string;
-};
-
-type LessonDetailsWIthStatus = LessonDetails & {
-  status: LessonStatus;
+  status?: LessonStatus;
 };
 
 type LessonVersion = "Spanish" | "Ashkenaz";
