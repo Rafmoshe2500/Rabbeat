@@ -7,7 +7,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelection
 
 # Assuming the data models are defined as dataclasses
 from models.mongo import LessonResponse, LessonMetadata, LessonStatus, Lesson, \
-    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons
+    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons, UpdateComment
 
 
 class MongoDBApi:
@@ -102,10 +102,20 @@ class MongoDBApi:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
 
-    def update_lesson_status(self, update: LessonStatus):
+    def update_lesson_status(self, status_id, update: LessonStatus):
         try:
             return self._db.lesson_status.update_one(
-                {"lessonId": update.lessonId, "userId": update.userId},
+                {"_id": ObjectId(status_id)},
+                {"$set": update.dict()}
+            )
+        except Exception as e:
+            logging.error(f"Error updating lesson status: {e}")
+            return None
+
+    def update_lesson_comment(self, comment_id, update: UpdateComment):
+        try:
+            return self._db.lesson_comments.update_one(
+                {"_id": ObjectId(comment_id)},
                 {"$set": update.dict()}
             )
         except Exception as e:

@@ -35,6 +35,14 @@ class LessonComments(BaseModel):
     text: str
 
 
+class UpdateStatus(BaseModel):
+    status: str
+
+
+class UpdateComment(BaseModel):
+    text: str
+
+
 class LessonStatus(BaseModel):
     lessonId: str
     userId: str
