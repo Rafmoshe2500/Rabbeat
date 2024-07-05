@@ -5,7 +5,6 @@ from typing import List, Tuple, Set, Dict
 
 
 class BaseWorkflow(ABC):
-
     @abstractmethod
     def run(self):
         pass
@@ -35,16 +34,23 @@ class HebrewTextComparator(BaseWorkflow):
             'אתרוג': 'אתרג', 'אות': 'את', 'אור': 'אר', 'גוי': 'גי',
             'חוק': 'חק', 'יום': 'ים', 'כבוד': 'כבד', 'לאום': 'לאם',
             'מאור': 'מאר', 'עוון': 'עון', 'צום': 'צם', 'קול': 'קל',
-            'רוח': 'רח', 'שלום': 'שלם', 'תוך': 'תך', }
+            'רוח': 'רח', 'שלום': 'שלם', 'תוך': 'תך',
+        }
         self.substitutions = {
             'יהוה': 'אדוני',
             'אלהים': 'אלוקים',
+            'אלוהים': 'אלוקים'
         }
         self.letter_confusions = [
             ('ש', 'ס'),
             ('ב', 'ו'),
             ('כ', 'ח'),
-            ('א', 'ה', 'ע')
+            ('א', 'ה', 'ע'),
+            ('כ', 'ק'),
+            ('ט', 'ת'),
+            ('ס', 'ת'),
+            ('ו', 'י'),
+            ('פ', 'ף'),
         ]
 
     def remove_nikud(self, text: str) -> str:
@@ -75,6 +81,12 @@ class HebrewTextComparator(BaseWorkflow):
             variations.update(new_variations)
         return variations
 
+    def generate_missing_letter_variations(self, word: str) -> Set[str]:
+        variations = set()
+        for i in range(len(word)):
+            variations.add(word[:i] + word[i + 1:])
+        return variations
+
     def preprocess_hebrew(self, text: str) -> List[Tuple[str, str, Set[str]]]:
         words = self.remove_nikud(text).split()
         processed_words = []
@@ -83,6 +95,7 @@ class HebrewTextComparator(BaseWorkflow):
             normalized_word = self.normalize_spelling(normalized_word)
             normalized_word = self.handle_substitutions(normalized_word)
             variations = self.handle_letter_confusion(normalized_word)
+            variations.update(self.generate_missing_letter_variations(normalized_word))
             processed_words.append((original_word, normalized_word, variations))
         return processed_words
 
@@ -90,11 +103,11 @@ class HebrewTextComparator(BaseWorkflow):
     def word_similarity(word1: str, word2: str) -> float:
         return SequenceMatcher(None, word1, word2).ratio()
 
-    def compare_hebrew_strings(self) -> Dict[str, bool]:
+    def compare_hebrew_strings(self) -> List[Dict[str, bool]]:
         source_words = self.preprocess_hebrew(self.source.replace('\n', ' '))
         stt_words = self.preprocess_hebrew(self.stt)
 
-        result = {original_word: False for original_word, _, _ in source_words}
+        result = []
         used_indices = set()
 
         for i, (original_word1, normalized_word1, variations1) in enumerate(source_words):
@@ -118,8 +131,9 @@ class HebrewTextComparator(BaseWorkflow):
                         best_index = j
                         break
 
-                if any(v2.startswith(v1) for v1 in variations1 for v2 in variations2):
-                    best_match = len(normalized_word2) / len(normalized_word1)
+                if any(v2.startswith(v1) or v1.startswith(v2) for v1 in variations1 for v2 in variations2):
+                    best_match = max(len(normalized_word2) / len(normalized_word1),
+                                     len(normalized_word1) / len(normalized_word2))
                     best_index = j
                     continue
 
@@ -128,12 +142,11 @@ class HebrewTextComparator(BaseWorkflow):
                     best_match = similarity
                     best_index = j
 
-            if best_match >= self.threshold:
-                result[original_word1] = True
-                if best_index != -1:
-                    used_indices.add(best_index)
+            result.append({original_word1: best_match >= self.threshold})
+            if best_index != -1:
+                used_indices.add(best_index)
 
         return result
 
-    def run(self):
+    def run(self) -> List[Dict[str, bool]]:
         return self.compare_hebrew_strings()

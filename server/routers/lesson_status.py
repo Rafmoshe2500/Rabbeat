@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.mongo import LessonStatus
+from models.mongo import LessonStatus, UpdateStatus
 from tools.utils import mongo_db
 
 router = APIRouter(tags=['User-Lessons | Additives'])
@@ -24,9 +24,9 @@ async def get_lesson_status_by_ids(userId: str, lessonId: str):
     raise HTTPException(status_code=404, detail="Lesson status not found")
 
 
-@router.patch("/lesson-status")
-async def update_lesson_status(update: LessonStatus):
-    update_result = mongo_db.update_lesson_status(update)
+@router.put("/lesson-status/{status_id}")
+async def update_lesson_status(status_id, update: UpdateStatus):
+    update_result = mongo_db.update_lesson_status(status_id, update)
     if not update_result:
         raise HTTPException(status_code=404, detail="Something went wrong")
     if update_result.matched_count == 0:
