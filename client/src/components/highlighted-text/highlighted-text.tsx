@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styles from "./highlighted-text.module.css";
 import { Box, Container } from "@mui/material";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 
@@ -40,8 +39,7 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
   };
 
   useEffect(() => {
-    const asd = audioRef.current;
-    if (asd) {
+    if (audioRef.current) {
       const audioElement = audioRef.current;
       audioElement.addEventListener("timeupdate", handleTimeUpdate);
       return () => {
@@ -52,7 +50,7 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
 
   return (
     <Container maxWidth="sm">
-      <Box className={`${styles["text"]}`} sx={{ bgcolor: "#cfe8fc" }}>
+      <Box sx={{ bgcolor: "#cfe8fc" }}>
         {lesson?.text && (
           <div>
             <DisplayText
