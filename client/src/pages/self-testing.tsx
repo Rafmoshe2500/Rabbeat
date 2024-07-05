@@ -55,13 +55,13 @@ const SelfTesting = () => {
   return (
     <div>
       כאן בודקים
-      <div>{lesson && <DisplayText text={lesson.text!} />}</div>
       <div>
         <button onClick={resetTranscript}>Reset</button>
         <button onClick={handleOnRecord}>
           {isSpeaking ? "Stop" : "Record"}
         </button>
       </div>
+      <div>{lesson && <DisplayText text={lesson.text!} />}</div>
       <div>
         <p>Spoken Text: {currentTranscript}</p>
       </div>
