@@ -1,13 +1,14 @@
 import apiClient from "../config";
 
 export const getLessonNotes = async (
-  userId: string,
-  lessonId: string
+  lessonId: string,
+  userId: string
 ): Promise<Note[]> => {
   try {
     const response = await apiClient.get<Note[]>(
       `/lesson-comments/${lessonId}/user/${userId}`
     );
+
     return response.data;
   } catch (error) {
     throw error;
@@ -23,12 +24,14 @@ export const createNote = async (note: Omit<Note, "id">): Promise<Note> => {
   }
 };
 
-export const updateNote = async (note: Note): Promise<Note> => {
+export const updateNote = async (
+  noteId: string,
+  text: string
+): Promise<Note> => {
   try {
-    const response = await apiClient.post<Note>(
-      `/lesson-comment/${note.id}`,
-      note
-    );
+    const response = await apiClient.put<Note>(`/lesson-comment/${noteId}`, {
+      text,
+    });
     return response.data;
   } catch (error) {
     throw error;
