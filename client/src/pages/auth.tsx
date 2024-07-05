@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LoginForm from '../components/auth/login-form';
 import RegisterForm from '../components/auth/register-form';
 import { useUser } from '../contexts/user-context'; // Import UserContext
+import { storeToken, decodeToken, isTokenValid } from '../utils/jwt-cookies';
 
 interface AuthFormProps {
   initialForm?: 'login' | 'register';
@@ -48,8 +49,8 @@ const ButtonContainer = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   gap: '16px',
-  marginTop: 'auto', // This will push the buttons to the bottom
-  paddingTop: '24px', // Add some space above the buttons
+  marginTop: 'auto',
+  paddingTop: '24px',
 });
 
 const MessageOverlay = styled('div')<{ isError?: boolean }>(({ isError }) => ({
@@ -66,34 +67,48 @@ const MessageOverlay = styled('div')<{ isError?: boolean }>(({ isError }) => ({
   textAlign: 'center',
 }));
 
-const AuthForm: React.FC<AuthFormProps> = ({ initialForm }) => {
-  const [isLogin, setIsLogin] = useState(initialForm === 'register' ? false : true);
-  const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
+const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { setUserDetails } = useUser(); 
+  const { setUserDetails } = useUser();
+  const [isLogin, setIsLogin] = useState(initialForm === 'login');
+  const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const form = searchParams.get('form');
-    if (form === 'register') {
-      setIsLogin(false);
-    } else if (form === 'login') {
-      setIsLogin(true);
-    }
-  }, [location]);
+    const validateToken = async () => {
+      try {
+        console.log('Checking token validity...');
+        const valid = await isTokenValid();
+        console.log('Token valid:', valid);
+        if (valid) {
+          navigate('/home');
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error during token validation:', error);
+        setLoading(false);
+      }
+    };
+
+    validateToken();
+  }, [navigate]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
-    navigate(`/auth?form=${isLogin ? 'register' : 'login'}`);
+    setMessage(null); // Clear message on form toggle
   };
 
-  const handleSuccess = (user: User) => {
-    setMessage({ text: isLogin ? 'התחברת בהצלחה!' : 'נרשמת בהצלחה!', isError: false });
-    setTimeout(() => {
-        setMessage(null)
-        setUserDetails(user);
-        navigate('/home'), 2000});
+  const handleSuccess = (token: string) => {
+    storeToken(token);
+    const decodedUser = decodeToken(token);
+    if (decodedUser) {
+      setUserDetails(decodedUser);
+      setMessage({ text: isLogin ? 'התחברת בהצלחה!' : 'נרשמת בהצלחה!', isError: false });
+      navigate('/home');
+    } else {
+      handleError('אירעה שגיאה בעיבוד פרטי המשתמש');
+    }
   };
 
   const handleError = (errorMessage: string) => {
@@ -102,6 +117,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm }) => {
       setMessage(null);
     }, 2000);
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // You can show a loading spinner or similar here
+  }
 
   return (
     <div className="auth-container">

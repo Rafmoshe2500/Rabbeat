@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Typography, Box } from '@mui/material';
-import { useLogin } from '../../hooks/useAuth.tsx';
-import RTLTextField from '../../utils/rtl-text-field'
+import { useLogin } from '../../hooks/useAuth';
+import RTLTextField from '../../utils/rtl-text-field';
 
 interface LoginFormProps {
-  onSuccess: (user: User) => void;
+  onSuccess: (token: string) => void;
   onError: (message: string) => void;
 }
 
@@ -19,9 +19,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const user = await loginUser(credentials);
-      if (user) {
-        onSuccess(user);
+      const response = await loginUser(credentials);
+      if (response) {
+        onSuccess(response);
       } else {
         onError('ההתחברות נכשלה. אנא בדוק את פרטי הכניסה שלך.');
       }
@@ -55,6 +55,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
         onChange={handleChange}
         required
       />
+      {error && (
+        <Typography color="error" align="center">
+          {error}
+        </Typography>
+      )}
     </Box>
   );
 };

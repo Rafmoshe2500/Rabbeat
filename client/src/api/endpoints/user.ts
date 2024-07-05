@@ -19,11 +19,11 @@ export const createUserOrUpdate = async (user: User): Promise<User> => {
 };
 
 export const login = async (credentials: UserCredentials) => {
-  const response = await apiClient.post<User>(`/login`, credentials);
+  const response = await apiClient.post<string>(`/login`, credentials);
     return response.data;
 };
 
 export const register = async (userData: UserRegister) => {
-  const response = await apiClient.post<User>(`/register`, userData);
+  const response = await apiClient.post<string>(`/register`, userData);
   return response.data;
 };

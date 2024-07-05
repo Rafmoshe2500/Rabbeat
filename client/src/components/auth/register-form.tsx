@@ -4,7 +4,7 @@ import { useRegister } from '../../hooks/useAuth.tsx';
 import RTLTextField from '../../utils/rtl-text-field'
 
 interface RegisterFormProps {
-  onSuccess: (user: User) => void;
+  onSuccess: (token: string) => void;
   onError: (message: string) => void;
 }
 
@@ -35,9 +35,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
       return;
     }
     try {
-      const user = await registerUser(userData);
-      if (user) {
-        onSuccess(user);
+      const token = await registerUser(userData);
+      if (token) {
+        onSuccess(token);
       } else {
         onError('ההרשמה נכשלה. אנא בדוק את הפרטים שהזנת ונסה שוב.');
       }
