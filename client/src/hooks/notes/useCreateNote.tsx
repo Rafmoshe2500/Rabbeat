@@ -4,7 +4,7 @@ import { createNote } from "../../api/endpoints/notes";
 export const useCreateNote = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Note, Error, Note>({
+  return useMutation<Note, Error, Omit<Note, "id">>({
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["lessonNotes"] });
