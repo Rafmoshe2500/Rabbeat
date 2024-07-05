@@ -2,6 +2,6 @@ type Note = {
   id: string;
   userId: string;
   lessonId: string;
-  timestamp: number;
+  time: number;
   text: string;
 };
