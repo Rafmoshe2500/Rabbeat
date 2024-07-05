@@ -1,8 +1,8 @@
 # Pydantic models
 from datetime import datetime
-from typing import Optional, List
+from typing import List
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class LessonMetadata(BaseModel):
@@ -28,23 +28,25 @@ class UserLessons(BaseModel):
     lessonId: str
 
 
-class LessonsComments(BaseModel):
+class LessonComments(BaseModel):
     userId: str
     lessonId: str
     time: float
     text: str
 
 
+class UpdateStatus(BaseModel):
+    status: str
+
+
+class UpdateComment(BaseModel):
+    text: str
+
+
 class LessonStatus(BaseModel):
     lessonId: str
     userId: str
-    inProgress: bool = False
-    finish: bool = False
-
-
-class UpdateLessonStatusModel(BaseModel):
-    inProgress: Optional[bool] = None
-    finish: Optional[bool] = None
+    status: str = 'not-started'
 
 
 class Message(BaseModel):
@@ -87,6 +89,6 @@ class LessonResponse(BaseModel):
 
 
 class ExtendLessonResponse(LessonResponse):
-    status: LessonStatus
+    status: str
 
 # TODO Split to files
