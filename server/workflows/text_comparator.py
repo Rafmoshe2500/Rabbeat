@@ -48,9 +48,6 @@ class HebrewTextComparator(BaseWorkflow):
             ('א', 'ה', 'ע'),
             ('כ', 'ק'),
             ('ט', 'ת'),
-            ('ס', 'ת'),
-            ('ו', 'י'),
-            ('פ', 'ף'),
         ]
 
     def remove_nikud(self, text: str) -> str:
