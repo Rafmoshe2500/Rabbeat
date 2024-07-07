@@ -1,8 +1,4 @@
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-
-interface DecodedToken extends JwtPayload {
-  user: User;
-}
+import { jwtDecode } from 'jwt-decode';
 
 export function storeToken(token: string) {
   document.cookie = `access_token=${token}; path=/; max-age=86400; SameSite=Strict; Secure`;
