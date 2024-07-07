@@ -20,7 +20,7 @@ def check_full_or_miss(word1, word2):
             i1 += 1
         elif word1[i1] not in full_chars and word2[i2] in full_chars:
             i2 += 1
-        elif check_if_confusion_chars(word1[i1], word2[i2]):
+        elif check_if_confusion_chars(word1[i1], word2[i2]) and (i1 < len(word1) - 1 and i2 < len(word2) - 1):
             i1 += 1
             i2 += 1
         else:
@@ -42,6 +42,59 @@ def move_forward(i1, i2, moves_i1, moves_i2):
     return i1, i2
 
 
+def compare_words(word1, word2):
+    words_distance = distance(word1, word2)
+    if word1 == word2:
+        return True
+
+    elif words_distance < 3 and check_full_or_miss(word1, word2):
+        return True
+
+    elif check_God_spell(word1, word2):
+        return True
+
+    return False
+
+
+def handle_word_comparison(words1, words2, i1, i2, memory, result):
+    if len(words1[i1]) == len(words2[i2]):
+        return handle_equal_length(words1[i1], words2[i2], i1, i2, memory, result)
+    elif can_combine_words(words1, words2, i1, i2):
+        return handle_combined_words(words1, words2, i1, i2, result)
+    else:
+        return handle_unequal_length(words1[i1], words2[i2], i1, i2, memory, result)
+
+def can_combine_words(words1, words2, i1, i2):
+    len1, len2 = len(words1), len(words2)
+    if len(words1[i1]) > len(words2[i2]) and i2 < len2 - 1:
+        return distance(words1[i1], words2[i2] + words2[i2 + 1]) < 3
+    elif len(words1[i1]) < len(words2[i2]) and i1 < len1 - 1:
+        return distance(words1[i1] + words1[i1 + 1], words2[i2]) < 3
+    return False
+
+def handle_equal_length(word1, word2, i1, i2, memory, result):
+    back = update_memory(memory, word1, word2)
+    if back != 0:
+        result[i1 - back] = (word1, True)
+    result.append((word1, False))
+    return move_forward(i1, i2, 1, 1)
+
+def handle_combined_words(words1, words2, i1, i2, result):
+    if len(words1[i1]) > len(words2[i2]):
+        result.append((words1[i1], True))
+        return move_forward(i1, i2, 1, 2)
+    else:
+        result.append((words1[i1], True))
+        result.append((words1[i1 + 1], True))
+        return move_forward(i1, i2, 2, 1)
+
+def handle_unequal_length(word1, word2, i1, i2, memory, result):
+    back = update_memory(memory, word1, word2)
+    if back != 0:
+        result[i1 - back] = (word1, True)
+    result.append((word1, False))
+    return move_forward(i1, i2, 1, 1)
+
 def compare_texts(text1, text2):
     result = []
     words1, words2 = text1.split(), text2.split()
@@ -49,20 +102,11 @@ def compare_texts(text1, text2):
     i1 = i2 = 0
     memory = []
     while i1 < len1 and i2 < len2:
-        words_distance = distance(words1[i1], words2[i2])
-        if words1[i1] == words2[i2]:
+        # words_distance = distance(words1[i1], words2[i2])
+        if compare_words(words1[i1], words2[i2]):
             result.append((words1[i1], True))
             i1, i2 = move_forward(i1, i2, 1, 1)
-
-        elif words_distance < 3 and check_full_or_miss(words1[i1], words2[i2]):
-            result.append((words1[i1], True))
-            i1, i2 = move_forward(i1, i2, 1, 1)
-
-        elif check_God_spell(words1[i1], words2[i2]):
-            result.append((words1[i1], True))
-            i1, i2 = move_forward(i1, i2, 1, 1)
-
-        elif words_distance <= 6:
+        else:
             if len(words1[i1]) == len(words2[i2]):
                 back = update_memory(memory, words1[i1], words2[i2])
                 if back != 0:
@@ -87,13 +131,6 @@ def compare_texts(text1, text2):
                 result.append((words1[i1], False))
                 i1, i2 = move_forward(i1, i2, 1, 1)
 
-        else:
-            back = update_memory(memory, words1[i1], words2[i2])
-            if back != 0:
-                result[i1 - back] = (words1[i1], True)
-            result.append((words1[i1], False))
-            i1, i2 = move_forward(i1, i2, 1, 1)
-
     while i1 < len1:
         result.append((words1[i1], False))
         i1 += 1
@@ -111,7 +148,7 @@ def update_memory(memory: list, word1, word2) -> int:
     if word2 in memory:
         for i in range(len(memory)):
             tmp = memory.pop(0)
-            if tmp == word2 or check_God_spell(tmp, word2):
+            if compare_words(tmp, word2):
                 memory.append(word1)
                 if i - 1 == 0 or i == 0:
                     return 1
@@ -144,7 +181,7 @@ print(f'source: {t1}\nstt: {t2}')
 for word in compare_texts(t1, t2):
     print(word)
 
-t1 = 'ויקרא אל משה וידבר יהוה אליו מאהל מועד לאמר'
+t1 = 'ויקרא אל משה וידבר יהוה אליו מאוהל מועד לאמור'
 t2 = 'ויקרע אל משה וידבר שמואל אדוני אליו מאוהל מועד לאמור'
 print(f'source: {t1}\nstt: {t2}')
 
