@@ -5,7 +5,7 @@ from tools.consts import GOD
 
 def check_God_spell(word1, word2):
     return (GOD in word1 and word2 in {'אדוני', 'אדני'}) or (
-                word2 in {'אלקים', 'אלוקים'} and word1 in {'אלהים', 'אלוהים'})
+            word2 in {'אלקים', 'אלוקים'} and word1 in {'אלהים', 'אלוהים'})
 
 
 def check_full_or_miss(word1, word2):
@@ -56,45 +56,6 @@ def compare_words(word1, word2):
     return False
 
 
-def handle_word_comparison(words1, words2, i1, i2, memory, result):
-    if len(words1[i1]) == len(words2[i2]):
-        return handle_equal_length(words1[i1], words2[i2], i1, i2, memory, result)
-    elif can_combine_words(words1, words2, i1, i2):
-        return handle_combined_words(words1, words2, i1, i2, result)
-    else:
-        return handle_unequal_length(words1[i1], words2[i2], i1, i2, memory, result)
-
-def can_combine_words(words1, words2, i1, i2):
-    len1, len2 = len(words1), len(words2)
-    if len(words1[i1]) > len(words2[i2]) and i2 < len2 - 1:
-        return distance(words1[i1], words2[i2] + words2[i2 + 1]) < 3
-    elif len(words1[i1]) < len(words2[i2]) and i1 < len1 - 1:
-        return distance(words1[i1] + words1[i1 + 1], words2[i2]) < 3
-    return False
-
-def handle_equal_length(word1, word2, i1, i2, memory, result):
-    back = update_memory(memory, word1, word2)
-    if back != 0:
-        result[i1 - back] = (word1, True)
-    result.append((word1, False))
-    return move_forward(i1, i2, 1, 1)
-
-def handle_combined_words(words1, words2, i1, i2, result):
-    if len(words1[i1]) > len(words2[i2]):
-        result.append((words1[i1], True))
-        return move_forward(i1, i2, 1, 2)
-    else:
-        result.append((words1[i1], True))
-        result.append((words1[i1 + 1], True))
-        return move_forward(i1, i2, 2, 1)
-
-def handle_unequal_length(word1, word2, i1, i2, memory, result):
-    back = update_memory(memory, word1, word2)
-    if back != 0:
-        result[i1 - back] = (word1, True)
-    result.append((word1, False))
-    return move_forward(i1, i2, 1, 1)
-
 def compare_texts(text1, text2):
     result = []
     words1, words2 = text1.split(), text2.split()
@@ -102,7 +63,6 @@ def compare_texts(text1, text2):
     i1 = i2 = 0
     memory = []
     while i1 < len1 and i2 < len2:
-        # words_distance = distance(words1[i1], words2[i2])
         if compare_words(words1[i1], words2[i2]):
             result.append((words1[i1], True))
             i1, i2 = move_forward(i1, i2, 1, 1)
@@ -144,8 +104,15 @@ def compare_texts(text1, text2):
     return result
 
 
+def in_memory(memory, word):
+    for memory_word in memory:
+        if compare_words(memory_word, word):
+            return True
+    return False
+
+
 def update_memory(memory: list, word1, word2) -> int:
-    if word2 in memory:
+    if in_memory(memory, word2):
         for i in range(len(memory)):
             tmp = memory.pop(0)
             if compare_words(tmp, word2):
@@ -164,26 +131,26 @@ t1 = 'והנה אנכי נותן לך את הברכה ואת הקללה היום
 t2 = 'והינה אנוכי נתן לכה את הברכה ואת הקללה היום כיבה השמש מרעש אותיו'
 
 print(f'source: {t1}\nstt: {t2}')
-for word in compare_texts(t1, t2):
+for word in HebrewTextComparator(t1, t2).run():
     print(word)
 
 t1 = 'והנה אנכי נותן לך את הברכה ואת הקללה היום כי בא השמש מראשותיו'
 t2 = 'והינה אנוכי נתן לכה את הברכה ואת הקללה היום כיבה השמש מרעש אותותיו'
 
 print(f'source: {t1}\nstt: {t2}')
-for word in compare_texts(t1, t2):
+for word in HebrewTextComparator(t1, t2).run():
     print(word)
 
 t1 = 'והנה והנה בא השמש בא השמש ויאמר ויאמר ויאמר והארץ איתו'
 t2 = 'והינה אנוכי נתן לכה את הברכה ואת הקללה היום כיבה השמש מרעש אותיו'
 print(f'source: {t1}\nstt: {t2}')
 
-for word in compare_texts(t1, t2):
+for word in HebrewTextComparator(t1, t2).run():
     print(word)
 
 t1 = 'ויקרא אל משה וידבר יהוה אליו מאוהל מועד לאמור'
 t2 = 'ויקרע אל משה וידבר שמואל אדוני אליו מאוהל מועד לאמור'
 print(f'source: {t1}\nstt: {t2}')
 
-for word in compare_texts(t1, t2):
+for word in HebrewTextComparator(t1, t2).run():
     print(word)
