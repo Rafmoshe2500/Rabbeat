@@ -1,11 +1,10 @@
-from collections import defaultdict
-
 from fastapi import HTTPException
 from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
+from models.torah import TextCompare
 from routers import torah_router
-from workflows.get_torah import TorahTextProcessor  # Import the new class
+from workflows.get_torah import TorahTextProcessor
 from workflows.text_comparator import HebrewTextComparator
 
 
@@ -37,11 +36,10 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
         raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
 
 
-@torah_router.post('/compare-two-texts/')
-def compare_two_texts(source, need_to_compare):
+@torah_router.post('/compare-two-texts')
+def compare_two_texts(texts: TextCompare):
     try:
-        text_comparator = HebrewTextComparator(source, need_to_compare).run()
+        text_comparator = HebrewTextComparator(texts.source, texts.sttText).run()
         return JSONResponse(content=text_comparator)
     except Exception as e:
         raise HTTPException(500, 'אופס, נראה שמשהו השתבש במהלך האנליזה של ההקלטה... סליחה על אי הנוחות')
-
