@@ -192,9 +192,9 @@ class MongoDBApi:
             logging.error(f"Error getting all user lessons by user ID: {e}")
             return []
 
-    def get_user_by_id(self, id: str):
+    def get_user_by_id(self, user_id: str):
         try:
-            return self._db.users.find_one({"_id": ObjectId(id)})
+            return self._db.users.find_one({"id": user_id})
         except Exception as e:
             logging.error(f"Error getting user by ID: {e}")
             return None

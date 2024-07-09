@@ -1,26 +1,17 @@
 import Home from "../pages/home";
 import LessonView from "../pages/lesson-view";
-import Login from "../pages/login";
 import NotFound from "../pages/not-found";
 import Profile from "../pages/profile";
-import Register from "../pages/register";
 import SelfTesting from "../pages/self-testing";
 import StudentPersonalArea from "../pages/student-personal-area";
 import TeacherPersonalArea from "../pages/teacher-personal-area";
 import UploadLessonPage from "../pages/upload-lesson";
+import AuthForm from "../pages/auth"
 
 const baseRoutes = [
   {
-    path: "/",
+    path: "/home",
     element: <Home />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
   },
   {
     path: "/profile",
@@ -59,11 +50,15 @@ export const teacherRoutes = [
 export const unloggedRoutes = [
   {
     path: "/login",
-    element: <Login />,
+    element: <AuthForm initialForm="login" />
   },
   {
     path: "/register",
-    element: <Register />,
+    element: <AuthForm initialForm="register" />
+  },
+  {
+    path: "/auth",
+    element: <AuthForm />
   },
   {
     path: "*",

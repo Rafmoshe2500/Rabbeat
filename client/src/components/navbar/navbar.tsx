@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, MouseEvent } from "react";
 import { useUser } from "../../contexts/user-context";
+import { removeToken } from "../../utils/jwt-cookies"
 import styles from "./navbar.module.css";
 
 const studentPages = [
@@ -35,11 +36,11 @@ const teacherPages = [
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { setUserDetails } = useUser();
+  const { setUserDetails, logout } = useUser();
 
-  const logout = () => {
-    setUserDetails(null);
-    navigate("/login");
+  const setLogout = () => {
+    logout()
+    navigate("/auth?form=login");
   };
 
   const moveToProfilePage = () => {
@@ -48,7 +49,7 @@ const Navbar = () => {
 
   const settings = [
     { label: "פרופיל", onClick: moveToProfilePage },
-    { label: "התנתק", onClick: logout },
+    { label: "התנתק", onClick: setLogout },
   ];
 
   const { userDetails } = useUser();
