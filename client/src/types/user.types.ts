@@ -7,7 +7,6 @@
 // };
 
 type User = {
-  _id: string
   id: string;
   firstName: string;
   lastName: string;
@@ -18,7 +17,7 @@ type User = {
   type: 'student' | 'teacher';
 }
 
-type UserRegister = Omit<User, '_id'> & {
+type UserRegister = User & {
   password: string;
   confirm_password: string;
 }

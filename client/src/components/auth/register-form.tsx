@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Typography, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Grid } from '@mui/material';
-import { useRegister } from '../../hooks/useAuth.tsx';
 import RTLTextField from '../../utils/rtl-text-field'
 
 interface RegisterFormProps {
-  onSuccess: (user: User) => void;
-  onError: (message: string) => void;
+  onSubmit: (userData: UserRegister) => void;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
   const [userData, setUserData] = useState<UserRegister>({
     id: '',
     firstName: '',
@@ -21,29 +19,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
     password: '',
     confirm_password: '',
   });
-  const { registerUser, loading, error } = useRegister();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (userData.password !== userData.confirm_password) {
-      onError('הסיסמאות אינן תואמות. אנא נסה שוב.');
+      // You might want to handle this error in the parent component
+      alert('הסיסמאות אינן תואמות. אנא נסה שוב.');
       return;
     }
-    try {
-      const user = await registerUser(userData);
-      if (user) {
-        onSuccess(user);
-      } else {
-        onError('ההרשמה נכשלה. אנא בדוק את הפרטים שהזנת ונסה שוב.');
-      }
-    } catch (error) {
-      onError('אירעה שגיאה בעת ניסיון ההרשמה. אנא נסה שוב מאוחר יותר.');
-    }
+    onSubmit(userData);
   };
 
   return (
