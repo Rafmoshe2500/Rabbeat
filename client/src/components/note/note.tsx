@@ -2,23 +2,23 @@ import React, { useState } from "react";
 import "./note.css";
 
 interface NoteProps {
-  id: number;
+  id: string;
   initialText: string;
-  timestamp: number;
-  onDelete: (id: number) => void;
-  onUpdate: (id: number, newText: string) => void;
+  time: number;
+  onDelete: (id: string) => void;
+  onUpdate: (id: string, newText: string) => void;
   onClick: (timestamp: number) => void;
 }
 
 const Note = ({
   id,
   initialText,
-  timestamp,
+  time,
   onDelete,
   onUpdate,
   onClick,
 }: NoteProps) => {
-  const [isEditing, setIsEditing] = useState<boolean>(true);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [text, setText] = useState<string>(initialText);
 
   const handleDoubleClick = () => {
@@ -49,8 +49,8 @@ const Note = ({
           autoFocus
         />
       ) : (
-        <span style={{ direction: "rtl" }} onClick={() => onClick(timestamp)}>
-          {text} (זמן {new Date(timestamp * 1000).toISOString().substr(11, 8)})
+        <span style={{ direction: "rtl" }} onClick={() => onClick(time)}>
+          {text} (זמן {new Date(time * 1000).toISOString().substr(11, 8)})
         </span>
       )}
       <button className="delete-button" onClick={handleDelete}>
