@@ -16,3 +16,19 @@ export const getTorahSection = async (
     throw error;
   }
 };
+
+export const compareTexts = async (
+  source: string,
+  tested: string
+): Promise<Words> => {
+  try {
+    const response = await apiClient.post<Words>(`torah/compare-two-texts`, {
+      source,
+      sttText: tested,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -73,23 +73,24 @@ const SelfTesting = () => {
           alignItems: "center",
         }}
       >
-        {currentTranscript &&
-          getWrongWords(currentTranscript, flattedText).map((word, index) => (
+        {isLoading && <CircularProgress />}
+        {data &&
+          data.map(([text, isCorrect], index) => (
             <div
               key={index}
               style={{
                 paddingLeft: "3px",
-                color: !word.isCorrect ? "red" : "green",
+                color: !isCorrect ? "red" : "green",
               }}
-              className={!word.isCorrect ? "redText" : "greenText"}
+              className={!isCorrect ? "redText" : "greenText"}
             >
-              {word.text}
+              {text}
             </div>
           ))}
       </div>
       <div>
-        {currentTranscript &&
-          (currentTranscript === flattedText ? "הצלחת" : "נסה שוב")}
+        {data &&
+          (data.every(([_, isCorrect]) => !!isCorrect) ? "הצלחת" : "נסה שוב")}
       </div>
     </div>
   );
