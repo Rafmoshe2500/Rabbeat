@@ -4,8 +4,9 @@ import { Paper, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LoginForm from '../components/auth/login-form';
 import RegisterForm from '../components/auth/register-form';
-import { useUser } from '../contexts/user-context'; // Import UserContext
+import { useUser } from '../contexts/user-context';
 import { storeToken, decodeToken, isTokenValid } from '../utils/jwt-cookies';
+import { useLogin, useRegister } from '../hooks/useAuth';
 
 interface AuthFormProps {
   initialForm?: 'login' | 'register';
@@ -74,6 +75,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const loginMutation = useLogin();
+  const registerMutation = useRegister();
+
   useEffect(() => {
     const validateToken = async () => {
       try {
@@ -96,7 +100,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
-    setMessage(null); // Clear message on form toggle
+    setMessage(null);
   };
 
   const handleSuccess = (token: string) => {
@@ -118,8 +122,22 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
     }, 2000);
   };
 
-  if (loading) {
-    return <div>Loading...</div>; // You can show a loading spinner or similar here
+  const handleSubmit = async (data: UserCredentials | UserRegister) => {
+    try {
+      let token: string;
+      if (isLogin) {
+        token = await loginMutation.mutateAsync(data as UserCredentials);
+      } else {
+        token = await registerMutation.mutateAsync(data as UserRegister);
+      }
+      handleSuccess(token);
+    } catch (error) {
+      handleError(isLogin ? 'Login failed. Please check your credentials.' : 'Registration failed. Please try again.');
+    }
+  };
+
+  if (loading || loginMutation.isPending || registerMutation.isPending) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -128,10 +146,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
         <FrontSide>
           {message && <MessageOverlay isError={message.isError}>{message.text}</MessageOverlay>}
           <div className="form-content">
-            <LoginForm 
-              onSuccess={handleSuccess}
-              onError={handleError}
-            />
+            <LoginForm onSubmit={handleSubmit} />
             <ButtonContainer>
               <Button variant="contained" color="primary" type="submit" form="login-form">
                 התחבר
@@ -145,10 +160,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
         <BackSide>
           {message && <MessageOverlay isError={message.isError}>{message.text}</MessageOverlay>}
           <div className="form-content">
-            <RegisterForm 
-              onSuccess={handleSuccess}
-              onError={handleError}
-            />
+            <RegisterForm onSubmit={handleSubmit} />
             <ButtonContainer>
               <Button variant="contained" color="primary" type="submit" form="register-form">
                 הרשם
