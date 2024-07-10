@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 
 from pydantic import BaseModel
 
-from models.mongo import User
+from models.mongo import User, TeacherProfile
 
 
 class LessonDetail(BaseModel):
@@ -12,3 +12,7 @@ class LessonDetail(BaseModel):
     highlightsTimestamps: List[float]
     sttText: str
     text: Dict[str, Any]
+
+
+class ResponseTeacherProfile(User, TeacherProfile):
+    pass
