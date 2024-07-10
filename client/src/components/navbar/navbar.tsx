@@ -25,6 +25,12 @@ const teacherPages = [
   { label: "אזור מורה", path: "/teacher-personal-area" },
   { label: "העלאת שיעור", path: "/upload-lesson" },
 ];
+
+const guestPages = [
+  { label: "חיפוש מרצה", path: "/search"},
+  { label: "התחברות", path: "/login" },
+  { label: "הרשמה", path: "/register" },
+];
 // const pages = [
 //   { label: "דף בית", path: "/" },
 //   { label: "אזור תלמיד", path: "/student-personal-area" },
@@ -53,10 +59,16 @@ const Navbar = () => {
   ];
 
   const { userDetails } = useUser();
+  let pages = []
+  if (!userDetails) {
+    pages = guestPages;
+  }
+  else {
+    pages = userDetails.type === "student" ? studentPages : teacherPages;
 
-  if (!userDetails) return;
+  }
 
-  const pages = userDetails.type === "student" ? studentPages : teacherPages;
+  // const pages = userDetails.type === "student" ? studentPages : teacherPages;
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);

@@ -37,9 +37,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
     if (typeof value === 'string' || typeof value === 'number') {
       return value.toString();
     } else if (Array.isArray(value)) {
-      return 'Array field'; // You might want to customize this for specific array fields
+      return '';
     } else {
-      return 'Complex field'; // You might want to customize this for specific object fields
+      return '';
     }
   };
 

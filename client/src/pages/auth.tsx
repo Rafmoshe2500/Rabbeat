@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Paper, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LoginForm from '../components/auth/login-form';
@@ -7,10 +7,6 @@ import RegisterForm from '../components/auth/register-form';
 import { useUser } from '../contexts/user-context';
 import { storeToken, decodeToken, isTokenValid } from '../utils/jwt-cookies';
 import { useLogin, useRegister } from '../hooks/useAuth';
-
-interface AuthFormProps {
-  initialForm?: 'login' | 'register';
-}
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(({ isflipped }) => ({
   width: '100%',
@@ -68,10 +64,11 @@ const MessageOverlay = styled('div')<{ isError?: boolean }>(({ isError }) => ({
   textAlign: 'center',
 }));
 
-const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
+const AuthForm: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUserDetails } = useUser();
-  const [isLogin, setIsLogin] = useState(initialForm === 'login');
+  const [isLogin, setIsLogin] = useState(location.pathname === '/login');
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -98,7 +95,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ initialForm = 'login' }) => {
     validateToken();
   }, [navigate]);
 
+  useEffect(() => {
+    setIsLogin(location.pathname === '/login');
+  }, [location]);
+
   const toggleForm = () => {
+    const newPath = isLogin ? '/register' : '/login';
+    navigate(newPath);
     setIsLogin(!isLogin);
     setMessage(null);
   };

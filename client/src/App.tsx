@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   createBrowserRouter,
   RouteObject,
@@ -15,17 +14,8 @@ import {
 import { useUser } from "./contexts/user-context";
 
 const App: React.FC = () => {
-  const login = true;
   const { userDetails } = useUser();
   let routes: RouteObject[] = [];
-
-  const [currLesson, setCurrLesson] = useState<FormattedLesson>();
-  // const defaultText = "מתי שחר הולכת לישון"
-  // const defaultText = "בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ.";
-
-  const handleAudioRecorded = (lesson: FormattedLesson) => {
-    setCurrLesson(lesson);
-  };
 
   if (userDetails) {
     routes = [
@@ -37,7 +27,13 @@ const App: React.FC = () => {
       },
     ];
   } else {
-    routes = unloggedRoutes;
+    routes = [
+      {
+        path: "/",
+        element: <Layout />,
+        children: unloggedRoutes
+      },
+    ];
   }
 
   const router = createBrowserRouter(routes);
