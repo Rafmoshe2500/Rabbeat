@@ -1,7 +1,7 @@
 // ProfileInfo.tsx
 import React, { useState } from 'react';
 import { Box, Typography, IconButton, Button, Tooltip } from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
+import { FaEdit } from 'react-icons/fa';
 import RTLTextField from '../common/rtl-text-field';
 
 type EditableField = 'aboutMe' | 'address';
@@ -71,7 +71,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
             </Typography>
             {canEdit && (
               <IconButton size="small" onClick={() => handleEdit(field)}>
-                <EditIcon />
+                <FaEdit />
               </IconButton>
             )}
           </Box>

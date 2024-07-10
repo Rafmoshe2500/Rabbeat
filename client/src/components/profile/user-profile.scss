@@ -4,19 +4,18 @@
   flex-direction: column;
   align-items: center;
   font-family: 'Rubik', 'Assistant', Arial, sans-serif;
-  padding: 20px;
 }
 
-.profile-header {
+.profile-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #ffffff;
+  background: rgb(244, 246, 253);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 600px;
+  width: 90%;
+  max-width: 1000px;
 
   @media (min-width: 600px) {
     width: 80%;

@@ -38,6 +38,7 @@ const ProfileVersions: React.FC<ProfileVersionsProps> = ({ versions = [], canEdi
       <Box display="flex" flexWrap="wrap" justifyContent="center">
         {localVersions.map((version, index) => (
           <Chip
+          
             key={index}
             label={version}
             onDelete={canEdit ? () => handleDeleteVersion(version) : undefined}
@@ -46,11 +47,11 @@ const ProfileVersions: React.FC<ProfileVersionsProps> = ({ versions = [], canEdi
         ))}
         {canEdit && (
           <Chip
+            variant='outlined'
             icon={<AddIcon />}
-            label="הוסף סגנון"
             onClick={() => setDialogOpen(true)}
             color="primary"
-            style={{ margin: '5px' }}
+            style={{ margin: '5px', direction:'ltr'}}
           />
         )}
       </Box>

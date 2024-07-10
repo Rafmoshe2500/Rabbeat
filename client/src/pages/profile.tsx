@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
 
     return (
     <Container className="profile-page" maxWidth={isMobile ? "xs" : "sm"}>
-      <Box className="profile-header">
+      <Box className="profile-card">
         {profile.type === 'teacher' && (
           <ProfileImage 
           profile={editedProfile} 
