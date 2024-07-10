@@ -46,7 +46,7 @@ const Navbar = () => {
 
   const setLogout = () => {
     logout()
-    navigate("/auth?form=login");
+    navigate("/login");
   };
 
   const moveToProfilePage = () => {
@@ -77,7 +77,7 @@ const Navbar = () => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+    userDetails ? setAnchorElUser(event.currentTarget) : <></>
   };
 
   const handleCloseNavMenu = () => {

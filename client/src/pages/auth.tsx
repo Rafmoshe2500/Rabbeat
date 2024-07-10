@@ -68,7 +68,7 @@ const AuthForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setUserDetails } = useUser();
-  const [isLogin, setIsLogin] = useState(location.pathname === '/login');
+  const [isLogin, setIsLogin] = useState(location.pathname === '/register');
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
 

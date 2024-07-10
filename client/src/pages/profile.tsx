@@ -55,7 +55,7 @@ const Profile: React.FC = () => {
   return (
     <Container className="profile-page" maxWidth={isMobile ? "xs" : "sm"}>
         <Box className="profile-header">
-        {userDetails === profile ? <ProfileImage 
+        {profile.type === 'teacher' ? <ProfileImage 
         profile={editedProfile} 
         canEdit={canEdit!!} 
         onUpdate={handleProfileUpdate} 
@@ -67,25 +67,25 @@ const Profile: React.FC = () => {
         canEdit={canEdit!!} 
         onUpdate={handleProfileUpdate} 
       />
-      {userDetails === profile ? <ProfileVersions 
+      {profile.type === 'teacher' ? <ProfileVersions 
         versions={editedProfile.versions} 
         canEdit={canEdit!!} 
         onUpdate={(versions) => handleProfileUpdate({ versions })} 
       />: <></>}
       <Box sx={{display: 'inline-flex'}}>
-      {userDetails === profile ? <ProfileSamples 
+      {profile.type === 'teacher' ? <ProfileSamples 
         samples={editedProfile.sampleIds} 
         canEdit={canEdit!!} 
         onUpdate={(sampleIds) => handleProfileUpdate({ sampleIds })} 
       />: <></>}
-      {userDetails === profile ? <ProfileRecommendations 
+      {profile.type === 'teacher' ? <ProfileRecommendations 
         recommendations={editedProfile.recommendations} 
         canAddComment={canAddComment!!}
         currentUserId={userDetails?.id}
         onUpdate={(recommendations) => handleProfileUpdate({ recommendations })} 
       />: <></>}
       </Box>
-      {userDetails === profile ? <ProfileActions profile={editedProfile} />: <></>}
+      {profile.type === 'teacher' ? <ProfileActions profile={editedProfile} />: <></>}
       </Box>
     </Container>
   );
