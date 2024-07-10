@@ -55,11 +55,11 @@ const Profile: React.FC = () => {
   return (
     <Container className="profile-page" maxWidth={isMobile ? "xs" : "sm"}>
         <Box className="profile-header">
-      <ProfileImage 
+        {userDetails === profile ? <ProfileImage 
         profile={editedProfile} 
         canEdit={canEdit!!} 
         onUpdate={handleProfileUpdate} 
-      />
+      /> : <></>}
     <Typography variant="h5">{profile.firstName} {profile.lastName}, {calculateAge(profile.birthDay)}</Typography>
     <br />
       <ProfileInfo 
@@ -67,25 +67,25 @@ const Profile: React.FC = () => {
         canEdit={canEdit!!} 
         onUpdate={handleProfileUpdate} 
       />
-      <ProfileVersions 
+      {userDetails === profile ? <ProfileVersions 
         versions={editedProfile.versions} 
         canEdit={canEdit!!} 
         onUpdate={(versions) => handleProfileUpdate({ versions })} 
-      />
+      />: <></>}
       <Box sx={{display: 'inline-flex'}}>
-      <ProfileSamples 
+      {userDetails === profile ? <ProfileSamples 
         samples={editedProfile.sampleIds} 
         canEdit={canEdit!!} 
         onUpdate={(sampleIds) => handleProfileUpdate({ sampleIds })} 
-      />
-      <ProfileRecommendations 
+      />: <></>}
+      {userDetails === profile ? <ProfileRecommendations 
         recommendations={editedProfile.recommendations} 
         canAddComment={canAddComment!!}
         currentUserId={userDetails?.id}
         onUpdate={(recommendations) => handleProfileUpdate({ recommendations })} 
-      />
+      />: <></>}
       </Box>
-      <ProfileActions profile={editedProfile} />
+      {userDetails === profile ? <ProfileActions profile={editedProfile} />: <></>}
       </Box>
     </Container>
   );
