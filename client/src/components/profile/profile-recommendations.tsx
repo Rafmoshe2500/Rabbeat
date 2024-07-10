@@ -44,7 +44,6 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   };
 
   const handleConfirm = () => {
-    console.log('Sending recommendations update:', localRecommendations);
     onUpdate('recommendations', localRecommendations);
     setRecommendationsDialogOpen(false);
   };

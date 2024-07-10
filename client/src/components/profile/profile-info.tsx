@@ -1,6 +1,6 @@
 // ProfileInfo.tsx
 import React, { useState } from 'react';
-import { Box, Typography, TextField, IconButton, Button } from '@mui/material';
+import { Box, Typography, IconButton, Button } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import RTLTextField from '../common/rtl-text-field';
 
@@ -52,8 +52,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
               value={localProfile[field]}
               onChange={(e) => handleChange(field, e.target.value)}
             />
-            <Button onClick={() => handleSave(field)}>Save</Button>
-            <Button onClick={() => handleCancel(field)}>Cancel</Button>
+            <Button onClick={() => handleSave(field)}>שמור</Button>
+            <Button onClick={() => handleCancel(field)}>בטל</Button>
           </>
         ) : (
           <Box display="flex" alignItems="flex-start">

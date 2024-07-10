@@ -36,24 +36,16 @@ const Profile: React.FC = () => {
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
     if (!editedProfile) return;
-  
-    console.log('handleProfileUpdate received:', { key, value });
-  
-    // Immediately update the local state
-    setEditedProfile(prevProfile => ({
+        setEditedProfile(prevProfile => ({
       ...prevProfile!,
       [key]: value
     }));
   
-    // Prepare data for backend update
     const updateData = {
       id: editedProfile.id,
       key,
       value
-    };
-  
-    console.log('Sending to backend:', updateData);
-  
+    };  
     updateProfileMutation.mutate(updateData, {
       onError: (error) => {
         console.error("Failed to update profile:", error);
@@ -102,8 +94,7 @@ const Profile: React.FC = () => {
               <ProfileSamples 
                 samples={editedProfile.sampleIds} 
                 canEdit={canEdit} 
-                onUpdate={(value) => handleProfileUpdate('sampleIds', value)} 
-              />
+                onUpdate={(key, value) => handleProfileUpdate(key, value)} />
             <ProfileRecommendations 
               recommendations={editedProfile.recommendations} 
               canAddComment={canAddComment}
