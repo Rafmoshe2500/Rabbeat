@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
@@ -49,15 +49,16 @@ async def get_all_users():
     return mongo_db.get_all_users()
 
 
-@router.get('/profile/{teacher_id}', response_model=ResponseTeacherProfile)
-async def get_profile(teacher_id: str):
-    teacher: dict = mongo_db.get_user_by_id(teacher_id)
-    profile: dict = mongo_db.get_teacher_profile(teacher_id)
+@router.get('/profile/{user_id}', response_model=Union[ResponseTeacherProfile, User])
+async def get_profile(user_id: str):
+    user: dict = mongo_db.get_user_by_id(user_id)
+    profile: dict = mongo_db.get_teacher_profile(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User has no have profile or is not a teacher")
     if profile:
-        teacher.update(profile)
-        del teacher['_id']
-        return teacher
-    raise HTTPException(status_code=404, detail="User has no have profile or is not a teacher")
+        user.update(profile)
+    del user['_id']
+    return user
 
 
 @router.post('/profile/{teacher_id}')

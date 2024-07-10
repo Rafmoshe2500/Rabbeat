@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr
 
 
 class LessonMetadata(BaseModel):
@@ -108,11 +108,11 @@ class Sample(BaseModel):
 
 class TeacherProfile(BaseModel):
     id: str
-    image: str = ''
-    aboutMe: str = ''
-    recommendations: List[Recommendation] = []
-    sampleIds: List[str] = []
-    versions: List[str] = []
+    image: str
+    aboutMe: str
+    recommendations: List[Recommendation]
+    sampleIds: List[str]
+    versions: List[str]
 
 
 class UpdateProfile(BaseModel):
