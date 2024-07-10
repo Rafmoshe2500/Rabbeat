@@ -1,6 +1,6 @@
 // ProfileInfo.tsx
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, Button } from '@mui/material';
+import { Box, Typography, IconButton, Button, Tooltip } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import RTLTextField from '../common/rtl-text-field';
 
@@ -42,13 +42,14 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
   const renderField = (field: EditableField, label: string) => {
     return (
       <Box key={field}>
+        <Tooltip title={label} placement="right">
         {editMode[field] ? (
           <>
             <RTLTextField dir='rtl'
               fullWidth
               multiline
-              rows={4}
               label={label}
+              rows={4}
               value={localProfile[field]}
               onChange={(e) => handleChange(field, e.target.value)}
             />
@@ -60,12 +61,13 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
             <Typography 
               variant="body1" 
               sx={{ 
+                direction: 'rtl',
                 flexGrow: 1, 
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word'
               }}
             >
-              <strong>{label}:</strong> {profile[field]}
+              <strong><u>{label}</u><br/></strong> {profile[field]}
             </Typography>
             {canEdit && (
               <IconButton size="small" onClick={() => handleEdit(field)}>
@@ -74,13 +76,15 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
             )}
           </Box>
         )}
+        </Tooltip>
       </Box>
     );
   };
 
   return (
-    <Box className="profile-info">
+    <Box className="profile-info" sx={{padding: '5px', textAlign:'right'}}>
       {renderField('aboutMe', 'על עצמי')}
+      {<br/>}
       {renderField('address', 'כתובת')}
     </Box>
   );

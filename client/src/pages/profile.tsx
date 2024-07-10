@@ -77,7 +77,6 @@ const Profile: React.FC = () => {
         <Typography variant="h5">
           {profile.firstName} {profile.lastName}, {calculateAge(profile.birthDay)}
         </Typography>
-        <br />
         <ProfileInfo 
           profile={editedProfile} 
           canEdit={canEdit} 
@@ -105,8 +104,8 @@ const Profile: React.FC = () => {
             <ProfileActions 
               profile={editedProfile} 
               canEdit={canEdit}
-              onUpdate={(key, value) => handleProfileUpdate(key, value)}
-/>          </>
+              onUpdate={(key, value) => handleProfileUpdate(key, value)}/>
+            </>
         )}
       </Box>
     </Container>

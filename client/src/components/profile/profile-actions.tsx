@@ -37,7 +37,7 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
 
   return (
     <Box className="profile-actions" sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-      <Button variant="contained" color="primary" onClick={handleContactClick}>צור קשר</Button>
+      <Button variant="outlined" color="primary" onClick={handleContactClick}>צור קשר</Button>
       <Button 
         variant="contained" 
         color="success" 
