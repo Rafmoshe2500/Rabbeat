@@ -5,9 +5,11 @@ from bson import ObjectId
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelectionTimeoutError
 
+from models.mongo import LessonMetadata, LessonStatus, Lesson, \
+    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons, UpdateComment, TeacherProfile, UpdateProfile
+
+
 # Assuming the data models are defined as dataclasses
-from models.mongo import LessonResponse, LessonMetadata, LessonStatus, Lesson, \
-    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons, UpdateComment
 
 
 class MongoDBApi:
@@ -239,4 +241,25 @@ class MongoDBApi:
             return self._db.user_credentials.find_one({"email": email})
         except Exception as e:
             logging.error(f"Error getting user credentials by email: {e}")
+            return None
+
+    def add_teacher_profile(self, profile: TeacherProfile):
+        try:
+            return self._db.teacher_profile.insert_one(profile.dict())
+        except Exception as e:
+            logging.error(f"Error adding new user credentials: {e}")
+            return None
+
+    def get_teacher_profile(self, teacherId):
+        try:
+            return self._db.teacher_profile.find_one({"id": teacherId})
+        except Exception as e:
+            logging.error(f"Error getting teacher profile by ID: {e}")
+            return None
+
+    def update_profile(self, teacher_id: str, update: UpdateProfile):
+        try:
+            self._db.teacher_profile.update_one({"id": teacher_id}, {"$set": {update.key: update.value}})
+        except Exception as e:
+            logging.error(f"Failed update profile: {e}")
             return None

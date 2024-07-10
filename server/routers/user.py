@@ -5,7 +5,7 @@ from pymongo.errors import DuplicateKeyError
 from starlette import status
 from starlette.responses import JSONResponse
 
-from models.mongo import UserRegister, UserCredentials, User
+from models.mongo import UserRegister, UserCredentials, User, UpdateProfile
 from tools.utils import mongo_db, create_jwt_token
 from workflows.login import LoginWorkflow
 from workflows.register import RegisterWorkflow
