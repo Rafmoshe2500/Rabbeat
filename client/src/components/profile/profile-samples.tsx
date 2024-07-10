@@ -6,26 +6,32 @@ import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
 
 type ProfileSamplesProps = {
-  samples: string[];
+  samples: string[] | null;
   canEdit: boolean;
-  onUpdate: (samples: string[]) => void;
+  onUpdate: (key: 'sampleIds', value: string[]) => void;
 };
 
-const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpdate }) => {
+const ProfileSamples: React.FC<ProfileSamplesProps> = ({ canEdit, onUpdate }) => {
+  const [localSamples, setLocalSamples] = useState<string[]>([]);
   const [samplesDialogOpen, setSamplesDialogOpen] = useState(false);
   const [newSampleDialogOpen, setNewSampleDialogOpen] = useState(false);
   const [newSample, setNewSample] = useState('');
 
   const handleAddSample = () => {
     if (newSample) {
-      onUpdate([...samples, newSample]);
+      setLocalSamples([...localSamples, newSample]);
       setNewSample('');
       setNewSampleDialogOpen(false);
     }
   };
 
   const handleDeleteSample = (sample: string) => {
-    onUpdate(samples.filter(s => s !== sample));
+    setLocalSamples(localSamples.filter(s => s !== sample));
+  };
+
+  const handleConfirm = () => {
+    onUpdate('sampleIds', localSamples);
+    setSamplesDialogOpen(false);
   };
 
   return (
@@ -37,10 +43,10 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
         open={samplesDialogOpen}
         title="דוגמאות אודיו"
         onClose={() => setSamplesDialogOpen(false)}
-        onConfirm={() => setSamplesDialogOpen(false)}
+        onConfirm={handleConfirm}
       >
         <Box display="flex" flexWrap="wrap" justifyContent="center">
-          {samples.map((sample, index) => (
+          {localSamples.map((sample, index) => (
             <Chip
               key={index}
               label={sample}

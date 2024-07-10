@@ -1,5 +1,5 @@
 // ProfileRecommendations.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Chip, Button } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
@@ -14,7 +14,7 @@ type ProfileRecommendationsProps = {
   recommendations: Recommendation[];
   canAddComment: boolean;
   currentUserId?: string;
-  onUpdate: (recommendations: Recommendation[]) => void;
+  onUpdate: (key: 'recommendations', value: Recommendation[]) => void;
 };
 
 const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({ 
@@ -23,20 +23,30 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   currentUserId, 
   onUpdate 
 }) => {
+  const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
   const [newRecommendationDialogOpen, setNewRecommendationDialogOpen] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState('');
 
+  useEffect(() => {
+    setLocalRecommendations(recommendations || []);
+  }, [recommendations]);
+
   const handleAddRecommendation = () => {
     if (newRecommendation && currentUserId) {
-      onUpdate([...recommendations, { text: newRecommendation, studentId: currentUserId }]);
+      setLocalRecommendations(prevRecs => [...prevRecs, { text: newRecommendation, studentId: currentUserId }]);
       setNewRecommendation('');
       setNewRecommendationDialogOpen(false);
     }
   };
 
   const handleDeleteRecommendation = (studentId: string) => {
-    onUpdate(recommendations.filter(rec => rec.studentId !== studentId));
+    setLocalRecommendations(prevRecs => prevRecs.filter(rec => rec.studentId !== studentId));
+  };
+
+  const handleConfirm = () => {
+    onUpdate('recommendations', localRecommendations);
+    setRecommendationsDialogOpen(false);
   };
 
   return (
@@ -48,10 +58,10 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
         open={recommendationsDialogOpen}
         title="תגובות סטודנטים"
         onClose={() => setRecommendationsDialogOpen(false)}
-        onConfirm={() => setRecommendationsDialogOpen(false)}
+        onConfirm={handleConfirm}
       >
         <Box display="flex" flexWrap="wrap" justifyContent="center">
-          {recommendations.map((recommendation, index) => (
+          {localRecommendations.map((recommendation, index) => (
             <Chip
               key={index}
               label={recommendation.text}

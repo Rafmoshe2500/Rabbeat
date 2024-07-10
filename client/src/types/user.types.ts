@@ -38,5 +38,10 @@ type teacherProfile = User & {
   versions: Array<string>;
   sampleIds: Array<string>;
   recommendations: Array<Recommendation>;
-  studentsCount: number;
 }
+
+type updateProfile = {
+  id: string;
+  key: keyof teacherProfile;
+  value: string | string[] | Recommendation[];
+};
