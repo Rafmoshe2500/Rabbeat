@@ -92,9 +92,6 @@ class ExtendLessonResponse(LessonResponse):
     status: str
 
 
-# TODO Split to files
-
-
 class Recommendation(BaseModel):
     creationDate: datetime = datetime.now()
     studentId: str
@@ -117,7 +114,7 @@ class TeacherProfile(BaseModel):
 
 class UpdateProfile(BaseModel):
     key: str
-    value: str | List[str]
+    value: str | List[str | Recommendation]
 
 
 class TestAudio(BaseModel):

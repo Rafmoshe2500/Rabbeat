@@ -49,7 +49,7 @@ async def get_all_users():
     return mongo_db.get_all_users()
 
 
-@router.get('/profile/{user_id}', response_model=Union[ResponseTeacherProfile, User])
+@router.get('/profile/{user_id}')
 async def get_profile(user_id: str):
     user: dict = mongo_db.get_user_by_id(user_id)
     profile: dict = mongo_db.get_teacher_profile(user_id)
@@ -65,5 +65,7 @@ async def get_profile(user_id: str):
 async def update_profile(teacher_id, update: UpdateProfile):
     result = mongo_db.update_profile(teacher_id, update)
     if result:
-        return JSONResponse(status_code=200, content='Success to update profile')
+        profile = mongo_db.get_teacher_profile(teacher_id)
+        del profile['_id']
+        return JSONResponse(status_code=200, content=profile)
     raise HTTPException(status_code=500, detail='Failed to update profile')

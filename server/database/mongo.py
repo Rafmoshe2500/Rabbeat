@@ -259,7 +259,10 @@ class MongoDBApi:
 
     def update_profile(self, teacher_id: str, update: UpdateProfile):
         try:
+            if update.key == 'recommendations':
+                update.value = [x.dict() for x in update.value]
             self._db.teacher_profile.update_one({"id": teacher_id}, {"$set": {update.key: update.value}})
+            return True
         except Exception as e:
             logging.error(f"Failed update profile: {e}")
             return None
