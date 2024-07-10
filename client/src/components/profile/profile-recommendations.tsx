@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Chip, Button } from '@mui/material';
+import { Box, Chip, Button, IconButton } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-text-field'
+import RTLTextField from '../common/rtl-text-field';
 
 type Recommendation = {
   text: string;
@@ -24,7 +24,6 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
 }) => {
   const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
-  const [newRecommendationDialogOpen, setNewRecommendationDialogOpen] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState('');
 
   useEffect(() => {
@@ -35,7 +34,6 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
     if (newRecommendation && currentUserId) {
       setLocalRecommendations(prevRecs => [...prevRecs, { text: newRecommendation, studentId: currentUserId }]);
       setNewRecommendation('');
-      setNewRecommendationDialogOpen(false);
     }
   };
 
@@ -49,9 +47,9 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   };
 
   return (
-    <Box>
+    <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
       <Button onClick={() => setRecommendationsDialogOpen(true)}>
-        הצג תגובות
+        הצג המלצות
       </Button>
       <DialogComponent
         open={recommendationsDialogOpen}
@@ -59,45 +57,41 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
         onClose={() => setRecommendationsDialogOpen(false)}
         onConfirm={handleConfirm}
       >
-        <Box display="flex" flexWrap="wrap" justifyContent="center">
-          {localRecommendations.map((recommendation, index) => (
-            <Chip
-              key={index}
-              label={recommendation.text}
-              onDelete={
-                currentUserId === recommendation.studentId
-                  ? () => handleDeleteRecommendation(recommendation.studentId)
-                  : undefined
-              }
-              style={{ margin: '5px' }}
-            />
-          ))}
+        <Box sx={{ marginTop: '20px', width: '100%' }}>
+          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: '20px' }}>
+            {localRecommendations.map((recommendation, index) => (
+              <Chip
+                key={index}
+                label={recommendation.text}
+                onDelete={
+                  currentUserId === recommendation.studentId
+                    ? () => handleDeleteRecommendation(recommendation.studentId)
+                    : undefined
+                }
+                sx={{ margin: '5px' }}
+              />
+            ))}
+          </Box>
+          {canAddComment && (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <RTLTextField dir='rtl'
+                value={newRecommendation}
+                onChange={(e) => setNewRecommendation(e.target.value)}
+                variant="outlined"
+                size="small"
+                placeholder="הוסף תגובה חדשה"
+                sx={{ flexGrow: 1, marginRight: '10px' }}
+              />
+              <IconButton
+                color="primary"
+                onClick={handleAddRecommendation}
+                sx={{ padding: '8px' }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
+          )}
         </Box>
-        {canAddComment && (
-          <Button 
-            onClick={() => setNewRecommendationDialogOpen(true)} 
-            startIcon={<AddIcon />}
-            color="primary"
-          >
-            הוסף המלצה חדשה
-          </Button>
-        )}
-      </DialogComponent>
-
-      <DialogComponent
-        open={newRecommendationDialogOpen}
-        title="הוסף המלצה חדשה"
-        onClose={() => setNewRecommendationDialogOpen(false)}
-        onConfirm={handleAddRecommendation}
-      >
-        <RTLTextField
-          autoFocus
-          margin="dense"
-          label="המלצה חדשה"
-          fullWidth
-          value={newRecommendation}
-          onChange={(e) => setNewRecommendation(e.target.value)}
-        />
       </DialogComponent>
     </Box>
   );

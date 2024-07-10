@@ -102,8 +102,11 @@ const Profile: React.FC = () => {
               onUpdate={(key, value) => handleProfileUpdate(key, value)} 
             />
             </Box>
-            <ProfileActions profile={editedProfile} />
-          </>
+            <ProfileActions 
+              profile={editedProfile} 
+              canEdit={canEdit}
+              onUpdate={(key, value) => handleProfileUpdate(key, value)}
+/>          </>
         )}
       </Box>
     </Container>
