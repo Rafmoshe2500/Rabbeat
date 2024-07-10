@@ -13,8 +13,8 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, MouseEvent } from "react";
 import { useUser } from "../../contexts/user-context";
-import { removeToken } from "../../utils/jwt-cookies"
 import styles from "./navbar.module.css";
+import { options } from "marked";
 
 const studentPages = [
   { label: "דף בית", path: "/" },
@@ -44,7 +44,7 @@ const Navbar = () => {
   };
 
   const moveToProfilePage = () => {
-    navigate("/profile");
+    navigate(`/profile/${userDetails?.id}`);
   };
 
   const settings = [

@@ -26,3 +26,17 @@ type UserCredentials = {
   email: string;
   password: string;
 }
+
+type Recommendation = {
+  studentId: string;
+  text: string;
+};
+
+type teacherProfile = User & {
+  image: string;
+  aboutMe: string;
+  versions: Array<string>;
+  sampleIds: Array<string>;
+  recommendations: Array<Recommendation>;
+  studentsCount: number;
+}
