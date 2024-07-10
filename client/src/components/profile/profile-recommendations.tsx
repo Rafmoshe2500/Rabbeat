@@ -1,4 +1,3 @@
-// ProfileRecommendations.tsx
 import React, { useState, useEffect } from 'react';
 import { Box, Chip, Button } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -29,7 +28,7 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   const [newRecommendation, setNewRecommendation] = useState('');
 
   useEffect(() => {
-    setLocalRecommendations(recommendations || []);
+    setLocalRecommendations(Array.isArray(recommendations) ? recommendations : []);
   }, [recommendations]);
 
   const handleAddRecommendation = () => {
@@ -45,6 +44,7 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   };
 
   const handleConfirm = () => {
+    console.log('Sending recommendations update:', localRecommendations);
     onUpdate('recommendations', localRecommendations);
     setRecommendationsDialogOpen(false);
   };

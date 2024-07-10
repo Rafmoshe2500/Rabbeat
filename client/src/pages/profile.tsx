@@ -36,24 +36,31 @@ const Profile: React.FC = () => {
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
     if (!editedProfile) return;
-
+  
+    console.log('handleProfileUpdate received:', { key, value });
+  
     // Immediately update the local state
     setEditedProfile(prevProfile => ({
       ...prevProfile!,
       [key]: value
     }));
-
-    updateProfileMutation.mutate(
-      { id: editedProfile.id, key, value },
-      {
-        onError: (error) => {
-          console.error("Failed to update profile:", error);
-          setEditedProfile(profile);
-        },
-      }
-    );
+  
+    // Prepare data for backend update
+    const updateData = {
+      id: editedProfile.id,
+      key,
+      value
+    };
+  
+    console.log('Sending to backend:', updateData);
+  
+    updateProfileMutation.mutate(updateData, {
+      onError: (error) => {
+        console.error("Failed to update profile:", error);
+        setEditedProfile(profile);
+      },
+    });
   };
-
   const calculateAge = (birthDay: string) => {
     const [day, month, year] = birthDay.split('-').map(Number);
     const birthDate = new Date(year, month - 1, day);
@@ -71,10 +78,9 @@ const Profile: React.FC = () => {
       <Box className="profile-header">
         {profile.type === 'teacher' && (
           <ProfileImage 
-            profile={editedProfile} 
-            canEdit={canEdit} 
-            onUpdate={(value) => handleProfileUpdate('image', value)} 
-          />
+          profile={editedProfile} 
+          canEdit={canEdit} 
+          onUpdate={(key, value) => handleProfileUpdate(key, value)} />
         )}
         <Typography variant="h5">
           {profile.firstName} {profile.lastName}, {calculateAge(profile.birthDay)}
@@ -98,12 +104,12 @@ const Profile: React.FC = () => {
                 canEdit={canEdit} 
                 onUpdate={(value) => handleProfileUpdate('sampleIds', value)} 
               />
-              <ProfileRecommendations 
-                recommendations={editedProfile.recommendations} 
-                canAddComment={canAddComment}
-                currentUserId={userDetails?.id}
-                onUpdate={(value) => handleProfileUpdate('recommendations', value)} 
-              />
+            <ProfileRecommendations 
+              recommendations={editedProfile.recommendations} 
+              canAddComment={canAddComment}
+              currentUserId={userDetails?.id}
+              onUpdate={(key, value) => handleProfileUpdate(key, value)} 
+            />
             </Box>
             <ProfileActions profile={editedProfile} />
           </>

@@ -57,6 +57,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ profile, canEdit, onUpdate 
     if (canEdit && event.target.files && event.target.files[0]) {
       try {
         const compressedImage = await compressImage(event.target.files[0], 300, 300, 0.7);
+        console.log('Compressed image:', compressedImage);
         setLocalImage(compressedImage);
         onUpdate('image', compressedImage);
       } catch (error) {

@@ -15,7 +15,12 @@ export const useGetProfile = (id: string | undefined) => {
     return useMutation({
       mutationFn: (updateData: updateProfile) => updateProfile(updateData),
       onSuccess: (data, variables) => {
+        console.log('Profile update successful:', data);
         queryClient.invalidateQueries({ queryKey: ['profile', variables.id] });
+      },
+      onError: (error) => {
+        console.error('Profile update failed:', error);
+        // ... any other error handling
       },
     });
   };
