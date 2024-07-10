@@ -91,4 +91,41 @@ class LessonResponse(BaseModel):
 class ExtendLessonResponse(LessonResponse):
     status: str
 
+
 # TODO Split to files
+
+
+class Recommendation(BaseModel):
+    creationDate: datetime = datetime.now()
+    studentId: str
+    text: str
+
+
+class Sample(BaseModel):
+    audio: str
+    title: str
+
+
+class TeacherProfile(BaseModel):
+    id: str
+    image: str = ''
+    aboutMe: str = ''
+    recommendations: List[Recommendation] = []
+    sampleIds: List[str] = []
+    versions: List[str] = []
+
+
+class UpdateProfile(BaseModel):
+    key: str
+    value: str | List[str]
+
+
+class TestAudio(BaseModel):
+    audio: str
+    studentId: str
+    lessonId: str
+
+
+class StudentByTeacher(BaseModel):
+    studentId: str
+    lessonId: str
