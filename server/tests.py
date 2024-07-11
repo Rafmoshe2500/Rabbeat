@@ -1,164 +1,156 @@
-import re
-from difflib import SequenceMatcher
-from typing import List, Tuple, Set, Dict
-from abc import ABC, abstractmethod
+from Levenshtein import distance
+
+from tools.consts import GOD
 
 
-class BaseWorkflow(ABC):
-
-    @abstractmethod
-    def run(self):
-        pass
+def check_God_spell(word1, word2):
+    return (GOD in word1 and word2 in {'אדוני', 'אדני'}) or (
+            word2 in {'אלקים', 'אלוקים'} and word1 in {'אלהים', 'אלוהים'})
 
 
-class HebrewTextComparator(BaseWorkflow):
-    def __init__(self, source: str, stt: str, threshold: float = 0.7):
-        self.source = source
-        self.stt = stt
-        self.threshold = threshold
-        self.result = {}
+def check_full_or_miss(word1, word2):
+    full_chars = {'ו', 'י'}
+    i1 = i2 = 0
 
-        self.nikud_pattern = re.compile(r'[\u0591-\u05C7]')
-        self.final_forms = {'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ'}
-        self.spelling_replacements = {
-            'או': 'ו', 'יי': 'י', 'ווו': 'ו',
-            'אלוהים': 'אלהים', 'כול': 'כל', 'אומר': 'אמר', 'אוכל': 'אכל',
-            'קודש': 'קדש', 'חודש': 'חדש', 'ראוש': 'ראש', 'ראשון': 'רשון',
-            'שלוש': 'שלש', 'שלושה': 'שלשה', 'אוהל': 'אהל', 'תוהו': 'תהו',
-            'לאמור': 'לאמר', 'יעקוב': 'יעקב', 'יחזקאל': 'יחזקל', 'דויד': 'דוד',
-            'אליהו': 'אליה', 'ירושלים': 'ירושלם', 'בראשית': 'בראשת',
-            'תולדות': 'תלדות', 'נוח': 'נח', 'אברהם': 'אברם', 'יוסף': 'יסף',
-            'אהרון': 'אהרן', 'יהושוע': 'יהושע', 'שאול': 'שאל', 'ישעיהו': 'ישעיה',
-            'ירמיהו': 'ירמיה', 'עמוס': 'עמס', 'סדום': 'סדם', 'עמורה': 'עמרה',
-            'שילה': 'שלה', 'תורה': 'תרה', 'מצווה': 'מצוה', 'עולה': 'עלה',
-            'קורבן': 'קרבן', 'כוהן': 'כהן', 'נביא': 'נבא', 'מועד': 'מעד',
-            'חטאת': 'חטת', 'בכור': 'בכר', 'שופר': 'שפר', 'סוכה': 'סכה',
-            'אתרוג': 'אתרג', 'אות': 'את', 'אור': 'אר', 'גוי': 'גי',
-            'חוק': 'חק', 'יום': 'ים', 'כבוד': 'כבד', 'לאום': 'לאם',
-            'מאור': 'מאר', 'עוון': 'עון', 'צום': 'צם', 'קול': 'קל',
-            'רוח': 'רח', 'שלום': 'שלם', 'תוך': 'תך', }
-        self.substitutions = {
-            'יהוה': 'אדוני',
-            'אלהים': 'אלוקים',
-        }
-        self.letter_confusions = [
-            ('ש', 'ס'),
-            ('ב', 'ו'),
-            ('כ', 'ח'),
-            ('א', 'ה', 'ע')
-        ]
-
-    def remove_nikud(self, text: str) -> str:
-        return self.nikud_pattern.sub('', text)
-
-    def normalize_final_forms(self, text: str) -> str:
-        return ''.join(self.final_forms.get(char, char) for char in text)
-
-    def normalize_spelling(self, word: str) -> str:
-        for full, defective in self.spelling_replacements.items():
-            word = word.replace(full, defective)
-        return word
-
-    def handle_substitutions(self, word: str) -> str:
-        return self.substitutions.get(word, word)
-
-    def handle_letter_confusion(self, word: str) -> Set[str]:
-        variations = {word}
-        for confusion_group in self.letter_confusions:
-            new_variations = set()
-            for variation in variations:
-                for char in confusion_group:
-                    for replace_char in confusion_group:
-                        if char != replace_char:
-                            new_variation = variation.replace(char, replace_char)
-                            if new_variation != variation:
-                                new_variations.add(new_variation)
-            variations.update(new_variations)
-        return variations
-
-    def preprocess_hebrew(self, text: str) -> List[Tuple[str, str, Set[str]]]:
-        words = self.remove_nikud(text).split()
-        processed_words = []
-        for original_word in words:
-            normalized_word = self.normalize_final_forms(original_word)
-            normalized_word = self.normalize_spelling(normalized_word)
-            normalized_word = self.handle_substitutions(normalized_word)
-            variations = self.handle_letter_confusion(normalized_word)
-            processed_words.append((original_word, normalized_word, variations))
-        return processed_words
-
-    @staticmethod
-    def word_similarity(word1: str, word2: str) -> float:
-        return SequenceMatcher(None, word1, word2).ratio()
-
-    def compare_hebrew_strings(self) -> Dict[str, bool]:
-        source_words = self.preprocess_hebrew(self.source.replace('\n', ' '))
-        stt_words = self.preprocess_hebrew(self.stt)
-
-        result = {original_word: False for original_word, _, _ in source_words}
-        used_indices = set()
-
-        for i, (original_word1, normalized_word1, variations1) in enumerate(source_words):
-            best_match = 0
-            best_index = -1
-
-            for j, (original_word2, normalized_word2, variations2) in enumerate(stt_words):
-                if j in used_indices:
-                    continue
-
-                if variations1.intersection(variations2):
-                    best_match = 1
-                    best_index = j
-                    break
-
-                if j < len(stt_words) - 1:
-                    _, next_normalized_word, next_variations = stt_words[j + 1]
-                    combined_variations = {v1 + v2 for v1 in variations2 for v2 in next_variations}
-                    if variations1.intersection(combined_variations):
-                        best_match = 1
-                        best_index = j
-                        break
-
-                if any(v2.startswith(v1) for v1 in variations1 for v2 in variations2):
-                    best_match = len(normalized_word2) / len(normalized_word1)
-                    best_index = j
-                    continue
-
-                similarity = max(self.word_similarity(v1, v2) for v1 in variations1 for v2 in variations2)
-                if similarity > best_match:
-                    best_match = similarity
-                    best_index = j
-
-            if best_match >= self.threshold:
-                result[original_word1] = True
-                if best_index != -1:
-                    used_indices.add(best_index)
-
-        return result
-
-    def run(self):
-        self.result = self.compare_hebrew_strings()
-        return self.result
-
-    def print_results(self):
-        for word, matched in self.result.items():
-            print(f"{word}: {'אמת' if matched else 'שקר'}")
-
-        true_count = sum(1 for matched in self.result.values() if matched)
-        false_count = sum(1 for matched in self.result.values() if not matched)
-        print(f"\nTotal words: {len(self.result)}")
-        print(f"Matched (אמת): {true_count}")
-        print(f"Not matched (שקר): {false_count}")
+    while i1 < len(word1) and i2 < len(word2):
+        if word1[i1] == word2[i2]:
+            i1 += 1
+            i2 += 1
+        elif word1[i1] in full_chars and word2[i2] not in full_chars:
+            i1 += 1
+        elif word1[i1] not in full_chars and word2[i2] in full_chars:
+            i2 += 1
+        elif check_if_confusion_chars(word1[i1], word2[i2]) and (i1 < len(word1) - 1 and i2 < len(word2) - 1):
+            i1 += 1
+            i2 += 1
+        else:
+            return False
+    return True
 
 
-def main():
-    source = """ויפגע במקום וילן שם כי בא השמש ויקח מאבני המקום וישם מראשתיו וישכב במקום ההוא ויחלם והנה סלם מצב ארצה וראשו מגיע השמימה והנה מלאכי אלהים עלים וירדים בו"""
-    stt = """ויפגע במקום וילין שם כי בא השמש ויקח מאבנו המקום והיו שם מראשותיו וישכב במקום ההוא ויחלם לם והנה סולם מוצב ארצה ורעושו מגיע השוממה והנה מלאכי אלוקים עלים ויורדעמים בו"""
+def check_if_confusion_chars(char1, char2):
+    confusions = [
+        {'ש', 'ס'}, {'ב', 'ו'}, {'כ', 'ח'},
+        {'א', 'ה', 'ע'}, {'כ', 'ק'}, {'ט', 'ת'}
+    ]
+    return any(char1 in confusion and char2 in confusion for confusion in confusions)
 
-    comparator = HebrewTextComparator(source, stt, threshold=0.85)
-    comparator.run()
-    comparator.print_results()
+
+def move_forward(i1, i2, moves_i1, moves_i2):
+    i1 += moves_i1
+    i2 += moves_i2
+    return i1, i2
 
 
-if __name__ == "__main__":
-    main()
+def compare_words(word1, word2):
+    words_distance = distance(word1, word2)
+    if word1 == word2:
+        return True
+
+    elif words_distance < 3 and check_full_or_miss(word1, word2):
+        return True
+
+    elif check_God_spell(word1, word2):
+        return True
+
+    return False
+
+
+def compare_texts(text1, text2):
+    result = []
+    words1, words2 = text1.split(), text2.split()
+    len1, len2 = len(words1), len(words2)
+    i1 = i2 = 0
+    memory = []
+    while i1 < len1 and i2 < len2:
+        if compare_words(words1[i1], words2[i2]):
+            result.append((words1[i1], True))
+            i1, i2 = move_forward(i1, i2, 1, 1)
+        else:
+            if len(words1[i1]) == len(words2[i2]):
+                back = update_memory(memory, words1[i1], words2[i2])
+                if back != 0:
+                    result[i1 - back] = (words1[i1], True)
+                result.append((words1[i1], False))
+                i1, i2 = move_forward(i1, i2, 1, 1)
+
+            elif len(words1[i1]) > len(words2[i2]) and i2 < len2 - 1 and distance(words1[i1],
+                                                                                  words2[i2] + words2[i2 + 1]) < 3:
+                result.append((words1[i1], True))
+                i1, i2 = move_forward(i1, i2, 1, 2)
+            elif len(words1[i1]) < len(words2[i2]) and i1 < len1 - 1 and distance(words1[i1] + words1[i1 + 1],
+                                                                                  words2[i2]) < 3:
+                result.append((words1[i1], True))
+                result.append((words1[i1 + 1], True))
+                i1, i2 = move_forward(i1, i2, 2, 1)
+
+            else:
+                back = update_memory(memory, words1[i1], words2[i2])
+                if back != 0:
+                    result[i1 - back] = (words1[i1 - back], True)
+                result.append((words1[i1], False))
+                i1, i2 = move_forward(i1, i2, 1, 1)
+
+    while i1 < len1:
+        result.append((words1[i1], False))
+        i1 += 1
+
+    while i2 < len2:
+        back = update_memory(memory, '', words2[i2])
+        if back != 0:
+            result[i1 - back] = (words1[i1 - 1], True)
+        i2 += 1
+
+    return result
+
+
+def in_memory(memory, word):
+    for memory_word in memory:
+        if compare_words(memory_word, word):
+            return True
+    return False
+
+
+def update_memory(memory: list, word1, word2) -> int:
+    if in_memory(memory, word2):
+        for i in range(len(memory)):
+            tmp = memory.pop(0)
+            if compare_words(tmp, word2):
+                memory.append(word1)
+                if i - 1 == 0 or i == 0:
+                    return 1
+                return i
+    elif len(memory) > 3:
+        memory.pop(0)
+    memory.append(word1)
+    return 0
+
+
+# Test the function
+t1 = 'והנה אנכי נותן לך את הברכה ואת הקללה היום כי בא השמש מראשותיו'
+t2 = 'והינה אנוכי נתן לכה את הברכה ואת הקללה היום כיבה השמש מרעש אותיו'
+
+print(f'source: {t1}\nstt: {t2}')
+for word in HebrewTextComparator(t1, t2).run():
+    print(word)
+
+t1 = 'והנה אנכי נותן לך את הברכה ואת הקללה היום כי בא השמש מראשותיו'
+t2 = 'והינה אנוכי נתן לכה את הברכה ואת הקללה היום כיבה השמש מרעש אותותיו'
+
+print(f'source: {t1}\nstt: {t2}')
+for word in HebrewTextComparator(t1, t2).run():
+    print(word)
+
+t1 = 'והנה והנה בא השמש בא השמש ויאמר ויאמר ויאמר והארץ איתו'
+t2 = 'והינה אנוכי נתן לכה את הברכה ואת הקללה היום כיבה השמש מרעש אותיו'
+print(f'source: {t1}\nstt: {t2}')
+
+for word in HebrewTextComparator(t1, t2).run():
+    print(word)
+
+t1 = 'ויקרא אל משה וידבר יהוה אליו מאוהל מועד לאמור'
+t2 = 'ויקרע אל משה וידבר שמואל אדוני אליו מאוהל מועד לאמור'
+print(f'source: {t1}\nstt: {t2}')
+
+for word in HebrewTextComparator(t1, t2).run():
+    print(word)
