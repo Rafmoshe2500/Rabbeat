@@ -10,6 +10,7 @@ import ProfileVersions from '../profile/profile-versions';
 import ProfileRecommendations from '../profile/profile-recommendations';
 import {useUser} from '../../contexts/user-context' 
 import ProfileSamples from '../profile/profile-samples';
+import { useUpdateProfile } from '../../hooks/useProfile';
 
 interface TeacherCardProps {
   teacher: teacherProfile;
@@ -17,6 +18,18 @@ interface TeacherCardProps {
 
 const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   const navigate = useNavigate();
+  const updateProfileMutation = useUpdateProfile();
+
+  const handleProfileUpdate = (key: keyof teacherProfile, value: Array<Recommendation>) => {
+  
+    const updateData = {
+      id: userDetails!.id,
+      key,
+      value
+    };  
+    updateProfileMutation.mutate(updateData, {
+    });
+  };
 
   const handleUpdate = (key: string, value: any) => {
     console.log(`Updating ${key} with value:`, value);
@@ -74,7 +87,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
                 <ProfileRecommendations
                   recommendations={teacher.recommendations}
                   canAddComment={userDetails?.type === 'student'}
-                  onUpdate={handleUpdate}
+                  onUpdate={(key, value) => handleProfileUpdate(key, value)}
                 />
               </Grid>
               <Grid item xs={6}>

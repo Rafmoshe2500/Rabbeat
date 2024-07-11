@@ -78,9 +78,7 @@ const AuthForm: React.FC = () => {
   useEffect(() => {
     const validateToken = async () => {
       try {
-        console.log('Checking token validity...');
         const valid = await isTokenValid();
-        console.log('Token valid:', valid);
         if (valid) {
           navigate('/home');
         } else {

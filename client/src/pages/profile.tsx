@@ -7,6 +7,7 @@ import ProfileVersions from '../components/profile/profile-versions';
 import ProfileSamples from '../components/profile/profile-samples';
 import ProfileRecommendations from '../components/profile/profile-recommendations';
 import ProfileActions from '../components/profile/profile-actions';
+import Loader from '../components/common/loader'
 import '../components/profile/user-profile.scss';
 import { useUser } from "../contexts/user-context";
 import { useGetProfile, useUpdateProfile } from '../hooks/useProfile';
@@ -26,7 +27,7 @@ const Profile: React.FC = () => {
     }
   }, [profile]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div><Loader/></div>;
   if (error) return <div>Error loading profile: {error.message}</div>;
   if (!profile || !editedProfile) return <div>Profile not found</div>;
 

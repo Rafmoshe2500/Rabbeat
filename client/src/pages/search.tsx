@@ -10,6 +10,7 @@ import {
 import { useGetAllTeachers } from '../hooks/useProfile';
 import TeacherCard from '../components/common/teacher-card';
 import RTLTextField from '../components/common/rtl-text-field';
+import Loader from '../components/common/loader'
 
 const TeacherSearch: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -37,7 +38,7 @@ const TeacherSearch: React.FC = () => {
     page * itemsPerPage
   );
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isLoading) return <Loader />;
   if (error) return <Typography>An error has occurred: {error.message}</Typography>;
 
   return (
