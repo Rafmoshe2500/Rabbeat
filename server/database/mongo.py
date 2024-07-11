@@ -266,3 +266,58 @@ class MongoDBApi:
         except Exception as e:
             logging.error(f"Failed update profile: {e}")
             return None
+
+    def update_user(self, user_id: str, update: UpdateProfile):
+        try:
+            if update.key == 'recommendations':
+                update.value = [x.dict() for x in update.value]
+            self._db.users.update_one({"id": user_id}, {"$set": {update.key: update.value}})
+            return True
+        except Exception as e:
+            logging.error(f"Failed update profile: {e}")
+            return None
+
+    def get_all_teacher_with_profiles(self):
+        pipeline = [
+            {
+                '$match': {
+                    'type': 'teacher'  # Only match documents where type is 'teacher'
+                }
+            },
+            {
+                '$lookup': {
+                    'from': 'teacher_profile',
+                    'localField': 'id',
+                    'foreignField': 'id',
+                    'as': 'profile'
+                }
+            },
+            {
+                '$unwind': {
+                    'path': '$profile',
+                    'preserveNullAndEmptyArrays': False
+                }
+            },
+            {
+                '$project': {
+                    'id': 1,
+                    'firstName': 1,
+                    'lastName': 1,
+                    'email': 1,
+                    'phoneNumber': 1,
+                    'address': 1,
+                    'birthDay': 1,
+                    'type': 1,
+                    'image': '$profile.image',
+                    'aboutMe': '$profile.aboutMe',
+                    'recommendations': '$profile.recommendations',
+                    'sampleIds': '$profile.sampleIds',
+                    'versions': '$profile.versions'
+                }
+            }
+        ]
+        try:
+            return list(self._db.users.aggregate(pipeline))
+        except Exception as e:
+            logging.error(f"Failed update profile: {e}")
+            return None
