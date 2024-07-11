@@ -1,7 +1,4 @@
-type Word = {
-  text: string;
-  isCorrect: boolean;
-};
+type Words = [string, boolean][];
 
 type WordToMark = {
   chapter: string;
