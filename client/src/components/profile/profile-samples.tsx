@@ -13,6 +13,7 @@ type ProfileSamplesProps = {
 const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpdate }) => {
   const [localSamples, setLocalSamples] = useState<string[]>([]);
   const [samplesDialogOpen, setSamplesDialogOpen] = useState(false);
+  const [addSampleDialogOpen, setAddSampleDialogOpen] = useState(false);
   const [newSample, setNewSample] = useState('');
 
   useEffect(() => {
@@ -25,40 +26,39 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
     if (newSample) {
       const updatedSamples = [...localSamples, newSample];
       setLocalSamples(updatedSamples);
+      onUpdate('sampleIds', updatedSamples);
       setNewSample('');
+      setAddSampleDialogOpen(false);
     }
   };
 
   const handleDeleteSample = (sample: string) => {
     const updatedSamples = localSamples.filter(s => s !== sample);
     setLocalSamples(updatedSamples);
-  };
-
-  const handleConfirm = () => {
-    onUpdate('sampleIds', localSamples);
-    setSamplesDialogOpen(false);
+    onUpdate('sampleIds', updatedSamples);
   };
 
   return (
     <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-              <IconButton 
-          onClick={() => setSamplesDialogOpen(true)}
-          sx={{ color: 'black' }}
-        >
-          <MicIcon />
-          <Typography variant="caption" sx={{ ml: 1 }}>
-            {samples!.length } דוגמאות שמע
-          </Typography>
-        </IconButton>
+      <IconButton 
+        onClick={() => setSamplesDialogOpen(true)}
+        sx={{ color: 'black' }}
+      >
+        <MicIcon />
+        <Typography variant="caption" sx={{ ml: 1 }}>
+          {samples!.length} דוגמאות שמע
+        </Typography>
+      </IconButton>
+      
       <DialogComponent
         open={samplesDialogOpen}
         title="דוגמאות אודיו"
         onClose={() => setSamplesDialogOpen(false)}
-        onConfirm={handleConfirm}
+        onConfirm={() => setSamplesDialogOpen(false)}
       >
         <Box sx={{ marginTop: '20px', width: '100%' }}>
           <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: '20px' }}>
-              {localSamples.map((sample, index) => (
+            {localSamples.map((sample, index) => (
               <Chip
                 key={index}
                 label={sample}
@@ -68,25 +68,33 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
             ))}
           </Box>
           {canEdit && (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <RTLTextField dir='rtl'
-                value={newSample}
-                onChange={(e) => setNewSample(e.target.value)}
-                variant="outlined"
-                size="small"
-                placeholder="הוסף דוגמה חדשה"
-                sx={{ flexGrow: 1, marginRight: '10px' }}
-              />
-              <IconButton
-                color="primary"
-                onClick={handleAddSample}
-                sx={{ padding: '8px' }}
-              >
-                <AddIcon />
-              </IconButton>
-            </Box>
+            <IconButton
+              color="primary"
+              onClick={() => setAddSampleDialogOpen(true)}
+              sx={{ padding: '8px' }}
+            >
+              <AddIcon />
+            </IconButton>
           )}
         </Box>
+      </DialogComponent>
+      
+      {/* Add new sample dialog */}
+      <DialogComponent
+        open={addSampleDialogOpen}
+        title="הוסף אודיו חדש"
+        onClose={() => setAddSampleDialogOpen(false)}
+        onConfirm={handleAddSample}
+      >
+        <RTLTextField
+          dir='rtl'
+          value={newSample}
+          onChange={(e) => setNewSample(e.target.value)}
+          variant="outlined"
+          size="small"
+          placeholder="הוסף דוגמה חדשה"
+          sx={{ flexGrow: 1, marginBottom: '10px' }}
+        />
       </DialogComponent>
     </Box>
   );

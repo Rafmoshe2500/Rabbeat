@@ -1,4 +1,3 @@
-// ProfileVersions.tsx
 import React, { useState } from 'react';
 import { Box, Typography, Chip, Button } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -36,7 +35,7 @@ const ProfileVersions: React.FC<ProfileVersionsProps> = ({ versions = [], canEdi
     <Box sx={{direction: 'rtl', color: 'black'}}>
       <Typography variant="h6">סגנונות קריאה:</Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-          {versions.map((version, index) => (
+          {localVersions.map((version, index) => (
             <Chip 
               key={index} 
               label={version} 
@@ -58,7 +57,7 @@ const ProfileVersions: React.FC<ProfileVersionsProps> = ({ versions = [], canEdi
           />
         )}
       </Box>
-      {canEdit && localVersions !== versions && (
+      {canEdit && JSON.stringify(localVersions) !== JSON.stringify(versions) && (
         <Button onClick={handleSaveChanges} color="primary">
           שמור שינויים
         </Button>

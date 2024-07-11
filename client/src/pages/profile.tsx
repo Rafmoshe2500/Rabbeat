@@ -11,6 +11,7 @@ import Loader from '../components/common/loader'
 import '../components/profile/user-profile.scss';
 import { useUser } from "../contexts/user-context";
 import { useGetProfile, useUpdateProfile } from '../hooks/useProfile';
+import Divider from '@mui/material/Divider';
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,7 +31,8 @@ const Profile: React.FC = () => {
   if (isLoading) return <div><Loader/></div>;
   if (error) return <div>Error loading profile: {error.message}</div>;
   if (!profile || !editedProfile) return <div>Profile not found</div>;
-
+  
+  const isUserConnected = userDetails && (userDetails.type === 'student' || userDetails.type === 'teacher');
   const canEdit = userDetails?.type === 'teacher' && userDetails.id === profile.id;
   const canAddComment = userDetails?.type === 'student';
 
@@ -77,6 +79,7 @@ const Profile: React.FC = () => {
         <Typography variant="h5">
           {profile.firstName} {profile.lastName}, {calculateAge(profile.birthDay)}
         </Typography>
+        <Divider orientation="horizontal" flexItem sx={{marginBottom: '5px'}}/>
         <ProfileInfo 
           profile={editedProfile} 
           canEdit={canEdit} 
@@ -92,7 +95,7 @@ const Profile: React.FC = () => {
             <Box sx={{display: 'inline-flex'}}>
               <ProfileSamples 
                 samples={editedProfile.sampleIds} 
-                canEdit={canEdit} 
+                canEdit={canEdit && editedProfile.versions.length > editedProfile.sampleIds.length} 
                 onUpdate={(key, value) => handleProfileUpdate(key, value)} />
             <ProfileRecommendations 
               recommendations={editedProfile.recommendations} 
@@ -101,10 +104,13 @@ const Profile: React.FC = () => {
               onUpdate={(key, value) => handleProfileUpdate(key, value)} 
             />
             </Box>
+            <Divider orientation="horizontal" flexItem sx={{marginBottom: '5px'}}/>
+            {isUserConnected && (
             <ProfileActions 
               profile={editedProfile} 
               canEdit={canEdit}
               onUpdate={(key, value) => handleProfileUpdate(key, value)}/>
+            )}
             </>
         )}
       </Box>

@@ -19,6 +19,8 @@ interface TeacherCardProps {
 const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   const navigate = useNavigate();
   const updateProfileMutation = useUpdateProfile();
+  const {userDetails} = useUser()
+  const isUserConnected = userDetails && (userDetails.type === 'student' || userDetails.type === 'teacher');
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: Array<Recommendation>) => {
   
@@ -38,8 +40,6 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   const handleImageClick = () => {
     navigate(`/profile/${teacher.id}`);
   };
-
-  const {userDetails} = useUser()
 
   return (
     <Card>
@@ -97,13 +97,15 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
                   canEdit={false} 
                 />
               </Grid>
-              <Grid item xs={12}>
-                <ProfileActions
-                  profile={teacher}
-                  canEdit={false}
-                  onUpdate={handleUpdate}
-                />
-              </Grid>
+              {isUserConnected && (
+                <Grid item xs={12}>
+                  <ProfileActions
+                    profile={teacher}
+                    canEdit={false}
+                    onUpdate={handleUpdate}
+                  />
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </Grid>
