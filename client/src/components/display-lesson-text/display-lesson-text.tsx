@@ -1,6 +1,6 @@
 import { useState } from "react";
 import VersionSelector from "../text-version-selector/text-version-selector";
-import { Button } from "@mui/material";
+import styles from "./display-lesson-text.module.css";
 
 interface DisplayTextProps {
   text: TextSection;
@@ -14,14 +14,17 @@ const DisplayText: React.FC<DisplayTextProps> = ({
   audioRef,
 }) => {
   const [version, setVersion] = useState<Version>("none");
-  const [isTorahFontEnable, setIsTorahFontEnable] = useState<boolean>(false);
-
-  const handleTorahFontClicked = () => {
-    setIsTorahFontEnable((prev) => !prev);
-  };
+  const [isTorahFontEnabled, setIsTorahFontEnabled] = useState<boolean>(false);
 
   const handleVersionChange = (newVersion: Version) => {
     setVersion(newVersion);
+  };
+
+  const handleTorahFontChange = (isEnabled: boolean) => {
+    setIsTorahFontEnabled(isEnabled);
+    if (isEnabled) {
+      setVersion("none");
+    }
   };
 
   const handleWordClick = (timestamp: number) => {
@@ -34,19 +37,16 @@ const DisplayText: React.FC<DisplayTextProps> = ({
   return (
     <div>
       <div>
-        <VersionSelector onVersionChange={handleVersionChange} />
-        <Button
-          sx={{
-            color: "black",
-            border: "solid 1px black",
-            backgroundColor: "white",
-          }}
-          onClick={handleTorahFontClicked}
-        >
-          תורה אמיתית
-        </Button>
+        <VersionSelector
+          onVersionChange={handleVersionChange}
+          onTorahFontChange={handleTorahFontChange}
+        />
       </div>
-      <div className={isTorahFontEnable ? "stam-font" : ""}>
+      <div
+        className={`${styles["container"]} ${
+          isTorahFontEnabled ? "stam-font" : ""
+        }`}
+      >
         {Object.keys(textSection).map((chapterKey) => (
           <div key={chapterKey}>
             <h3>פרק {chapterKey}</h3>
@@ -72,7 +72,9 @@ const DisplayText: React.FC<DisplayTextProps> = ({
                             : "transparent",
                         }}
                       >
-                        {version === "both"
+                        {isTorahFontEnabled
+                          ? word.none
+                          : version === "both"
                           ? word.both
                           : version === "nikud"
                           ? word.nikud

@@ -14,7 +14,6 @@ const createQueryKey = (
 
 type QueryKey = ReturnType<typeof createQueryKey>;
 
-// Fetch lessons by user
 export const useTorahSection = (
   pentateuch: string,
   startCh: string,

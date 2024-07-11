@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Button, ButtonGroup, Box } from "@mui/material";
 
 type Version = "none" | "nikud" | "teamim" | "both";
 
 interface VersionSelectorProps {
   onVersionChange: (version: Version) => void;
+  onTorahFontChange: (isEnabled: boolean) => void;
 }
 
 const VersionSelector: React.FC<VersionSelectorProps> = ({
   onVersionChange,
+  onTorahFontChange,
 }) => {
   const [nikudSelected, setNikudSelected] = useState(false);
   const [teamimSelected, setTeamimSelected] = useState(false);
+  const [torahFontEnabled, setTorahFontEnabled] = useState(false);
 
   const handleNikudClick = () => {
     setNikudSelected(!nikudSelected);
@@ -20,33 +24,64 @@ const VersionSelector: React.FC<VersionSelectorProps> = ({
     setTeamimSelected(!teamimSelected);
   };
 
+  const handleTorahFontClick = () => {
+    setTorahFontEnabled(!torahFontEnabled);
+  };
+
   useEffect(() => {
-    if (nikudSelected && teamimSelected) {
-      onVersionChange("both");
-    } else if (nikudSelected) {
-      onVersionChange("nikud");
-    } else if (teamimSelected) {
-      onVersionChange("teamim");
+    if (torahFontEnabled) {
+      onTorahFontChange(true);
     } else {
-      onVersionChange("none");
+      onTorahFontChange(false);
+      if (nikudSelected && teamimSelected) {
+        onVersionChange("both");
+      } else if (nikudSelected) {
+        onVersionChange("nikud");
+      } else if (teamimSelected) {
+        onVersionChange("teamim");
+      } else {
+        onVersionChange("none");
+      }
     }
-  }, [nikudSelected, teamimSelected, onVersionChange]);
+  }, [
+    nikudSelected,
+    teamimSelected,
+    torahFontEnabled,
+    onVersionChange,
+    onTorahFontChange,
+  ]);
 
   return (
-    <div>
-      <button
-        onClick={handleNikudClick}
-        className={nikudSelected ? "selected" : ""}
-      >
-        ניקוד
-      </button>
-      <button
-        onClick={handleTeamimClick}
-        className={teamimSelected ? "selected" : ""}
-      >
-        טעמי המקרא
-      </button>
-    </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      mt={2}
+      sx={{ backgroundColor: "white" }}
+    >
+      <ButtonGroup variant="contained" style={{ marginBottom: "10px" }}>
+        <Button
+          onClick={handleNikudClick}
+          variant={nikudSelected ? "contained" : "outlined"}
+          disabled={torahFontEnabled}
+        >
+          ניקוד
+        </Button>
+        <Button
+          onClick={handleTeamimClick}
+          variant={teamimSelected ? "contained" : "outlined"}
+          disabled={torahFontEnabled}
+        >
+          טעמי המקרא
+        </Button>
+        <Button
+          variant={torahFontEnabled ? "contained" : "outlined"}
+          onClick={handleTorahFontClick}
+        >
+          תורה אמיתית
+        </Button>
+      </ButtonGroup>
+    </Box>
   );
 };
 

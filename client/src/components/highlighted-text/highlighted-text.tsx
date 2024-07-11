@@ -52,13 +52,11 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
     <Container maxWidth="sm">
       <Box sx={{ bgcolor: "#cfe8fc" }}>
         {lesson?.text && (
-          <div>
-            <DisplayText
-              highlightedWord={highlightedWord}
-              text={lesson.text}
-              audioRef={audioRef}
-            />
-          </div>
+          <DisplayText
+            highlightedWord={highlightedWord}
+            text={lesson.text}
+            audioRef={audioRef}
+          />
         )}
       </Box>
     </Container>
