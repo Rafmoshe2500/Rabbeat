@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Grid } from '@mui/material';
-import RTLTextField from '../../utils/rtl-text-field'
+import RTLTextField from '../common/rtl-text-field'
 
 interface RegisterFormProps {
   onSubmit: (userData: UserRegister) => void;

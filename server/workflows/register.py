@@ -1,6 +1,7 @@
 import bcrypt
 
-from models.mongo import UserRegister, UserCredentials, User
+from models.mongo import UserRegister, UserCredentials, User, TeacherProfile
+from tools.consts import DEFAULT_PROFILE
 from tools.utils import mongo_db
 from workflows.base import BaseWorkflow
 
@@ -21,7 +22,10 @@ class RegisterWorkflow(BaseWorkflow):
         return mongo_db.add_user_cred(user_cred)
 
     def _add_user_to_mongo(self, user: User):
-        return mongo_db.add_user(user)
+        profile = TeacherProfile(id=user.id, **DEFAULT_PROFILE)
+        result = mongo_db.add_teacher_profile(profile)
+        if result:
+            return mongo_db.add_user(user)
 
     def run(self):
         if self._compare_password():
