@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { getProfile, updateProfile} from '../api/endpoints/profile'
+import { getProfile, updateProfile, getAllTeachers} from '../api/endpoints/profile'
 
 export const useGetProfile = (id: string | undefined) => {
     return useQuery({
@@ -20,5 +20,12 @@ export const useGetProfile = (id: string | undefined) => {
       onError: (error) => {
         console.error('Profile update failed:', error);
       },
+    });
+  };
+
+  export const useGetAllTeachers = () => {
+    return useQuery<teacherProfile[], Error>({
+      queryKey: ['teachers'],
+      queryFn: getAllTeachers
     });
   };

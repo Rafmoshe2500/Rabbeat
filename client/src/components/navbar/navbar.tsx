@@ -16,18 +16,24 @@ import { useUser } from "../../contexts/user-context";
 import styles from "./navbar.module.css";
 import { options } from "marked";
 
-const studentPages = [
+const commonPages = [
   { label: "דף בית", path: "/" },
+  { label: "חיפוש מרצה", path: "/search" },
+];
+
+const studentPages = [
+  ...commonPages,
   { label: "אזור תלמיד", path: "/student-personal-area" },
 ];
+
 const teacherPages = [
-  { label: "דף בית", path: "/" },
+  ...commonPages,
   { label: "אזור מורה", path: "/teacher-personal-area" },
   { label: "העלאת שיעור", path: "/upload-lesson" },
 ];
 
 const guestPages = [
-  { label: "חיפוש מרצה", path: "/search"},
+  ...commonPages,
   { label: "התחברות", path: "/login" },
   { label: "הרשמה", path: "/register" },
 ];

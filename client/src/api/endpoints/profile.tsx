@@ -15,3 +15,9 @@ export const getProfile = async (id: string): Promise<teacherProfile> => {
     });
     return response.data;
   };
+
+  export const getAllTeachers = async (): Promise<teacherProfile[]> => {
+    const response = await apiClient.get(`/teachers`);
+    return response.data;
+  };
+  
