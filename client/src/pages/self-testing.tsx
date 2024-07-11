@@ -1,70 +1,55 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { getWrongWords } from "../utils/utils";
 import DisplayText from "../components/display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../hooks/useFlattedLessonText";
+import { useCompareTexts } from "../hooks/useCompareTexts";
+import { CircularProgress } from "@mui/material";
+import AudioRecorder from "../components/audio-recorder/audio-recorder";
 
-const SelfTesting = () => {
-  const location = useLocation();
-  const lesson: Lesson = location.state?.lesson;
-  const {
-    transcript,
-    isMicrophoneAvailable,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
-  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
-  const [currentTranscript, setCurrentTranscript] = useState<string>("");
+type SelfTestingProps = {
+  lesson?: Lesson;
+};
+
+const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { flattedText, length } = useFlattedLessonText(lesson?.text);
 
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [transcript, setTranscript] = useState<string>("");
+
+  const { data, isLoading, refetch } = useCompareTexts(flattedText, transcript);
+
+  const handleRecordingComplete = (
+    audioBlob: Blob,
+    audioURL: string,
+    transcript: string
+  ) => {
+    setAudioBlob(audioBlob);
+    setAudioURL(audioURL);
+    setTranscript(transcript);
+  };
   useEffect(() => {
-    setCurrentTranscript(transcript);
+    transcript && refetch();
   }, [transcript]);
 
-  useEffect(() => {
-    const transcriptWords = currentTranscript.split(" ");
+  const shouldStopRecording = (transcript: string) => {
+    const transcriptWords = transcript.split(" ");
     if (transcriptWords.length === length) {
-      SpeechRecognition.stopListening();
-      setIsSpeaking(false);
+      return true;
     }
-  }, [currentTranscript]);
-
-  if (!browserSupportsSpeechRecognition) {
-    return <div>Browser doesn't support speech recognition.</div>;
-  }
-
-  if (!isMicrophoneAvailable) {
-    return <div>Microphone is not connected.</div>;
-  }
-
-  const handleOnRecord = () => {
-    if (listening) {
-      SpeechRecognition.stopListening();
-      setIsSpeaking(false);
-    } else {
-      resetTranscript();
-      SpeechRecognition.startListening({ continuous: true, language: "iw-IL" });
-      setIsSpeaking(true);
-    }
+    return false;
   };
 
   return (
     <div>
-      כאן בודקים
-      <div>
-        <button onClick={resetTranscript}>Reset</button>
-        <button onClick={handleOnRecord}>
-          {isSpeaking ? "Stop" : "Record"}
-        </button>
-      </div>
+      <AudioRecorder
+        onRecordingComplete={handleRecordingComplete}
+        shouldStopRecording={shouldStopRecording}
+        shouldDisplayTranscript
+      />
       <div>{lesson && <DisplayText text={lesson.text!} />}</div>
-      <div>
-        <p>Spoken Text: {currentTranscript}</p>
-      </div>
       <div
         style={{
           direction: "rtl",
