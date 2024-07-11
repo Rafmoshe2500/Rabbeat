@@ -18,14 +18,14 @@ const commonRoutes = [
     path: "/home",
     element: <Home />,
   },
-];
-
-const baseRoutes = [
-  ...commonRoutes,
   {
     path: "/profile/:id",
     element: <Profile />,
   },
+];
+
+const baseRoutes = [
+  ...commonRoutes,
   {
     path: "/lesson/:id",
     element: <LessonView />,

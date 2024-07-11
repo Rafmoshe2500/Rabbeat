@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Chip, Button, IconButton } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Box, Chip, Typography,  IconButton } from '@mui/material';
+import { Add as AddIcon, Comment as CommentIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
 
@@ -48,9 +48,15 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
 
   return (
     <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-      <Button onClick={() => setRecommendationsDialogOpen(true)}>
-        הצג המלצות
-      </Button>
+        <IconButton 
+          onClick={() => setRecommendationsDialogOpen(true)}
+          sx={{ color: 'black' }}
+        >
+          <CommentIcon />
+          <Typography variant="caption" sx={{ ml: 1 }}>
+            {recommendations.length } המלצות
+          </Typography>
+        </IconButton>
       <DialogComponent
         open={recommendationsDialogOpen}
         title="תגובות סטודנטים"

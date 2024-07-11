@@ -26,13 +26,12 @@ const Profile: React.FC = () => {
     }
   }, [profile]);
 
-  if (!userDetails) return <div>User not logged in</div>;
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading profile: {error.message}</div>;
   if (!profile || !editedProfile) return <div>Profile not found</div>;
 
-  const canEdit = userDetails.type === 'teacher' && userDetails.id === profile.id;
-  const canAddComment = userDetails.type === 'student';
+  const canEdit = userDetails?.type === 'teacher' && userDetails.id === profile.id;
+  const canAddComment = userDetails?.type === 'student';
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
     if (!editedProfile) return;

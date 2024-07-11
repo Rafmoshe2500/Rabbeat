@@ -1,6 +1,11 @@
-// TeacherSearch.tsx
 import React, { useState } from 'react';
-import {   Box,   Grid,   Typography,   Select,   MenuItem,  Pagination
+import {
+  Box,
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+  Pagination,
 } from '@mui/material';
 import { useGetAllTeachers } from '../hooks/useProfile';
 import TeacherCard from '../components/common/teacher-card';
@@ -39,31 +44,39 @@ const TeacherSearch: React.FC = () => {
     <Box sx={{ padding: 2 }} color={'white'}>
       <Typography variant="h4" gutterBottom>Teacher Search</Typography>
       
-      <Box sx={{ marginBottom: 2 ,color: 'white'}} >
+      <Box sx={{ 
+        marginBottom: 2, 
+        color: 'white', 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' }, 
+        flexWrap: 'wrap',
+        gap: 1 
+      }}>
         <RTLTextField dir='rtl'
           label="חפש לפי כתובת" 
           name="address"
           value={searchParams.address}
           onChange={handleSearch}
-          sx={{ marginRight: 1 , color: 'white'}}
+          sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         />
         <RTLTextField dir='rtl' 
           label="חפש לפי סגנון" 
           name="version"
           value={searchParams.version}
           onChange={handleSearch}
-          sx={{ marginRight: 1 , color: 'white'}}
+          sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         />
         <RTLTextField dir='rtl' 
           label="חפש לפי שם" 
           name="name"
           value={searchParams.firstName}
           onChange={handleSearch}
-          sx={{ marginRight: 1 , color: 'white'}}
+          sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         />
         <Select
           value={itemsPerPage}
           onChange={(e) => setItemsPerPage(e.target.value as number)}
+          sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         >
           {[5, 10, 15, 20].map(num => (
             <MenuItem key={num} value={num}>{num}</MenuItem>

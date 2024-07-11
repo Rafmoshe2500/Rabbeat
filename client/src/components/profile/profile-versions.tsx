@@ -35,16 +35,19 @@ const ProfileVersions: React.FC<ProfileVersionsProps> = ({ versions = [], canEdi
   return (
     <Box sx={{direction: 'rtl', color: 'black'}}>
       <Typography variant="h6">סגנונות קריאה:</Typography>
-      <Box display="flex" flexWrap="wrap" justifyContent="center">
-        {localVersions.map((version, index) => (
-          <Chip
-          
-            key={index}
-            label={version}
-            onDelete={canEdit ? () => handleDeleteVersion(version) : undefined}
-            style={{ margin: '5px' }}
-          />
-        ))}
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+          {versions.map((version, index) => (
+            <Chip 
+              key={index} 
+              label={version} 
+              onDelete={canEdit ? () => handleDeleteVersion(version) : undefined}
+              sx={{ 
+                backgroundColor: '#e0e0e0', 
+                color: '#333',
+                '&:hover': { backgroundColor: '#bdbdbd' }
+              }} 
+            />
+          ))}
         {canEdit && (
           <Chip
             variant='outlined'

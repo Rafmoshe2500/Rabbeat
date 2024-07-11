@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Chip, Button, IconButton } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Box, Chip, Typography, IconButton } from '@mui/material';
+import { Add as AddIcon, Mic as MicIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
 
@@ -41,9 +41,15 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
 
   return (
     <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-      <Button onClick={() => setSamplesDialogOpen(true)}>
-        הצג דוגמאות
-      </Button>
+              <IconButton 
+          onClick={() => setSamplesDialogOpen(true)}
+          sx={{ color: 'black' }}
+        >
+          <MicIcon />
+          <Typography variant="caption" sx={{ ml: 1 }}>
+            {samples!.length } דוגמאות שמע
+          </Typography>
+        </IconButton>
       <DialogComponent
         open={samplesDialogOpen}
         title="דוגמאות אודיו"

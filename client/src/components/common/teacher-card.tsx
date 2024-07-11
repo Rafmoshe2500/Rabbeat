@@ -1,12 +1,14 @@
 // TeacherCard.tsx
 import React from 'react';
+import Divider from '@mui/material/Divider';
 import { Card, CardContent, Grid, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ProfileImage from '../profile/profile-image';
 import ProfileInfo from '../profile/profile-info';
 import ProfileActions from '../profile/profile-actions';
-import ProfileRecommendations from '../profile/profile-recommendations';
 import ProfileVersions from '../profile/profile-versions';
+import ProfileRecommendations from '../profile/profile-recommendations';
+import {useUser} from '../../contexts/user-context' 
 import ProfileSamples from '../profile/profile-samples';
 
 interface TeacherCardProps {
@@ -17,7 +19,6 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   const navigate = useNavigate();
 
   const handleUpdate = (key: string, value: any) => {
-    // Implement update logic here
     console.log(`Updating ${key} with value:`, value);
   };
 
@@ -25,68 +26,76 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
     navigate(`/profile/${teacher.id}`);
   };
 
+  const {userDetails} = useUser()
+
   return (
     <Card>
       <CardContent dir='rtl'>
         <Typography variant="h5" component="h2" gutterBottom align="center">
           {`${teacher.firstName} ${teacher.lastName}`}
         </Typography>
+        <Divider orientation="horizontal" flexItem sx={{marginBottom: '5px'}}/>
         <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <Button 
               onClick={handleImageClick} 
               sx={{ 
                 padding: 0, 
                 width: '100%', 
-                height: '100%', 
+                height: 'auto', 
                 '&:hover': { opacity: 0.8 } 
               }}
             >
-              <ProfileImage 
+              <ProfileImage
                 profile={teacher}
                 canEdit={false}
                 onUpdate={handleUpdate}
               />
             </Button>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <ProfileInfo
               profile={teacher}
               canEdit={false}
               onUpdate={handleUpdate}
             />
           </Grid>
-          <Grid item xs={2}>
-            <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-              <ProfileVersions
-                versions={teacher.versions}
-                canEdit={false}
-                onUpdate={(value) => handleUpdate('versions', value)}
-              />
-            </div>
+          <Divider orientation="horizontal" flexItem sx={{marginBottom: '1px'}}/>
+          <Grid item xs={12} sm={6} md={2}>
+            <ProfileVersions
+              versions={teacher.versions}
+              canEdit={false}
+              onUpdate={(value) => handleUpdate('versions', value)}
+            />
           </Grid>
-          <Grid item xs={3}>
-            <ProfileActions
-              profile={teacher}
-              canEdit={false}
-              onUpdate={handleUpdate}
-            />
-            <ProfileRecommendations
-              recommendations={teacher.recommendations}
-              canAddComment={false}
-              currentUserId={undefined}
-              onUpdate={handleUpdate}
-            />
-            <ProfileSamples
-              samples={teacher.sampleIds}
-              canEdit={false}
-              onUpdate={handleUpdate}
-            />
+          <Grid item xs={12} sm={6} md={3}>
+            <Grid container >
+              <Grid item xs={6}>
+                <ProfileRecommendations
+                  recommendations={teacher.recommendations}
+                  canAddComment={userDetails?.type === 'student'}
+                  onUpdate={handleUpdate}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <ProfileSamples 
+                  onUpdate={handleUpdate} 
+                  samples={teacher.sampleIds} 
+                  canEdit={false} 
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ProfileActions
+                  profile={teacher}
+                  canEdit={false}
+                  onUpdate={handleUpdate}
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </CardContent>
     </Card>
   );
 };
-
 export default TeacherCard;

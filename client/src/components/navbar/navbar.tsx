@@ -67,7 +67,7 @@ const Navbar = () => {
   const pages = [...userPages, ...commonPages];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#1976d2', marginBottom: '20px'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ flexDirection: 'row-reverse' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
