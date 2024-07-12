@@ -32,6 +32,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const [currentTranscript, setCurrentTranscript] = useState<
     string | undefined
   >(undefined);
+  const [end, setEnd] = useState(false);
 
   const { transcript, resetTranscript } = useSpeechRecognition();
 
@@ -50,10 +51,12 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
       audioChunksRef.push(event.data);
     };
 
-    // mediaRecorderRef.current.onstop = async () => {
-
-    //   console.log(asd);
-    // };
+    mediaRecorderRef.current.onstop = async () => {
+      const audioBlob = new Blob(audioChunksRef, { type: "audio/wav" });
+      const audioURL = URL.createObjectURL(audioBlob);
+      setAudioURL(audioURL);
+      setEnd(true);
+    };
 
     mediaRecorderRef.current.start();
   };
@@ -61,20 +64,29 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const handleStopRecording = () => {
     setIsRecording(false);
     SpeechRecognition.stopListening();
-
-    const audioBlob = new Blob(audioChunksRef, { type: "audio/wav" });
-    const audioURL = URL.createObjectURL(audioBlob);
-    setAudioURL(audioURL);
-    onRecordingComplete(audioBlob, audioURL, transcript, timestamps);
+    setCurrentTranscript(transcript);
     mediaRecorderRef.current?.stop();
   };
 
   useEffect(() => {
+    if (end) {
+      console.log(transcript);
+      const audioBlob = new Blob(audioChunksRef, { type: "audio/wav" });
+      onRecordingComplete(audioBlob, audioURL!, transcript, timestamps);
+      setEnd(false);
+    }
+  }, [end]);
+
+  useEffect(() => {
     if (shouldStopRecording?.(transcript)) {
+      setCurrentTranscript(transcript);
       handleStopRecording();
       return;
     }
-    if (!shouldCalculateHighlights) return;
+    if (!shouldCalculateHighlights) {
+      setCurrentTranscript(transcript);
+      return;
+    }
     if (!startTime) return;
 
     const transLength = transcript ? transcript.split(" ").length : 0;
