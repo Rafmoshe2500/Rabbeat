@@ -5,9 +5,11 @@ from bson import ObjectId
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelectionTimeoutError
 
+from models.mongo import LessonMetadata, LessonStatus, Lesson, \
+    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons, UpdateComment, TeacherProfile, UpdateProfile
+
+
 # Assuming the data models are defined as dataclasses
-from models.mongo import LessonResponse, LessonMetadata, LessonStatus, Lesson, \
-    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons, UpdateComment
 
 
 class MongoDBApi:
@@ -239,4 +241,83 @@ class MongoDBApi:
             return self._db.user_credentials.find_one({"email": email})
         except Exception as e:
             logging.error(f"Error getting user credentials by email: {e}")
+            return None
+
+    def add_teacher_profile(self, profile: TeacherProfile):
+        try:
+            return self._db.teacher_profile.insert_one(profile.dict())
+        except Exception as e:
+            logging.error(f"Error adding new user credentials: {e}")
+            return None
+
+    def get_teacher_profile(self, teacherId):
+        try:
+            return self._db.teacher_profile.find_one({"id": teacherId})
+        except Exception as e:
+            logging.error(f"Error getting teacher profile by ID: {e}")
+            return None
+
+    def update_profile(self, teacher_id: str, update: UpdateProfile):
+        try:
+            if update.key == 'recommendations':
+                update.value = [x.dict() for x in update.value]
+            self._db.teacher_profile.update_one({"id": teacher_id}, {"$set": {update.key: update.value}})
+            return True
+        except Exception as e:
+            logging.error(f"Failed update profile: {e}")
+            return None
+
+    def update_user(self, user_id: str, update: UpdateProfile):
+        try:
+            if update.key == 'recommendations':
+                update.value = [x.dict() for x in update.value]
+            self._db.users.update_one({"id": user_id}, {"$set": {update.key: update.value}})
+            return True
+        except Exception as e:
+            logging.error(f"Failed update profile: {e}")
+            return None
+
+    def get_all_teacher_with_profiles(self):
+        pipeline = [
+            {
+                '$match': {
+                    'type': 'teacher'  # Only match documents where type is 'teacher'
+                }
+            },
+            {
+                '$lookup': {
+                    'from': 'teacher_profile',
+                    'localField': 'id',
+                    'foreignField': 'id',
+                    'as': 'profile'
+                }
+            },
+            {
+                '$unwind': {
+                    'path': '$profile',
+                    'preserveNullAndEmptyArrays': False
+                }
+            },
+            {
+                '$project': {
+                    'id': 1,
+                    'firstName': 1,
+                    'lastName': 1,
+                    'email': 1,
+                    'phoneNumber': 1,
+                    'address': 1,
+                    'birthDay': 1,
+                    'type': 1,
+                    'image': '$profile.image',
+                    'aboutMe': '$profile.aboutMe',
+                    'recommendations': '$profile.recommendations',
+                    'sampleIds': '$profile.sampleIds',
+                    'versions': '$profile.versions'
+                }
+            }
+        ]
+        try:
+            return list(self._db.users.aggregate(pipeline))
+        except Exception as e:
+            logging.error(f"Failed update profile: {e}")
             return None

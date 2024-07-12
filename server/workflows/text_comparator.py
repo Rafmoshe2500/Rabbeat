@@ -13,31 +13,31 @@ class HebrewTextComparator:
         self.memory = []
 
     def run(self):
-        i1 = i2 = 0
-        while i1 < self.len1 and i2 < self.len2:
-            if self.compare_words(self.words1[i1], self.words2[i2]):
-                self.result.append((self.words1[i1], True))
-                i1, i2 = self.move_forward(i1, i2, 1, 1)
-            else:
-                i1, i2 = self.handle_mismatch(i1, i2)
-
-        self.handle_remaining_words(i1, i2)
-        return self.result
+        try:
+            i1 = i2 = 0
+            while i1 < self.len1 and i2 < self.len2:
+                if self.compare_words(self.words1[i1], self.words2[i2]):
+                    self.result.append((self.words1[i1], True))
+                    self.update_memory(self.words1[i1], self.words2[i2], True)
+                    i1, i2 = self.move_forward(i1, i2, 1, 1)
+                else:
+                    i1, i2 = self.handle_mismatch(i1, i2)
+            self.handle_remaining_words(i1, i2)
+            return self.result
+        except Exception as e:
+            print(e)
 
     def handle_mismatch(self, i1, i2):
         if len(self.words1[i1]) == len(self.words2[i2]):
-            return self.handle_equal_length_mismatch(i1, i2)
+            self.update_memory(self.words1[i1], self.words2[i2], False)
+            self.result.append((self.words1[i1], False))
+            return self.move_forward(i1, i2, 1, 1)
+
         elif self.is_combined_word(i1, i2):
+            self.update_memory(self.words1[i1], self.words2[i2], True)
             return self.handle_combined_word(i1, i2)
         else:
             return self.handle_default_mismatch(i1, i2)
-
-    def handle_equal_length_mismatch(self, i1, i2):
-        back = self.update_memory(self.words1[i1], self.words2[i2])
-        if back != 0:
-            self.result[i1 - back] = (self.words1[i1], True)
-        self.result.append((self.words1[i1], False))
-        return self.move_forward(i1, i2, 1, 1)
 
     def is_combined_word(self, i1, i2):
         return (len(self.words1[i1]) > len(self.words2[i2]) and i2 < self.len2 - 1 and
@@ -55,7 +55,7 @@ class HebrewTextComparator:
             return self.move_forward(i1, i2, 2, 1)
 
     def handle_default_mismatch(self, i1, i2):
-        back = self.update_memory(self.words1[i1], self.words2[i2])
+        back = self.update_memory(self.words1[i1], self.words2[i2], False)
         if back != 0:
             self.result[i1 - back] = (self.words1[i1 - back], True)
         self.result.append((self.words1[i1], False))
@@ -67,7 +67,7 @@ class HebrewTextComparator:
             i1 += 1
 
         while i2 < self.len2:
-            back = self.update_memory('', self.words2[i2])
+            back = self.update_memory('', self.words2[i2], False)
             if back != 0:
                 self.result[i1 - back] = (self.words1[i1 - 1], True)
             i2 += 1
@@ -119,14 +119,14 @@ class HebrewTextComparator:
     def in_memory(self, word):
         return any(self.compare_words(memory_word, word) for memory_word in self.memory)
 
-    def update_memory(self, word1, word2):
-        if self.in_memory(word2):
+    def update_memory(self, word1, word2, success):
+        result = 0
+        if not success and self.in_memory(word2):
             for i in range(len(self.memory)):
                 tmp = self.memory.pop(0)
                 if self.compare_words(tmp, word2):
-                    self.memory.append(word1)
-                    return 1 if i <= 1 else i
-        elif len(self.memory) > 3:
+                    result = 1 if i <= 1 else i
+        if len(self.memory) > 3:
             self.memory.pop(0)
         self.memory.append(word1)
-        return 0
+        return result

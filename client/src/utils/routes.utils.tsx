@@ -6,17 +6,26 @@ import SelfTesting from "../pages/self-testing";
 import StudentPersonalArea from "../pages/student-personal-area";
 import TeacherPersonalArea from "../pages/teacher-personal-area";
 import UploadLessonPage from "../pages/upload-lesson";
-import AuthForm from "../pages/auth"
+import TeacherSearch from "../pages/search";
+import AuthForm from "../pages/auth";
 
-const baseRoutes = [
+const commonRoutes = [
+  {
+    path: "/search",
+    element: <TeacherSearch />,
+  },
   {
     path: "/home",
     element: <Home />,
   },
   {
-    path: "/profile",
+    path: "/profile/:id",
     element: <Profile />,
   },
+];
+
+const baseRoutes = [
+  ...commonRoutes,
   {
     path: "/lesson/:id",
     element: <LessonView />,
@@ -48,17 +57,18 @@ export const teacherRoutes = [
 ];
 
 export const unloggedRoutes = [
+  ...commonRoutes,
   {
     path: "/login",
-    element: <AuthForm initialForm="login" />
+    element: <AuthForm />,
   },
   {
     path: "/register",
-    element: <AuthForm initialForm="register" />
+    element: <AuthForm />,
   },
   {
     path: "/auth",
-    element: <AuthForm />
+    element: <AuthForm />,
   },
   {
     path: "*",
