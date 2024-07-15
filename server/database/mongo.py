@@ -325,13 +325,18 @@ class MongoDBApi:
             logging.error(f"Error getting lesson status by IDs: {e}")
             return None
 
-    def update_test_chat(self, lesson_id, user_id, messages: List[Message]):
-        update_operation = {
-            "$set": {
-                "messages": messages
-            }
-        }
-        return self._db.test_chat_lesson.update_one({'lessonId': lesson_id, 'userId': user_id}, update_operation)
+    def add_message_to_chat(self, lesson_id: str, user_id: str, new_message: Message):
+        # Convert the new Message to a dictionary
+        message_dict = new_message.dict()
+
+        # Update the document, adding the new message to the messages array
+        result = self._db.test_chat_lesson.update_one(
+            {"lessonId": lesson_id, "userId": user_id},
+            {"$push": {"messages": message_dict}},
+            upsert=True  # This will create a new document if it doesn't exist
+        )
+
+        return result.modified_count > 0 or result.upserted_id is not None
 
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

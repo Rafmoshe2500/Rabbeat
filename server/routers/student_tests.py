@@ -10,8 +10,8 @@ router = APIRouter(tags=['Student - Tests'])
 
 
 @router.post("/lesson/{lesson_id}/student/{student_id}/test-chat/messages", response_model=str)
-async def update_test_messages(lesson_id, student_id, messages: List[Message]):
-    mongo_db.update_test_chat(lesson_id, student_id, messages)
+async def update_test_messages(lesson_id, student_id, message: Message):
+    mongo_db.add_message_to_chat(lesson_id, student_id, message)
     return JSONResponse(status_code=201, content="Success update chat")
 
 
