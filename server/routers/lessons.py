@@ -3,9 +3,9 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.mongo import Lesson, LessonResponse, LessonMetadata, ExtendLessonResponse
-from models.response import LessonDetail
-from tools.utils import mongo_db
+from models.lesson import Lesson, LessonMetadata
+from models.response import LessonDetail, LessonResponse, ExtendLessonResponse
+from database.mongo import mongo_db
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
@@ -19,10 +19,10 @@ async def create_lesson(lesson: Lesson):
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 
-@router.get("/lesson/{id}", response_model=LessonDetail)
-async def get_lesson_by_id(id: str):
-    lesson = mongo_db.get_lesson_by_id(id)
-    lesson_metadata = mongo_db.get_lesson_metadata_by_id(id)
+@router.get("/lesson/{lesson_id}", response_model=LessonDetail)
+async def get_lesson_by_id(lesson_id: str):
+    lesson = mongo_db.get_lesson_by_id(lesson_id)
+    lesson_metadata = mongo_db.get_lesson_metadata_by_id(lesson_id)
 
     if lesson:
         lesson["_id"] = str(lesson["_id"])

@@ -1,13 +1,15 @@
-from typing import List, Union
+from typing import List
 
 from fastapi import APIRouter, HTTPException
 from pymongo.errors import DuplicateKeyError
 from starlette import status
 from starlette.responses import JSONResponse
 
-from models.mongo import UserRegister, UserCredentials, User, UpdateProfile
+from models.profile import UpdateProfile
 from models.response import ResponseTeacherProfile
-from tools.utils import mongo_db, create_jwt_token
+from models.user import UserRegister, UserCredentials, User
+from database.mongo import mongo_db
+from tools.utils import create_jwt_token
 from workflows.login import LoginWorkflow
 from workflows.register import RegisterWorkflow
 

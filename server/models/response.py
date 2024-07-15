@@ -2,7 +2,9 @@ from typing import List, Dict, Any
 
 from pydantic import BaseModel
 
-from models.mongo import User, TeacherProfile
+from models.lesson import LessonMetadata
+from models.profile import TeacherProfile
+from models.user import User
 
 
 class LessonDetail(BaseModel):
@@ -15,3 +17,17 @@ class LessonDetail(BaseModel):
 
 class ResponseTeacherProfile(User, TeacherProfile):
     pass
+
+
+class LessonResponse(BaseModel):
+    lessonId: str
+    userId: str
+    metadata: LessonMetadata
+
+
+class ExtendLessonResponse(LessonResponse):
+    status: str
+
+
+class ExtendLessonMetadataResponse(LessonMetadata):
+    status: str

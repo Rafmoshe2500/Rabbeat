@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.mongo import LessonStatus, UpdateStatus
-from tools.utils import mongo_db
+from models.lesson import LessonStatus, UpdateStatus
+from database.mongo import mongo_db
 
 router = APIRouter(tags=['User-Lessons | Additives'])
 

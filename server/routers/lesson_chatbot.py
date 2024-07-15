@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.mongo import ChatBotMessages
-from tools.utils import mongo_db
+from models.lesson import ChatBotMessages
+from database.mongo import mongo_db
 
 router = APIRouter(tags=['User-Lessons | Additives'])
 

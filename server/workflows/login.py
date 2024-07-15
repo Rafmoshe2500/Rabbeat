@@ -1,7 +1,7 @@
 import bcrypt
 
-from models.mongo import UserCredentials, User
-from tools.utils import mongo_db
+from models.user import UserCredentials
+from database.mongo import mongo_db
 from workflows.base import BaseWorkflow
 
 
