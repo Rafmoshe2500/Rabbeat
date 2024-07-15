@@ -13,7 +13,7 @@ class TestAudio(BaseModel):
 class Message(BaseModel):
     timestamp: datetime = datetime.now()
     sender: str
-    message_type: str
+    type: str
     content: str
 
 
