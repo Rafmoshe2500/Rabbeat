@@ -1,0 +1,163 @@
+.chatWindow {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f7f7f7; // Light gray background
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 90%; // Mobile friendly width
+    max-height: 90%; // Mobile friendly height
+  }
+  
+  .chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px; // Standard height
+    border-bottom: 1px solid #ccc;
+    background: #fff;
+    border-radius: 10px 10px 0 0;
+    color: black; // Header text in black
+    direction: rtl;
+  }
+  
+  .chatHeader h3 {
+    margin: 0;
+    color: black; // Chat header in black
+    align-self: flex-start; // Align "Chat" header to the right
+  }
+
+  .chatMessages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #fff;
+    direction: rtl; // Right-to-left text direction
+    color: black;
+  }
+  
+  .chatMessage {
+    flex: 1;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 15px;
+    max-width: 80%;
+    position: relative;
+  }
+  
+  .not-my-messages {
+    background-color: #e0e0e0;
+    align-self: flex-start;
+    text-align: right;
+    margin-right: auto;
+    border-bottom-left-radius: 0;
+  }
+  
+  .my-messages {
+    background-color: #d4f5d4;
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+  }
+  
+  .chatInput {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background: #fff;
+    direction: rtl;
+  }
+  
+  .chatInput input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    background-color: #f1f1f1;
+    color: #333;
+    text-align: right;
+    word-wrap: break-word;
+    transition: background-color 0.3s, border-color 0.3s;
+    direction: rtl;
+  
+    &:focus {
+      background-color: #fff;
+      border-color: #aaa;
+    }
+  }
+  
+  .buttonGroup {
+    display: flex;
+    margin-left: 10px;
+  }
+  
+  .sendButton,
+  .recordButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 5px;
+  }
+  
+  .sendButton {
+    margin-right: 5px;
+    transform : rotate(180deg);
+    background-color: #2196f3;
+    color: white;
+  
+    &:hover {
+      background-color: #1976d2;
+    }
+  }
+  
+  .recordButton {
+    background-color: #f44336;
+    color: white;
+  
+    &:hover {
+      background-color: #d32f2f;
+    }
+  
+    &.recording {
+      background-color: #ff7043;
+      animation: pulse 1s infinite;
+    }
+  }
+  
+  .recordingTime {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  audio {
+    max-width: 100%;
+    margin-top: 5px;
+  }
