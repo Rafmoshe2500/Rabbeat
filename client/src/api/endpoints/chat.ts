@@ -5,13 +5,11 @@ import {
 import apiClient from "../config";
 
 export const fetchMessages = async (studentId: string, lessonId: string) => {
-  const { data } = await apiClient.get(
+  const { data } = await apiClient.get<Array<Message>>(
     `/lesson/${lessonId}/student/${studentId}/test-chat/messages`
   );
 
-  const rawMessages: Array<Message> = data.messages;
-
-  const messages = rawMessages.map((message) => {
+  const messages = data.map((message) => {
     return message.type === "audio"
       ? { ...message, content: convertBase64ToBlob(message.content as string) }
       : message;
@@ -26,11 +24,14 @@ export const postMessage = async (
 ) => {
   const convertedMessage =
     message.type === "audio"
-      ? { ...message, content: convertBlobToBase64(message.content as Blob) }
+      ? {
+          ...message,
+          content: await convertBlobToBase64(message.content as Blob),
+        }
       : message;
   const { data } = await apiClient.post(
     `/lesson/${lessonId}/student/${studentId}/test-chat/messages`,
-    { convertedMessage }
+    convertedMessage
   );
   return data;
 };

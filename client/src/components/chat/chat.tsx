@@ -51,6 +51,7 @@ const Chat: React.FC<ChatProps> = ({ isOpen, setIsOpen, lessonId }) => {
         sender: userType,
         content: inputMessage,
         type: "text",
+        timestamp: new Date().toISOString(),
       };
       setMessages(newMessage);
       setInputMessage("");
@@ -73,6 +74,7 @@ const Chat: React.FC<ChatProps> = ({ isOpen, setIsOpen, lessonId }) => {
           sender: userType,
           content: audioBlob,
           type: "audio",
+          timestamp: new Date().toISOString(),
         };
         setMessages(newMessage);
       };
