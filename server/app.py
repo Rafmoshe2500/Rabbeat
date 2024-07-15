@@ -3,7 +3,7 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers.chat import chat_router
-from routers import lessons, user_lessons, lesson_comment, lesson_status, lesson_chatbot, user
+from routers import lessons, user_lessons, lesson_comment, lesson_status, lesson_chatbot, user, student_tests
 from routers.torah import torah_router
 
 app = FastAPI(title='Rabbeat')
@@ -23,5 +23,5 @@ app.include_router(lesson_status.router, prefix="/api")
 app.include_router(lesson_chatbot.router, prefix="/api")
 app.include_router(user.router, prefix="/api")
 app.include_router(chat_router, prefix="/api")
-
+app.include_router(student_tests.router, prefix="/api")
 uvicorn.run(app, host="0.0.0.0", port=80)
