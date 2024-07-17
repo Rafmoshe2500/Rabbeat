@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 
 
-class LessonMetadata(BaseModel):
+class LessonDetails(BaseModel):
     lessonId: str
     title: str
     startChapter: str
@@ -20,7 +20,7 @@ class Lesson(BaseModel):
     audio: str
     highlightsTimestamps: List[float]
     sttText: str
-    metadata: LessonMetadata
+    details: LessonDetails
 
 
 class AssociateUserToLesson(BaseModel):

@@ -3,7 +3,7 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.lesson import Lesson, LessonMetadata
+from models.lesson import Lesson, LessonDetails
 from models.response import LessonDetail, LessonResponse, ExtendLessonResponse
 from database.mongo import mongo_db
 from workflows.get_torah import TorahTextProcessor
@@ -11,9 +11,10 @@ from workflows.get_torah import TorahTextProcessor
 router = APIRouter(tags=['Lesson'])
 
 
-@router.post("/lesson", response_model=str)
-async def create_lesson(lesson: Lesson):
+@router.post("/lesson/{teacher_id}", response_model=str)
+async def create_lesson(teacher_id, lesson: Lesson):
     lesson_id = mongo_db.add_lesson(lesson)
+    mongo_db.associate_user_to_lesson(teacher_id, str(lesson_id))
     if lesson_id:
         return JSONResponse(status_code=201, content=str(lesson_id))
     raise HTTPException(status_code=500, detail="Lesson not created")
@@ -22,19 +23,19 @@ async def create_lesson(lesson: Lesson):
 @router.get("/lesson/{lesson_id}", response_model=LessonDetail)
 async def get_lesson_by_id(lesson_id: str):
     lesson = mongo_db.get_lesson_by_id(lesson_id)
-    lesson_metadata = mongo_db.get_lesson_metadata_by_id(lesson_id)
+    lesson_details = mongo_db.get_lesson_details_by_id(lesson_id)
 
     if lesson:
         lesson["_id"] = str(lesson["_id"])
 
         # Set the pentateuch for this request
-        torah_processor = TorahTextProcessor(lesson_metadata["pentateuch"])
+        torah_processor = TorahTextProcessor(lesson_details["pentateuch"])
 
         text = torah_processor.get_words_with_times_and_variants(
-            start_chapter=lesson_metadata["startChapter"],
-            start_verse=lesson_metadata["startVerse"],
-            end_chapter=lesson_metadata["endChapter"],
-            end_verse=lesson_metadata["endVerse"],
+            start_chapter=lesson_details["startChapter"],
+            start_verse=lesson_details["startVerse"],
+            end_chapter=lesson_details["endChapter"],
+            end_verse=lesson_details["endVerse"],
             times=lesson["highlightsTimestamps"]
         )
 
@@ -51,9 +52,9 @@ async def get_all_lessons():
     return lessons
 
 
-@router.get("/lessons-metadata", response_model=List[LessonMetadata])
-async def get_all_lessons_metadata():
-    lessons = mongo_db.get_all_lessons_metadata()
+@router.get("/lessons-details", response_model=List[LessonDetails])
+async def get_all_lessons_details():
+    lessons = mongo_db.get_all_lessons_details()
     if not lessons:
         raise HTTPException(status_code=404, detail="No lessons found")
     for lesson in lessons:
@@ -62,17 +63,17 @@ async def get_all_lessons_metadata():
 
 
 @router.get("/lessons/{user_id}", response_model=List[Union[LessonResponse, ExtendLessonResponse]])
-async def get_lessons_metadata_by_user_id(user_id: str):
+async def get_lessons_details_by_user_id(user_id: str):
     try:
         lessons = []
         user = mongo_db.get_user_by_id(user_id)
         lesson_ids = mongo_db.get_lessons_by_user_id(user_id)
         for lesson_id in lesson_ids:
-            metadata = mongo_db.get_lessons_metadata_by_user_id(lesson_id['lessonId'])
+            details = mongo_db.get_lessons_details_by_user_id(lesson_id['lessonId'])
             lesson_response = LessonResponse(
                 lessonId=lesson_id['lessonId'],
                 userId=user_id,
-                metadata=LessonMetadata(**metadata)
+                details=LessonDetails(**details)
             )
             if user['type'] == 'student':
                 status = mongo_db.get_lesson_status_by_ids(user_id, lesson_id['lessonId'])

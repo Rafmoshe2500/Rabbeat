@@ -7,7 +7,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelection
 
 # Assuming the data models are defined as dataclasses
 from database.piplines import PIPELINE_ALL_TEACHERS_WITH_PROFILE, get_shared_lessons_pipeline
-from models.lesson import Lesson, LessonMetadata, UpdateComment, LessonStatus, LessonComments, ChatBotMessages, \
+from models.lesson import Lesson, LessonDetails, UpdateComment, LessonStatus, LessonComments, ChatBotMessages, \
     AssociateNewStudent
 from models.profile import TeacherProfile, UpdateProfile
 from models.tests import Message
@@ -48,8 +48,8 @@ class MongoDBApi:
     def get_lessons_by_user_id(self, user_id: str) -> List[Lesson]:
         return list(self._db.user_lessons.find({"userId": user_id}))
 
-    def get_lessons_metadata_by_user_id(self, lesson_id) -> List[LessonMetadata]:
-        return self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
+    def get_lessons_details_by_user_id(self, lesson_id) -> List[LessonDetails]:
+        return self._db.lessons_details.find_one({"_id": ObjectId(lesson_id)})
 
     def remove_all_lesson_data_from_user(self, lesson_id, user_id) -> None:
         try:
@@ -73,18 +73,18 @@ class MongoDBApi:
         try:
             only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps', 'sttText'})
             result = self._db.lessons.insert_one(only_lesson)
-            metadata_lesson = {**lesson.metadata.dict(), 'lessonId': result.inserted_id}
-            result_metadata = self._db.lessons_metadata.insert_one(metadata_lesson)
-            if result.inserted_id and result_metadata.inserted_id == result.inserted_id:
+            details_lesson = {**lesson.details.dict(), 'lessonId': result.inserted_id}
+            result_details = self._db.lessons_details.insert_one(details_lesson)
+            if result.inserted_id and result_details.inserted_id == result.inserted_id:
                 return result.inserted_id
         except Exception as e:
             logging.error(f"Error adding lesson: {e}")
 
-    def get_all_lessons_metadata(self) -> List[LessonMetadata]:
+    def get_all_lessons_details(self) -> List[LessonDetails]:
         try:
-            return list(self._db.lessons_metadata.find())
+            return list(self._db.lessons_details.find())
         except Exception as e:
-            logging.error(f"Error getting all lessons metadata: {e}")
+            logging.error(f"Error getting all lessons details: {e}")
             return []
 
     def get_all_lessons(self) -> List[Lesson]:
@@ -101,9 +101,9 @@ class MongoDBApi:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
 
-    def get_lesson_metadata_by_id(self, lesson_id: str):
+    def get_lesson_details_by_id(self, lesson_id: str):
         try:
-            return self._db.lessons_metadata.find_one({"lessonId": lesson_id})
+            return self._db.lessons_details.find_one({"lessonId": lesson_id})
         except Exception as e:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
@@ -307,7 +307,7 @@ class MongoDBApi:
         except Exception as e:
             return []
 
-    def get_shared_lessons(self, student_id, teacher_id) -> List[LessonMetadata]:
+    def get_shared_lessons(self, student_id, teacher_id) -> List[LessonDetails]:
         pipeline = get_shared_lessons_pipeline(student_id, teacher_id)
         return list(self._db.user_lessons.aggregate(pipeline))
 

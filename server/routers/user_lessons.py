@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
 from models.lesson import LessonStatus, AssociateUserToLesson, AssociateNewStudent
-from models.response import ExtendLessonMetadataResponse
+from models.response import ExtendLessonDetailsResponse
 
 router = APIRouter(tags=['User-Lessons'])
 
@@ -44,7 +44,7 @@ async def associate_student_to_teacher(new_student: AssociateNewStudent):
     mongo_db.associate_student_to_teacher(new_student)
 
 
-@router.get("/teacher/{teacher_id}/student/{student_id}/lessons", response_model=List[ExtendLessonMetadataResponse])
+@router.get("/teacher/{teacher_id}/student/{student_id}/lessons", response_model=List[ExtendLessonDetailsResponse])
 async def get_shared_lessons(student_id: str, teacher_id: str):
     try:
         return mongo_db.get_shared_lessons(student_id, teacher_id)

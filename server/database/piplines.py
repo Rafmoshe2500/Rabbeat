@@ -54,16 +54,16 @@ def get_shared_lessons_pipeline(student_id, teacher_id):
             "userIds": {"$all": [student_id, teacher_id]}
         }},
 
-        # Lookup lesson metadata
+        # Lookup lesson details
         {"$lookup": {
-            "from": "lessons_metadata",
+            "from": "lessons_details",
             "localField": "_id",
             "foreignField": "lessonId",
-            "as": "metadata"
+            "as": "details"
         }},
 
-        # Unwind the metadata array
-        {"$unwind": "$metadata"},
+        # Unwind the details array
+        {"$unwind": "$details"},
 
         # Lookup lesson status for the student
         {"$lookup": {
@@ -91,15 +91,15 @@ def get_shared_lessons_pipeline(student_id, teacher_id):
         # Project the final structure
         {"$project": {
             "_id": 0,
-            "lessonId": "$metadata.lessonId",
-            "title": "$metadata.title",
-            "startChapter": "$metadata.startChapter",
-            "version": "$metadata.version",
-            "startVerse": "$metadata.startVerse",
-            "endChapter": "$metadata.endChapter",
-            "endVerse": "$metadata.endVerse",
-            "pentateuch": "$metadata.pentateuch",
-            "creationDate": "$metadata.creationDate",
+            "lessonId": "$details.lessonId",
+            "title": "$details.title",
+            "startChapter": "$details.startChapter",
+            "version": "$details.version",
+            "startVerse": "$details.startVerse",
+            "endChapter": "$details.endChapter",
+            "endVerse": "$details.endVerse",
+            "pentateuch": "$details.pentateuch",
+            "creationDate": "$details.creationDate",
             "status": {
                 "$ifNull": ["$status.status", ""]
             }

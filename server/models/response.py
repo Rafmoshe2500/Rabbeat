@@ -2,7 +2,7 @@ from typing import List, Dict, Any
 
 from pydantic import BaseModel
 
-from models.lesson import LessonMetadata
+from models.lesson import LessonDetails
 from models.profile import TeacherProfile
 from models.user import User
 
@@ -22,12 +22,12 @@ class ResponseTeacherProfile(User, TeacherProfile):
 class LessonResponse(BaseModel):
     lessonId: str
     userId: str
-    metadata: LessonMetadata
+    details: LessonDetails
 
 
 class ExtendLessonResponse(LessonResponse):
     status: str
 
 
-class ExtendLessonMetadataResponse(LessonMetadata):
+class ExtendLessonDetailsResponse(LessonDetails):
     status: str
