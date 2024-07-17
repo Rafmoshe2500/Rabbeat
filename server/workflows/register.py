@@ -1,8 +1,9 @@
 import bcrypt
 
-from models.mongo import UserRegister, UserCredentials, User, TeacherProfile
+from models.profile import TeacherProfile
+from models.user import UserRegister, UserCredentials, User
 from tools.consts import DEFAULT_PROFILE
-from tools.utils import mongo_db
+from database.mongo import mongo_db
 from workflows.base import BaseWorkflow
 
 

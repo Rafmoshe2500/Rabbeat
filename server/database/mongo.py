@@ -5,11 +5,14 @@ from bson import ObjectId
 from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelectionTimeoutError
 
-from models.mongo import LessonMetadata, LessonStatus, Lesson, \
-    LessonComments, ChatBotMessages, User, UserCredentials, UserLessons, UpdateComment, TeacherProfile, UpdateProfile
-
-
 # Assuming the data models are defined as dataclasses
+from database.piplines import PIPELINE_ALL_TEACHERS_WITH_PROFILE, get_shared_lessons_pipeline
+from models.lesson import Lesson, LessonMetadata, UpdateComment, LessonStatus, LessonComments, ChatBotMessages, \
+    AssociateNewStudent
+from models.profile import TeacherProfile, UpdateProfile
+from models.tests import Message
+from models.user import User, UserCredentials
+from tools.consts import MONGO_DB_NAME, MONGO_URI
 
 
 class MongoDBApi:
@@ -48,18 +51,19 @@ class MongoDBApi:
     def get_lessons_metadata_by_user_id(self, lesson_id) -> List[LessonMetadata]:
         return self._db.lessons_metadata.find_one({"_id": ObjectId(lesson_id)})
 
-    def remove_all_lesson_data_from_user(self, user_lesson: UserLessons) -> None:
+    def remove_all_lesson_data_from_user(self, lesson_id, user_id) -> None:
         try:
-            self._db.user_lessons.delete_one({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
-            self._db.lesson_status.delete_one({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
-            self._db.lesson_comments.delete_many({"lessonsId": user_lesson.lessonId, "userId": user_lesson.userId})
-            self._db.chatbot_messages.delete_many({"lessonId": user_lesson.lessonId, "userId": user_lesson.userId})
+            self._db.user_lessons.delete_one({"lessonId": lesson_id, "userId": user_id})
+            self._db.lesson_status.delete_one({"lessonId": lesson_id, "userId": user_id})
+            self._db.lesson_comments.delete_many({"lessonsId": lesson_id, "userId": user_id})
+            self._db.chatbot_messages.delete_many({"lessonId": lesson_id, "userId": user_id})
+            self._db.test_chat_lesson.delete_many({"lessonId": lesson_id, "userId": user_id})
         except Exception as e:
             logging.error(f"Error disassociating user from lesson: {e}")
 
-    def associate_user_to_lesson(self, user_lesson: UserLessons):
+    def associate_user_to_lesson(self, user_id, lesson_id):
         try:
-            result = self._db.user_lessons.insert_one(user_lesson.dict())
+            result = self._db.user_lessons.insert_one({'userId': user_id, 'lessonId': lesson_id})
             return result
         except Exception as e:
             logging.error(f"Error associating user to lesson: {e}")
@@ -69,7 +73,7 @@ class MongoDBApi:
         try:
             only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps', 'sttText'})
             result = self._db.lessons.insert_one(only_lesson)
-            metadata_lesson = {**lesson.metadata.dict(), '_id': result.inserted_id}
+            metadata_lesson = {**lesson.metadata.dict(), 'lessonId': result.inserted_id}
             result_metadata = self._db.lessons_metadata.insert_one(metadata_lesson)
             if result.inserted_id and result_metadata.inserted_id == result.inserted_id:
                 return result.inserted_id
@@ -97,9 +101,9 @@ class MongoDBApi:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
 
-    def get_lesson_metadata_by_id(self, id: str):
+    def get_lesson_metadata_by_id(self, lesson_id: str):
         try:
-            return self._db.lessons_metadata.find_one({"_id": ObjectId(id)})
+            return self._db.lessons_metadata.find_one({"lessonId": lesson_id})
         except Exception as e:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
@@ -278,46 +282,61 @@ class MongoDBApi:
             return None
 
     def get_all_teacher_with_profiles(self):
-        pipeline = [
-            {
-                '$match': {
-                    'type': 'teacher'  # Only match documents where type is 'teacher'
-                }
-            },
-            {
-                '$lookup': {
-                    'from': 'teacher_profile',
-                    'localField': 'id',
-                    'foreignField': 'id',
-                    'as': 'profile'
-                }
-            },
-            {
-                '$unwind': {
-                    'path': '$profile',
-                    'preserveNullAndEmptyArrays': False
-                }
-            },
-            {
-                '$project': {
-                    'id': 1,
-                    'firstName': 1,
-                    'lastName': 1,
-                    'email': 1,
-                    'phoneNumber': 1,
-                    'address': 1,
-                    'birthDay': 1,
-                    'type': 1,
-                    'image': '$profile.image',
-                    'aboutMe': '$profile.aboutMe',
-                    'recommendations': '$profile.recommendations',
-                    'sampleIds': '$profile.sampleIds',
-                    'versions': '$profile.versions'
-                }
-            }
-        ]
         try:
-            return list(self._db.users.aggregate(pipeline))
+            return list(self._db.users.aggregate(PIPELINE_ALL_TEACHERS_WITH_PROFILE))
         except Exception as e:
             logging.error(f"Failed update profile: {e}")
             return None
+
+    def associate_student_to_teacher(self, new_associate: AssociateNewStudent):
+        try:
+            return self._db.students_by_teacher.insert_one(new_associate.dict())
+        except Exception as e:
+            logging.error(f"Error associate new student to teacher: {e}")
+            return None
+
+    def get_connection(self, student_id, teacher_id):
+        try:
+            return self._db.students_by_teacher.find_one({"studentId": student_id, "teacherId": teacher_id})
+        except Exception as e:
+            return None
+
+    def get_all_students_by_teacher(self, teacher_id):
+        try:
+            return list(self._db.students_by_teacher.find({"teacherId": teacher_id}))
+        except Exception as e:
+            return []
+
+    def get_shared_lessons(self, student_id, teacher_id) -> List[LessonMetadata]:
+        pipeline = get_shared_lessons_pipeline(student_id, teacher_id)
+        return list(self._db.user_lessons.aggregate(pipeline))
+
+    def add_test_chat(self, lesson_id, user_id):
+        try:
+            return self._db.test_chat_lesson.insert_one({"userId": user_id, "lessonId": lesson_id, "messages": []})
+        except Exception as e:
+            logging.error(f"Error adding lesson status: {e}")
+            return None
+
+    def get_test_chat_by_ids(self, user_id: str, lesson_id: str):
+        try:
+            return self._db.test_chat_lesson.find_one({"userId": user_id, "lessonId": lesson_id})
+        except Exception as e:
+            logging.error(f"Error getting lesson status by IDs: {e}")
+            return None
+
+    def add_message_to_chat(self, lesson_id: str, user_id: str, new_message: Message):
+        # Convert the new Message to a dictionary
+        message_dict = new_message.dict()
+
+        # Update the document, adding the new message to the messages array
+        result = self._db.test_chat_lesson.update_one(
+            {"lessonId": lesson_id, "userId": user_id},
+            {"$push": {"messages": message_dict}},
+            upsert=True  # This will create a new document if it doesn't exist
+        )
+
+        return result.modified_count > 0 or result.upserted_id is not None
+
+
+mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

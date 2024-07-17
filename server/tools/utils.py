@@ -1,11 +1,8 @@
-from datetime import timedelta, datetime
-from typing import List, Tuple
+import datetime
+from typing import List, Tuple, Dict, Any
 
 import jwt
-
-from database.mongo import MongoDBApi
-from models.mongo import User
-from tools.consts import MONGO_URI, MONGO_DB_NAME
+from bson import ObjectId
 
 
 def object_id_str(obj):
@@ -53,6 +50,3 @@ def trim_numbers(numbers: List[float], words: List[str], difference: int) -> Tup
 
 def create_jwt_token(user: dict):
     return jwt.encode(user, 'your_secret_key', algorithm='HS256')
-
-
-mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

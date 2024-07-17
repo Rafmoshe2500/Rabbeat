@@ -16,9 +16,9 @@ const TeacherSearch: React.FC = () => {
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams, setSearchParams] = useState({
+    fullName: '',
     address: '',
-    version: '',
-    firstName: ''
+    versions: ''
   });
 
   const { data: teachers, isLoading, error } = useGetAllTeachers();
@@ -28,9 +28,12 @@ const TeacherSearch: React.FC = () => {
   };
 
   const filteredTeachers = teachers?.filter(teacher => 
-    (searchParams.address === '' || teacher.address.toLowerCase().includes(searchParams.address.toLowerCase())) &&
-    (searchParams.version === '' || teacher.versions.some(v => v.toLowerCase().includes(searchParams.version.toLowerCase()))) &&
-    (searchParams.firstName === '' || teacher.firstName.toLowerCase().includes(searchParams.firstName.toLowerCase()))
+    (searchParams.fullName === '' || 
+      `${teacher.firstName} ${teacher.lastName}`.toLowerCase().includes(searchParams.fullName.toLowerCase())) &&
+    (searchParams.address === '' || 
+      teacher.address.toLowerCase().includes(searchParams.address.toLowerCase())) &&
+    (searchParams.versions === '' || 
+      teacher.versions.some(v => v.toLowerCase().includes(searchParams.versions.toLowerCase())))
   ) || [];
 
   const paginatedTeachers = filteredTeachers.slice(
@@ -54,6 +57,13 @@ const TeacherSearch: React.FC = () => {
         gap: 1 
       }}>
         <RTLTextField dir='rtl'
+          label="חפש לפי שם מלא" 
+          name="fullName"
+          value={searchParams.fullName}
+          onChange={handleSearch}
+          sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
+        />
+        <RTLTextField dir='rtl'
           label="חפש לפי כתובת" 
           name="address"
           value={searchParams.address}
@@ -62,15 +72,8 @@ const TeacherSearch: React.FC = () => {
         />
         <RTLTextField dir='rtl' 
           label="חפש לפי סגנון" 
-          name="version"
-          value={searchParams.version}
-          onChange={handleSearch}
-          sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
-        />
-        <RTLTextField dir='rtl' 
-          label="חפש לפי שם" 
-          name="name"
-          value={searchParams.firstName}
+          name="versions"
+          value={searchParams.versions}
           onChange={handleSearch}
           sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         />

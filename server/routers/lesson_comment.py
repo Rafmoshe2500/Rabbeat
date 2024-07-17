@@ -1,10 +1,8 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.mongo import LessonComments, UpdateComment
-from tools.utils import mongo_db
+from models.lesson import LessonComments, UpdateComment
+from database.mongo import mongo_db
 
 router = APIRouter(tags=['User-Lessons | Additives'])
 
