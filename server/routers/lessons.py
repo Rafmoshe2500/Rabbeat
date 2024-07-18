@@ -3,24 +3,24 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.lesson import Lesson, LessonDetails
-from models.response import LessonDetail, LessonResponse, ExtendLessonResponse
+from models.lesson import Lesson, LessonDetails, CreateLesson, UpdateStatus, LessonStatus
+from models.response import LessonDetails, LessonResponse, ExtendLessonResponse
 from database.mongo import mongo_db
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
 
 
-@router.post("/lesson/{teacher_id}", response_model=str)
-async def create_lesson(teacher_id, lesson: Lesson):
-    lesson_id = mongo_db.add_lesson(lesson)
-    mongo_db.associate_user_to_lesson(teacher_id, str(lesson_id))
+@router.post("/lesson", response_model=str)
+async def create_lesson(lesson: CreateLesson):
+    lesson_id = mongo_db.add_lesson(Lesson(**lesson.dict(exclude={'teacherId'})))
+    mongo_db.associate_user_to_lesson(lesson.teacherId, str(lesson_id))
     if lesson_id:
         return JSONResponse(status_code=201, content=str(lesson_id))
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 
-@router.get("/lesson/{lesson_id}", response_model=LessonDetail)
+@router.get("/lesson/{lesson_id}", response_model=LessonDetails)
 async def get_lesson_by_id(lesson_id: str):
     lesson = mongo_db.get_lesson_by_id(lesson_id)
     lesson_details = mongo_db.get_lesson_details_by_id(lesson_id)
@@ -76,7 +76,7 @@ async def get_lessons_details_by_user_id(user_id: str):
                 details=LessonDetails(**details)
             )
             if user['type'] == 'student':
-                status = mongo_db.get_lesson_status_by_ids(user_id, lesson_id['lessonId'])
+                status = mongo_db.get_study_zone_by_ids(user_id, lesson_id['lessonId'])
                 lesson_response = ExtendLessonResponse(**lesson_response.dict(), status=status['status'])
             lessons.append(lesson_response)
 
@@ -84,3 +84,15 @@ async def get_lessons_details_by_user_id(user_id: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/lesson-status")
+async def update_lesson_status(update_status: LessonStatus):
+    update_result = mongo_db.update_study_zone_status(update_status)
+    if not update_result:
+        raise HTTPException(status_code=404, detail="Something went wrong")
+    if update_result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="LessonStatus not found")
+    if update_result.modified_count == 0:
+        raise HTTPException(status_code=304, detail="LessonStatus not modified")
+    return {"message": "LessonStatus successfully updated"}

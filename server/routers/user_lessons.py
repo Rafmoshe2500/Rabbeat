@@ -9,8 +9,8 @@ from models.response import ExtendLessonDetailsResponse
 router = APIRouter(tags=['User-Lessons'])
 
 
-@router.post("/user-lesson")
-async def associate_user_to_lesson(new_associate: AssociateUserToLesson):
+@router.post("/user-lesson/{teacher_id}")
+async def associate_student_to_lesson(new_associate: AssociateUserToLesson):
     if not mongo_db.get_connection(new_associate.userId, new_associate.teacher_id):
         HTTPException(status_code=404, detail="User are not association to this teacher!")
     user = mongo_db.get_user_by_id(new_associate.userId)
@@ -24,7 +24,6 @@ async def associate_user_to_lesson(new_associate: AssociateUserToLesson):
         if not status_result:
             mongo_db.remove_all_lesson_data_from_user(new_associate.lessonId, new_associate.userId)
             raise HTTPException(status_code=500, detail="User Lesson not created")
-    mongo_db.upsert_test_chat_messages()
     return {"id": str(result.inserted_id)}
 
 

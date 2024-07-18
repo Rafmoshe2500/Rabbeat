@@ -23,6 +23,10 @@ class Lesson(BaseModel):
     details: LessonDetails
 
 
+class CreateLesson(Lesson):
+    teacherId: str
+
+
 class AssociateUserToLesson(BaseModel):
     userId: str
     lessonId: str
@@ -33,10 +37,6 @@ class LessonComments(BaseModel):
     lessonId: str
     time: float
     text: str
-
-
-class UpdateStatus(BaseModel):
-    status: str
 
 
 class UpdateComment(BaseModel):
@@ -65,3 +65,8 @@ class AssociateNewStudent(BaseModel):
     studentId: str
     teacherId: str
     expired_date: datetime = Field(default_factory=lambda: datetime.now() + timedelta(days=120))
+
+
+class LessonTestAudio(BaseModel):
+    id: str
+    audio: str

@@ -7,7 +7,7 @@ from models.profile import TeacherProfile
 from models.user import User
 
 
-class LessonDetail(BaseModel):
+class LessonDetails(BaseModel):
     _id: str
     audio: str
     highlightsTimestamps: List[float]
