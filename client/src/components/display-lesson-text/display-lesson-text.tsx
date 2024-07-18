@@ -36,12 +36,6 @@ const DisplayText: React.FC<DisplayTextProps> = ({
 
   return (
     <div>
-      <div>
-        <VersionSelector
-          onVersionChange={handleVersionChange}
-          onTorahFontChange={handleTorahFontChange}
-        />
-      </div>
       <div
         className={`${styles["container"]} ${
           isTorahFontEnabled ? "stam-font" : ""
@@ -89,6 +83,12 @@ const DisplayText: React.FC<DisplayTextProps> = ({
             ))}
           </div>
         ))}
+      </div>
+      <div>
+        <VersionSelector
+          onVersionChange={handleVersionChange}
+          onTorahFontChange={handleTorahFontChange}
+        />
       </div>
     </div>
   );

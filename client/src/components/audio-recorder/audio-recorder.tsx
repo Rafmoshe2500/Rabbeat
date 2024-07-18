@@ -111,7 +111,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
       <button
         onClick={isRecording ? handleStopRecording : handleStartRecording}
       >
-        {isRecording ? "Stop Recording" : "Start Recording"}
+        {isRecording ? "עצור הקלטה" : "התחל להקליט"}
       </button>
       {audioURL && (
         <div>
@@ -120,7 +120,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
       )}
       {shouldDisplayTranscript && (
         <div>
-          <h3>Transcript</h3>
           <p>{transcript}</p>
         </div>
       )}
