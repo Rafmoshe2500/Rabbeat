@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
-from models.lesson import LessonStatus, AssociateUserToLesson, AssociateNewStudent
+from models.lesson import AssociateUserToLesson, AssociateNewStudent, DisassociateUserToLesson
 from models.response import ExtendLessonDetailsResponse
 from workflows.associate_student_to_lesson import AssociateUserToLessonFlow
 
@@ -13,16 +13,20 @@ router = APIRouter(tags=['User-Lessons'])
 
 @router.post("/associate-lesson")
 async def associate_student_to_lesson(new_associate: AssociateUserToLesson):
-    result = AssociateUserToLessonFlow(new_associate.teacherId, new_associate.studentId, new_associate.lessonId).run()
-    if result:
-        return JSONResponse(status_code=201, content="Success to associate a new student to teacher lesson")
-    mongo_db.remove_all_lesson_data_from_user(new_associate.lessonId, new_associate.studentId)
-    raise HTTPException(status_code=500, detail="Failed to associate user to lesson")
+    try:
+        result = AssociateUserToLessonFlow(new_associate.teacherId, new_associate.studentId,
+                                           new_associate.lessonId).run()
+        if result:
+            return JSONResponse(status_code=201, content="Success to associate a new student to teacher lesson")
+        mongo_db.remove_all_lesson_data_from_user(new_associate.lessonId, new_associate.studentId)
+        raise HTTPException(status_code=500, detail="Failed to associate user to lesson")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e)
 
 
 @router.delete("/disassociate-lesson")
-async def disassociate_user_from_lesson(user_lesson: AssociateUserToLesson):
-    mongo_db.remove_all_lesson_data_from_user(user_lesson)
+async def disassociate_user_from_lesson(user_lesson: DisassociateUserToLesson):
+    mongo_db.remove_all_lesson_data_from_user(user_lesson.lessonId, user_lesson.studentId)
     return {"message": "Lesson and related data successfully deleted"}
 
 

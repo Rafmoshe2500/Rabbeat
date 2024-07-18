@@ -54,6 +54,8 @@ class MongoDBApi:
     def remove_all_lesson_data_from_user(self, lesson_id, user_id) -> None:
         try:
             self._db.user_lessons.delete_one({"lessonId": lesson_id, "userId": user_id})
+            study_zone = mongo_db.get_study_zone_by_ids(user_id, lesson_id)
+            self._db.lesson_test_audio.delete_one({'_id': ObjectId(study_zone['testAudioId'])})
             self._db.study_zone.delete_one({"lessonId": lesson_id, "userId": user_id})
             self._db.lesson_comments.delete_many({"lessonsId": lesson_id, "userId": user_id})
             self._db.chatbot_messages.delete_many({"lessonId": lesson_id, "userId": user_id})
@@ -128,26 +130,12 @@ class MongoDBApi:
             logging.error(f"Error updating lesson comment: {e}")
             return None
 
-    # def get_all_lesson_statuses(self):
-    #     try:
-    #         return list(self._db.lesson_status.find())
-    #     except Exception as e:
-    #         logging.error(f"Error getting all lesson statuses: {e}")
-    #         return []
-
     def get_study_zone_by_ids(self, user_id: str, lesson_id: str):
         try:
             return self._db.study_zone.find_one({"userId": user_id, "lessonId": lesson_id})
         except Exception as e:
             logging.error(f"Error getting lesson status by IDs: {e}")
             return None
-
-    # def add_lesson_status(self, lesson_status: LessonStatus):
-    #     try:
-    #         return self._db.lesson_status.insert_one(lesson_status.dict())
-    #     except Exception as e:
-    #         logging.error(f"Error adding lesson status: {e}")
-    #         return None
 
     def delete_lesson_comment_by_id(self, id: str):
         try:
@@ -318,20 +306,20 @@ class MongoDBApi:
             logging.error(f"Error adding lesson chat: {e}")
             return None
 
-    def get_test_chat_by_ids(self, user_id: str, lesson_id: str):
+    def get_test_chat_by_id(self, chat_id: str):
         try:
-            return self._db.test_chat_lesson.find_one({"userId": user_id, "lessonId": lesson_id})
+            return self._db.test_chat_lesson.find_one({"_id": ObjectId(chat_id)})
         except Exception as e:
             logging.error(f"Error getting lesson chat by IDs: {e}")
             return None
 
-    def add_message_to_chat(self, lesson_id: str, user_id: str, new_message: Message):
+    def add_message_to_chat(self, chat_id: str, new_message: Message):
         message_dict = new_message.dict()
 
         result = self._db.test_chat_lesson.update_one(
-            {"lessonId": lesson_id, "userId": user_id},
+            {"_id": ObjectId(chat_id)},
             {"$push": {"messages": message_dict}},
-            upsert=True  # This will create a new document if it doesn't exist
+            upsert=True
         )
 
         return result.modified_count > 0 or result.upserted_id is not None
@@ -344,7 +332,7 @@ class MongoDBApi:
 
     def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id):
         try:
-            self._db.study_zone.insert_one(
+            return self._db.study_zone.insert_one(
                 {'chatId': chat_id, 'testAudioId': test_audio_id, 'status': 'not-started',
                  'lessonId': lesson_id, 'userId': user_id})
         except Exception as e:

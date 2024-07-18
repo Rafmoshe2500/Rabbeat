@@ -33,6 +33,11 @@ class AssociateUserToLesson(BaseModel):
     lessonId: str
 
 
+class DisassociateUserToLesson(BaseModel):
+    lessonId: str
+    studentId: str
+
+
 class LessonComments(BaseModel):
     userId: str
     lessonId: str

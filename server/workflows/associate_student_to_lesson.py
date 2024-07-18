@@ -15,12 +15,12 @@ class AssociateUserToLessonFlow(BaseWorkflow):
     def __associate_user_to_lesson(self) -> None:
         mongo_db.associate_user_to_lesson(self.student_id, self.lesson_id)
 
-    def __create_chat_room(self) -> str:
-        return str(mongo_db.add_test_chat(self.lesson_id, self.student_id))
+    def __create_chat_room(self):
+        return mongo_db.add_test_chat(self.lesson_id, self.student_id)
 
     @staticmethod
     def __create_self_test_audio():
-        return str(mongo_db.add_lesson_test_audio())
+        return mongo_db.add_lesson_test_audio()
 
     def run(self):
         if not self.__is_connected():
@@ -28,4 +28,5 @@ class AssociateUserToLessonFlow(BaseWorkflow):
         self.__associate_user_to_lesson()
         chat_id = self.__create_chat_room()
         test_audio_id = self.__create_self_test_audio()
-        return mongo_db.add_new_study_zone(chat_id, test_audio_id, self.lesson_id, self.student_id)
+        return mongo_db.add_new_study_zone(str(chat_id.inserted_id), str(test_audio_id.inserted_id), self.lesson_id,
+                                           self.student_id)
