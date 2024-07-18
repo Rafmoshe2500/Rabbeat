@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class LessonTestAudio(BaseModel):
@@ -9,7 +9,7 @@ class LessonTestAudio(BaseModel):
 
 
 class Message(BaseModel):
-    timestamp: datetime = datetime.now()
+    timestamp: datetime = Field(default_factory=datetime.now)
     sender: str
     type: str
     content: str

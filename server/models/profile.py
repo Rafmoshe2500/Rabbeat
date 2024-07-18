@@ -2,11 +2,11 @@
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Recommendation(BaseModel):
-    creationDate: datetime = datetime.now()
+    creationDate: datetime = Field(default_factory=datetime.now)
     studentId: str
     text: str
 
@@ -28,10 +28,3 @@ class TeacherProfile(BaseModel):
 class UpdateProfile(BaseModel):
     key: str
     value: str | List[str | Recommendation]
-
-
-class TestAudio(BaseModel):
-    audio: str
-    studentId: str
-    lessonId: str
-

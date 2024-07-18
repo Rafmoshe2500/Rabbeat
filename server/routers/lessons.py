@@ -5,7 +5,7 @@ from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
 from models.lesson import Lesson, CreateLesson
-from models.response import LessonDetails, LessonResponse, ExtendLessonResponse
+from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonResponse
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
@@ -20,7 +20,7 @@ async def create_lesson(lesson: CreateLesson):
     raise HTTPException(status_code=500, detail="Lesson not created")
 
 
-@router.get("/lesson/{lesson_id}", response_model=LessonDetails)
+@router.get("/lesson/{lesson_id}", response_model=LessonDetailsResponse)
 async def get_lesson_by_id(lesson_id: str):
     lesson = mongo_db.get_lesson_by_id(lesson_id)
     lesson_details = mongo_db.get_lesson_details_by_id(lesson_id)
@@ -55,7 +55,7 @@ async def get_lessons_details_by_user_id(user_id: str):
             lesson_response = LessonResponse(
                 lessonId=lesson_id['lessonId'],
                 userId=user_id,
-                details=LessonDetails(**details)
+                details=LessonDetailsResponse(**details)
             )
             if user['type'] == 'student':
                 study_zone = mongo_db.get_study_zone_by_ids(user_id, lesson_id['lessonId'])
