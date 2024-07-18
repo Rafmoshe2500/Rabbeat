@@ -7,16 +7,13 @@ import Loader from "../components/common/loader";
 import ChatComponent from "../components/chatbot/ChatComponent";
 // import SelfLearning from "../components/self-learning/self-learning"; // Import your SelfLearning component
 import SelfTesting from "./self-testing";
+import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 
 const LessonView = () => {
   const location = useLocation();
   const lessonDetails: LessonDetails = location.state?.lessonDetails;
   const { id } = useParams<{ id: string }>();
-
   const { data: lesson, isLoading } = useLessonsById(id!);
-  const [currentView, setCurrentView] = useState<
-    "LessonContent" | "SelfTesting"
-  >("LessonContent");
 
   const lessonForView = useMemo(
     () =>
@@ -27,6 +24,17 @@ const LessonView = () => {
     [lesson, lessonDetails]
   );
 
+  const tabs = [
+    {
+      name: "מסך למידה",
+      component: <LessonContent lesson={lessonForView} />,
+    },
+    {
+      name: "בחינה עצמית",
+      component: <SelfTesting lesson={lessonForView} />,
+    },
+  ];
+
   return (
     <div
       style={{
@@ -36,35 +44,7 @@ const LessonView = () => {
         justifyContent: "center",
       }}
     >
-      <div style={{ marginBottom: "20px" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setCurrentView("LessonContent")}
-        >
-          מסך למידה
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => setCurrentView("SelfTesting")}
-        >
-          בחינה עצמית
-        </Button>
-      </div>
-
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {currentView === "LessonContent" && (
-            <LessonContent lesson={lessonForView} />
-          )}
-          {currentView === "SelfTesting" && (
-            <SelfTesting lesson={lessonForView} />
-          )}
-        </>
-      )}
+      {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
 
       <ChatComponent
         messageContext={{
