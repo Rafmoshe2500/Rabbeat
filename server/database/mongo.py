@@ -8,7 +8,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelection
 # Assuming the data models are defined as dataclasses
 from database.piplines import PIPELINE_ALL_TEACHERS_WITH_PROFILE, get_shared_lessons_pipeline
 from models.lesson import Lesson, LessonDetails, UpdateComment, LessonStatus, LessonComments, ChatBotMessages, \
-    AssociateNewStudent, LessonTestAudio
+    AssociateNewStudent
 from models.profile import TeacherProfile, UpdateProfile
 from models.tests import Message
 from models.user import User, UserCredentials

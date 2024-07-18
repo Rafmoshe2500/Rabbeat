@@ -3,9 +3,9 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
-from models.lesson import Lesson, LessonDetails, CreateLesson, UpdateStatus, LessonStatus
-from models.response import LessonDetails, LessonResponse, ExtendLessonResponse
 from database.mongo import mongo_db
+from models.lesson import Lesson, CreateLesson
+from models.response import LessonDetails, LessonResponse, ExtendLessonResponse
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])

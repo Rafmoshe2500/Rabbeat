@@ -31,3 +31,9 @@ class ExtendLessonResponse(LessonResponse):
 
 class ExtendLessonDetailsResponse(LessonDetails):
     status: str
+
+
+class StudyZoneResponse(BaseModel):
+    chatId: str
+    testAudioId: str
+    status: str

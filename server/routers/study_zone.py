@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException
+from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
 from models.lesson import LessonStatus
+from models.response import StudyZoneResponse
 
 router = APIRouter(tags=['Study Zone'])
 
@@ -18,3 +20,8 @@ async def update_lesson_status(update_status: LessonStatus):
     return {"message": "LessonStatus successfully updated"}
 
 
+@router.get("/study_zone/student/{student_id}/lesson/{lesson_id}", response_model=StudyZoneResponse)
+def get_study_zone_by_user_and_lesson_ids(student_id, lesson_id):
+    result = mongo_db.get_study_zone_by_ids(student_id, lesson_id)
+    if result:
+        return JSONResponse(status_code=200, content=StudyZoneResponse(**result).dict())
