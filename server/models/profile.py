@@ -2,11 +2,11 @@
 from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class Recommendation(BaseModel):
-    creationDate: datetime = Field(default_factory=datetime.now)
+    creationDate: datetime = datetime.now()
     studentId: str
     text: str
 

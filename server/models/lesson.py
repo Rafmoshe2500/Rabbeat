@@ -13,7 +13,7 @@ class LessonDetails(BaseModel):
     endChapter: str
     endVerse: str
     pentateuch: str
-    creationDate: datetime = Field(default_factory=datetime.now)
+    creationDate: datetime = datetime.now()
 
 
 class Lesson(BaseModel):
@@ -58,7 +58,7 @@ class LessonStatus(BaseModel):
 class Message(BaseModel):
     text: str
     user: str
-    datetime: datetime = Field(default_factory=datetime.now)
+    datetime: datetime
 
 
 class ChatBotMessages(BaseModel):
