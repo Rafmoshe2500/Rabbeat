@@ -1,24 +1,15 @@
 import { useEffect, useState } from "react";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
 import DisplayText from "../components/display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../hooks/useFlattedLessonText";
 import { useCompareTexts } from "../hooks/useCompareTexts";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import AudioRecorder from "../components/audio-recorder/audio-recorder";
-import Chat from "../components/chat/chat";
 
 type SelfTestingProps = {
   lesson?: Lesson;
 };
 
 const SelfTesting = ({ lesson }: SelfTestingProps) => {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const handleToggleChat = () => {
-    setIsChatOpen((prev) => !prev);
-  };
-
   const { flattedText, length } = useFlattedLessonText(lesson?.text);
 
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -50,18 +41,18 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   return (
     <div>
+      <div>{lesson && <DisplayText text={lesson.text!} />}</div>
       <AudioRecorder
         onRecordingComplete={handleRecordingComplete}
         shouldStopRecording={shouldStopRecording}
         shouldDisplayTranscript
       />
-      <div>{lesson && <DisplayText text={lesson.text!} />}</div>
       <div
         style={{
           direction: "rtl",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(60px, 1fr))",
+          gap: "10px 0",
         }}
       >
         {isLoading && <CircularProgress />}
@@ -79,23 +70,11 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
             </div>
           ))}
       </div>
+
       <div>
         {data &&
           (data.every(([_, isCorrect]) => !!isCorrect) ? "הצלחת" : "נסה שוב")}
       </div>
-
-      <Box>
-        <Button variant="contained" color="primary" onClick={handleToggleChat}>
-          {isChatOpen ? "Close Chat" : "Open Chat"}
-        </Button>
-        {isChatOpen && (
-          <Chat
-            isOpen={isChatOpen}
-            setIsOpen={setIsChatOpen}
-            lessonId={lesson?.id!}
-          />
-        )}
-      </Box>
     </div>
   );
 };

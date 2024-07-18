@@ -7,6 +7,7 @@ import Loader from "../components/common/loader";
 import ChatComponent from "../components/chatbot/ChatComponent";
 // import SelfLearning from "../components/self-learning/self-learning"; // Import your SelfLearning component
 import SelfTesting from "./self-testing";
+import Chat from "../components/chat/chat";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 
 const LessonView = () => {
@@ -55,6 +56,7 @@ const LessonView = () => {
           endVerse: lessonDetails.endVerse,
         }}
       />
+      <Chat lessonId={lessonDetails.id!} />
     </div>
   );
 };

@@ -5,14 +5,14 @@ import StopIcon from "@mui/icons-material/Stop";
 import styles from "./chat.module.scss";
 import { useUser } from "../../contexts/user-context";
 import { useChat } from "../../hooks/chat/useChatMessages";
+import { ChatBubble } from "@mui/icons-material";
 
 interface ChatProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lessonId: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ isOpen, setIsOpen, lessonId }) => {
+const Chat: React.FC<ChatProps> = ({ lessonId }) => {
+  const [isOpen, setIsOpen] = useState<boolean>();
   const { userDetails } = useUser();
   const userType = userDetails!.type!;
   const { messagesQuery, sendMessageMutation } = useChat(
@@ -28,6 +28,10 @@ const Chat: React.FC<ChatProps> = ({ isOpen, setIsOpen, lessonId }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+
+  const toggleChat = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -97,6 +101,10 @@ const Chat: React.FC<ChatProps> = ({ isOpen, setIsOpen, lessonId }) => {
 
   return (
     <>
+      <button onClick={toggleChat} className={styles.imageButton} id="chat">
+        <ChatBubble />
+      </button>
+
       {isOpen && (
         <div className={styles.chatWindow}>
           <div className={styles.chatHeader}>
