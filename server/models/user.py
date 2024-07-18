@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class User(BaseModel):
@@ -9,7 +9,7 @@ class User(BaseModel):
     phoneNumber: str
     address: str
     birthDay: str
-    type: str  # (student/teacher)
+    type: str = Field(..., description="User type (student/teacher)")
 
 
 class UserRegister(User):

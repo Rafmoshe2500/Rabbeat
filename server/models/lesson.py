@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 
 
-class LessonMetadata(BaseModel):
+class LessonDetails(BaseModel):
     lessonId: str
     title: str
     startChapter: str
@@ -20,12 +20,22 @@ class Lesson(BaseModel):
     audio: str
     highlightsTimestamps: List[float]
     sttText: str
-    metadata: LessonMetadata
+    details: LessonDetails
+
+
+class CreateLesson(Lesson):
+    teacherId: str
 
 
 class AssociateUserToLesson(BaseModel):
-    userId: str
+    studentId: str
+    teacherId: str
     lessonId: str
+
+
+class DisassociateUserToLesson(BaseModel):
+    lessonId: str
+    studentId: str
 
 
 class LessonComments(BaseModel):
@@ -33,10 +43,6 @@ class LessonComments(BaseModel):
     lessonId: str
     time: float
     text: str
-
-
-class UpdateStatus(BaseModel):
-    status: str
 
 
 class UpdateComment(BaseModel):

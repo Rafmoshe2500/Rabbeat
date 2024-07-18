@@ -2,12 +2,11 @@ from typing import List, Dict, Any
 
 from pydantic import BaseModel
 
-from models.lesson import LessonMetadata
 from models.profile import TeacherProfile
 from models.user import User
 
 
-class LessonDetail(BaseModel):
+class LessonDetailsResponse(BaseModel):
     _id: str
     audio: str
     highlightsTimestamps: List[float]
@@ -22,12 +21,18 @@ class ResponseTeacherProfile(User, TeacherProfile):
 class LessonResponse(BaseModel):
     lessonId: str
     userId: str
-    metadata: LessonMetadata
+    details: LessonDetailsResponse
 
 
 class ExtendLessonResponse(LessonResponse):
     status: str
 
 
-class ExtendLessonMetadataResponse(LessonMetadata):
+class ExtendLessonDetailsResponse(LessonDetailsResponse):
+    status: str
+
+
+class StudyZoneResponse(BaseModel):
+    chatId: str
+    testAudioId: str
     status: str
