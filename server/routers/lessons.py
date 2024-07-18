@@ -44,24 +44,6 @@ async def get_lesson_by_id(lesson_id: str):
     raise HTTPException(status_code=404, detail="Lesson not found")
 
 
-@router.get("/lessons")
-async def get_all_lessons():
-    lessons = mongo_db.get_all_lessons()
-    for lesson in lessons:
-        lesson["_id"] = str(lesson["_id"])
-    return lessons
-
-
-@router.get("/lessons-details", response_model=List[LessonDetails])
-async def get_all_lessons_details():
-    lessons = mongo_db.get_all_lessons_details()
-    if not lessons:
-        raise HTTPException(status_code=404, detail="No lessons found")
-    for lesson in lessons:
-        lesson["_id"] = str(lesson["_id"])
-    return lessons
-
-
 @router.get("/lessons/{user_id}", response_model=List[Union[LessonResponse, ExtendLessonResponse]])
 async def get_lessons_details_by_user_id(user_id: str):
     try:

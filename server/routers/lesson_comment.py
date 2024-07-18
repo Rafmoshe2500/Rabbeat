@@ -35,7 +35,7 @@ async def delete_lesson_comment_by_id(id: str):
     return {"message": "Comment successfully deleted"}
 
 
-@router.post("/lesson-comment/{comment_id}")
+@router.put("/lesson-comment/{comment_id}")
 async def update_lesson_status(comment_id, update: UpdateComment):
     update_result = mongo_db.update_lesson_comment(comment_id, update)
     if not update_result:

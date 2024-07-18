@@ -8,7 +8,7 @@ from models.response import StudyZoneResponse
 router = APIRouter(tags=['Study Zone'])
 
 
-@router.post("/lesson-status", response_model=str)
+@router.put("/lesson-status", response_model=str)
 async def update_lesson_status(update_status: LessonStatus):
     update_result = mongo_db.update_study_zone_status(update_status)
     if not update_result:

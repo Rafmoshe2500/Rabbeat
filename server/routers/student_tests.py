@@ -22,7 +22,7 @@ async def get_all_messages(chat_id: str):
         return result['messages']
 
 
-@router.post("/test-audio/{audio_id}", response_model=str)
+@router.put("/test-audio/{audio_id}", response_model=str)
 def update_self_test_audio(audio_id, audio: LessonTestAudio):
     result = mongo_db.update_lesson_test_audio(audio_id, audio.audio)
     if result:
