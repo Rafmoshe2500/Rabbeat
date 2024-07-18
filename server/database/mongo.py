@@ -339,13 +339,16 @@ class MongoDBApi:
     def add_lesson_test_audio(self):
         return self._db.lesson_test_audio.insert_one({'audio': ''})
 
-    def update_lesson_test_audio(self, audio: LessonTestAudio):
-        self._db.lesson_test_audio.update_one({'_id': ObjectId(audio.id)}, {'audio': audio.audio}, upsert=True)
+    def update_lesson_test_audio(self, audio_id: str, audio: str):
+        self._db.lesson_test_audio.update_one({'_id': ObjectId(audio_id)}, {'audio': audio}, upsert=True)
 
     def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id):
-        self._db.study_zone.insert_one(
-            {'chatId': chat_id, 'testAudioId': test_audio_id, 'status': 'not-started',
-             'lessonId': lesson_id, 'userId': user_id})
+        try:
+            self._db.study_zone.insert_one(
+                {'chatId': chat_id, 'testAudioId': test_audio_id, 'status': 'not-started',
+                 'lessonId': lesson_id, 'userId': user_id})
+        except Exception as e:
+            return None
 
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

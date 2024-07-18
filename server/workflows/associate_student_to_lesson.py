@@ -1,9 +1,8 @@
 from database.mongo import mongo_db
-from models.user import User
 from workflows.base import BaseWorkflow
 
 
-class CreateStudyZone(BaseWorkflow):
+class AssociateUserToLessonFlow(BaseWorkflow):
 
     def __init__(self, teacher_id: str, student_id: str, lesson_id: str):
         self.teacher_id = teacher_id
@@ -29,4 +28,4 @@ class CreateStudyZone(BaseWorkflow):
         self.__associate_user_to_lesson()
         chat_id = self.__create_chat_room()
         test_audio_id = self.__create_self_test_audio()
-        mongo_db.add_new_study_zone(chat_id, test_audio_id, self.lesson_id, self.student_id)
+        return mongo_db.add_new_study_zone(chat_id, test_audio_id, self.lesson_id, self.student_id)

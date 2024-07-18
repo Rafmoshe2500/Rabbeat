@@ -4,10 +4,8 @@ from typing import List
 from pydantic import BaseModel
 
 
-class TestAudio(BaseModel):
+class LessonTestAudio(BaseModel):
     audio: str
-    studentId: str
-    lessonId: str
 
 
 class Message(BaseModel):

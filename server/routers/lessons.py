@@ -76,23 +76,11 @@ async def get_lessons_details_by_user_id(user_id: str):
                 details=LessonDetails(**details)
             )
             if user['type'] == 'student':
-                status = mongo_db.get_study_zone_by_ids(user_id, lesson_id['lessonId'])
-                lesson_response = ExtendLessonResponse(**lesson_response.dict(), status=status['status'])
+                study_zone = mongo_db.get_study_zone_by_ids(user_id, lesson_id['lessonId'])
+                lesson_response = ExtendLessonResponse(**lesson_response.dict(), status=study_zone['status'])
             lessons.append(lesson_response)
 
         return lessons
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.post("/lesson-status")
-async def update_lesson_status(update_status: LessonStatus):
-    update_result = mongo_db.update_study_zone_status(update_status)
-    if not update_result:
-        raise HTTPException(status_code=404, detail="Something went wrong")
-    if update_result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="LessonStatus not found")
-    if update_result.modified_count == 0:
-        raise HTTPException(status_code=304, detail="LessonStatus not modified")
-    return {"message": "LessonStatus successfully updated"}
