@@ -1,36 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  fetchMessages,
-  //   postAudioMessage,
-  postMessage,
-} from "../../api/endpoints/chat";
+import { fetchMessages, postMessage } from "../../api/endpoints/chat";
 
-export const useChat = (userId: string, lessonId: string) => {
+export const useChat = (chatId: string) => {
   const queryClient = useQueryClient();
 
   const messagesQuery = useQuery({
-    queryKey: ["messages", userId, lessonId],
-    queryFn: (context) =>
-      fetchMessages(context.queryKey[1], context.queryKey[2]),
+    queryKey: ["chat", chatId],
+    queryFn: (context) => fetchMessages(context.queryKey[1]),
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: (message: Message) => postMessage(message, userId, lessonId),
+    mutationFn: (message: Message) => postMessage(chatId, message),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ["chat"] });
     },
   });
-
-  //   const sendAudioMessageMutation = useMutation({
-  //     mutationFn: postAudioMessage,
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries({ queryKey: ["messages"] });
-  //     },
-  //   });
 
   return {
     messagesQuery,
     sendMessageMutation,
-    // sendAudioMessageMutation,
   };
 };

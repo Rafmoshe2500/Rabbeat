@@ -4,9 +4,9 @@ import {
 } from "../../utils/audio-parser";
 import apiClient from "../config";
 
-export const fetchMessages = async (studentId: string, lessonId: string) => {
+export const fetchMessages = async (chatId: string) => {
   const { data } = await apiClient.get<Array<Message>>(
-    `/lesson/${lessonId}/student/${studentId}/test-chat/messages`
+    `/lesson/chat/${chatId}`
   );
 
   const messages = data.map((message) => {
@@ -17,11 +17,7 @@ export const fetchMessages = async (studentId: string, lessonId: string) => {
   return messages;
 };
 
-export const postMessage = async (
-  message: Message,
-  studentId: string,
-  lessonId: string
-) => {
+export const postMessage = async (chatId: string, message: Message) => {
   const convertedMessage =
     message.type === "audio"
       ? {
@@ -30,15 +26,8 @@ export const postMessage = async (
         }
       : message;
   const { data } = await apiClient.post(
-    `/lesson/${lessonId}/student/${studentId}/test-chat/messages`,
+    `/lesson/chat/${chatId}/message`,
     convertedMessage
   );
   return data;
 };
-
-// export const postAudioMessage = async (audio: Blob) => {
-//   const formData = new FormData();
-//   formData.append("audio", audio);
-//   const { data } = await apiClient.post("/api/audio", formData);
-//   return data;
-// };

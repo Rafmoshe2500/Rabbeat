@@ -8,17 +8,14 @@ import { useChat } from "../../hooks/chat/useChatMessages";
 import { ChatBubble } from "@mui/icons-material";
 
 interface ChatProps {
-  lessonId: string;
+  chatId: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ lessonId }) => {
+const Chat: React.FC<ChatProps> = ({ chatId }) => {
   const [isOpen, setIsOpen] = useState<boolean>();
   const { userDetails } = useUser();
   const userType = userDetails!.type!;
-  const { messagesQuery, sendMessageMutation } = useChat(
-    userDetails!.id,
-    lessonId
-  );
+  const { messagesQuery, sendMessageMutation } = useChat(chatId);
   const { data: messages } = messagesQuery;
   const { mutate: setMessages } = sendMessageMutation;
 
