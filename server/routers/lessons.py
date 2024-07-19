@@ -15,7 +15,7 @@ async def create_lesson(lesson: CreateLesson):
     lesson_id = mongo_db.add_lesson(Lesson(**lesson.dict(exclude={'teacherId'})))
     if not lesson_id:
         raise HTTPException(status_code=500, detail="Lesson not created")
-    mongo_db.associate_user_to_lesson(lesson.teacherId, str(lesson_id))
+    mongo_db.associate_user_to_lesson(lesson.teacherId, str(lesson_id.inserted_id))
     return str(lesson_id)
 
 

@@ -75,7 +75,7 @@ class MongoDBApi:
         try:
             only_lesson = lesson.dict(include={'audio', 'highlightsTimestamps', 'sttText'})
             result = self._db.lessons.insert_one(only_lesson)
-            details_lesson = {**lesson.details.dict(), 'lessonId': result.inserted_id}
+            details_lesson = {**lesson.details.dict(), '_id': result.inserted_id}
             result_details = self._db.lessons_details.insert_one(details_lesson)
             if result.inserted_id and result_details.inserted_id == result.inserted_id:
                 return result.inserted_id

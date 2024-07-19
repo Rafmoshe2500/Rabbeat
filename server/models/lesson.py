@@ -5,7 +5,6 @@ from pydantic import BaseModel, Field
 
 
 class LessonDetails(BaseModel):
-    lessonId: str
     title: str
     startChapter: str
     version: str
