@@ -48,8 +48,8 @@ class MongoDBApi:
     def get_lessons_by_user_id(self, user_id: str) -> List[Lesson]:
         return list(self._db.user_lessons.find({"userId": user_id}))
 
-    def get_lessons_details_by_user_id(self, lesson_id) -> List[LessonDetails]:
-        return self._db.lessons_details.find_one({"_id": ObjectId(lesson_id)})
+    def get_lessons_details_by_lesson_id(self, lesson_id) -> List[LessonDetails]:
+        return self._db.lessons_details.find_one({"lessonId": lesson_id})
 
     def remove_all_lesson_data_from_user(self, lesson_id, user_id) -> None:
         try:

@@ -3,8 +3,8 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
-from models.lesson import Lesson, CreateLesson
-from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonResponse
+from models.lesson import Lesson, CreateLesson, LessonDetails
+from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonDetailsResponse
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
@@ -19,7 +19,7 @@ async def create_lesson(lesson: CreateLesson):
     return str(lesson_id)
 
 
-@router.get("/lesson/{lesson_id}", response_model=LessonDetailsResponse)
+@router.get("/lesson/{lesson_id}", response_model=LessonResponse)
 async def get_lesson_by_id(lesson_id: str):
     lesson = mongo_db.get_lesson_by_id(lesson_id)
     if not lesson:
@@ -41,7 +41,7 @@ async def get_lesson_by_id(lesson_id: str):
     return lesson
 
 
-@router.get("/lessons/{user_id}", response_model=List[Union[LessonResponse, ExtendLessonResponse]])
+@router.get("/lesson-details/{user_id}", response_model=List[Union[LessonDetailsResponse, ExtendLessonDetailsResponse]])
 async def get_lessons_details_by_user_id(user_id: str):
     try:
         user = mongo_db.get_user_by_id(user_id)
@@ -49,16 +49,16 @@ async def get_lessons_details_by_user_id(user_id: str):
 
         lessons = []
         for lesson_id in lesson_ids:
-            details = mongo_db.get_lessons_details_by_user_id(lesson_id['lessonId'])
-            lesson_response = LessonResponse(
+            details = mongo_db.get_lessons_details_by_lesson_id(lesson_id['lessonId'])
+            lesson_details = LessonDetailsResponse(
                 lessonId=lesson_id['lessonId'],
                 userId=user_id,
-                details=LessonDetailsResponse(**details)
+                details=LessonDetails(**details)
             )
             if user['type'] == 'student':
                 study_zone = mongo_db.get_study_zone_by_ids(user_id, lesson_id['lessonId'])
-                lesson_response = ExtendLessonResponse(**lesson_response.dict(), status=study_zone['status'])
-            lessons.append(lesson_response)
+                lesson_details = ExtendLessonDetailsResponse(**lesson_details.dict(), studyZoneDetails=study_zone)
+            lessons.append(lesson_details)
 
         return lessons
     except Exception as e:
