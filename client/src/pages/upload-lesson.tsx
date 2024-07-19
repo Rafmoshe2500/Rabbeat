@@ -3,14 +3,16 @@ import { convertBlobToBase64 } from "../utils/audio-parser";
 import BibleSelector from "../components/bible-selector/bible-selector";
 import { useCreateOrUpdateLesson } from "../hooks/useCreateOrUpdateLesson";
 import AudioRecorder from "../components/audio-recorder/audio-recorder";
+import { useUser } from "../contexts/user-context";
 
 const UploadLessonPage = () => {
+  const {userDetails} = useUser();
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
 
-  const { mutate } = useCreateOrUpdateLesson();
+  const { mutate } = useCreateOrUpdateLesson(userDetails?.id!);
 
   const [lesson, setLesson] = useState({
     title: "",
@@ -52,6 +54,8 @@ const UploadLessonPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log({audioBlob});
+    
     const lessonToUpload = {
       ...lesson,
       ...torahSection,
@@ -60,6 +64,7 @@ const UploadLessonPage = () => {
       highlightsTimestamps: timestamps,
       sttText: transcript,
     } as FormattedLesson;
+    console.log(lessonToUpload.audio);
     mutate(lessonToUpload);
   };
 

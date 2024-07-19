@@ -22,7 +22,7 @@ export const useTorahSection = (
   endVerse: string
 ) => {
   const queryKey = createQueryKey(
-    "lessons",
+    "torahSection",
     pentateuch,
     startCh,
     startVerse,

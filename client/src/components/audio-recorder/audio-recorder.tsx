@@ -32,6 +32,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const [currentTranscript, setCurrentTranscript] = useState<
     string | undefined
   >(undefined);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>();
   const [end, setEnd] = useState(false);
 
   const { transcript, resetTranscript } = useSpeechRecognition();
@@ -54,6 +55,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
     mediaRecorderRef.current.onstop = async () => {
       const audioBlob = new Blob(audioChunksRef, { type: "audio/wav" });
       const audioURL = URL.createObjectURL(audioBlob);
+      setAudioBlob(audioBlob);
       setAudioURL(audioURL);
       setEnd(true);
     };
@@ -70,9 +72,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
 
   useEffect(() => {
     if (end) {
-      console.log(transcript);
-      const audioBlob = new Blob(audioChunksRef, { type: "audio/wav" });
-      onRecordingComplete(audioBlob, audioURL!, transcript, timestamps);
+      onRecordingComplete(audioBlob!, audioURL!, transcript, timestamps);
       setEnd(false);
     }
   }, [end]);
