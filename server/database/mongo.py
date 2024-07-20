@@ -78,7 +78,7 @@ class MongoDBApi:
             details_lesson = {**lesson.details.dict(), '_id': result.inserted_id}
             result_details = self._db.lessons_details.insert_one(details_lesson)
             if result.inserted_id and result_details.inserted_id == result.inserted_id:
-                return result.inserted_id
+                return result
         except Exception as e:
             logging.error(f"Error adding lesson: {e}")
 

@@ -12,11 +12,12 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/lesson", response_model=str, status_code=201)
 async def create_lesson(lesson: CreateLesson):
-    lesson_id = mongo_db.add_lesson(Lesson(**lesson.dict(exclude={'teacherId'})))
+
+    lesson_id = mongo_db.add_lesson(Lesson(**lesson.model_dump(exclude={'teacherId'})))
     if not lesson_id:
         raise HTTPException(status_code=500, detail="Lesson not created")
     mongo_db.associate_user_to_lesson(lesson.teacherId, str(lesson_id.inserted_id))
-    return str(lesson_id)
+    return str(lesson_id.inserted_id)
 
 
 @router.get("/lesson/{lesson_id}", response_model=LessonResponse)
