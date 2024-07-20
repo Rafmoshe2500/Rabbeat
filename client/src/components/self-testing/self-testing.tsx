@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import DisplayText from "../components/display-lesson-text/display-lesson-text";
-import { useFlattedLessonText } from "../hooks/useFlattedLessonText";
-import { useCompareTexts } from "../hooks/useCompareTexts";
+import DisplayText from "../display-lesson-text/display-lesson-text";
+import { useFlattedLessonText } from "../../hooks/useFlattedLessonText";
+import { useCompareTexts } from "../../hooks/useCompareTexts";
 import { Button, CircularProgress } from "@mui/material";
-import AudioRecorder from "../components/audio-recorder/audio-recorder";
-import { useUpdateTestAudio } from "../hooks/useUpdateTestAudio";
-import { convertBlobToBase64 } from "../utils/audio-parser";
+import AudioRecorder from "../audio-recorder/audio-recorder";
+import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
+import { convertBlobToBase64 } from "../../utils/audio-parser";
+import styles from "./self-testing.module.scss";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -52,15 +53,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     <div>
       <div>{lesson && <DisplayText text={lesson.text!} />}</div>
 
-      <div
-        style={{
-          display: "flex",
-          alignContent: "center",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row-reverse",
-        }}
-      >
+      <div className={styles["record-container"]}>
         <AudioRecorder
           onRecordingComplete={handleRecordingComplete}
           shouldStopRecording={shouldStopRecording}
@@ -73,24 +66,15 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           </Button>
         )}
       </div>
-      <div
-        style={{
-          direction: "rtl",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(60px, 1fr))",
-          gap: "10px 0",
-        }}
-      >
+      <div className={styles["words-container"]}>
         {isLoading && <CircularProgress />}
         {data &&
           data.map(([text, isCorrect], index) => (
             <div
               key={index}
-              style={{
-                paddingLeft: "3px",
-                color: !isCorrect ? "red" : "green",
-              }}
-              className={!isCorrect ? "redText" : "greenText"}
+              className={
+                isCorrect ? styles["correct-word"] : styles["wrong-word"]
+              }
             >
               {text}
             </div>

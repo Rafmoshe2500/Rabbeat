@@ -1,12 +1,10 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
-import Button from "@mui/material/Button";
+import { useMemo } from "react";
 import { useLessonsById } from "../hooks/useLessonById";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
 import ChatComponent from "../components/chatbot/ChatComponent";
-// import SelfLearning from "../components/self-learning/self-learning"; // Import your SelfLearning component
-import SelfTesting from "./self-testing";
+import SelfTesting from "../components/self-testing/self-testing";
 import Chat from "../components/chat/chat";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 
