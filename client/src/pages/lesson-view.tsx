@@ -56,7 +56,7 @@ const LessonView = () => {
           endVerse: lessonDetails.endVerse,
         }}
       />
-      <Chat lessonId={lessonDetails.id!} />
+      <Chat chatId={lessonDetails.chatId!} />
     </div>
   );
 };

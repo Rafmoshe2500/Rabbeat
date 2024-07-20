@@ -120,7 +120,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
       )}
       {shouldDisplayTranscript && (
         <div>
-          <p>{transcript}</p>
+          <p>{currentTranscript}</p>
         </div>
       )}
     </div>

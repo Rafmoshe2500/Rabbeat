@@ -6,7 +6,7 @@ import AudioRecorder from "../components/audio-recorder/audio-recorder";
 import { useUser } from "../contexts/user-context";
 
 const UploadLessonPage = () => {
-  const {userDetails} = useUser();
+  const { userDetails } = useUser();
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
@@ -54,8 +54,7 @@ const UploadLessonPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({audioBlob});
-    
+
     const lessonToUpload = {
       ...lesson,
       ...torahSection,
@@ -64,7 +63,6 @@ const UploadLessonPage = () => {
       highlightsTimestamps: timestamps,
       sttText: transcript,
     } as FormattedLesson;
-    console.log(lessonToUpload.audio);
     mutate(lessonToUpload);
   };
 
