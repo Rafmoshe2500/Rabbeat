@@ -105,7 +105,7 @@ class MongoDBApi:
 
     def get_lesson_details_by_id(self, lesson_id: str):
         try:
-            return self._db.lessons_details.find_one({"lessonId": lesson_id})
+            return self._db.lessons_details.find_one({"_id": ObjectId(lesson_id)})
         except Exception as e:
             logging.error(f"Error getting lesson by ID: {e}")
             return None
