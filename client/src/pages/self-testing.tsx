@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import DisplayText from "../components/display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../hooks/useFlattedLessonText";
 import { useCompareTexts } from "../hooks/useCompareTexts";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import AudioRecorder from "../components/audio-recorder/audio-recorder";
+import { useUpdateTestAudio } from "../hooks/useUpdateTestAudio";
+import { convertBlobToBase64 } from "../utils/audio-parser";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -11,6 +13,7 @@ type SelfTestingProps = {
 
 const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { flattedText, length } = useFlattedLessonText(lesson?.text);
+  const { mutate } = useUpdateTestAudio(lesson?.testAudioId!);
 
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
@@ -27,6 +30,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     setAudioURL(audioURL);
     setTranscript(transcript);
   };
+
   useEffect(() => {
     transcript && refetch();
   }, [transcript]);
@@ -39,14 +43,36 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     return false;
   };
 
+  const uploadRecord = async () => {
+    const convertedAudio = await convertBlobToBase64(audioBlob!);
+    mutate(convertedAudio);
+  };
+
   return (
     <div>
       <div>{lesson && <DisplayText text={lesson.text!} />}</div>
-      <AudioRecorder
-        onRecordingComplete={handleRecordingComplete}
-        shouldStopRecording={shouldStopRecording}
-        shouldDisplayTranscript
-      />
+
+      <div
+        style={{
+          display: "flex",
+          alignContent: "center",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row-reverse",
+        }}
+      >
+        <AudioRecorder
+          onRecordingComplete={handleRecordingComplete}
+          shouldStopRecording={shouldStopRecording}
+          shouldDisplayTranscript
+        />
+
+        {audioBlob && (
+          <Button variant="contained" color="primary" onClick={uploadRecord}>
+            שמור
+          </Button>
+        )}
+      </div>
       <div
         style={{
           direction: "rtl",
