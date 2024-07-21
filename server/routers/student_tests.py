@@ -1,22 +1,39 @@
 from typing import List
 
-from fastapi import APIRouter
-from starlette.responses import JSONResponse
+from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
-from models.tests import ChatStudentTeacher, Message
+from models.tests import Message, LessonTestAudio
 
 router = APIRouter(tags=['Student - Tests'])
 
 
-@router.post("/lesson/{lesson_id}/student/{student_id}/test-chat/messages", response_model=str)
-async def update_test_messages(lesson_id, student_id, message: Message):
-    mongo_db.add_message_to_chat(lesson_id, student_id, message)
-    return JSONResponse(status_code=201, content="Success update chat")
+@router.post("/lesson/chat/{chat_id}/message", status_code=201)
+async def update_test_messages(chat_id: str, message: Message):
+    mongo_db.add_message_to_chat(chat_id, message)
+    return "Success update chat"
 
 
-@router.get("/lesson/{lesson_id}/student/{student_id}/test-chat/messages", response_model=List[Message])
-async def get_all_messages(lesson_id: str, student_id: str):
-    result = mongo_db.get_test_chat_by_ids(student_id, lesson_id)
-    if result:
-        return result['messages']
+@router.get("/lesson/chat/{chat_id}", response_model=List[Message])
+async def get_all_messages(chat_id: str):
+    result = mongo_db.get_test_chat_by_id(chat_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Chat not found")
+    return result['messages']
+
+
+@router.get("/test-audio/{audio_id}", status_code=200, response_model=LessonTestAudio)
+def get_self_test_audio(audio_id: str):
+    result = mongo_db.get_lesson_test_audio(audio_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Audio not found")
+    del result['_id']
+    return result
+
+
+@router.put("/test-audio/{audio_id}", status_code=200)
+def update_self_test_audio(audio_id: str, audio: LessonTestAudio):
+    result = mongo_db.update_lesson_test_audio(audio_id, audio.audio)
+    if not result:
+        raise HTTPException(status_code=404, detail="Audio not found")
+    return "Success to update test audio"
