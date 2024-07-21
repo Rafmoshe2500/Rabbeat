@@ -22,6 +22,15 @@ async def get_all_messages(chat_id: str):
     return result['messages']
 
 
+@router.get("/test-audio/{audio_id}", status_code=200, response_model=LessonTestAudio)
+def get_self_test_audio(audio_id: str):
+    result = mongo_db.get_lesson_test_audio(audio_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Audio not found")
+    del result['_id']
+    return result
+
+
 @router.put("/test-audio/{audio_id}", status_code=200)
 def update_self_test_audio(audio_id: str, audio: LessonTestAudio):
     result = mongo_db.update_lesson_test_audio(audio_id, audio.audio)

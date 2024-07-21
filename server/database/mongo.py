@@ -328,7 +328,10 @@ class MongoDBApi:
         return self._db.lesson_test_audio.insert_one({'audio': ''})
 
     def update_lesson_test_audio(self, audio_id: str, audio: str):
-        self._db.lesson_test_audio.update_one({'_id': ObjectId(audio_id)}, {'audio': audio}, upsert=True)
+        return self._db.lesson_test_audio.update_one({'_id': ObjectId(audio_id)}, {"$set": {'audio': audio}})
+
+    def get_lesson_test_audio(self, audio_id):
+        return self._db.lesson_test_audio.find_one({'_id': ObjectId(audio_id)})
 
     def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id):
         try:
