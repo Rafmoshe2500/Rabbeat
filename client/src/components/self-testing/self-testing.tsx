@@ -7,6 +7,7 @@ import AudioRecorder from "../audio-recorder/audio-recorder";
 import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
 import { convertBlobToBase64 } from "../../utils/audio-parser";
 import styles from "./self-testing.module.scss";
+import { useTestAudio } from "../../hooks/useTestAudio";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -14,20 +15,36 @@ type SelfTestingProps = {
 
 const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { flattedText, length } = useFlattedLessonText(lesson?.text);
-  const { mutate } = useUpdateTestAudio(lesson?.testAudioId!);
+  const updateTestAudioMutation = useUpdateTestAudio(lesson?.testAudioId!);
+  const { data: testAudio } = useTestAudio(lesson?.testAudioId!);
 
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  // todo: remove this
   const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [audioURL1, setAudioURL1] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
+
+  useEffect(() => {
+    if (testAudio) {
+      const url = URL.createObjectURL(testAudio);
+      setAudioURL1(url);
+
+      return () => {
+        URL.revokeObjectURL(url); // Cleanup the URL object when the component is unmounted
+      };
+    }
+  }, [lesson?.testAudioId, testAudio]);
 
   const { data, isLoading, refetch } = useCompareTexts(flattedText, transcript);
 
   const handleRecordingComplete = (
     audioBlob: Blob,
+    // todo: remove this
     audioURL: string,
     transcript: string
   ) => {
     setAudioBlob(audioBlob);
+    // todo: remove this
     setAudioURL(audioURL);
     setTranscript(transcript);
   };
@@ -46,7 +63,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   const uploadRecord = async () => {
     const convertedAudio = await convertBlobToBase64(audioBlob!);
-    mutate(convertedAudio);
+    updateTestAudioMutation.mutate(convertedAudio);
   };
 
   return (
@@ -59,13 +76,30 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           shouldStopRecording={shouldStopRecording}
           shouldDisplayTranscript
         />
-
         {audioBlob && (
-          <Button variant="contained" color="primary" onClick={uploadRecord}>
-            שמור
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={uploadRecord}
+            disabled={updateTestAudioMutation.isPending}
+          >
+            {updateTestAudioMutation.isPending ? (
+              <CircularProgress size={24} />
+            ) : (
+              "שמור נסיון חדש"
+            )}
           </Button>
         )}
       </div>
+      {audioURL1 && !audioURL && (
+        <div className={styles["last-chance"]}>
+          הנסיון האחרון שלך:
+          <audio controls>
+            <source src={audioURL1} type="audio/wav" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      )}
       <div className={styles["words-container"]}>
         {isLoading && <CircularProgress />}
         {data &&

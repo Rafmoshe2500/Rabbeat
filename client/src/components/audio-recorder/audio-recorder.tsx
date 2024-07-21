@@ -72,6 +72,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
 
   useEffect(() => {
     if (end) {
+      // todo: remove audiourl it is redundant.
       onRecordingComplete(audioBlob!, audioURL!, transcript, timestamps);
       setEnd(false);
     }
