@@ -18,6 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useUser } from '../../contexts/user-context';
 
 const Navbar = () => {
@@ -57,7 +58,8 @@ const Navbar = () => {
       ? [{ label: 'אזור תלמיד', path: '/student-personal-area', icon: <PersonIcon /> }]
       : [
           { label: 'אזור מורה', path: '/teacher-personal-area', icon: <PersonIcon /> },
-          { label: 'העלאת שיעור', path: '/upload-lesson', icon: <SchoolIcon /> },
+          { label: 'העלאת שיעור', path: '/upload-lesson', icon: <UploadFileIcon /> },
+          {label: 'התלמידים שלי', path: '/my-students', icon: <SchoolIcon />}
         ]
     : [
         { label: 'התחברות', path: '/login', icon: <PersonIcon /> },
