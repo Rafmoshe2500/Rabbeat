@@ -1,0 +1,31 @@
+.record-container {
+    display: flex;
+    place-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.words-container {
+    direction: rtl;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 10px 0;
+}
+
+.correct-word {
+    padding-left: 3px;
+    color: green;
+}
+
+.wrong-word {
+    padding-left: 3px;
+    color: red;
+}
+
+.last-chance {
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    flex-wrap: wrap;
+}

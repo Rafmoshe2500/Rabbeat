@@ -30,7 +30,12 @@ type LessonDetails = {
   pentateuch: string;
   version: LessonVersion;
   creationDate: string;
-  status?: LessonStatus;
-};
+} & StudyZone;
 
 type LessonVersion = "Spanish" | "Ashkenaz";
+
+type StudyZone = {
+  chatId?: string;
+  testAudioId?: string;
+  status?: LessonStatus;
+}

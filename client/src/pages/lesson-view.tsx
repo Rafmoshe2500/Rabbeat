@@ -1,22 +1,18 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
-import Button from "@mui/material/Button";
+import { useMemo } from "react";
 import { useLessonsById } from "../hooks/useLessonById";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
 import ChatComponent from "../components/chatbot/ChatComponent";
-// import SelfLearning from "../components/self-learning/self-learning"; // Import your SelfLearning component
-import SelfTesting from "./self-testing";
+import SelfTesting from "../components/self-testing/self-testing";
+import Chat from "../components/chat/chat";
+import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 
 const LessonView = () => {
   const location = useLocation();
   const lessonDetails: LessonDetails = location.state?.lessonDetails;
   const { id } = useParams<{ id: string }>();
-
   const { data: lesson, isLoading } = useLessonsById(id!);
-  const [currentView, setCurrentView] = useState<
-    "LessonContent" | "SelfTesting"
-  >("LessonContent");
 
   const lessonForView = useMemo(
     () =>
@@ -27,6 +23,17 @@ const LessonView = () => {
     [lesson, lessonDetails]
   );
 
+  const tabs = [
+    {
+      name: "מסך למידה",
+      component: <LessonContent lesson={lessonForView} />,
+    },
+    {
+      name: "בחינה עצמית",
+      component: <SelfTesting lesson={lessonForView} />,
+    },
+  ];
+
   return (
     <div
       style={{
@@ -36,35 +43,7 @@ const LessonView = () => {
         justifyContent: "center",
       }}
     >
-      <div style={{ marginBottom: "20px" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setCurrentView("LessonContent")}
-        >
-          מסך למידה
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => setCurrentView("SelfTesting")}
-        >
-          בחינה עצמית
-        </Button>
-      </div>
-
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {currentView === "LessonContent" && (
-            <LessonContent lesson={lessonForView} />
-          )}
-          {currentView === "SelfTesting" && (
-            <SelfTesting lesson={lessonForView} />
-          )}
-        </>
-      )}
+      {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
 
       <ChatComponent
         messageContext={{
@@ -75,6 +54,7 @@ const LessonView = () => {
           endVerse: lessonDetails.endVerse,
         }}
       />
+      <Chat chatId={lessonDetails.chatId!} />
     </div>
   );
 };

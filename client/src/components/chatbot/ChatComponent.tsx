@@ -30,7 +30,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   const isInputEmpty = inputMessage.trim() === "";
 
   const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
+    setIsChatOpen((prev) => !prev);
   };
 
   const handleSendMessage = () => {

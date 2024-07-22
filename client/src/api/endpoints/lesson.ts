@@ -10,36 +10,29 @@ export const getAllLessons = async (): Promise<Lesson[]> => {
   }
 };
 
-export const getAllLessonsDetails = async (): Promise<LessonDetails[]> => {
-  try {
-    const response = await apiClient.get<LessonDetails[]>("/lessons-metadata");
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getLessonsDetailsByUser = async (
   userId: string
 ): Promise<LessonDetails[]> => {
   try {
-    const response = await apiClient.get<LessonDetails[]>(`/lessons/${userId}`);
+    const response = await apiClient.get<LessonDetails[]>(`/lesson-details/${userId}`);
     const lessons: LessonDetails[] = [];
 
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
-
+      const {chatId, status, testAudioId} = les.studyZoneDetails;
       lessons.push({
         id: les.lessonId,
-        creationDate: les.metadata.creationDate,
-        version: les.metadata.version,
-        pentateuch: les.metadata.pentateuch,
-        endChapter: les.metadata.endChapter,
-        endVerse: les.metadata.endVerse,
-        startChapter: les.metadata.startChapter,
-        startVerse: les.metadata.startVerse,
-        title: les.metadata.title,
-        status: les.status,
+        creationDate: les.details.creationDate,
+        version: les.details.version,
+        pentateuch: les.details.pentateuch,
+        endChapter: les.details.endChapter,
+        endVerse: les.details.endVerse,
+        startChapter: les.details.startChapter,
+        startVerse: les.details.startVerse,
+        title: les.details.title,
+        status: status,
+        chatId: chatId,
+        testAudioId: testAudioId
       } as LessonDetails);
     }
 
@@ -70,14 +63,15 @@ export const getLessonsById = async (
 };
 
 export const createOrUpdateLesson = async (
-  lesson: FormattedLesson
+  lesson: FormattedLesson,
+  teacherId: string,
 ): Promise<FormattedLesson> => {
   try {
     const dbLesson = {
       audio: lesson.audio,
       highlightsTimestamps: lesson.highlightsTimestamps,
       sttText: lesson.sttText,
-      metadata: {
+      details: {
         title: lesson.title,
         startChapter: lesson.startChapter,
         startVerse: lesson.startVerse,
@@ -87,6 +81,7 @@ export const createOrUpdateLesson = async (
         creationDate: lesson.creationDate,
         version: lesson.version,
       },
+      teacherId: teacherId,
     };
     const response = await apiClient.post<FormattedLesson>("/lesson", dbLesson);
 
