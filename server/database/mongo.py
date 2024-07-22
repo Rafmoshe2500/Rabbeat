@@ -6,7 +6,8 @@ from pymongo import MongoClient, ASCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError, ServerSelectionTimeoutError
 
 # Assuming the data models are defined as dataclasses
-from database.piplines import PIPELINE_ALL_TEACHERS_WITH_PROFILE, get_shared_lessons_pipeline
+from database.piplines import PIPELINE_ALL_TEACHERS_WITH_PROFILE, get_shared_lessons_pipeline, \
+    get_students_by_teacher_ids_pipeline
 from models.lesson import Lesson, LessonDetails, UpdateComment, LessonStatus, LessonComments, ChatBotMessages, \
     AssociateNewStudent
 from models.profile import TeacherProfile, UpdateProfile
@@ -289,13 +290,11 @@ class MongoDBApi:
         except Exception as e:
             return None
 
-    def get_all_students_by_teacher(self, teacher_id):
-        try:
-            return list(self._db.students_by_teacher.find({"teacherId": teacher_id}))
-        except Exception as e:
-            return []
+    def get_students_by_teacher_id(self, teacher_id):
+        pipeline = get_students_by_teacher_ids_pipeline(teacher_id)
+        return list(self._db.students_by_teacher.aggregate(pipeline))
 
-    def get_shared_lessons(self, student_id, teacher_id) -> List[LessonDetails]:
+    def get_shared_lessons(self, student_id, teacher_id):
         pipeline = get_shared_lessons_pipeline(student_id, teacher_id)
         return list(self._db.user_lessons.aggregate(pipeline))
 

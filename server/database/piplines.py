@@ -41,68 +41,130 @@ PIPELINE_ALL_TEACHERS_WITH_PROFILE = [
 def get_shared_lessons_pipeline(student_id, teacher_id):
     pipeline = [
         # Match documents for both student and teacher
-        {"$match": {"userId": {"$in": [student_id, teacher_id]}}},
-
-        # Group by lessonId and collect userIds
-        {"$group": {
-            "_id": "$lessonId",
-            "userIds": {"$addToSet": "$userId"}
-        }},
-
-        # Filter for lessons shared by both student and teacher
-        {"$match": {
-            "userIds": {"$all": [student_id, teacher_id]}
-        }},
-
-        # Lookup lesson details
-        {"$lookup": {
-            "from": "lessons_details",
-            "localField": "_id",
-            "foreignField": "lessonId",
-            "as": "details"
-        }},
-
-        # Unwind the details array
-        {"$unwind": "$details"},
-
-        # Lookup lesson status for the student
-        {"$lookup": {
-            "from": "lesson_status",
-            "let": {"lessonId": "$_id"},
-            "pipeline": [
-                {"$match": {
-                    "$expr": {
-                        "$and": [
-                            {"$eq": ["$lessonId", "$$lessonId"]},
-                            {"$eq": ["$userId", student_id]}
-                        ]
-                    }
-                }}
-            ],
-            "as": "status"
-        }},
-
-        # Unwind the status array (it will be empty if no status found)
-        {"$unwind": {
-            "path": "$status",
-            "preserveNullAndEmptyArrays": True
-        }},
-
-        # Project the final structure
-        {"$project": {
-            "_id": 0,
-            "lessonId": "$details.lessonId",
-            "title": "$details.title",
-            "startChapter": "$details.startChapter",
-            "version": "$details.version",
-            "startVerse": "$details.startVerse",
-            "endChapter": "$details.endChapter",
-            "endVerse": "$details.endVerse",
-            "pentateuch": "$details.pentateuch",
-            "creationDate": "$details.creationDate",
-            "status": {
-                "$ifNull": ["$status.status", ""]
+        {
+            "$match": {
+                "userId": {"$in": [student_id, teacher_id]}
             }
-        }}
+        },
+        # Group by lessonId and collect userIds
+        {
+            "$group": {
+                "_id": "$lessonId",
+                "userIds": {"$addToSet": "$userId"}
+            }
+        },
+        # Filter for lessons shared by both student and teacher
+        {
+            "$match": {
+                "userIds": {"$all": [student_id, teacher_id]}
+            }
+        },
+        # Convert string lessonId to ObjectId
+        {
+            "$addFields": {
+                "lessonObjectId": {"$toObjectId": "$_id"}
+            }
+        },
+        # Lookup lesson details using the ObjectId
+        {
+            "$lookup": {
+                "from": "lessons_details",
+                "localField": "lessonObjectId",
+                "foreignField": "_id",
+                "as": "details"
+            }
+        },
+        # Unwind the details array
+        {
+            "$unwind": "$details"
+        },
+        # Lookup study zone details for the student
+        {
+            "$lookup": {
+                "from": "study_zone",
+                "let": {"lessonId": "$_id"},
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$and": [
+                                    {"$eq": ["$lessonId", "$$lessonId"]},
+                                    {"$eq": ["$userId", student_id]}
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "as": "studyZoneDetails"
+            }
+        },
+        # Unwind the studyZoneDetails array (it will be empty if no details found)
+        {
+            "$unwind": {
+                "path": "$studyZoneDetails",
+                "preserveNullAndEmptyArrays": True
+            }
+        },
+        # Project the final structure
+        {
+            "$project": {
+                "_id": 0,
+                "lessonId": "$_id",
+                "userId": student_id,
+                "details": {
+                    "title": "$details.title",
+                    "startChapter": "$details.startChapter",
+                    "version": "$details.version",
+                    "startVerse": "$details.startVerse",
+                    "endChapter": "$details.endChapter",
+                    "endVerse": "$details.endVerse",
+                    "pentateuch": "$details.pentateuch",
+                    "creationDate": "$details.creationDate"
+                },
+                "studyZoneDetails": {
+                    "$cond": {
+                        "if": {"$ifNull": ["$studyZoneDetails", False]},
+                        "then": {
+                            "chatId": "$studyZoneDetails.chatId",
+                            "testAudioId": "$studyZoneDetails.testAudioId",
+                            "status": "$studyZoneDetails.status"
+                        },
+                        "else": None
+                    }
+                }
+            }
+        }
+    ]
+    return pipeline
+
+
+def get_students_by_teacher_ids_pipeline(teacher_id):
+    pipeline = [
+        {
+            "$match": {
+                "teacherId": teacher_id
+            }
+        },
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "studentId",
+                "foreignField": "id",
+                "as": "student_info"
+            }
+        },
+        {
+            "$unwind": "$student_info"
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "id": "$student_info.id",
+                "firstName": "$student_info.firstName",
+                "lastName": "$student_info.lastName",
+                "phoneNumber": "$student_info.phoneNumber",
+                "expired_date": 1
+            }
+        }
     ]
     return pipeline
