@@ -45,3 +45,9 @@ type updateProfile = {
   key: keyof teacherProfile;
   value: string | string[] | Recommendation[];
 };
+
+type Student = {
+  firstName: string,
+  lastName: string,
+  phoneNumber: string,
+}

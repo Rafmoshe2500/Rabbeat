@@ -29,9 +29,9 @@ async def disassociate_user_from_lesson(user_lesson: DisassociateUserToLesson):
     return {"message": "Lesson and related data successfully deleted"}
 
 
-@router.get("/all-students/{teacher_id}", response_model=List[AssociateNewStudent])
+@router.get("/all-students/{teacher_id}", response_model=list)
 async def get_all_students_by_teacher_id(teacher_id: str):
-    return mongo_db.get_all_students_by_teacher(teacher_id)
+    return mongo_db.get_students_by_teacher_id(teacher_id)
 
 
 @router.post("/teacher/new-student")
