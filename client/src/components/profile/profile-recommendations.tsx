@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, IconButton, Divider, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import { Add as AddIcon, Comment as CommentIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
 import { useTheme } from '@mui/material/styles';
+import { useGetConnection, useUpdateProfile } from '../../hooks/useProfile';
 
 type Recommendation = {
   text: string;
@@ -12,32 +13,51 @@ type Recommendation = {
 
 type ProfileRecommendationsProps = {
   recommendations: Recommendation[];
-  canAddComment: boolean;
+  teacherId: string;
   currentUserId?: string;
-  onUpdate: (key: 'recommendations', value: Recommendation[]) => void;
 };
 
 const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({ 
   recommendations, 
-  canAddComment, 
+  teacherId,
   currentUserId, 
-  onUpdate 
 }) => {
   const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState('');
   const theme = useTheme();
+  const userConnection = useGetConnection(currentUserId, teacherId)
+  const updateProfileMutation = useUpdateProfile();
+  const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>(recommendations);
 
+  useEffect(() => {
+    setLocalRecommendations(recommendations);
+  }, [recommendations]);
+
+  const handleRecommendationsUpdate = (updatedRecommendations: Recommendation[]) => {
+    const updateData: updateProfile = {
+      id: teacherId,
+      key: 'recommendations',
+      value: updatedRecommendations
+    };
+    updateProfileMutation.mutate(updateData, {
+      onSuccess: () => {
+        console.log('Successfully updated recommendations');
+        setLocalRecommendations(updatedRecommendations);
+      }
+    });
+  };
+  
   const handleAddRecommendation = () => {
     if (newRecommendation && currentUserId) {
-      const updatedRecommendations = [...recommendations, { text: newRecommendation, studentId: currentUserId }];
-      onUpdate('recommendations', updatedRecommendations);
+      const updatedRecommendations = [...localRecommendations, { text: newRecommendation, studentId: currentUserId }];
+      handleRecommendationsUpdate(updatedRecommendations);
       setNewRecommendation('');
     }
   };
 
   const handleDeleteRecommendation = (studentId: string) => {
-    const updatedRecommendations = recommendations.filter(rec => rec.studentId !== studentId);
-    onUpdate('recommendations', updatedRecommendations);
+    const updatedRecommendations = localRecommendations.filter(rec => rec.studentId !== studentId);
+    handleRecommendationsUpdate(updatedRecommendations);
   };
 
   return (
@@ -48,7 +68,7 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
       >
         <CommentIcon />
         <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
-          {recommendations.length} המלצות
+          {localRecommendations.length} המלצות
         </Typography>
       </IconButton>
       <DialogComponent
@@ -59,9 +79,9 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
       >
         <Box sx={{ marginTop: theme.spacing(2.5), width: '100%' }}>
           <List>
-            {recommendations.map((recommendation, index) => (
+            {localRecommendations.map((recommendation, index) => (
               <React.Fragment key={index}>
-                <ListItem>
+                <ListItem sx={{textAlign: 'right'}}>
                   <ListItemText primary={recommendation.text} />
                   {currentUserId === recommendation.studentId && (
                     <ListItemSecondaryAction>
@@ -71,11 +91,11 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
                     </ListItemSecondaryAction>
                   )}
                 </ListItem>
-                {index < recommendations.length - 1 && <Divider />}
+                {index < localRecommendations.length - 1 && <Divider />}
               </React.Fragment>
             ))}
           </List>
-          {canAddComment && (
+          {userConnection.data && (
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: theme.spacing(2) }}>
               <RTLTextField dir='rtl'
                 value={newRecommendation}

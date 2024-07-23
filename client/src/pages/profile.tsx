@@ -34,7 +34,6 @@ const Profile: React.FC = () => {
   
   const isUserConnected = userDetails && (userDetails.type === 'student' || userDetails.type === 'teacher');
   const canEdit = userDetails?.type === 'teacher' && userDetails.id === profile.id;
-  const canAddComment = userDetails?.type === 'student';
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
     if (!editedProfile) return;
@@ -100,9 +99,8 @@ const Profile: React.FC = () => {
                 onUpdate={(key, value) => handleProfileUpdate(key, value)} />
               <ProfileRecommendations 
                 recommendations={editedProfile.recommendations} 
-                canAddComment={canAddComment}
+                teacherId={profile.id}
                 currentUserId={userDetails?.id}
-                onUpdate={(key, value) => handleProfileUpdate(key, value)} 
               />
             </Box>
             <Divider orientation="horizontal" flexItem sx={{margin: `${theme.spacing(2)} 0`, backgroundColor: theme.palette.divider}}/>
