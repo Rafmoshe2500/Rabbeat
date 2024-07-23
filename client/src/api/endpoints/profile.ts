@@ -21,3 +21,8 @@ export const getProfile = async (id: string): Promise<teacherProfile> => {
     return response.data;
   };
   
+  export const getConnection = async (studentId:string, teacherId: string): Promise<boolean> => {
+    const response = await apiClient.get(`/is-connection/student/${studentId}/teacher/${teacherId}`);
+    return response.data;
+  };
+  

@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { getProfile, updateProfile, getAllTeachers} from '../api/endpoints/profile'
+import { getProfile, updateProfile, getAllTeachers, getConnection} from '../api/endpoints/profile'
 
 export const useGetProfile = (id: string | undefined) => {
     return useQuery({
@@ -9,12 +9,20 @@ export const useGetProfile = (id: string | undefined) => {
     });
   };
 
+  export const useGetConnection = (studentId: string | undefined , teacherId: string) => {
+    return useQuery({
+      queryKey: ['id', teacherId],
+      queryFn: () => getConnection(studentId!, teacherId),
+    });
+  };
+
+
   export const useUpdateProfile = () => {
     const queryClient = useQueryClient();
   
     return useMutation({
       mutationFn: (updateData: updateProfile) => updateProfile(updateData),
-      onSuccess: (data, variables) => {
+      onSuccess: (variables) => {
         queryClient.invalidateQueries({ queryKey: ['profile', variables.id] });
       },
       onError: (error) => {
@@ -22,6 +30,8 @@ export const useGetProfile = (id: string | undefined) => {
       },
     });
   };
+
+
 
   export const useGetAllTeachers = () => {
     return useQuery<teacherProfile[], Error>({
