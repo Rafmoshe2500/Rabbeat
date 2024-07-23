@@ -1,5 +1,5 @@
 // TeacherCard.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import Divider from '@mui/material/Divider';
 import { Card, CardContent, Grid, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -21,20 +21,29 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   const updateProfileMutation = useUpdateProfile();
   const {userDetails} = useUser()
   const isUserConnected = userDetails && (userDetails.type === 'student' || userDetails.type === 'teacher');
+  const [localRecommendations, setLocalRecommendations] = useState(teacher.recommendations);
 
-  const handleProfileUpdate = (key: keyof teacherProfile, value: Array<Recommendation>) => {
-  
-    const updateData = {
-      id: userDetails!.id,
-      key,
-      value
-    };  
+  const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
+    const updateData: updateProfile = {
+      id: teacher.id,
+      key: key,
+      value: value
+    };
     updateProfileMutation.mutate(updateData, {
+      onSuccess: () => {
+        console.log(`Successfully updated ${key}`);
+        if (key === 'recommendations') {
+          setLocalRecommendations(value);
+        }
+      },
+      onError: (error) => {
+        console.error(`Error updating ${key}:`, error);
+        // Optionally, revert the local state if the server update fails
+        if (key === 'recommendations') {
+          setLocalRecommendations(teacher.recommendations);
+        }
+      }
     });
-  };
-
-  const handleUpdate = (key: string, value: any) => {
-    console.log(`Updating ${key} with value:`, value);
   };
 
   const handleImageClick = () => {
@@ -62,7 +71,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
               <ProfileImage
                 profile={teacher}
                 canEdit={false}
-                onUpdate={handleUpdate}
+                onUpdate={handleProfileUpdate}
               />
             </Button>
           </Grid>
@@ -70,7 +79,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
             <ProfileInfo
               profile={teacher}
               canEdit={false}
-              onUpdate={handleUpdate}
+              onUpdate={handleProfileUpdate}
             />
           </Grid>
           <Divider orientation="horizontal" flexItem sx={{marginBottom: '1px'}}/>
@@ -78,21 +87,27 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
             <ProfileVersions
               versions={teacher.versions}
               canEdit={false}
-              onUpdate={(value) => handleUpdate('versions', value)}
+              onUpdate={(value) => handleProfileUpdate('versions', value)}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Grid container >
               <Grid item xs={6}>
-                <ProfileRecommendations
-                  recommendations={teacher.recommendations}
-                  canAddComment={userDetails?.type === 'student'}
-                  onUpdate={(key, value) => handleProfileUpdate(key, value)}
-                />
+              <ProfileRecommendations
+                recommendations={localRecommendations}
+                canAddComment={userDetails?.type === 'student'}
+                currentUserId={userDetails?.id}
+                onUpdate={(key, value) => {
+                  if (key === 'recommendations') {
+                    setLocalRecommendations(value);
+                    handleProfileUpdate(key, value);
+                  }
+                }}
+              />
               </Grid>
               <Grid item xs={6}>
                 <ProfileSamples 
-                  onUpdate={handleUpdate} 
+                  onUpdate={handleProfileUpdate} 
                   samples={teacher.sampleIds} 
                   canEdit={false} 
                 />
@@ -102,7 +117,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
                   <ProfileActions
                     profile={teacher}
                     canEdit={false}
-                    onUpdate={handleUpdate}
+                    onUpdate={handleProfileUpdate}
                   />
                 </Grid>
               )}
@@ -113,4 +128,5 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
     </Card>
   );
 };
+
 export default TeacherCard;
