@@ -4,12 +4,14 @@ import "./App.css";
 import Layout from "./components/layout/layout";
 import { studentRoutes, teacherRoutes, unloggedRoutes } from "./utils/routes.utils";
 import { useUser } from "./contexts/user-context";
-import { useMemo } from "react"; // Add this import
+import { useMemo } from "react";
+import { ThemeProvider } from '@mui/material/styles'; // Add this import
+import CssBaseline from '@mui/material/CssBaseline'; // Add this import
+import theme from './theme'; // Add this import
 
 const App: React.FC = () => {
   const { userDetails } = useUser();
   
-  // Use useMemo to create routes and router
   const { routes, router } = useMemo(() => {
     let routes: RouteObject[] = [];
 
@@ -33,10 +35,13 @@ const App: React.FC = () => {
 
     const router = createBrowserRouter(routes);
     return { routes, router };
-  }, [userDetails]); // Dependency array includes userDetails
+  }, [userDetails]);
 
   return (
-    <RouterProvider router={router} key={userDetails ? userDetails.id : 'logged-out'} />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} key={userDetails ? userDetails.id : 'logged-out'} />
+    </ThemeProvider>
   );
 };
 
