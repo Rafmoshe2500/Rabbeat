@@ -1,5 +1,4 @@
-import LessonsList from "../components/lessons/lessons-list/lessons-list";
-import { useLessonsDetailsByUser } from "../hooks/useLessonsDetailsByUser";
+import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUser";
 import { useUser } from "../contexts/user-context";
 import Loader from "../components/common/loader";
 

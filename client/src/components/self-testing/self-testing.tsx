@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DisplayText from "../display-lesson-text/display-lesson-text";
-import { useFlattedLessonText } from "../../hooks/useFlattedLessonText";
+import { useFlattedLessonText } from "../../hooks/lessons/useFlattedLessonText";
 import { useCompareTexts } from "../../hooks/useCompareTexts";
 import { Button, CircularProgress } from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";

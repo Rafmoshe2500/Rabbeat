@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useMemo } from "react";
-import { useLessonsById } from "../hooks/useLessonById";
+import { useLessonsById } from "../hooks/lessons/useLessonById";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
 import ChatComponent from "../components/chatbot/ChatComponent";
