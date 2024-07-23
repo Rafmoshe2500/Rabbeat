@@ -140,8 +140,11 @@ const BibleSelector = ({ setTorahSection }: BibleSelectorProps) => {
         <AutoWidthSelect
           label="עד פרק"
           value={endChapter}
-          options={chapters.map((_, index) =>
-            gematriya(index + 1, { geresh: false, punctuate: false })
+          options={chapters.slice(gematriya(startChapter)).map((_, index) =>
+            gematriya(index + gematriya(startChapter), {
+              geresh: false,
+              punctuate: false,
+            })
           )}
           onChange={(e) =>
             dispatch({
@@ -156,7 +159,11 @@ const BibleSelector = ({ setTorahSection }: BibleSelectorProps) => {
         <AutoWidthSelect
           label="פסוק"
           value={endVerse}
-          options={toVerses}
+          options={
+            startChapter === endChapter
+              ? toVerses.slice(gematriya(startVerse) - 1)
+              : toVerses
+          }
           onChange={(e) =>
             dispatch({
               type: "SET_TO_VERSE",
@@ -165,22 +172,12 @@ const BibleSelector = ({ setTorahSection }: BibleSelectorProps) => {
           }
         />
       )}
-
-      <div>
-        <h3>מוצג</h3>
-        <p>
-          ספר: {pentateuch}, מ: {startChapter}:{startVerse}, ועד: {endChapter}:
-          {endVerse}
-        </p>
-      </div>
-
       <div>
         {isLoading && <p>Loading...</p>}
         {error && <p>Error loading data</p>}
 
         {data && (
           <div>
-            {/* TODO: extract to another componentttttttttttttttttttttttttttttttttttttttttttttttttttt */}
             {Object.entries(data.both).map(([chapterKey, chapter]) => (
               <Chapter
                 key={chapterKey}
