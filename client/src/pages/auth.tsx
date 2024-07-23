@@ -7,6 +7,7 @@ import RegisterForm from '../components/auth/register-form';
 import { useUser } from '../contexts/user-context';
 import { storeToken, decodeToken, isTokenValid } from '../utils/jwt-cookies';
 import { useLogin, useRegister } from '../hooks/useAuth';
+import Loader from '../components/common/loader'
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(({ isflipped }) => ({
   width: '100%',
@@ -138,7 +139,7 @@ const AuthForm: React.FC = () => {
   };
 
   if (loading || loginMutation.isPending || registerMutation.isPending) {
-    return <div>Loading...</div>;
+    return <div><Loader /></div>;
   }
 
   return (

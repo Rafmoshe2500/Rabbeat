@@ -4,6 +4,7 @@ import StudentCard from "./student-card";
 import DisplayCards from "../common/display-cards/display-cards";
 import { useUser } from "../../contexts/user-context";
 import { useGetStudents } from "../../hooks/useStudents";
+import Loader from '../common/loader'
 
 const StudentGrid: React.FC = () => {
   const { userDetails } = useUser();
@@ -15,7 +16,7 @@ const StudentGrid: React.FC = () => {
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isLoading) return <Typography><Loader /></Typography>;
   if (error)
     return (
       <Typography>An error occurred: {(error as Error).message}</Typography>
