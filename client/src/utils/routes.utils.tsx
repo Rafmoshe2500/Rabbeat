@@ -7,7 +7,9 @@ import TeacherPersonalArea from "../pages/teacher-personal-area";
 import UploadLessonPage from "../pages/upload-lesson";
 import TeacherSearch from "../pages/search";
 import AuthForm from "../pages/auth";
-import TeacherStudents from "../pages/teacher-students"
+import TeacherStudents from "../pages/teacher-students";
+import MyStudentLessons from "../pages/my-students-lessons";
+import MyStudentLesson from "../pages/my-student-lesson";
 
 const commonRoutes = [
   {
@@ -52,8 +54,16 @@ export const teacherRoutes = [
   },
   {
     path: "/my-students",
-    element: <TeacherStudents />
-  }
+    element: <TeacherStudents />,
+  },
+  {
+    path: "/my-students/:id",
+    element: <MyStudentLessons />,
+  },
+  {
+    path: "/my-students/:userName/lessons/:lessonId",
+    element: <MyStudentLesson />,
+  },
 ];
 
 export const unloggedRoutes = [

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DisplayText from "../display-lesson-text/display-lesson-text";
-import { useFlattedLessonText } from "../../hooks/useFlattedLessonText";
+import { useFlattedLessonText } from "../../hooks/lessons/useFlattedLessonText";
 import { useCompareTexts } from "../../hooks/useCompareTexts";
 import { Button, CircularProgress } from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";
@@ -8,12 +8,14 @@ import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
 import { convertBlobToBase64 } from "../../utils/audio-parser";
 import styles from "./self-testing.module.scss";
 import { useTestAudio } from "../../hooks/useTestAudio";
+import { useUser } from "../../contexts/user-context";
 
 type SelfTestingProps = {
   lesson?: Lesson;
 };
 
 const SelfTesting = ({ lesson }: SelfTestingProps) => {
+  const { userDetails } = useUser();
   const { flattedText, length } = useFlattedLessonText(lesson?.text);
   const updateTestAudioMutation = useUpdateTestAudio(lesson?.testAudioId!);
   const { data: testAudio } = useTestAudio(lesson?.testAudioId!);
@@ -70,30 +72,34 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     <div>
       <div>{lesson && <DisplayText text={lesson.text!} />}</div>
 
-      <div className={styles["record-container"]}>
-        <AudioRecorder
-          onRecordingComplete={handleRecordingComplete}
-          shouldStopRecording={shouldStopRecording}
-          shouldDisplayTranscript
-        />
-        {audioBlob && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={uploadRecord}
-            disabled={updateTestAudioMutation.isPending}
-          >
-            {updateTestAudioMutation.isPending ? (
-              <CircularProgress size={24} />
-            ) : (
-              "שמור נסיון חדש"
-            )}
-          </Button>
-        )}
-      </div>
+      {userDetails?.type !== "teacher" ? (
+        <div className={styles["record-container"]}>
+          <AudioRecorder
+            onRecordingComplete={handleRecordingComplete}
+            shouldStopRecording={shouldStopRecording}
+            shouldDisplayTranscript
+          />
+          {audioBlob && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={uploadRecord}
+              disabled={updateTestAudioMutation.isPending}
+            >
+              {updateTestAudioMutation.isPending ? (
+                <CircularProgress size={24} />
+              ) : (
+                "שמור נסיון חדש"
+              )}
+            </Button>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
       {audioURL1 && !audioURL && (
         <div className={styles["last-chance"]}>
-          הנסיון האחרון שלך:
+          הנסיון האחרון:
           <audio controls>
             <source src={audioURL1} type="audio/wav" />
             Your browser does not support the audio element.

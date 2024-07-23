@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./lesson-card.css";
 import { useUser } from "../../../contexts/user-context";
 import {
@@ -15,12 +15,17 @@ type LessonCardProps = {
 
 const LessonCard = ({ lessonDetails }: LessonCardProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { userDetails } = useUser();
   const { id, status, title } = lessonDetails;
 
   const onClick = () => {
-    const route =
-      userDetails?.type === "student" ? `/lesson/${id}` : "/upload-lesson";
+    let route = "";
+    if (userDetails?.type === "student") {
+      route = `/lesson/${id}`;
+    } else {
+      route = `${location.pathname}/lessons/${id}`;
+    }
 
     navigate(route, { state: { id, lessonDetails } });
   };

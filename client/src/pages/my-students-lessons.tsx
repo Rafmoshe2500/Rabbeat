@@ -1,17 +1,23 @@
-import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUser";
 import { useUser } from "../contexts/user-context";
 import Loader from "../components/common/loader";
 import DisplayCards from "../components/common/display-cards/display-cards";
 import { useMediaQuery } from "@mui/material";
 import LessonCard from "../components/lessons/lesson-card/lesson-card";
+import { useLocation } from "react-router-dom";
+import { useStudentLessonsByTeacher } from "../hooks/lessons/useStudentLessonsByTeacher";
 
-const StudentPersonalArea = () => {
+const MyStudentLessons = () => {
+  const location = useLocation();
+  const studentId: string = location.state?.id;
+
+  console.log({ studentId });
+
   const { userDetails } = useUser();
   const {
     data: lessons,
     isLoading,
     isError,
-  } = useLessonsDetailsByUser(userDetails!.id);
+  } = useStudentLessonsByTeacher(userDetails!.id, studentId);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";
 
@@ -21,7 +27,7 @@ const StudentPersonalArea = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: "8rem" }}>אזור אישי לתלמיד</div>
+      <div style={{ marginBottom: "8rem" }}>תלמיד חגם </div>
 
       {lessons ? (
         <DisplayCards
@@ -33,7 +39,6 @@ const StudentPersonalArea = () => {
           md={3}
         />
       ) : (
-        // <LessonsList lessons={lessons} />
         <p>
           {isLoading ? (
             <Loader message="טוען שיעורים" />
@@ -46,4 +51,4 @@ const StudentPersonalArea = () => {
   );
 };
 
-export default StudentPersonalArea;
+export default MyStudentLessons;

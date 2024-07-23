@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLessonsDetailsByUser } from "../api/endpoints/lesson";
+import { getLessonsDetailsByUser } from "../../api/endpoints/lesson";
 
 const createQueryKey = (queryName: string, userId: string) => {
   return [queryName, userId] as const;
