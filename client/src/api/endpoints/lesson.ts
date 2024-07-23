@@ -14,12 +14,14 @@ export const getLessonsDetailsByUser = async (
   userId: string
 ): Promise<LessonDetails[]> => {
   try {
-    const response = await apiClient.get<LessonDetails[]>(`/lesson-details/${userId}`);
+    const response = await apiClient.get<LessonDetails[]>(
+      `/lesson-details/${userId}`
+    );
     const lessons: LessonDetails[] = [];
 
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
-      const {chatId, status, testAudioId} = les.studyZoneDetails;
+      const { chatId, status, testAudioId } = les.studyZoneDetails;
       lessons.push({
         id: les.lessonId,
         creationDate: les.details.creationDate,
@@ -32,7 +34,7 @@ export const getLessonsDetailsByUser = async (
         title: les.details.title,
         status: status,
         chatId: chatId,
-        testAudioId: testAudioId
+        testAudioId: testAudioId,
       } as LessonDetails);
     }
 
@@ -64,7 +66,7 @@ export const getLessonsById = async (
 
 export const createOrUpdateLesson = async (
   lesson: FormattedLesson,
-  teacherId: string,
+  teacherId: string
 ): Promise<FormattedLesson> => {
   try {
     const dbLesson = {
@@ -86,6 +88,41 @@ export const createOrUpdateLesson = async (
     const response = await apiClient.post<FormattedLesson>("/lesson", dbLesson);
 
     return response.data as FormattedLesson;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getSharedLessonsDetails = async (
+  teacherId: string,
+  studentId: string
+): Promise<LessonDetails[]> => {
+  try {
+    const response = await apiClient.get<LessonDetails[]>(
+      `/teacher/${teacherId}/student/${studentId}/lessons`
+    );
+    const lessons: LessonDetails[] = [];
+
+    for (let i = 0; i < Object.entries(response.data).length; i++) {
+      const les = Object.values(response.data)[i] as unknown as any;
+      const { chatId, status, testAudioId } = les.studyZoneDetails;
+      lessons.push({
+        id: les.lessonId,
+        creationDate: les.details.creationDate,
+        version: les.details.version,
+        pentateuch: les.details.pentateuch,
+        endChapter: les.details.endChapter,
+        endVerse: les.details.endVerse,
+        startChapter: les.details.startChapter,
+        startVerse: les.details.startVerse,
+        title: les.details.title,
+        status: status,
+        chatId: chatId,
+        testAudioId: testAudioId,
+      } as LessonDetails);
+    }
+
+    return lessons;
   } catch (error) {
     throw error;
   }
