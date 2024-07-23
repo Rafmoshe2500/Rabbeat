@@ -61,7 +61,7 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
           <List>
             {recommendations.map((recommendation, index) => (
               <React.Fragment key={index}>
-                <ListItem>
+                <ListItem sx={{textAlign: 'right'}}>
                   <ListItemText primary={recommendation.text} />
                   {currentUserId === recommendation.studentId && (
                     <ListItemSecondaryAction>
