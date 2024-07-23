@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Avatar } from '@mui/material';
 import { FaCamera } from 'react-icons/fa';
+import { useTheme } from '@mui/material/styles';
 
 type ProfileImageProps = {
   profile: teacherProfile;
@@ -11,6 +12,7 @@ type ProfileImageProps = {
 const ProfileImage: React.FC<ProfileImageProps> = ({ profile, canEdit, onUpdate }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [localImage, setLocalImage] = useState<string | null>(null);
+  const theme = useTheme();
 
   useEffect(() => {
     setLocalImage(profile.image);
@@ -73,8 +75,10 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ profile, canEdit, onUpdate 
         width: '150px', 
         height: '150px', 
         margin: 'auto',
-        marginBottom: '20px',
-        cursor: canEdit ? 'pointer' : 'default'
+        marginBottom: theme.spacing(2.5),
+        cursor: canEdit ? 'pointer' : 'default',
+        borderRadius: '50%',
+        overflow: 'hidden'
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -86,7 +90,9 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ profile, canEdit, onUpdate 
         sx={{ 
           width: '100%', 
           height: '100%',
-          transition: 'opacity 0.3s'
+          transition: theme.transitions.create('opacity', {
+            duration: theme.transitions.duration.short,
+          }),
         }} 
       />
       {canEdit && isHovered && (
@@ -100,13 +106,14 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ profile, canEdit, onUpdate 
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'rgba(200, 200, 200, 0.7)',
-            borderRadius: '50%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
             opacity: isHovered ? 1 : 0,
-            transition: 'opacity 0.3s'
+            transition: theme.transitions.create('opacity', {
+              duration: theme.transitions.duration.short,
+            }),
           }}
         >
-          <FaCamera size={40} color="#ffffff" />
+          <FaCamera size={40} color={theme.palette.common.white} />
         </Box>
       )}
       <input 

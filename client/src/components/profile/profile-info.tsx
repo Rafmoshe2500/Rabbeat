@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box, Typography, IconButton, Button, Tooltip } from '@mui/material';
 import { FaEdit } from 'react-icons/fa';
 import RTLTextField from '../common/rtl-text-field';
+import { useTheme } from '@mui/material/styles';
 
 type EditableField = 'aboutMe' | 'address';
 
@@ -18,6 +19,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
     aboutMe: false,
     address: false,
   });
+  const theme = useTheme();
 
   const handleEdit = (field: EditableField) => {
     if (canEdit) {
@@ -53,8 +55,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
               value={localProfile[field]}
               onChange={(e) => handleChange(field, e.target.value)}
             />
-            <Button onClick={() => handleSave(field)}>שמור</Button>
-            <Button onClick={() => handleCancel(field)}>בטל</Button>
+            <Button onClick={() => handleSave(field)} sx={{ color: theme.palette.primary.main }}>שמור</Button>
+            <Button onClick={() => handleCancel(field)} sx={{ color: theme.palette.text.secondary }}>בטל</Button>
           </>
         ) : (
           <Box display="flex" alignItems="flex-start">
@@ -64,13 +66,14 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
                 direction: 'rtl',
                 flexGrow: 1, 
                 whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word'
+                wordBreak: 'break-word',
+                color: theme.palette.text.primary,
               }}
             >
               <strong><u>{label}</u><br/></strong> {profile[field]}
             </Typography>
             {canEdit && (
-              <IconButton size="small" onClick={() => handleEdit(field)}>
+              <IconButton size="small" onClick={() => handleEdit(field)} sx={{ color: theme.palette.primary.main }}>
                 <FaEdit />
               </IconButton>
             )}
@@ -82,7 +85,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
   };
 
   return (
-    <Box className="profile-info" sx={{padding: '5px', textAlign:'right'}}>
+    <Box className="profile-info" sx={{padding: theme.spacing(0.625), textAlign:'right'}}>
       {renderField('aboutMe', 'על עצמי')}
       {<br/>}
       {renderField('address', 'כתובת')}

@@ -91,6 +91,9 @@ const Navbar = () => {
                 letterSpacing: '.3rem',
                 color: theme.palette.primary.contrastText,
                 textDecoration: 'none',
+                '&:hover': {
+                  color: theme.palette.text.primary
+                }
               }}
             >
               Rabbeat
@@ -152,6 +155,7 @@ const Navbar = () => {
                   ml: 2,
                   '&:hover': {
                     backgroundColor: theme.palette.primary.dark,
+                    color: theme.palette.text.secondary
                   }
                 }}
               >
