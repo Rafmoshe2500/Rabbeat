@@ -3,6 +3,7 @@ import { Box, Chip, Typography,  IconButton } from '@mui/material';
 import { Add as AddIcon, Comment as CommentIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
+import { useTheme } from '@mui/material/styles';
 
 type Recommendation = {
   text: string;
@@ -25,6 +26,7 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState('');
+  const theme = useTheme();
 
   useEffect(() => {
     setLocalRecommendations(Array.isArray(recommendations) ? recommendations : []);
@@ -47,13 +49,13 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   };
 
   return (
-    <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{ marginTop: theme.spacing(2.5), display: 'flex', justifyContent: 'center' }}>
         <IconButton 
           onClick={() => setRecommendationsDialogOpen(true)}
-          sx={{ color: 'black' }}
+          sx={{ color: theme.palette.text.primary }}
         >
           <CommentIcon />
-          <Typography variant="caption" sx={{ ml: 1 }}>
+          <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
             {recommendations.length } המלצות
           </Typography>
         </IconButton>
@@ -63,8 +65,8 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
         onClose={() => setRecommendationsDialogOpen(false)}
         onConfirm={handleConfirm}
       >
-        <Box sx={{ marginTop: '20px', width: '100%' }}>
-          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: '20px' }}>
+        <Box sx={{ marginTop: theme.spacing(2.5), width: '100%' }}>
+          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: theme.spacing(2.5) }}>
             {localRecommendations.map((recommendation, index) => (
               <Chip
                 key={index}
@@ -74,7 +76,7 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
                     ? () => handleDeleteRecommendation(recommendation.studentId)
                     : undefined
                 }
-                sx={{ margin: '5px' }}
+                sx={{ margin: theme.spacing(0.625), bgcolor: theme.palette.secondary.light, color: theme.palette.text.primary }}
               />
             ))}
           </Box>
@@ -86,12 +88,12 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
                 variant="outlined"
                 size="small"
                 placeholder="הוסף תגובה חדשה"
-                sx={{ flexGrow: 1, marginRight: '10px' }}
+                sx={{ flexGrow: 1, marginRight: theme.spacing(1.25) }}
               />
               <IconButton
                 color="primary"
                 onClick={handleAddRecommendation}
-                sx={{ padding: '8px' }}
+                sx={{ padding: theme.spacing(1) }}
               >
                 <AddIcon />
               </IconButton>

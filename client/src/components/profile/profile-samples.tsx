@@ -3,6 +3,7 @@ import { Box, Chip, Typography, IconButton } from '@mui/material';
 import { Add as AddIcon, Mic as MicIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
+import { useTheme } from '@mui/material/styles';
 
 type ProfileSamplesProps = {
   samples: string[] | null;
@@ -15,6 +16,7 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
   const [samplesDialogOpen, setSamplesDialogOpen] = useState(false);
   const [addSampleDialogOpen, setAddSampleDialogOpen] = useState(false);
   const [newSample, setNewSample] = useState('');
+  const theme = useTheme();
 
   useEffect(() => {
     if (samples) {
@@ -39,13 +41,13 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
   };
 
   return (
-    <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{ marginTop: theme.spacing(2.5), display: 'flex', justifyContent: 'center' }}>
       <IconButton 
         onClick={() => setSamplesDialogOpen(true)}
-        sx={{ color: 'black' }}
+        sx={{ color: theme.palette.text.primary }}
       >
         <MicIcon />
-        <Typography variant="caption" sx={{ ml: 1 }}>
+        <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
           {samples!.length} דוגמאות שמע
         </Typography>
       </IconButton>
@@ -56,14 +58,14 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
         onClose={() => setSamplesDialogOpen(false)}
         onConfirm={() => setSamplesDialogOpen(false)}
       >
-        <Box sx={{ marginTop: '20px', width: '100%' }}>
-          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: '20px' }}>
+        <Box sx={{ marginTop: theme.spacing(2.5), width: '100%' }}>
+          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: theme.spacing(2.5) }}>
             {localSamples.map((sample, index) => (
               <Chip
                 key={index}
                 label={sample}
                 onDelete={canEdit ? () => handleDeleteSample(sample) : undefined}
-                sx={{ margin: '5px' }}
+                sx={{ margin: theme.spacing(0.625), bgcolor: theme.palette.secondary.light, color: theme.palette.text.primary }}
               />
             ))}
           </Box>
@@ -71,7 +73,7 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
             <IconButton
               color="primary"
               onClick={() => setAddSampleDialogOpen(true)}
-              sx={{ padding: '8px' }}
+              sx={{ padding: theme.spacing(1) }}
             >
               <AddIcon />
             </IconButton>
@@ -93,7 +95,7 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ samples, canEdit, onUpd
           variant="outlined"
           size="small"
           placeholder="הוסף דוגמה חדשה"
-          sx={{ flexGrow: 1, marginBottom: '10px' }}
+          sx={{ flexGrow: 1, marginBottom: theme.spacing(1.25) }}
         />
       </DialogComponent>
     </Box>
