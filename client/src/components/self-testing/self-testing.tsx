@@ -19,17 +19,14 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { flattedText, length } = useFlattedLessonText(lesson?.text);
   const updateTestAudioMutation = useUpdateTestAudio(lesson?.testAudioId!);
   const { data: testAudio } = useTestAudio(lesson?.testAudioId!);
-
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  // todo: remove this
-  const [audioURL, setAudioURL] = useState<string | null>(null);
-  const [audioURL1, setAudioURL1] = useState<string | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
 
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
-      setAudioURL1(url);
+      setAudioUrl(url);
 
       return () => {
         URL.revokeObjectURL(url); // Cleanup the URL object when the component is unmounted
@@ -39,15 +36,8 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   const { data, isLoading, refetch } = useCompareTexts(flattedText, transcript);
 
-  const handleRecordingComplete = (
-    audioBlob: Blob,
-    // todo: remove this
-    audioURL: string,
-    transcript: string
-  ) => {
+  const handleRecordingComplete = (audioBlob: Blob, transcript: string) => {
     setAudioBlob(audioBlob);
-    // todo: remove this
-    setAudioURL(audioURL);
     setTranscript(transcript);
   };
 
@@ -97,11 +87,11 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       ) : (
         <></>
       )}
-      {audioURL1 && !audioURL && (
+      {audioUrl && !audioBlob && (
         <div className={styles["last-chance"]}>
           הנסיון האחרון:
           <audio controls>
-            <source src={audioURL1} type="audio/wav" />
+            <source src={audioUrl} type="audio/wav" />
             Your browser does not support the audio element.
           </audio>
         </div>

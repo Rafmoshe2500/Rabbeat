@@ -76,7 +76,6 @@ const UploadButton = styled(Button)(({ theme }) => ({
 const UploadLessonPage: React.FC = () => {
   const { userDetails } = useUser();
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [audioURL, setAudioURL] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
 
@@ -100,12 +99,10 @@ const UploadLessonPage: React.FC = () => {
 
   const handleRecordingComplete = (
     audioBlob: Blob,
-    audioURL: string,
     transcript: string,
     timestamps: number[]
   ) => {
     setAudioBlob(audioBlob);
-    setAudioURL(audioURL);
     setTranscript(transcript);
     setTimestamps(timestamps);
   };
@@ -141,7 +138,7 @@ const UploadLessonPage: React.FC = () => {
       !!lesson.title &&
       !!torahSection.endVerse &&
       !!lesson.version &&
-      audioURL !== null &&
+      audioBlob !== null &&
       timestamps.length > 1
     );
   };
