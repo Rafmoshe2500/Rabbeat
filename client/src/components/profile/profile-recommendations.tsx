@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Chip, Typography,  IconButton } from '@mui/material';
-import { Add as AddIcon, Comment as CommentIcon } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Box, Typography, IconButton, Divider, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
+import { Add as AddIcon, Comment as CommentIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
 import { useTheme } from '@mui/material/styles';
@@ -23,65 +23,60 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
   currentUserId, 
   onUpdate 
 }) => {
-  const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState('');
   const theme = useTheme();
 
-  useEffect(() => {
-    setLocalRecommendations(Array.isArray(recommendations) ? recommendations : []);
-  }, [recommendations]);
-
   const handleAddRecommendation = () => {
     if (newRecommendation && currentUserId) {
-      setLocalRecommendations(prevRecs => [...prevRecs, { text: newRecommendation, studentId: currentUserId }]);
+      const updatedRecommendations = [...recommendations, { text: newRecommendation, studentId: currentUserId }];
+      onUpdate('recommendations', updatedRecommendations);
       setNewRecommendation('');
     }
   };
 
   const handleDeleteRecommendation = (studentId: string) => {
-    setLocalRecommendations(prevRecs => prevRecs.filter(rec => rec.studentId !== studentId));
-  };
-
-  const handleConfirm = () => {
-    onUpdate('recommendations', localRecommendations);
-    setRecommendationsDialogOpen(false);
+    const updatedRecommendations = recommendations.filter(rec => rec.studentId !== studentId);
+    onUpdate('recommendations', updatedRecommendations);
   };
 
   return (
     <Box sx={{ marginTop: theme.spacing(2.5), display: 'flex', justifyContent: 'center' }}>
-        <IconButton 
-          onClick={() => setRecommendationsDialogOpen(true)}
-          sx={{ color: theme.palette.text.primary }}
-        >
-          <CommentIcon />
-          <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
-            {recommendations.length } המלצות
-          </Typography>
-        </IconButton>
+      <IconButton 
+        onClick={() => setRecommendationsDialogOpen(true)}
+        sx={{ color: theme.palette.text.primary }}
+      >
+        <CommentIcon />
+        <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
+          {recommendations.length} המלצות
+        </Typography>
+      </IconButton>
       <DialogComponent
         open={recommendationsDialogOpen}
         title="תגובות סטודנטים"
         onClose={() => setRecommendationsDialogOpen(false)}
-        onConfirm={handleConfirm}
+        onConfirm={() => setRecommendationsDialogOpen(false)}
       >
         <Box sx={{ marginTop: theme.spacing(2.5), width: '100%' }}>
-          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: theme.spacing(2.5) }}>
-            {localRecommendations.map((recommendation, index) => (
-              <Chip
-                key={index}
-                label={recommendation.text}
-                onDelete={
-                  currentUserId === recommendation.studentId
-                    ? () => handleDeleteRecommendation(recommendation.studentId)
-                    : undefined
-                }
-                sx={{ margin: theme.spacing(0.625), bgcolor: theme.palette.secondary.light, color: theme.palette.text.primary }}
-              />
+          <List>
+            {recommendations.map((recommendation, index) => (
+              <React.Fragment key={index}>
+                <ListItem>
+                  <ListItemText primary={recommendation.text} />
+                  {currentUserId === recommendation.studentId && (
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" onClick={() => handleDeleteRecommendation(recommendation.studentId)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
+                </ListItem>
+                {index < recommendations.length - 1 && <Divider />}
+              </React.Fragment>
             ))}
-          </Box>
+          </List>
           {canAddComment && (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: theme.spacing(2) }}>
               <RTLTextField dir='rtl'
                 value={newRecommendation}
                 onChange={(e) => setNewRecommendation(e.target.value)}
