@@ -6,6 +6,7 @@ import {
   Select,
   MenuItem,
   Pagination,
+  useTheme,
 } from '@mui/material';
 import { useGetAllTeachers } from '../hooks/useProfile';
 import TeacherCard from '../components/common/teacher-card';
@@ -13,6 +14,7 @@ import RTLTextField from '../components/common/rtl-text-field';
 import Loader from '../components/common/loader'
 
 const TeacherSearch: React.FC = () => {
+  const theme = useTheme();
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams, setSearchParams] = useState({
@@ -42,19 +44,18 @@ const TeacherSearch: React.FC = () => {
   );
 
   if (isLoading) return <Loader />;
-  if (error) return <Typography>An error has occurred: {error.message}</Typography>;
+  if (error) return <Typography sx={{ color: theme.palette.error.main }}>An error has occurred: {error.message}</Typography>;
 
   return (
-    <Box sx={{ padding: 2 }} color={'white'}>
-      <Typography variant="h4" gutterBottom>Teacher Search</Typography>
+    <Box sx={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.default }}>
+      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.text.primary }}>Teacher Search</Typography>
       
       <Box sx={{ 
-        marginBottom: 2, 
-        color: 'white', 
+        marginBottom: theme.spacing(2), 
         display: 'flex', 
         flexDirection: { xs: 'column', sm: 'row' }, 
         flexWrap: 'wrap',
-        gap: 1 
+        gap: theme.spacing(1) 
       }}>
         <RTLTextField dir='rtl'
           label="חפש לפי שם מלא" 
@@ -100,7 +101,14 @@ const TeacherSearch: React.FC = () => {
         count={Math.ceil(filteredTeachers.length / itemsPerPage)} 
         page={page} 
         onChange={(_, value) => setPage(value)}
-        sx={{ marginTop: 2, display: 'flex', justifyContent: 'center' }}
+        sx={{ 
+          marginTop: theme.spacing(2), 
+          display: 'flex', 
+          justifyContent: 'center',
+          '& .MuiPaginationItem-root': {
+            color: theme.palette.text.primary,
+          }
+        }}
       />
     </Box>
   );

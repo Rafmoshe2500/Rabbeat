@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
     if (!editedProfile) return;
-        setEditedProfile(prevProfile => ({
+    setEditedProfile(prevProfile => ({
       ...prevProfile!,
       [key]: value
     }));
@@ -55,6 +55,7 @@ const Profile: React.FC = () => {
       },
     });
   };
+
   const calculateAge = (birthDay: string) => {
     const [day, month, year] = birthDay.split('-').map(Number);
     const birthDate = new Date(year, month - 1, day);
@@ -67,19 +68,19 @@ const Profile: React.FC = () => {
     return age;
   };
 
-    return (
+  return (
     <Container className="profile-page" maxWidth={isMobile ? "xs" : "sm"}>
-      <Box className="profile-card">
+      <Box className="profile-card" sx={{ backgroundColor: theme.palette.background.paper, padding: theme.spacing(3), borderRadius: theme.shape.borderRadius }}>
         {profile.type === 'teacher' && (
           <ProfileImage 
           profile={editedProfile} 
           canEdit={canEdit} 
           onUpdate={(key, value) => handleProfileUpdate(key, value)} />
         )}
-        <Typography variant="h5">
+        <Typography variant="h5" sx={{ color: theme.palette.text.primary, marginBottom: theme.spacing(2) }}>
           {profile.firstName} {profile.lastName}, {calculateAge(profile.birthDay)}
         </Typography>
-        <Divider orientation="horizontal" flexItem sx={{marginBottom: '5px'}}/>
+        <Divider orientation="horizontal" flexItem sx={{marginBottom: theme.spacing(2), backgroundColor: theme.palette.divider}}/>
         <ProfileInfo 
           profile={editedProfile} 
           canEdit={canEdit} 
@@ -92,26 +93,26 @@ const Profile: React.FC = () => {
               canEdit={canEdit} 
               onUpdate={(value) => handleProfileUpdate('versions', value)} 
             />
-            <Box sx={{display: 'inline-flex'}}>
+            <Box sx={{display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: theme.spacing(2)}}>
               <ProfileSamples 
                 samples={editedProfile.sampleIds} 
                 canEdit={canEdit && editedProfile.versions.length > editedProfile.sampleIds.length} 
                 onUpdate={(key, value) => handleProfileUpdate(key, value)} />
-            <ProfileRecommendations 
-              recommendations={editedProfile.recommendations} 
-              canAddComment={canAddComment}
-              currentUserId={userDetails?.id}
-              onUpdate={(key, value) => handleProfileUpdate(key, value)} 
-            />
+              <ProfileRecommendations 
+                recommendations={editedProfile.recommendations} 
+                canAddComment={canAddComment}
+                currentUserId={userDetails?.id}
+                onUpdate={(key, value) => handleProfileUpdate(key, value)} 
+              />
             </Box>
-            <Divider orientation="horizontal" flexItem sx={{marginBottom: '5px'}}/>
+            <Divider orientation="horizontal" flexItem sx={{margin: `${theme.spacing(2)} 0`, backgroundColor: theme.palette.divider}}/>
             {isUserConnected && (
             <ProfileActions 
               profile={editedProfile} 
               canEdit={canEdit}
               onUpdate={(key, value) => handleProfileUpdate(key, value)}/>
             )}
-            </>
+          </>
         )}
       </Box>
     </Container>

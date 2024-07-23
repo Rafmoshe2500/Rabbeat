@@ -1,4 +1,3 @@
-// navbar.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -13,6 +12,7 @@ import {
   Avatar,
   Tooltip,
   Container,
+  useTheme,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SchoolIcon from '@mui/icons-material/School';
@@ -22,6 +22,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useUser } from '../../contexts/user-context';
 
 const Navbar = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { userDetails, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -59,7 +60,7 @@ const Navbar = () => {
       : [
           { label: 'אזור מורה', path: '/teacher-personal-area', icon: <PersonIcon /> },
           { label: 'העלאת שיעור', path: '/upload-lesson', icon: <UploadFileIcon /> },
-          {label: 'התלמידים שלי', path: '/my-students', icon: <SchoolIcon />}
+          { label: 'התלמידים שלי', path: '/my-students', icon: <SchoolIcon /> }
         ]
     : [
         { label: 'התחברות', path: '/login', icon: <PersonIcon /> },
@@ -69,11 +70,14 @@ const Navbar = () => {
   const pages = [...userPages, ...commonPages];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1976d2', marginBottom: '20px'}}>
+    <AppBar position="static" sx={{ 
+      backgroundColor: theme.palette.primary.main, 
+      marginBottom: theme.spacing(2.5)
+    }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ flexDirection: 'row-reverse' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <SchoolIcon sx={{ display: { xs: 'none', md: 'flex' }, ml: 1 }} />
+            <SchoolIcon sx={{ display: { xs: 'none', md: 'flex' }, ml: 1, color: theme.palette.primary.contrastText }} />
             <Typography
               variant="h6"
               noWrap
@@ -85,7 +89,7 @@ const Navbar = () => {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
-                color: 'inherit',
+                color: theme.palette.primary.contrastText,
                 textDecoration: 'none',
               }}
             >
@@ -125,7 +129,7 @@ const Navbar = () => {
               {pages.map((page) => (
                 <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.path}>
                   {page.icon}
-                  <Typography textAlign="center" sx={{ mr: 1 }}>
+                  <Typography textAlign="center" sx={{ mr: 1, color: theme.palette.text.primary }}>
                     {page.label}
                   </Typography>
                 </MenuItem>
@@ -140,7 +144,16 @@ const Navbar = () => {
                 component={Link}
                 to={page.path}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'flex', alignItems: 'center', ml: 2 }}
+                sx={{ 
+                  my: 2, 
+                  color: theme.palette.primary.contrastText, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  ml: 2,
+                  '&:hover': {
+                    backgroundColor: theme.palette.primary.dark,
+                  }
+                }}
               >
                 {page.icon}
                 <Typography sx={{ mr: 1 }}>{page.label}</Typography>
@@ -172,17 +185,17 @@ const Navbar = () => {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem onClick={() => { handleCloseUserMenu(); navigate(`/profile/${userDetails.id}`); }}>
-                  <Typography textAlign="center">פרופיל</Typography>
+                  <Typography textAlign="center" sx={{ color: theme.palette.text.primary }}>פרופיל</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
-                  <Typography textAlign="center">התנתק</Typography>
+                  <Typography textAlign="center" sx={{ color: theme.palette.text.primary }}>התנתק</Typography>
                 </MenuItem>
               </Menu>
             </Box>
           )}
 
           <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-            <SchoolIcon sx={{ mr: 1 }} />
+            <SchoolIcon sx={{ mr: 1, color: theme.palette.primary.contrastText }} />
             <Typography
               variant="h5"
               noWrap
@@ -195,7 +208,7 @@ const Navbar = () => {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
-                color: 'inherit',
+                color: theme.palette.primary.contrastText,
                 textDecoration: 'none',
               }}
             >
