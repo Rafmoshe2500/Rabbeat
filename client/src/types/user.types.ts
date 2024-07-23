@@ -14,18 +14,18 @@ type User = {
   phoneNumber: string;
   address: string;
   birthDay: string;
-  type: 'student' | 'teacher';
-}
+  type: "student" | "teacher";
+};
 
 type UserRegister = User & {
   password: string;
   confirm_password: string;
-}
+};
 
 type UserCredentials = {
   email: string;
   password: string;
-}
+};
 
 type Recommendation = {
   studentId: string;
@@ -38,7 +38,7 @@ type teacherProfile = User & {
   versions: Array<string>;
   sampleIds: Array<string>;
   recommendations: Array<Recommendation>;
-}
+};
 
 type updateProfile = {
   id: string;
@@ -47,7 +47,8 @@ type updateProfile = {
 };
 
 type Student = {
-  firstName: string,
-  lastName: string,
-  phoneNumber: string,
-}
+  id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+};
