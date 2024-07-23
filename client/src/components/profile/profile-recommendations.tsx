@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Chip, Typography,  IconButton } from '@mui/material';
-import { Add as AddIcon, Comment as CommentIcon } from '@mui/icons-material';
+import { Box, Typography, IconButton, Divider, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
+import { Add as AddIcon, Comment as CommentIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
+import { useTheme } from '@mui/material/styles';
+import { useGetConnection, useUpdateProfile } from '../../hooks/useProfile';
 
 type Recommendation = {
   text: string;
@@ -11,87 +13,102 @@ type Recommendation = {
 
 type ProfileRecommendationsProps = {
   recommendations: Recommendation[];
-  canAddComment: boolean;
+  teacherId: string;
   currentUserId?: string;
-  onUpdate: (key: 'recommendations', value: Recommendation[]) => void;
 };
 
 const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({ 
   recommendations, 
-  canAddComment, 
+  teacherId,
   currentUserId, 
-  onUpdate 
 }) => {
-  const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState('');
+  const theme = useTheme();
+  const userConnection = useGetConnection(currentUserId, teacherId)
+  const updateProfileMutation = useUpdateProfile();
+  const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>(recommendations);
 
   useEffect(() => {
-    setLocalRecommendations(Array.isArray(recommendations) ? recommendations : []);
+    setLocalRecommendations(recommendations);
   }, [recommendations]);
 
+  const handleRecommendationsUpdate = (updatedRecommendations: Recommendation[]) => {
+    const updateData: updateProfile = {
+      id: teacherId,
+      key: 'recommendations',
+      value: updatedRecommendations
+    };
+    updateProfileMutation.mutate(updateData, {
+      onSuccess: () => {
+        console.log('Successfully updated recommendations');
+        setLocalRecommendations(updatedRecommendations);
+      }
+    });
+  };
+  
   const handleAddRecommendation = () => {
     if (newRecommendation && currentUserId) {
-      setLocalRecommendations(prevRecs => [...prevRecs, { text: newRecommendation, studentId: currentUserId }]);
+      const updatedRecommendations = [...localRecommendations, { text: newRecommendation, studentId: currentUserId }];
+      handleRecommendationsUpdate(updatedRecommendations);
       setNewRecommendation('');
     }
   };
 
   const handleDeleteRecommendation = (studentId: string) => {
-    setLocalRecommendations(prevRecs => prevRecs.filter(rec => rec.studentId !== studentId));
-  };
-
-  const handleConfirm = () => {
-    onUpdate('recommendations', localRecommendations);
-    setRecommendationsDialogOpen(false);
+    const updatedRecommendations = localRecommendations.filter(rec => rec.studentId !== studentId);
+    handleRecommendationsUpdate(updatedRecommendations);
   };
 
   return (
-    <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-        <IconButton 
-          onClick={() => setRecommendationsDialogOpen(true)}
-          sx={{ color: 'black' }}
-        >
-          <CommentIcon />
-          <Typography variant="caption" sx={{ ml: 1 }}>
-            {recommendations.length } המלצות
-          </Typography>
-        </IconButton>
+    <Box sx={{ marginTop: theme.spacing(2.5), display: 'flex', justifyContent: 'center' }}>
+      <IconButton 
+        onClick={() => setRecommendationsDialogOpen(true)}
+        sx={{ color: theme.palette.text.primary }}
+      >
+        <CommentIcon />
+        <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
+          {localRecommendations.length} המלצות
+        </Typography>
+      </IconButton>
       <DialogComponent
         open={recommendationsDialogOpen}
         title="תגובות סטודנטים"
         onClose={() => setRecommendationsDialogOpen(false)}
-        onConfirm={handleConfirm}
+        onConfirm={() => setRecommendationsDialogOpen(false)}
       >
-        <Box sx={{ marginTop: '20px', width: '100%' }}>
-          <Box display="flex" flexWrap="wrap" justifyContent="center" sx={{ marginBottom: '20px' }}>
+        <Box sx={{ marginTop: theme.spacing(2.5), width: '100%' }}>
+          <List>
             {localRecommendations.map((recommendation, index) => (
-              <Chip
-                key={index}
-                label={recommendation.text}
-                onDelete={
-                  currentUserId === recommendation.studentId
-                    ? () => handleDeleteRecommendation(recommendation.studentId)
-                    : undefined
-                }
-                sx={{ margin: '5px' }}
-              />
+              <React.Fragment key={index}>
+                <ListItem sx={{textAlign: 'right'}}>
+                  <ListItemText primary={recommendation.text} />
+                  {currentUserId === recommendation.studentId && (
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" onClick={() => handleDeleteRecommendation(recommendation.studentId)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
+                </ListItem>
+                {index < localRecommendations.length - 1 && <Divider />}
+              </React.Fragment>
             ))}
-          </Box>
-          {canAddComment && (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          </List>
+          {userConnection.data && (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: theme.spacing(2) }}>
               <RTLTextField dir='rtl'
                 value={newRecommendation}
                 onChange={(e) => setNewRecommendation(e.target.value)}
                 variant="outlined"
                 size="small"
                 placeholder="הוסף תגובה חדשה"
-                sx={{ flexGrow: 1, marginRight: '10px' }}
+                sx={{ flexGrow: 1, marginRight: theme.spacing(1.25) }}
               />
               <IconButton
                 color="primary"
                 onClick={handleAddRecommendation}
-                sx={{ padding: '8px' }}
+                sx={{ padding: theme.spacing(1) }}
               >
                 <AddIcon />
               </IconButton>

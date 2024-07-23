@@ -8,16 +8,16 @@ const theme = createTheme({
       dark: '#5E2F0D', // Darker brown
     },
     secondary: {
-      main: '#FFA500', // Orange
-      light: '#FFB84D', // Lighter orange
-      dark: '#CC8400', // Darker orange
+      main: '#9E9E9E',  // Medium Light Gray
+      light: '#EEEEEE', // Very Light Gray
+      dark: '#616161',  // Dark Gray
     },
     background: {
       default: '#F5F5F5', // WhiteSmoke
       paper: '#FFFFFF', // White
     },
     text: {
-      primary: '#333333', // Dark gray, almost black
+      primary: '#4B4949', // Dark gray, almost black
       secondary: '#666666', // Medium gray
     },
     divider: '#D3D3D3', // LightGray

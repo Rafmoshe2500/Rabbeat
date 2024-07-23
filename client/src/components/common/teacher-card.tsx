@@ -1,4 +1,3 @@
-// TeacherCard.tsx
 import React from 'react';
 import Divider from '@mui/material/Divider';
 import { Card, CardContent, Grid, Button, Typography } from '@mui/material';
@@ -10,7 +9,6 @@ import ProfileVersions from '../profile/profile-versions';
 import ProfileRecommendations from '../profile/profile-recommendations';
 import {useUser} from '../../contexts/user-context' 
 import ProfileSamples from '../profile/profile-samples';
-import { useUpdateProfile } from '../../hooks/useProfile';
 
 interface TeacherCardProps {
   teacher: teacherProfile;
@@ -18,24 +16,8 @@ interface TeacherCardProps {
 
 const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   const navigate = useNavigate();
-  const updateProfileMutation = useUpdateProfile();
   const {userDetails} = useUser()
   const isUserConnected = userDetails && (userDetails.type === 'student' || userDetails.type === 'teacher');
-
-  const handleProfileUpdate = (key: keyof teacherProfile, value: Array<Recommendation>) => {
-  
-    const updateData = {
-      id: userDetails!.id,
-      key,
-      value
-    };  
-    updateProfileMutation.mutate(updateData, {
-    });
-  };
-
-  const handleUpdate = (key: string, value: any) => {
-    console.log(`Updating ${key} with value:`, value);
-  };
 
   const handleImageClick = () => {
     navigate(`/profile/${teacher.id}`);
@@ -62,7 +44,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
               <ProfileImage
                 profile={teacher}
                 canEdit={false}
-                onUpdate={handleUpdate}
+                onUpdate={() => {}}
               />
             </Button>
           </Grid>
@@ -70,7 +52,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
             <ProfileInfo
               profile={teacher}
               canEdit={false}
-              onUpdate={handleUpdate}
+              onUpdate={() => {}}
             />
           </Grid>
           <Divider orientation="horizontal" flexItem sx={{marginBottom: '1px'}}/>
@@ -78,21 +60,21 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
             <ProfileVersions
               versions={teacher.versions}
               canEdit={false}
-              onUpdate={(value) => handleUpdate('versions', value)}
+              onUpdate={() => {}}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Grid container >
               <Grid item xs={6}>
-                <ProfileRecommendations
-                  recommendations={teacher.recommendations}
-                  canAddComment={userDetails?.type === 'student'}
-                  onUpdate={(key, value) => handleProfileUpdate(key, value)}
-                />
+              <ProfileRecommendations
+                recommendations={teacher.recommendations}
+                teacherId={teacher.id}
+                currentUserId={userDetails?.id}
+              />
               </Grid>
               <Grid item xs={6}>
                 <ProfileSamples 
-                  onUpdate={handleUpdate} 
+                  onUpdate={() => {}} 
                   samples={teacher.sampleIds} 
                   canEdit={false} 
                 />
@@ -102,7 +84,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
                   <ProfileActions
                     profile={teacher}
                     canEdit={false}
-                    onUpdate={handleUpdate}
+                    onUpdate={() => {}}
                   />
                 </Grid>
               )}
@@ -113,4 +95,5 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
     </Card>
   );
 };
+
 export default TeacherCard;

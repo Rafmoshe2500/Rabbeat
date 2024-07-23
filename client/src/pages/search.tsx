@@ -48,7 +48,7 @@ const TeacherSearch: React.FC = () => {
 
   return (
     <Box sx={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.default }}>
-      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.text.primary }}>Teacher Search</Typography>
+      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.text.primary }}>חיפוש מרצה</Typography>
       
       <Box sx={{ 
         marginBottom: theme.spacing(2), 
