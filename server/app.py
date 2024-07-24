@@ -10,7 +10,7 @@ app = FastAPI(title='Rabbeat')
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["rabbeat.cs.colman.ac.il*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -24,4 +24,4 @@ app.include_router(user.router, prefix="/api")
 app.include_router(chat_router, prefix="/api")
 app.include_router(study_zone.router, prefix="/api")
 app.include_router(student_tests.router, prefix="/api")
-uvicorn.run(app, host="0.0.0.0", port=80)
+uvicorn.run(app, host="0.0.0.0", port=3000)
