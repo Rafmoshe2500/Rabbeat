@@ -76,3 +76,11 @@ async def update_profile(teacher_id: str, update: UpdateProfile):
 @router.get("/teachers", response_model=List[ResponseTeacherProfile])
 def get_teacher_with_profile_details():
     return mongo_db.get_all_teacher_with_profiles()
+
+
+@router.get("/students/search")
+async def search_student_by_email(email: str):
+    student = mongo_db.get_user_by_email(email)
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found")
+    return {'id': student['id'], 'name': f'{student["firstName"]} {student["lastName"]}'}
