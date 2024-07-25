@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./ChatComponent.module.scss";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -7,6 +7,7 @@ import { useSendMessageToChatbot } from "../../hooks/useSendMessagesToChatbot";
 interface Message {
   sender: "user" | "bot";
   text: string;
+  markup?: { __html: string };
 }
 
 type ChatComponentProps = {
@@ -22,6 +23,7 @@ type ChatComponentProps = {
 const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [processedMessages, setProcessedMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputMessage, setInputMessage] = useState<string>("");
 
@@ -32,6 +34,29 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   const toggleChat = () => {
     setIsChatOpen((prev) => !prev);
   };
+
+  const createMarkup = async (text: string): Promise<{ __html: string }> => {
+    const rawMarkup = await marked(text);
+    const cleanMarkup = await DOMPurify.sanitize(rawMarkup);
+    return { __html: cleanMarkup };
+  };
+
+  useEffect(() => {
+    const processMessages = async () => {
+      const processed = await Promise.all(
+        messages.map(async (msg) => {
+          if (msg.sender === 'bot') {
+            const markup = await createMarkup(msg.text);
+            return { ...msg, markup };
+          }
+          return msg;
+        })
+      );
+      setProcessedMessages(processed);
+    };
+
+    processMessages();
+  }, [messages]);
 
   const handleSendMessage = () => {
     if (isInputEmpty) return;
@@ -56,7 +81,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
         };
         setMessages((prevMessages) => [...prevMessages, botMessage]);
       },
-      onError: (error) => {
+      onError: () => {
         const errorMessage: Message = {
           sender: "bot",
           text: "אופס, משהו השתבש בדרך.",
@@ -66,12 +91,6 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
     });
 
     setInputMessage("");
-  };
-
-  const createMarkup = (text: string) => {
-    const rawMarkup = marked(text);
-    const cleanMarkup = DOMPurify.sanitize(rawMarkup);
-    return { __html: cleanMarkup };
   };
 
   return (
@@ -90,15 +109,13 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
             </button>
           </div>
           <div className={styles.chatMessages}>
-            {messages.map((msg, index) => (
+            {processedMessages.map((msg, index) => (
               <div
                 key={index}
                 className={`${styles.chatMessage} ${styles[msg.sender]}`}
-                dangerouslySetInnerHTML={
-                  msg.sender === "bot"
-                    ? createMarkup(msg.text)
-                    : { __html: msg.text }
-                }
+                {...(msg.sender === 'bot'
+                  ? { dangerouslySetInnerHTML: msg.markup }
+                  : { children: msg.text })}
               />
             ))}
           </div>
