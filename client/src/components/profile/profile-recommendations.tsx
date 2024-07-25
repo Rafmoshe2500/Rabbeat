@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, IconButton, Divider, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import { Add as AddIcon, Comment as CommentIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-text-field';
+import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import { useTheme } from '@mui/material/styles';
 import { useGetConnection, useUpdateProfile } from '../../hooks/useProfile';
 

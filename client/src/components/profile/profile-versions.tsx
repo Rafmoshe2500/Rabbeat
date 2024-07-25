@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Chip, Button } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-text-field'
+import RTLTextField from '../common/rtl-inputs/rtl-text-field'
 import { useTheme } from '@mui/material/styles';
 
 type ProfileVersionsProps = {

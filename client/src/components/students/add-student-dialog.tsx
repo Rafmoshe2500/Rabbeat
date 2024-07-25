@@ -5,8 +5,8 @@ import { useUser } from '../../contexts/user-context';
 import { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import RTLTextField from '../common/rtl-text-field';
-import RTLDatePicker from '../common/rtl-date-picker'
+import RTLTextField from '../common/rtl-inputs/rtl-text-field';
+import RTLDatePicker from '../common/rtl-inputs/rtl-date-picker'
 
 interface AddStudentDialogProps {
   open: boolean;

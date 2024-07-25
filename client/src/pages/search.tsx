@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useGetAllTeachers } from '../hooks/useProfile';
 import TeacherCard from '../components/common/teacher-card';
-import RTLTextField from '../components/common/rtl-text-field';
+import RTLTextField from '../components/common/rtl-inputs/rtl-text-field';
 import Loader from '../components/common/loader'
 
 const TeacherSearch: React.FC = () => {

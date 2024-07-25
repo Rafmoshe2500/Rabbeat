@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Chip, Typography, IconButton } from '@mui/material';
 import { Add as AddIcon, Mic as MicIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-text-field';
+import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import { useTheme } from '@mui/material/styles';
 
 type ProfileSamplesProps = {
