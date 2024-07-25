@@ -5,10 +5,10 @@ import LessonsList from "../components/lessons/lessons-list/lessons-list";
 
 const TeacherPersonalArea: React.FC = () => {
   const navigate = useNavigate();
-  const [lessons, setLessons] = useState<Array<LessonDetails>>([
-    { name: "בראשית - ראשון", id: "123", status: "finished" },
-    { name: "בראשית - שני", id: "132", status: "not-started" },
-    { name: "בראשית - שלישי", id: "142", status: "in-progress" },
+  const [lessons] = useState<Array<LessonDetails>>([
+    // { name: "בראשית - ראשון", id: "123", status: "finished" },
+    // { name: "בראשית - שני", id: "132", status: "not-started" },
+    // { name: "בראשית - שלישי", id: "142", status: "in-progress" },
   ]);
 
   // fetch request for all lessons names, onClick move to lesson editor

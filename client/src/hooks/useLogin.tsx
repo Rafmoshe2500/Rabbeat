@@ -7,7 +7,6 @@ const createQueryKey = (queryName: string, userId: string) => {
 
 type QueryKey = ReturnType<typeof createQueryKey>;
 
-// Fetch user
 export const useLessonsByUser = (userId: string) => {
   const queryKey = createQueryKey("user", userId);
 

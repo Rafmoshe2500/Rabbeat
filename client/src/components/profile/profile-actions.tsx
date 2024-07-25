@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, Typography, IconButton } from '@mui/material';
 import { FaWhatsapp, FaEdit, FaSave } from 'react-icons/fa';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-text-field';
+import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import {useUser} from '../../contexts/user-context'
 
 type ProfileActionsProps = {
