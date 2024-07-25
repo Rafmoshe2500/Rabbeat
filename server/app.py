@@ -8,9 +8,14 @@ from routers.torah import torah_router
 
 app = FastAPI(title='Rabbeat')
 
+origins = [
+    "https://localhost",
+    "https://rabbeat.cs.colman.ac.il/"  # If you have a domain name
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://rabbeat.cs.colman.ac.il*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
