@@ -8,13 +8,14 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled']
   },
-  // server: {
-  //   https: {
-  //       key: fs.readFileSync('key.pem'),
-  //       cert: fs.readFileSync('cert.pem')
-  //   },
-  //   host: '0.0.0.0',
-  //   port: 443
-  // }
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://10.10.248.125:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  },
 })
 

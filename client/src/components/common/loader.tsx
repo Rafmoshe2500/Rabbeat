@@ -9,6 +9,7 @@ const Loader = ({ message }: LoaderProps) => {
   return (
     <Box>
       <CircularProgress />
+      <br/>
       {message}
     </Box>
   );
