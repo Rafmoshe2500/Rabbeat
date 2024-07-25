@@ -5,8 +5,6 @@ import { useUser } from "../contexts/user-context";
 const Home: React.FC = () => {
   const { userDetails } = useUser();
 
-  console.log("Home component rendering. User details:", userDetails);
-
   if (!userDetails) {
     return <Typography>No user details available. Please log in.</Typography>;
   }

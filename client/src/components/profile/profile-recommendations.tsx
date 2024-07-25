@@ -41,7 +41,6 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
     };
     updateProfileMutation.mutate(updateData, {
       onSuccess: () => {
-        console.log('Successfully updated recommendations');
         setLocalRecommendations(updatedRecommendations);
       }
     });
