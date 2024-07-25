@@ -4,6 +4,7 @@ import { Box, Button, Typography, IconButton } from '@mui/material';
 import { FaWhatsapp, FaEdit, FaSave } from 'react-icons/fa';
 import DialogComponent from '../common/dialog';
 import RTLTextField from '../common/rtl-text-field';
+import {useUser} from '../../contexts/user-context'
 
 type ProfileActionsProps = {
   profile: teacherProfile;
@@ -15,7 +16,7 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
   const [contactVisible, setContactVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(profile.phoneNumber);
-
+  const {userDetails} = useUser()
   const handleContactClick = () => {
     setContactVisible(true);
   };
@@ -38,14 +39,14 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
   return (
     <Box className="profile-actions" sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
       <Button variant="outlined" color="primary" onClick={handleContactClick}>צור קשר</Button>
-      <Button 
+      {userDetails?.id !== profile.id &&  <Button 
         variant="contained" 
         color="success" 
         startIcon={<FaWhatsapp />}
         onClick={() => window.open(`https://wa.me/${profile.phoneNumber}`, '_blank')}
       >
         הודעה
-      </Button>
+      </Button>}
       <DialogComponent 
         open={contactVisible}
         onClose={closeContact}

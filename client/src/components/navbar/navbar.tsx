@@ -56,7 +56,7 @@ const Navbar = () => {
 
   const userPages = userDetails
     ? userDetails.type === 'student'
-      ? [{ label: 'אזור תלמיד', path: '/student-personal-area', icon: <PersonIcon /> }]
+      ? [{ label: 'אזור תלמיד', path: '/student-personal-area', icon: <PersonIcon /> }, ...commonPages]
       : [
           { label: 'אזור מורה', path: '/teacher-personal-area', icon: <PersonIcon /> },
           { label: 'העלאת שיעור', path: '/upload-lesson', icon: <UploadFileIcon /> },
@@ -64,10 +64,11 @@ const Navbar = () => {
         ]
     : [
         { label: 'התחברות', path: '/login', icon: <PersonIcon /> },
-        { label: 'הרשמה', path: '/register', icon: <PersonIcon /> },
+        { label: 'הרשמה', path: '/register', icon: <PersonIcon />},
+           ...commonPages
       ];
 
-  const pages = [...userPages, ...commonPages];
+  const pages = [...userPages];
 
   return (
     <AppBar position="static" sx={{ 
