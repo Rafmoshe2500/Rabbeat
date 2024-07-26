@@ -6,12 +6,4 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled']
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://193.106.55.125:3000',
-        changeOrigin: true,
-      }
-    }
-  },
 })
