@@ -1,8 +1,7 @@
 // ProfileInfo.tsx
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, Button, Tooltip } from '@mui/material';
+import { Box, Typography, IconButton, Button, Tooltip, TextField } from '@mui/material';
 import { FaEdit } from 'react-icons/fa';
-import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import { useTheme } from '@mui/material/styles';
 
 type EditableField = 'aboutMe' | 'address';
@@ -47,7 +46,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, canEdit, onUpdate })
         <Tooltip title={label} placement="right">
         {editMode[field] ? (
           <>
-            <RTLTextField dir='rtl'
+            <TextField dir='rtl'
               fullWidth
               multiline
               label={label}

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography, Chip, Button } from '@mui/material';
+import { Box, Typography, Chip, Button, TextField } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-inputs/rtl-text-field'
 import { useTheme } from '@mui/material/styles';
 
 type ProfileVersionsProps = {
@@ -70,7 +69,7 @@ const ProfileVersions: React.FC<ProfileVersionsProps> = ({ versions = [], canEdi
         onClose={() => setDialogOpen(false)}
         onConfirm={handleAddVersion}
       >
-        <RTLTextField
+        <TextField
           autoFocus
           margin="dense"
           label="סגנון קריאה"

@@ -7,10 +7,10 @@ import {
   MenuItem,
   Pagination,
   useTheme,
+  TextField,
 } from '@mui/material';
 import { useGetAllTeachers } from '../hooks/useProfile';
 import TeacherCard from '../components/common/teacher-card';
-import RTLTextField from '../components/common/rtl-inputs/rtl-text-field';
 import Loader from '../components/common/loader'
 
 const TeacherSearch: React.FC = () => {
@@ -57,21 +57,21 @@ const TeacherSearch: React.FC = () => {
         flexWrap: 'wrap',
         gap: theme.spacing(1) 
       }}>
-        <RTLTextField dir='rtl'
+        <TextField dir='rtl'
           label="חפש לפי שם מלא" 
           name="fullName"
           value={searchParams.fullName}
           onChange={handleSearch}
           sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         />
-        <RTLTextField dir='rtl'
+        <TextField dir='rtl'
           label="חפש לפי כתובת" 
           name="address"
           value={searchParams.address}
           onChange={handleSearch}
           sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: 'calc(25% - 6px)' } }}
         />
-        <RTLTextField dir='rtl' 
+        <TextField dir='rtl' 
           label="חפש לפי סגנון" 
           name="versions"
           value={searchParams.versions}

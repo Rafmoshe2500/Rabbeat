@@ -1,7 +1,6 @@
 // login-form.tsx
 import React, { useState } from 'react';
-import { Typography, Box } from '@mui/material';
-import RTLTextField from '../common/rtl-inputs/rtl-text-field';
+import { Typography, Box, TextField } from '@mui/material';
 
 interface LoginFormProps {
   onSubmit: (credentials: UserCredentials) => void;
@@ -24,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
       <Typography variant="h4" gutterBottom sx={{direction: 'rtl', textAlign: 'center'}}>
         התחברות
       </Typography>
-      <RTLTextField
+      <TextField
         fullWidth
         margin="normal"
         type="email"
@@ -34,7 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         onChange={handleChange}
         required
       />
-      <RTLTextField
+      <TextField
         fullWidth
         margin="normal"
         type="password"

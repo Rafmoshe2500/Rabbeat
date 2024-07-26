@@ -3,7 +3,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
-import RTLTextField from './rtl-text-field';
+import { TextField } from '@mui/material';
 
 interface RTLDatePickerProps {
   label: string;
@@ -19,7 +19,7 @@ const RTLDatePicker: React.FC<RTLDatePickerProps> = ({ label, value, onChange })
         value={value}
         onChange={onChange}
         slots={{
-          textField: RTLTextField,
+          textField: TextField,
         }}
         slotProps={{
           textField: {

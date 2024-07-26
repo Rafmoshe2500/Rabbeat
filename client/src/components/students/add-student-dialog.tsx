@@ -5,8 +5,8 @@ import { useUser } from '../../contexts/user-context';
 import { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import RTLDatePicker from '../common/rtl-inputs/rtl-date-picker'
+import { TextField } from '@mui/material';
 
 interface AddStudentDialogProps {
   open: boolean;
@@ -39,7 +39,7 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({ open, onClose }) =>
       onClose={onClose}
       onConfirm={handleConfirm}
     >
-      <RTLTextField
+      <TextField
         autoFocus
         margin="dense"
         label="אימייל התלמיד"

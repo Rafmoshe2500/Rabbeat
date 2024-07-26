@@ -1,9 +1,8 @@
 // ProfileActions.tsx
 import React, { useState } from 'react';
-import { Box, Button, Typography, IconButton } from '@mui/material';
+import { Box, Button, Typography, IconButton, TextField } from '@mui/material';
 import { FaWhatsapp, FaEdit, FaSave } from 'react-icons/fa';
 import DialogComponent from '../common/dialog';
-import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import {useUser} from '../../contexts/user-context'
 
 type ProfileActionsProps = {
@@ -58,7 +57,7 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
             <Typography variant="body1" sx={{ minWidth: '80px', fontWeight: 'bold' }}>פלאפון:</Typography>
             {isEditing ? (
               <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                <RTLTextField dir='rtl'
+                <TextField dir='rtl'
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   variant="outlined"
