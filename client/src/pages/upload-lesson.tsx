@@ -1,14 +1,81 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { convertBlobToBase64 } from "../utils/audio-parser";
 import BibleSelector from "../components/bible-selector/bible-selector";
 import { useCreateOrUpdateLesson } from "../hooks/useCreateOrUpdateLesson";
 import AudioRecorder from "../components/audio-recorder/audio-recorder";
 import { useUser } from "../contexts/user-context";
+import {
+  Container,
+  Typography,
+  Paper,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  Box,
+  Grid,
+  FormControl,
+  InputLabel,
+  SelectChangeEvent,
+  Fade,
+} from "@mui/material";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { styled } from "@mui/material/styles";
 
-const UploadLessonPage = () => {
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  marginBottom: theme.spacing(4),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+  transition: "box-shadow 0.3s ease-in-out",
+  "&:hover": {
+    boxShadow: "0 6px 25px rgba(0, 0, 0, 0.15)",
+  },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: theme.palette.primary.light,
+    },
+    "&:hover fieldset": {
+      borderColor: theme.palette.primary.main,
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: theme.palette.primary.dark,
+    },
+  },
+}));
+
+const StyledSelect = styled(Select)(({ theme }) => ({
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: theme.palette.primary.light,
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: theme.palette.primary.main,
+  },
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: theme.palette.primary.dark,
+  },
+}));
+
+const UploadButton = styled(Button)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderRadius: "50%",
+  minWidth: "auto",
+  width: 64,
+  height: 64,
+  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+  transition: "all 0.3s ease-in-out",
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 6px 15px rgba(0, 0, 0, 0.25)",
+  },
+}));
+
+const UploadLessonPage: React.FC = () => {
   const { userDetails } = useUser();
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [audioURL, setAudioURL] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
 
@@ -32,18 +99,18 @@ const UploadLessonPage = () => {
 
   const handleRecordingComplete = (
     audioBlob: Blob,
-    audioURL: string,
     transcript: string,
     timestamps: number[]
   ) => {
     setAudioBlob(audioBlob);
-    setAudioURL(audioURL);
     setTranscript(transcript);
     setTimestamps(timestamps);
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<unknown>
   ) => {
     const { name, value } = e.target;
     setLesson((prevLesson) => ({
@@ -71,48 +138,88 @@ const UploadLessonPage = () => {
       !!lesson.title &&
       !!torahSection.endVerse &&
       !!lesson.version &&
-      audioURL !== null &&
+      audioBlob !== null &&
       timestamps.length > 1
     );
   };
 
   return (
-    <div>
-      <div>העלאת שיעורים</div>
-      <BibleSelector setTorahSection={setTorahSection} />
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <input
-            type="text"
-            name="title"
-            value={lesson.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Version:</label>
-          <select
-            name="version"
-            value={lesson.version}
-            onChange={handleChange}
-            required
-          >
-            <option value="Ashkenaz">אשכנזי</option>
-            <option value="Spanish">ספרדי</option>
-          </select>
-        </div>
-        <button type="submit" disabled={!isFormComplete()}>
-          Submit
-        </button>
-      </form>
-      <AudioRecorder
-        onRecordingComplete={handleRecordingComplete}
-        shouldCalculateHighlights
-        shouldDisplayTranscript
-      />
-    </div>
+    <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
+      <Fade in timeout={1000}>
+        <Typography
+          variant="h1"
+          component="h1"
+          gutterBottom
+          align="center"
+          sx={{ mb: 4 }}
+        >
+          העלאת שיעורים
+        </Typography>
+      </Fade>
+      <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
+        <UploadButton
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!isFormComplete()}
+          onClick={handleSubmit}
+        >
+          <UploadFileIcon fontSize="large" />
+        </UploadButton>
+      </Box>
+      <Fade in timeout={1000}>
+        <StyledPaper elevation={0}>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={4}>
+              <Grid item xs={12}>
+                <StyledTextField
+                  style={{ direction: "rtl" }}
+                  required
+                  fullWidth
+                  id="title"
+                  name="title"
+                  label="כותרת"
+                  value={lesson.title}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="version-label">נוסח</InputLabel>
+                  <StyledSelect
+                    labelId="version-label"
+                    id="version"
+                    name="version"
+                    value={lesson.version}
+                    onChange={handleChange}
+                    label="נוסח"
+                  >
+                    <MenuItem value="Ashkenaz">אשכנזי</MenuItem>
+                    <MenuItem value="Spanish">ספרדי</MenuItem>
+                  </StyledSelect>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Box>
+        </StyledPaper>
+      </Fade>
+      <Fade in timeout={1000}>
+        <StyledPaper elevation={0}>
+          <Typography variant="h2" component="h2" gutterBottom sx={{ mb: 3 }}>
+            הקלטת השיעור
+          </Typography>
+          <BibleSelector setTorahSection={setTorahSection} />
+          <Box sx={{ mt: 4 }}>
+            <AudioRecorder
+              onRecordingComplete={handleRecordingComplete}
+              shouldCalculateHighlights
+              shouldDisplayTranscript
+            />
+          </Box>
+        </StyledPaper>
+      </Fade>
+    </Container>
   );
 };
 

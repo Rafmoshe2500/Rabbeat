@@ -6,7 +6,6 @@ import SpeechRecognition, {
 interface AudioRecorderProps {
   onRecordingComplete: (
     audioBlob: Blob,
-    audioURL: string,
     transcript: string,
     timestamps: number[]
   ) => void;
@@ -72,8 +71,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
 
   useEffect(() => {
     if (end) {
-      // todo: remove audiourl it is redundant.
-      onRecordingComplete(audioBlob!, audioURL!, transcript, timestamps);
+      onRecordingComplete(audioBlob!, transcript, timestamps);
       setEnd(false);
     }
   }, [end]);
