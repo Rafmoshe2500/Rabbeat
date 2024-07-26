@@ -45,7 +45,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
     const processMessages = async () => {
       const processed = await Promise.all(
         messages.map(async (msg) => {
-          if (msg.sender === 'bot') {
+          if (msg.sender === "bot") {
             const markup = await createMarkup(msg.text);
             return { ...msg, markup };
           }
@@ -96,7 +96,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   return (
     <div>
       <button onClick={toggleChat} className={styles.imageButton} id="robot">
-        <img src="/public/images/bot.jpg" alt="Chat" />
+        <img src="/src/public/images/bot.jpg" alt="Chat" />
         <div className={styles.speechBubble}>כאן לכל שאלה.</div>
       </button>
 
@@ -113,7 +113,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
               <div
                 key={index}
                 className={`${styles.chatMessage} ${styles[msg.sender]}`}
-                {...(msg.sender === 'bot'
+                {...(msg.sender === "bot"
                   ? { dangerouslySetInnerHTML: msg.markup }
                   : { children: msg.text })}
               />
