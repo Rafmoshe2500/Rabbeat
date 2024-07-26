@@ -1,5 +1,36 @@
 import { createTheme } from '@mui/material/styles';
 
+export const rtlInputStyles = {
+  '& .MuiInputLabel-root': {
+    right: 20,
+    left: 'auto',
+    transformOrigin: 'right',
+    '&.MuiInputLabel-shrink': {
+      transform: 'translate(3px, -9px) scale(0.75)',
+    },
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      textAlign: 'right',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#8B4513',
+    },
+  },
+  '& .MuiInputLabel-outlined': {
+    transform: 'translate(-14px, 14px) scale(1)',
+  },
+  // Add these lines for better RTL support
+  '& .MuiInputBase-input': {
+    textAlign: 'right',
+  },
+  '& .MuiSelect-icon': {
+    right: 'auto',
+    left: 7,
+  },
+};
+
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -52,6 +83,21 @@ const theme = createTheme({
         root: {
           borderRadius: 12,
         },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: rtlInputStyles,
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: rtlInputStyles,
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: rtlInputStyles,
       },
     },
   },
