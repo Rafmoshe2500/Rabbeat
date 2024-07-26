@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Typography, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Grid } from '@mui/material';
-import RTLTextField from '../common/rtl-text-field'
+import { Typography, Box, Select, MenuItem, SelectChangeEvent, Grid } from '@mui/material';
+import RTLTextField from '../common/rtl-inputs/rtl-text-field'
+import RTLFormControl from '../common/rtl-inputs/rtl-form-control';
 
 interface RegisterFormProps {
   onSubmit: (userData: UserRegister) => void;
@@ -61,13 +62,19 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
             InputLabelProps={{ shrink: true }}
             required
           />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="type-label" >סוג משתמש</InputLabel>
-            <Select labelId="type-label" name="type" value={userData.type} onChange={handleChange} sx={{direction: 'rtl'}} required>
-              <MenuItem value="student">תלמיד</MenuItem>
-              <MenuItem value="teacher">מורה</MenuItem>
+          <RTLFormControl fullWidth margin="normal" label="סוג משתמש">
+            <Select
+              labelId="type-label"
+              name="type"
+              value={userData.type}
+              onChange={handleChange}
+              sx={{direction: 'rtl', textAlign: 'right'}}
+              required
+            >
+              <MenuItem value="student" dir='rtl'>תלמיד</MenuItem>
+              <MenuItem value="teacher" dir='rtl'>מרצה</MenuItem>
             </Select>
-          </FormControl>
+          </RTLFormControl>
           <RTLTextField fullWidth margin="normal" type="password" name="password" label="סיסמא" value={userData.password} onChange={handleChange} required />
           <RTLTextField
             fullWidth

@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchStudents } from '../api/endpoints/teacher';
+import { useQuery, useQueryClient, useMutation  } from '@tanstack/react-query';
+import { fetchStudents, searchStudentByEmail, associateStudentToTeacher } from '../api/endpoints/teacher';
 
 export const useGetStudents = (teacherId: string) => {
   return useQuery({
@@ -9,3 +9,22 @@ export const useGetStudents = (teacherId: string) => {
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
   });
 }
+
+export const useSearchStudentByEmail = (email: string) => {
+  return useQuery({
+    queryKey: ['studentSearch', email],
+    queryFn: () => searchStudentByEmail(email),
+    enabled: email.length > 0,
+  });
+};
+
+export const useAccosiateStudentToTeacher = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: associateStudentToTeacher,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] });
+    },
+  });
+};

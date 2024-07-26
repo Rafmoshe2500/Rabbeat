@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, IconButton, Button, Tooltip } from '@mui/material';
 import { FaEdit } from 'react-icons/fa';
-import RTLTextField from '../common/rtl-text-field';
+import RTLTextField from '../common/rtl-inputs/rtl-text-field';
 import { useTheme } from '@mui/material/styles';
 
 type EditableField = 'aboutMe' | 'address';

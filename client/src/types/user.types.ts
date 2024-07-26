@@ -52,3 +52,10 @@ type Student = {
   lastName: string;
   phoneNumber: string;
 };
+
+
+type AssociateNewStudent = {
+  studentId: string;
+  teacherId: string;
+  expired_date: string;
+}

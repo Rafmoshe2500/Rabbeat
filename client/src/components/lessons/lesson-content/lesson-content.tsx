@@ -19,7 +19,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
       setAudioURL(url);
 
       return () => {
-        URL.revokeObjectURL(url); // Cleanup the URL object when the component is unmounted
+        URL.revokeObjectURL(url);
       };
     }
   }, [lesson?.audio]);

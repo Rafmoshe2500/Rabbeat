@@ -12,7 +12,7 @@ import theme from './theme'; // Add this import
 const App: React.FC = () => {
   const { userDetails } = useUser();
   
-  const { routes, router } = useMemo(() => {
+  const { router } = useMemo(() => {
     let routes: RouteObject[] = [];
 
     if (userDetails) {

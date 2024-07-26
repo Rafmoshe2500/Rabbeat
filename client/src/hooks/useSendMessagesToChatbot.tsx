@@ -1,4 +1,3 @@
-// useSendMessagesToChatbot.tsx
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { sendMessageToChatbot } from "../api/endpoints/chatbot";
 

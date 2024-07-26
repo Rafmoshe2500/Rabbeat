@@ -10,13 +10,10 @@ const MyStudentLessons = () => {
   const location = useLocation();
   const studentId: string = location.state?.id;
 
-  console.log({ studentId });
-
   const { userDetails } = useUser();
   const {
     data: lessons,
     isLoading,
-    isError,
   } = useStudentLessonsByTeacher(userDetails!.id, studentId);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";

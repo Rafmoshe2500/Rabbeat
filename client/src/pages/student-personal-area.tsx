@@ -10,7 +10,6 @@ const StudentPersonalArea = () => {
   const {
     data: lessons,
     isLoading,
-    isError,
   } = useLessonsDetailsByUser(userDetails!.id);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";
