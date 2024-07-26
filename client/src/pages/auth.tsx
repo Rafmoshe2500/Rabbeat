@@ -1,76 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Paper, Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import LoginForm from '../components/auth/login-form';
-import RegisterForm from '../components/auth/register-form';
-import { useUser } from '../contexts/user-context';
-import { storeToken, decodeToken, isTokenValid } from '../utils/jwt-cookies';
-import { useLogin, useRegister } from '../hooks/useAuth';
-import Loader from '../components/common/loader'
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Paper, Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import LoginForm from "../components/auth/login-form";
+import RegisterForm from "../components/auth/register-form";
+import { useUser } from "../contexts/user-context";
+import { storeToken, decodeToken, isTokenValid } from "../utils/jwt-cookies";
+import { useLogin, useRegister } from "../hooks/useAuth";
+import Loader from "../components/common/loader";
+import withFade from "../hoc/withFade.hoc";
 
-const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(({ isflipped }) => ({
-  width: '100%',
-  maxWidth: 800,
-  minHeight: 600,
-  position: 'relative',
-  transformStyle: 'preserve-3d',
-  transition: 'transform 0.6s',
-  transform: isflipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-  margin: '20px auto',
-  borderRadius: '16px',
-  boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
-}));
+const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
+  ({ isflipped }) => ({
+    width: "100%",
+    maxWidth: 800,
+    minHeight: 600,
+    position: "relative",
+    transformStyle: "preserve-3d",
+    transition: "transform 0.6s",
+    transform: isflipped ? "rotateY(180deg)" : "rotateY(0deg)",
+    margin: "20px auto",
+    borderRadius: "16px",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
+  })
+);
 
-const FormSide = styled('div')({
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-  backfaceVisibility: 'hidden',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
+const FormSide = styled("div")({
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  backfaceVisibility: "hidden",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
   // padding: '24px',
-  overflowY: 'auto',
+  overflowY: "auto",
 });
 
 const FrontSide = styled(FormSide)({
   zIndex: 2,
-  transform: 'rotateY(0deg)',
+  transform: "rotateY(0deg)",
 });
 
 const BackSide = styled(FormSide)({
-  transform: 'rotateY(180deg)',
+  transform: "rotateY(180deg)",
 });
 
-const ButtonContainer = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-  gap: '16px',
-  marginTop: 'auto',
-  paddingTop: '24px',
+const ButtonContainer = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+  gap: "16px",
+  marginTop: "auto",
+  paddingTop: "24px",
 });
 
-const MessageOverlay = styled('div')<{ isError?: boolean }>(({ isError }) => ({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: isError ? 'rgba(244, 67, 54, 0.9)' : 'rgba(76, 175, 80, 0.9)',
-  color: 'white',
-  padding: '16px 24px',
-  borderRadius: '8px',
-  fontSize: '18px',
+const MessageOverlay = styled("div")<{ isError?: boolean }>(({ isError }) => ({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  backgroundColor: isError
+    ? "rgba(244, 67, 54, 0.9)"
+    : "rgba(76, 175, 80, 0.9)",
+  color: "white",
+  padding: "16px 24px",
+  borderRadius: "8px",
+  fontSize: "18px",
   zIndex: 4,
-  textAlign: 'center',
+  textAlign: "center",
 }));
 
 const AuthForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setUserDetails } = useUser();
-  const [isLogin, setIsLogin] = useState(location.pathname === '/register');
-  const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
+  const [isLogin, setIsLogin] = useState(location.pathname === "/register");
+  const [message, setMessage] = useState<{
+    text: string;
+    isError: boolean;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loginMutation = useLogin();
@@ -81,12 +89,12 @@ const AuthForm: React.FC = () => {
       try {
         const valid = await isTokenValid();
         if (valid) {
-          navigate('/home');
+          navigate("/home");
         } else {
           setLoading(false);
         }
       } catch (error) {
-        console.error('Error during token validation:', error);
+        console.error("Error during token validation:", error);
         setLoading(false);
       }
     };
@@ -95,11 +103,11 @@ const AuthForm: React.FC = () => {
   }, [navigate]);
 
   useEffect(() => {
-    setIsLogin(location.pathname === '/login');
+    setIsLogin(location.pathname === "/login");
   }, [location]);
 
   const toggleForm = () => {
-    const newPath = isLogin ? '/register' : '/login';
+    const newPath = isLogin ? "/register" : "/login";
     navigate(newPath);
     setIsLogin(!isLogin);
     setMessage(null);
@@ -110,10 +118,13 @@ const AuthForm: React.FC = () => {
     const decodedUser = decodeToken(token);
     if (decodedUser) {
       setUserDetails(decodedUser);
-      setMessage({ text: isLogin ? 'התחברת בהצלחה!' : 'נרשמת בהצלחה!', isError: false });
-      navigate('/home');
+      setMessage({
+        text: isLogin ? "התחברת בהצלחה!" : "נרשמת בהצלחה!",
+        isError: false,
+      });
+      navigate("/home");
     } else {
-      handleError('אירעה שגיאה בעיבוד פרטי המשתמש');
+      handleError("אירעה שגיאה בעיבוד פרטי המשתמש");
     }
   };
 
@@ -134,42 +145,64 @@ const AuthForm: React.FC = () => {
       }
       handleSuccess(token);
     } catch (error) {
-      handleError(isLogin ? 'Login failed. Please check your credentials.' : 'Registration failed. Please try again.');
+      handleError(
+        isLogin
+          ? "Login failed. Please check your credentials."
+          : "Registration failed. Please try again."
+      );
     }
   };
 
   if (loading || loginMutation.isPending || registerMutation.isPending) {
-    return <div><Loader /></div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (
     <div className="auth-container">
       <RotatingPaper isflipped={!isLogin} elevation={3}>
         <FrontSide>
-          {message && <MessageOverlay isError={message.isError}>{message.text}</MessageOverlay>}
+          {message && (
+            <MessageOverlay isError={message.isError}>
+              {message.text}
+            </MessageOverlay>
+          )}
           <div className="form-content">
             <LoginForm onSubmit={handleSubmit} />
             <ButtonContainer>
-              <Button variant="contained" color="primary" type="submit" form="login-form">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                form="login-form"
+              >
                 התחבר
               </Button>
-              <Button onClick={toggleForm}>
-                להרשמה
-              </Button>
+              <Button onClick={toggleForm}>להרשמה</Button>
             </ButtonContainer>
           </div>
         </FrontSide>
         <BackSide>
-          {message && <MessageOverlay isError={message.isError}>{message.text}</MessageOverlay>}
+          {message && (
+            <MessageOverlay isError={message.isError}>
+              {message.text}
+            </MessageOverlay>
+          )}
           <div className="form-content">
             <RegisterForm onSubmit={handleSubmit} />
             <ButtonContainer>
-              <Button variant="contained" color="primary" type="submit" form="register-form">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                form="register-form"
+              >
                 הרשם
               </Button>
-              <Button onClick={toggleForm}>
-                להתחברות
-              </Button>
+              <Button onClick={toggleForm}>להתחברות</Button>
             </ButtonContainer>
           </div>
         </BackSide>
@@ -178,4 +211,4 @@ const AuthForm: React.FC = () => {
   );
 };
 
-export default AuthForm;
+export default withFade(AuthForm);

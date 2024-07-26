@@ -7,6 +7,7 @@ import ChatComponent from "../components/chatbot/ChatComponent";
 import SelfTesting from "../components/self-testing/self-testing";
 import Chat from "../components/chat/chat";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
+import withFade from "../hoc/withFade.hoc";
 
 const LessonView = () => {
   const location = useLocation();
@@ -59,4 +60,4 @@ const LessonView = () => {
   );
 };
 
-export default LessonView;
+export default withFade(LessonView);
