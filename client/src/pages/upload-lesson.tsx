@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { styled } from "@mui/material/styles";
+import withFade from "../hoc/withFade.hoc";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -146,81 +147,79 @@ const UploadLessonPage: React.FC = () => {
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
       <Fade in timeout={1000}>
-        <Typography
-          variant="h1"
-          component="h1"
-          gutterBottom
-          align="center"
-          sx={{ mb: 4 }}
-        >
-          העלאת שיעורים
-        </Typography>
-      </Fade>
-      <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
-        <UploadButton
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={!isFormComplete()}
-          onClick={handleSubmit}
-        >
-          <UploadFileIcon fontSize="large" />
-        </UploadButton>
-      </Box>
-      <Fade in timeout={1000}>
-        <StyledPaper elevation={0}>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                <StyledTextField
-                  style={{ direction: "rtl" }}
-                  required
-                  fullWidth
-                  id="title"
-                  name="title"
-                  label="כותרת"
-                  value={lesson.title}
-                  onChange={handleChange}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel id="version-label">נוסח</InputLabel>
-                  <StyledSelect
-                    labelId="version-label"
-                    id="version"
-                    name="version"
-                    value={lesson.version}
-                    onChange={handleChange}
-                    label="נוסח"
-                  >
-                    <MenuItem value="Ashkenaz">אשכנזי</MenuItem>
-                    <MenuItem value="Spanish">ספרדי</MenuItem>
-                  </StyledSelect>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Box>
-        </StyledPaper>
-      </Fade>
-      <Fade in timeout={1000}>
-        <StyledPaper elevation={0}>
-          <Typography variant="h2" component="h2" gutterBottom sx={{ mb: 3 }}>
-            הקלטת השיעור
+        <div>
+          <Typography
+            variant="h1"
+            component="h1"
+            gutterBottom
+            align="center"
+            sx={{ mb: 4 }}
+          >
+            העלאת שיעורים
           </Typography>
-          <BibleSelector setTorahSection={setTorahSection} />
-          <Box sx={{ mt: 4 }}>
-            <AudioRecorder
-              onRecordingComplete={handleRecordingComplete}
-              shouldCalculateHighlights
-              shouldDisplayTranscript
-            />
+          <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
+            <UploadButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={!isFormComplete()}
+              onClick={handleSubmit}
+            >
+              <UploadFileIcon fontSize="large" />
+            </UploadButton>
           </Box>
-        </StyledPaper>
+          <StyledPaper elevation={0}>
+            <Box component="form" noValidate sx={{ mt: 3 }}>
+              <Grid container spacing={4}>
+                <Grid item xs={12}>
+                  <StyledTextField
+                    style={{ direction: "rtl" }}
+                    required
+                    fullWidth
+                    id="title"
+                    name="title"
+                    label="כותרת"
+                    value={lesson.title}
+                    onChange={handleChange}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel id="version-label">נוסח</InputLabel>
+                    <StyledSelect
+                      labelId="version-label"
+                      id="version"
+                      name="version"
+                      value={lesson.version}
+                      onChange={handleChange}
+                      label="נוסח"
+                    >
+                      <MenuItem value="Ashkenaz">אשכנזי</MenuItem>
+                      <MenuItem value="Spanish">ספרדי</MenuItem>
+                    </StyledSelect>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Box>
+          </StyledPaper>
+          <StyledPaper elevation={0}>
+            <Typography variant="h2" component="h2" gutterBottom sx={{ mb: 3 }}>
+              הקלטת השיעור
+            </Typography>
+            <BibleSelector setTorahSection={setTorahSection} />
+            <Box sx={{ mt: 4 }}>
+              <AudioRecorder
+                onRecordingComplete={handleRecordingComplete}
+                shouldCalculateHighlights
+                shouldDisplayTranscript
+              />
+            </Box>
+          </StyledPaper>
+        </div>
       </Fade>
     </Container>
   );
 };
 
-export default UploadLessonPage;
+export default withFade(UploadLessonPage);

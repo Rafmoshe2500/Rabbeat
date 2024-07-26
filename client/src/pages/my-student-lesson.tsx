@@ -5,6 +5,7 @@ import Loader from "../components/common/loader";
 import SelfTesting from "../components/self-testing/self-testing";
 import Chat from "../components/chat/chat";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
+import withFade from "../hoc/withFade.hoc";
 
 const MyStudentLesson = () => {
   const location = useLocation();
@@ -43,4 +44,4 @@ const MyStudentLesson = () => {
   );
 };
 
-export default MyStudentLesson;
+export default withFade(MyStudentLesson);

@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LessonsList from "../components/lessons/lessons-list/lessons-list";
+import withFade from "../hoc/withFade.hoc";
 
 const TeacherPersonalArea: React.FC = () => {
   const navigate = useNavigate();
@@ -28,4 +29,4 @@ const TeacherPersonalArea: React.FC = () => {
   );
 };
 
-export default TeacherPersonalArea;
+export default withFade(TeacherPersonalArea);
