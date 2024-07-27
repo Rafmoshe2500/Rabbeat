@@ -8,12 +8,14 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { lessonStatusMapper } from "../../../utils/utils";
 
 type LessonCardProps = {
   lessonDetails: Partial<LessonDetails>;
+  studentId?: string;
 };
 
-const LessonCard = ({ lessonDetails }: LessonCardProps) => {
+const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { userDetails } = useUser();
@@ -27,7 +29,7 @@ const LessonCard = ({ lessonDetails }: LessonCardProps) => {
       route = `${location.pathname}/lessons/${id}`;
     }
 
-    navigate(route, { state: { id, lessonDetails } });
+    navigate(route, { state: { id, lessonDetails, studentId } });
   };
 
   return (
@@ -44,7 +46,7 @@ const LessonCard = ({ lessonDetails }: LessonCardProps) => {
               {title}
             </Typography>
             <Typography sx={{ fontSize: 14 }} color="text.secondary">
-              {status}
+              {lessonStatusMapper[status!]}
             </Typography>
             {/* {// TODO: add all lesson details - name, type, status etc} */}
             {/* <Typography variant="h5" component="div">
