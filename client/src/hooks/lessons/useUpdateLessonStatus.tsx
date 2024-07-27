@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { updateLessonStatus } from "../../api/endpoints/lesson";
 
 export const useUpdateLessonStatus = () => {
-  const queryClient = useQueryClient();
 
   return useMutation<
     Boolean,
