@@ -20,7 +20,7 @@ const MyStudentLessons = () => {
   const viewMode = isSmallScreen ? "list" : "grid";
 
   const renderStudentCard = (lesson: LessonDetails) => (
-    <LessonCard lessonDetails={lesson} />
+    <LessonCard lessonDetails={lesson} studentId={studentId} />
   );
 
   return (

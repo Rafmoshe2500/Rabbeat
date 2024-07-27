@@ -127,3 +127,21 @@ export const getSharedLessonsDetails = async (
     throw error;
   }
 };
+
+export const updateLessonStatus = async (
+  lessonId: string,
+  userId: string,
+  newStatus: LessonStatus
+): Promise<Boolean> => {
+  try {
+    const response = await apiClient.put<LessonStatus>(`/lesson-status`, {
+      lessonId,
+      userId,
+      status: newStatus,
+    });
+
+    return response.data ? true : false;
+  } catch (error) {
+    throw error;
+  }
+};

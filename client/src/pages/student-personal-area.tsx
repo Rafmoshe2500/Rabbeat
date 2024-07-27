@@ -30,7 +30,6 @@ const StudentPersonalArea = () => {
           md={3}
         />
       ) : (
-        // <LessonsList lessons={lessons} />
         <p>
           {isLoading ? (
             <Loader message="טוען שיעורים" />
