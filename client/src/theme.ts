@@ -100,7 +100,38 @@ const theme = createTheme({
         root: rtlInputStyles,
       },
     },
+  MuiList: {
+    styleOverrides: {
+      root: {
+        paddingRight: 0,
+        paddingLeft: 0,
+      },
+    },
   },
+  MuiListItem: {
+    styleOverrides: {
+      root: {
+        textAlign: 'right',
+        paddingRight: 16,
+        paddingLeft: 16,
+      },
+    },
+  },
+  MuiListItemIcon: {
+    styleOverrides: {
+      root: {
+        alignSelf: 'end',
+      },
+    },
+  },
+  MuiListItemText: {
+    styleOverrides: {
+      root: {
+        textAlign: 'right',
+      },
+    },
+  },
+}
 });
 
 export default theme;
