@@ -128,8 +128,6 @@ export const getSharedLessonsDetails = async (
   }
 };
 
-<<<<<<< HEAD
-
 export const associateLesson = async (studentId: string, teacherId: string, lessonId: string): Promise<string> => {
   const response = await apiClient.post('/associate-lesson', { studentId, teacherId, lessonId });
   return response.data;
@@ -139,7 +137,7 @@ export const disassociateLesson = async (lessonId: string, studentId: string): P
   const response = await apiClient.delete('/disassociate-lesson', { data: { lessonId, studentId } });
   return response.data;
 };
-=======
+
 export const updateLessonStatus = async (
   lessonId: string,
   userId: string,
@@ -157,4 +155,3 @@ export const updateLessonStatus = async (
     throw error;
   }
 };
->>>>>>> 0fb6b65bcfe9d2021637cc75a97e8172c4160735
