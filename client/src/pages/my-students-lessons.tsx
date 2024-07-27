@@ -1,6 +1,7 @@
-import { useState } from 'react';
+// MyStudentLessons.tsx
+import React, { useState } from 'react';
 import { useLocation } from "react-router-dom";
-import { useMediaQuery} from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { useUser } from "../contexts/user-context";
 import { useStudentLessonsByTeacher } from "../hooks/lessons/useStudentLessonsByTeacher";
 import { useAssociateLesson, useDisassociateLesson } from "../hooks/useAssociateLesson";
@@ -10,21 +11,25 @@ import LessonCard from "../components/lessons/lesson-card/lesson-card";
 import DialogComponent from "../components/common/dialog";
 import withFade from "../hoc/withFade.hoc";
 import { useLessonsDetailsByUser } from '../hooks/lessons/useLessonsDetailsByUser';
-import FloatingActionButton from '../components/common/floating-action-button'
-import DialogContent from '../components/teacher-lessons/dialog-content'
+import FloatingActionButton from '../components/common/floating-action-button';
+import DialogContent from '../components/teacher-lessons/dialog-content';
 import AddIcon from '@mui/icons-material/Add';
 
-const MyStudentLessons = () => {
+const MyStudentLessons: React.FC = () => {
   const location = useLocation();
   const studentId: string = location.state?.id;
   const { userDetails } = useUser();
 
-  const { data: studentLessons, isLoading: isStudentLessonsLoading } = useStudentLessonsByTeacher(
-    userDetails!.id,
-    studentId
-  );
+  const { 
+    data: studentLessons, 
+    isLoading: isStudentLessonsLoading, 
+    refetch: refetchStudentLessons 
+  } = useStudentLessonsByTeacher(userDetails!.id, studentId);
 
-  const { data: teacherLessons, isLoading: isTeacherLessonsLoading } = useLessonsDetailsByUser(userDetails!.id);
+  const { 
+    data: teacherLessons, 
+    isLoading: isTeacherLessonsLoading 
+  } = useLessonsDetailsByUser(userDetails!.id);
 
   const associateLessonMutation = useAssociateLesson(studentId, userDetails!.id);
   const disassociateLessonMutation = useDisassociateLesson(studentId);
@@ -39,17 +44,29 @@ const MyStudentLessons = () => {
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
 
-  const handleLessonClick = (lessonId: string, isAssociated: boolean) => {
+  const handleLessonClick = async (lessonId: string, isAssociated: boolean) => {
     if (!isAssociated) {
+      console.log(selectedLessonId)
       setSelectedLessonId(lessonId);
-      associateLessonMutation.mutate(lessonId);
-      closeDialog();
+      
+      try {
+        await associateLessonMutation.mutateAsync(lessonId);
+        await refetchStudentLessons();
+        closeDialog();
+      } catch (error) {
+        console.error("Failed to associate lesson:", error);
+      }
     }
   };
 
-  const handleDisassociate = (lessonId: string) => {
+  const handleDisassociate = async (lessonId: string) => {
     if (window.confirm('האם אתה בטוח שברצונך לבטל את פתיחת השיעור הזה?')) {
-      disassociateLessonMutation.mutate(lessonId);
+      try {
+        await disassociateLessonMutation.mutateAsync(lessonId);
+        await refetchStudentLessons();
+      } catch (error) {
+        console.error("Failed to disassociate lesson:", error);
+      }
     }
   };
 
@@ -83,19 +100,16 @@ const MyStudentLessons = () => {
       )}
 
       <FloatingActionButton 
-        onClick={openDialog}
-        icon={<AddIcon />} />
+        onClick={openDialog} 
+        icon={<AddIcon />}
+        ariaLabel="add lesson"
+      />
 
       <DialogComponent
         open={isDialogOpen}
-        title="הקצאת שיעור"
+        title="פתיחת שיעור לתלמיד"
         onClose={closeDialog}
-        onConfirm={() => {
-          if (selectedLessonId) {
-            associateLessonMutation.mutate(selectedLessonId);
-          }
-          closeDialog();
-        }}
+        onConfirm={closeDialog}
       >
         <DialogContent
           searchTerm={searchTerm}

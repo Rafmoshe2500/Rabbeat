@@ -37,11 +37,9 @@ export const getLessonsDetailsByUser = async (
         testAudioId: testAudioId,
       } as LessonDetails);
     }
-    console.log(lessons)
 
     return lessons;
   } catch (error) {
-    console.log(error)
     throw error;
   }
 };
