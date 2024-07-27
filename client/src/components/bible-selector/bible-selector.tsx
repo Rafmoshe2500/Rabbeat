@@ -98,7 +98,7 @@ const BibleSelector = ({ setTorahSection }: BibleSelectorProps) => {
   return (
     <div className={styles["selectors-container"]}>
       <AutoWidthSelect
-        label="ספר"
+        label="חומש"
         value={pentateuch}
         options={Bible.map((b) => b.name)}
         onChange={(e) =>
