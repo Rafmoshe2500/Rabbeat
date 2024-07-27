@@ -1,5 +1,5 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useLessonsById } from "../hooks/lessons/useLessonById";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import Loader from "../components/common/loader";
@@ -8,12 +8,26 @@ import SelfTesting from "../components/self-testing/self-testing";
 import Chat from "../components/chat/chat";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 import withFade from "../hoc/withFade.hoc";
+import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
+import { useUser } from "../contexts/user-context";
 
 const LessonView = () => {
+  const { userDetails } = useUser();
   const location = useLocation();
   const lessonDetails: LessonDetails = location.state?.lessonDetails;
   const { id } = useParams<{ id: string }>();
   const { data: lesson, isLoading } = useLessonsById(id!);
+  const { mutate: updateLessonStatus } = useUpdateLessonStatus();
+
+  useEffect(() => {
+    if (lessonDetails.status === "not-started") {
+      updateLessonStatus({
+        lessonId: lessonDetails.id!,
+        userId: userDetails?.id!,
+        newStatus: "in-progress",
+      });
+    }
+  }, []);
 
   const lessonForView = useMemo(
     () =>

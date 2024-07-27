@@ -152,7 +152,7 @@ const UploadLessonPage: React.FC = () => {
         align="center"
         sx={{ mb: 4 }}
       >
-        העלאת שיעורים
+        העלאת שיעור חדש
       </Typography>
       <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
         <UploadButton

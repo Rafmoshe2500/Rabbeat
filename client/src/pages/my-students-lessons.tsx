@@ -71,7 +71,7 @@ const MyStudentLessons: React.FC = () => {
   };
 
   const renderStudentCard = (lesson: LessonDetails) => (
-    <LessonCard lessonDetails={lesson} />
+    <LessonCard lessonDetails={lesson} studentId={studentId} />
   );
 
   const filteredLessons = Array.isArray(teacherLessons) 
