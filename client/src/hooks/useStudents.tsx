@@ -18,7 +18,7 @@ export const useSearchStudentByEmail = (email: string) => {
   });
 };
 
-export const useAccosiateStudentToTeacher = () => {
+export function useAssociateStudentToTeacher() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -27,4 +27,4 @@ export const useAccosiateStudentToTeacher = () => {
       queryClient.invalidateQueries({ queryKey: ['students'] });
     },
   });
-};
+}

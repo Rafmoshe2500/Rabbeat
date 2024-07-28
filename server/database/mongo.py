@@ -279,7 +279,11 @@ class MongoDBApi:
 
     def associate_student_to_teacher(self, new_associate: AssociateNewStudent):
         try:
-            return self._db.students_by_teacher.insert_one(new_associate.dict())
+            return self._db.students_by_teacher.update_one(
+                {"studentId": new_associate.studentId, "teacherId": new_associate.teacherId},
+                {"$set": new_associate.dict()},
+                upsert=True
+            )
         except Exception as e:
             logging.error(f"Error associate new student to teacher: {e}")
             return None

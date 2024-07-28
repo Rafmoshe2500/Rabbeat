@@ -96,33 +96,10 @@ const Navbar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ flexDirection: "row-reverse" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <SchoolIcon
-              sx={{
-                display: { xs: "none", md: "flex" },
-                ml: 1,
-                color: theme.palette.primary.contrastText,
-              }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component={Link}
-              to="/"
-              sx={{
-                ml: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: theme.palette.primary.contrastText,
-                textDecoration: "none",
-                "&:hover": {
-                  color: theme.palette.text.primary,
-                },
-              }}
-            >
-              Rabbeat
-            </Typography>
+            <img 
+              src="/src/public/images/RabBeat-logo.png" 
+              alt="RabBeat Logo"
+              style={{ width: '120px', height: 'auto' }} />
           </Box>
 
           <Box
