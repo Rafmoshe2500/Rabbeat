@@ -8,7 +8,7 @@ type LoaderProps = {
 const Loader = ({ message }: LoaderProps) => {
   return (
     <Box>
-      <CircularProgress />
+      <CircularProgress dir="rtl" />
       <br/>
       {message}
     </Box>

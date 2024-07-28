@@ -16,7 +16,7 @@ const StudentGrid: React.FC = () => {
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";
 
-  if (isLoading) return <Typography><Loader /></Typography>;
+  if (isLoading) return <Typography><Loader message="טוען תלמידים..."/></Typography>;
   if (error)
     return (
       <Typography>An error occurred: {(error as Error).message}</Typography>

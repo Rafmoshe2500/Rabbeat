@@ -51,6 +51,7 @@ type Student = {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  expired_date: string;
 };
 
 
