@@ -13,22 +13,25 @@ import {
   Tooltip,
   Container,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SchoolIcon from "@mui/icons-material/School";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { useUser } from "../../contexts/user-context";
 import RabBeatLogo from '../../assets/images/RabBeat-logo.png';
 
 const Navbar = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const { userDetails, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -50,6 +53,7 @@ const Navbar = () => {
     navigate("/login");
     handleCloseUserMenu();
   };
+
 
   const commonPages = [
     { label: "חיפוש מרצה", path: "/search", icon: <SearchIcon /> },
@@ -87,108 +91,73 @@ const Navbar = () => {
   const pages = [...userPages];
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: theme.palette.primary.main,
-        marginBottom: theme.spacing(2.5),
-      }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.main, marginBottom: theme.spacing(2.5) }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ flexDirection: "row-reverse" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <img 
-              src={RabBeatLogo}
-              alt="RabBeat Logo"
-              style={{ width: '120px', height: 'auto' }} />
-          </Box>
-
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "flex", md: "none" },
-              justifyContent: "flex-end",
-            }}
-          >
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.label}
-                  onClick={handleCloseNavMenu}
-                  component={Link}
-                  to={page.path}
-                >
-                  {page.icon}
-                  <Typography
-                    textAlign="center"
-                    sx={{ mr: 1, color: theme.palette.text.primary }}
-                  >
-                    {page.label}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              justifyContent: "flex-end",
-            }}
-          >
-            {pages.map((page) => (
-              <Button
-                key={page.label}
-                component={Link}
-                to={page.path}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: theme.palette.primary.contrastText,
-                  display: "flex",
-                  alignItems: "center",
-                  ml: 2,
-                  "&:hover": {
-                    backgroundColor: theme.palette.primary.dark,
-                    color: theme.palette.text.secondary,
-                  },
-                }}
+        <Toolbar disableGutters sx={{ flexDirection: 'row-reverse' }}>
+          {isMobile ? (
+            <>
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+                <img src={RabBeatLogo} alt="RabBeat Logo" style={{ width: '120px', height: 'auto' }} />
+              </Box>
+              <IconButton
+                size="large"
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                {page.icon}
-                <Typography sx={{ mr: 1 }}>{page.label}</Typography>
-              </Button>
-            ))}
-          </Box>
-
-          {userDetails && (
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                keepMounted
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+              >
+                {pages.map((page) => (
+                  <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.path}>
+                    {page.icon}
+                    <Typography textAlign="center" sx={{ marginRight: 1 }}>{page.label}</Typography>
+                  </MenuItem>
+                  
+                ))}
+                {userDetails && (
+                  <>
+                    <MenuItem onClick={() => { handleCloseNavMenu(); navigate(`/profile/${userDetails.id}`); }}>
+                      <AccountCircleOutlinedIcon />
+                      <Typography textAlign="center" sx={{ marginRight: 1 }}>פרופיל</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>
+                      <ExitToAppRoundedIcon />
+                      <Typography textAlign="center" sx={{ marginRight: 1 }}>התנתק</Typography>
+                    </MenuItem>
+                  </>
+                )}
+              </Menu>
+            </>
+          ) : (
+            <>
+              <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
+                <img src={RabBeatLogo} alt="RabBeat Logo" style={{ width: '120px', height: 'auto' }} />
+              </Box>
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page.label}
+                    component={Link}
+                    to={page.path}
+                    sx={{ color: 'white', marginRight: 2, display: 'flex', alignItems: 'center' }}
+                  >
+                    {page.icon}
+                    <Typography sx={{ marginRight: 1 }}>{page.label}</Typography>
+                  </Button>
+                ))}
+              </Box>
+              {userDetails && (
             <Box sx={{ flexGrow: 0, mr: 2 }}>
               <Tooltip title="פתח הגדרות">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -239,31 +208,8 @@ const Navbar = () => {
             </Box>
           )}
 
-          <Box
-            sx={{ display: { xs: "flex", md: "none" }, alignItems: "center" }}
-          >
-            <SchoolIcon
-              sx={{ mr: 1, color: theme.palette.primary.contrastText }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              component={Link}
-              to="/"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: theme.palette.primary.contrastText,
-                textDecoration: "none",
-              }}
-            >
-              Rabbeat
-            </Typography>
-          </Box>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
