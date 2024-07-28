@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Change directory to the client folder
+cd /home/cs128/Rabbeat/client
+
+# Pull the latest changes from the main branch
+git pull origin main
+
+# Build the npm project
+npm run build
+
+# Change directory back to the parent folder
+cd ../
+
+# Stop all docker containers
+docker stop $(docker ps -aq)
+
+# Remove all docker containers
+docker rm $(docker ps -aq)
+
+# Build the Docker image
+docker build -t my-nginx-app .
+
+# Run the Docker container
+docker run -d -p 443:443 --network host --name my-nginx-container my-nginx-app

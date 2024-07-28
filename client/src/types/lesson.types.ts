@@ -32,6 +32,7 @@ type LessonDetails = {
   creationDate: string;
 } & StudyZone;
 
+
 type LessonVersion = "Spanish" | "Ashkenaz";
 
 type StudyZone = {

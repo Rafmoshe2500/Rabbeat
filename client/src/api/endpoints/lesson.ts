@@ -14,14 +14,14 @@ export const getLessonsDetailsByUser = async (
   userId: string
 ): Promise<LessonDetails[]> => {
   try {
-    const response = await apiClient.get<LessonDetails[]>(
+    const response = await apiClient.get<LessonDetails[] | LessonDetails>(
       `/lesson-details/${userId}`
     );
     const lessons: LessonDetails[] = [];
 
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
-      const { chatId, status, testAudioId } = les.studyZoneDetails;
+      const { chatId, status, testAudioId } = les.studyZoneDetails || {};
       lessons.push({
         id: les.lessonId,
         creationDate: les.details.creationDate,
@@ -126,6 +126,16 @@ export const getSharedLessonsDetails = async (
   } catch (error) {
     throw error;
   }
+};
+
+export const associateLesson = async (studentId: string, teacherId: string, lessonId: string): Promise<string> => {
+  const response = await apiClient.post('/associate-lesson', { studentId, teacherId, lessonId });
+  return response.data;
+};
+
+export const disassociateLesson = async (lessonId: string, studentId: string): Promise<string> => {
+  const response = await apiClient.delete('/disassociate-lesson', { data: { lessonId, studentId } });
+  return response.data;
 };
 
 export const updateLessonStatus = async (

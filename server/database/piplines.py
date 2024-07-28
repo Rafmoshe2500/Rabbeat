@@ -165,6 +165,7 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                 "phoneNumber": "$student_info.phoneNumber",
                 "expired_date": 1
             }
-        }
+        },
+        {"$sort": {"expired_date": -1}}
     ]
     return pipeline

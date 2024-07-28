@@ -1,31 +1,59 @@
-import Button from "@mui/material/Button";
-import React, { useState } from "react";
+import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUser";
+import { useUser } from "../contexts/user-context";
 import { useNavigate } from "react-router-dom";
-import LessonsList from "../components/lessons/lessons-list/lessons-list";
+import Loader from "../components/common/loader";
+import DisplayCards from "../components/common/display-cards/display-cards";
+import { useMediaQuery } from "@mui/material";
+import LessonCard from "../components/lessons/lesson-card/lesson-card";
 import withFade from "../hoc/withFade.hoc";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import FloatingActionButton from '../components/common/floating-action-button';
 
-const TeacherPersonalArea: React.FC = () => {
+const TeacherPersonalArea = () => {
+  const { userDetails } = useUser();
   const navigate = useNavigate();
-  const [lessons] = useState<Array<LessonDetails>>([
-    // { name: "בראשית - ראשון", id: "123", status: "finished" },
-    // { name: "בראשית - שני", id: "132", status: "not-started" },
-    // { name: "בראשית - שלישי", id: "142", status: "in-progress" },
-  ]);
-
-  // fetch request for all lessons names, onClick move to lesson editor
+  const { data: lessons, isLoading } = useLessonsDetailsByUser(userDetails!.id);
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const viewMode = isSmallScreen ? "list" : "grid";
 
   const handleNavigate = () => {
     navigate("/upload-lesson");
   };
 
+
+  const renderStudentCard = (lesson: LessonDetails) => (
+    <LessonCard lessonDetails={lesson} />
+  );
+
   return (
     <div>
-      {lessons ? <LessonsList lessons={lessons} /> : <p>אין לך שיעורים כרגע</p>}
+      <div style={{ marginBottom: "8rem" }}>אזור אישי למרצה</div>
 
-      <Button variant="contained" color="primary" onClick={handleNavigate}>
-        +
-      </Button>
+      {lessons ? (
+        <DisplayCards
+          items={lessons}
+          renderCard={renderStudentCard}
+          viewMode={viewMode}
+          xs={12}
+          sm={6}
+          md={3}
+        />
+      ) : (
+        <p>
+          {isLoading ? (
+            <Loader message="טוען שיעורים" />
+          ) : (
+            "אין לך שיעורים כרגע"
+          )}
+        </p>
+      )}
+        <FloatingActionButton 
+        onClick={handleNavigate} 
+        icon={<UploadFileIcon />}
+        ariaLabel="add lesson"
+      />
     </div>
+    
   );
 };
 

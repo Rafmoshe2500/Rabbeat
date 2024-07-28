@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Find and stop all running Python processes named "app.py"
+pkill -f "python.*app.py"
+
+# Change to the project directory
+cd /home/cs128/Rabbeat/server
+
+# Pull the latest changes from the main branch
+git pull origin main
+
+# Run the Python app using the virtual environment
+venv/bin/python app.py
