@@ -96,7 +96,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   return (
     <div>
       <button onClick={toggleChat} className={styles.imageButton} id="robot">
-        <img src="/src/public/images/bot.jpg" alt="Chat" />
+        <img src="/images/bot.jpg" alt="Chat" />
         <div className={styles.speechBubble}>כאן לכל שאלה.</div>
       </button>
 

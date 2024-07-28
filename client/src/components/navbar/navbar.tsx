@@ -97,7 +97,7 @@ const Navbar = () => {
         <Toolbar disableGutters sx={{ flexDirection: "row-reverse" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <img 
-              src="/src/public/images/RabBeat-logo.png" 
+              src="/images/RabBeat-logo.png" 
               alt="RabBeat Logo"
               style={{ width: '120px', height: 'auto' }} />
           </Box>
