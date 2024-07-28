@@ -10,6 +10,7 @@ import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 import withFade from "../hoc/withFade.hoc";
 import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
 import { useUser } from "../contexts/user-context";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const LessonView = () => {
   const { userDetails } = useUser();
@@ -58,6 +59,11 @@ const LessonView = () => {
         justifyContent: "center",
       }}
     >
+      {lessonDetails.status! === "finished" ? (
+        <ConfettiExplosion particleCount={200} zIndex={1000} duration={5000} />
+      ) : (
+        <></>
+      )}
       {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
 
       <ChatComponent
