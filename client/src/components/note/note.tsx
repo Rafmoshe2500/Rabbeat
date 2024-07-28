@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import "./note.css";
+import React, { useState, useEffect, useRef } from "react";
+import { Box, TextField, IconButton, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface NoteProps {
   id: string;
@@ -8,26 +10,39 @@ interface NoteProps {
   onDelete: (id: string) => void;
   onUpdate: (id: string, newText: string) => void;
   onClick: (timestamp: number) => void;
+  isEditable?: boolean;
 }
 
-const Note = ({
+const Note: React.FC<NoteProps> = ({
   id,
   initialText,
   time,
   onDelete,
   onUpdate,
   onClick,
-}: NoteProps) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  isEditable = false,
+}) => {
+  const [isEditing, setIsEditing] = useState<boolean>(isEditable);
   const [text, setText] = useState<string>(initialText);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleDoubleClick = () => {
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
+
+  const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleBlur = () => {
     setIsEditing(false);
-    onUpdate(id, text);
+    if (text.trim() !== "") {
+      onUpdate(id, text);
+    } else {
+      onDelete(id);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,24 +54,48 @@ const Note = ({
   };
 
   return (
-    <div className="note" onDoubleClick={handleDoubleClick}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        p: 1,
+        bgcolor: "background.paper",
+        borderRadius: 1,
+        mb: 1,
+        boxShadow: 1,
+        "&:hover": {
+          boxShadow: 3,
+        },
+        transition: "box-shadow 0.3s",
+      }}
+    >
       {isEditing ? (
-        <input
-          type="text"
+        <TextField
+          inputRef={inputRef}
           value={text}
           onChange={handleChange}
           onBlur={handleBlur}
-          autoFocus
+          fullWidth
+          variant="outlined"
+          size="small"
         />
       ) : (
-        <span style={{ direction: "rtl" }} onClick={() => onClick(time)}>
+        <Typography
+          onClick={() => onClick(time)}
+          sx={{ flexGrow: 1, direction: "rtl", cursor: "pointer" }}
+        >
           {text} (זמן {new Date(time * 1000).toISOString().substr(11, 8)})
-        </span>
+        </Typography>
       )}
-      <button className="delete-button" onClick={handleDelete}>
-        x
-      </button>
-    </div>
+      {!isEditing && (
+        <IconButton onClick={handleEditClick} size="small" sx={{ mr: 1 }}>
+          <EditIcon />
+        </IconButton>
+      )}
+      <IconButton onClick={handleDelete} size="small">
+        <DeleteIcon />
+      </IconButton>
+    </Box>
   );
 };
 
