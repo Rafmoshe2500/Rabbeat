@@ -8,7 +8,7 @@ import { TextField } from '@mui/material';
 interface RTLDatePickerProps {
   label: string;
   value: Dayjs | null;
-  onChange: (newValue: Dayjs | null) => void;
+  onChange?: (newValue: Dayjs | null) => void;
 }
 
 const RTLDatePicker: React.FC<RTLDatePickerProps> = ({ label, value, onChange }) => {
