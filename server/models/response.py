@@ -33,3 +33,8 @@ class StudyZoneResponse(BaseModel):
 
 class ExtendLessonDetailsResponse(LessonDetailsResponse):
     studyZoneDetails: StudyZoneResponse
+
+
+class ResponseGetChatNotifications(BaseModel):
+    studentUnread: int
+    teacherUnread: int
