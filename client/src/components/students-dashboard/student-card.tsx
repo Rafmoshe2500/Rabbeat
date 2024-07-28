@@ -41,10 +41,10 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode }) => {
     navigate(route, { state: { id: student.id } });
   };
 
-  // const formatDate = (dateString: string) => {
-  //   const date = new Date(dateString);
-  //   return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-  // };
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+  };
 
   const calculateDaysLeft = (expiredDate: string) => {
     const today = new Date();
@@ -63,19 +63,19 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode }) => {
       $viewMode={viewMode}
       $isExpired={isExpired}
     >
-      <Typography variant={viewMode === "grid" ? "h6" : "body1"} gutterBottom>
+      <Typography variant={viewMode === "grid" ? "h5" : "body1"} gutterBottom>
         {`${student.firstName} ${student.lastName}`}
       </Typography>
-      <Typography variant={viewMode === "grid" ? "body1" : "body2"}>
+      <Typography variant={viewMode === "grid" ? "h6" : "body2"}>
         {student.phoneNumber}
       </Typography>
-      {/* <Typography variant={viewMode === "grid" ? "body1" : "body2"}>
-        {`תאריך סיום: ${formatDate(student.expired_date)}`}
-      </Typography> */}
       <Typography variant={viewMode === "grid" ? "body1" : "body2"}>
         {isExpired 
           ? "ימים לסיום: הסתיים" 
           : `ימים לסיום: ${daysLeft}`}
+      </Typography>
+      <Typography variant={viewMode === "grid" ? "body1" : "body2"}>
+        {formatDate(student.expired_date)}
       </Typography>
     </StyledPaper>
   );
