@@ -304,7 +304,9 @@ class MongoDBApi:
 
     def add_test_chat(self, lesson_id, user_id):
         try:
-            return self._db.test_chat_lesson.insert_one({"userId": user_id, "lessonId": lesson_id, "messages": []})
+            return self._db.test_chat_lesson.insert_one({"userId": user_id, "lessonId": lesson_id, "messages": [],
+                                                         "studentUnread": 0,
+                                                         "teacherUnread": 0})
         except Exception as e:
             logging.error(f"Error adding lesson chat: {e}")
             return None
@@ -326,6 +328,11 @@ class MongoDBApi:
         )
 
         return result.modified_count > 0 or result.upserted_id is not None
+
+    def update_chat_id(self, chat_id: str, sender, zero=None):
+        if zero:
+            return self._db.test_chat_lesson.update_one({'_id': ObjectId(chat_id)}, {"$set": {f'{sender}Unread': 0}})
+        return self._db.test_chat_lesson.update_one({'_id': ObjectId(chat_id)}, {"$inc": {f'{sender}Unread': 1}})
 
     def add_lesson_test_audio(self):
         return self._db.lesson_test_audio.insert_one({'audio': ''})
