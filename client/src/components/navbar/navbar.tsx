@@ -20,6 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { useUser } from "../../contexts/user-context";
+import RabBeatLogo from '../../assets/images/RabBeat-logo.png';
 
 const Navbar = () => {
   const theme = useTheme();
@@ -97,7 +98,7 @@ const Navbar = () => {
         <Toolbar disableGutters sx={{ flexDirection: "row-reverse" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <img 
-              src="/images/RabBeat-logo.png" 
+              src={RabBeatLogo}
               alt="RabBeat Logo"
               style={{ width: '120px', height: 'auto' }} />
           </Box>

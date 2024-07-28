@@ -3,6 +3,7 @@ import styles from "./ChatComponent.module.scss";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { useSendMessageToChatbot } from "../../hooks/useSendMessagesToChatbot";
+import ChatBotHelper from '../../assets/images/bot.jpg'
 
 interface Message {
   sender: "user" | "bot";
@@ -96,7 +97,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
   return (
     <div>
       <button onClick={toggleChat} className={styles.imageButton} id="robot">
-        <img src="/images/bot.jpg" alt="Chat" />
+        <img src={ChatBotHelper} alt="Chat" />
         <div className={styles.speechBubble}>כאן לכל שאלה.</div>
       </button>
 
