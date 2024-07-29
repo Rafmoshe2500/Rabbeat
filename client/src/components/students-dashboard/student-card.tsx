@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import RTLDatePicker from "../common/rtl-inputs/rtl-date-picker";
 import dayjs from 'dayjs';
 import DialogComponent from "../common/dialog";
+import LED from '../common/led'
 
 type StyledPaperProps = {
   $viewMode: "grid" | "list";
@@ -25,6 +26,7 @@ const StyledPaper = styled(Paper, {
   borderRadius: 16,
   transition: "all 0.3s",
   border: `2px solid ${$isExpired ? "#808080" : "#4CAF50"}`,
+  position: "relative", // Add this line
   "&:hover": {
     transform: "scale(1.05)",
     boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.15)",
@@ -86,6 +88,12 @@ const handleCloseDatePicker = () => {
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
   };
 
+  const LEDContainer = styled('div')({
+    position: 'absolute',
+    top: '10px',
+    left: '10px',
+  });
+
   const calculateDaysLeft = (expiredDate: string) => {
     const today = new Date();
     const expirationDate = new Date(expiredDate);
@@ -105,6 +113,9 @@ const handleCloseDatePicker = () => {
         $viewMode={viewMode}
         $isExpired={isExpired}
       >
+        <LEDContainer>
+          <LED status={!isExpired ? student.updated ? 'half' : 'ok' : 'off'} />
+        </LEDContainer>
         <Typography variant={viewMode === "grid" ? "h5" : "body1"} gutterBottom>
           {`${student.firstName} ${student.lastName}`}
         </Typography>

@@ -39,17 +39,12 @@ const StudentGrid: React.FC = () => {
   }, [fetchedStudents, showOnlyActive, sortOrder]);
 
   const onUpdateExpiredDate = async (studentId: string, newExpiredDate: string) => {
-    try {
-      await associateStudentMutation.mutateAsync({
-        teacherId: userDetails!.id,
-        studentId,
-        expired_date: newExpiredDate,
-      });
-      refetch(); // Refetch the students data after updating
-    } catch (error) {
-      console.error("Failed to update expired date:", error);
-      // You might want to show an error message to the user here
-    }
+    await associateStudentMutation.mutateAsync({
+      teacherId: userDetails!.id,
+      studentId,
+      expired_date: newExpiredDate,
+    });
+    refetch();
   };
 
   if (isLoading) return <Typography><Loader message="טוען תלמידים..."/></Typography>;

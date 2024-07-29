@@ -121,6 +121,12 @@ class MongoDBApi:
             logging.error(f"Error updating lesson status: {e}")
             return None
 
+    def update_study_zone(self, field: str, value, updated: bool):
+        return self._db.study_zone.update_one(
+            {field: value},
+            {"$set": {'updated': updated}}
+        )
+
     def update_lesson_comment(self, comment_id, update: UpdateComment):
         try:
             return self._db.lesson_comments.update_one(
@@ -343,11 +349,11 @@ class MongoDBApi:
     def get_lesson_test_audio(self, audio_id):
         return self._db.lesson_test_audio.find_one({'_id': ObjectId(audio_id)})
 
-    def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id):
+    def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id, teacher_id):
         try:
             return self._db.study_zone.insert_one(
                 {'chatId': chat_id, 'testAudioId': test_audio_id, 'status': 'not-started',
-                 'lessonId': lesson_id, 'userId': user_id})
+                 'lessonId': lesson_id, 'userId': user_id, 'teacherId': teacher_id, 'updated': False})
         except Exception as e:
             return None
 
