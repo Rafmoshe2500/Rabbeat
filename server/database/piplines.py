@@ -157,13 +157,54 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
             "$unwind": "$student_info"
         },
         {
+            "$lookup": {
+                "from": "study_zone",
+                "let": {
+                    "student_id": "$student_info.id",
+                    "teacher_id": "$teacherId"
+                },
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$and": [
+                                    {"$eq": ["$userId", "$$student_id"]},
+                                    {"$eq": ["$teacherId", "$$teacher_id"]},
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "$sort": {"updated": -1}
+                    },
+                    {
+                        "$limit": 1
+                    },
+                    {
+                        "$project": {
+                            "_id": 0,
+                            "updated": 1
+                        }
+                    }
+                ],
+                "as": "study_zone"
+            }
+        },
+        {
+            "$unwind": {
+                "path": "$study_zone",
+                "preserveNullAndEmptyArrays": True
+            }
+        },
+        {
             "$project": {
                 "_id": 0,
                 "id": "$student_info.id",
                 "firstName": "$student_info.firstName",
                 "lastName": "$student_info.lastName",
                 "phoneNumber": "$student_info.phoneNumber",
-                "expired_date": 1
+                "expired_date": 1,
+                "updated": "$study_zone.updated"
             }
         },
         {"$sort": {"expired_date": -1}}

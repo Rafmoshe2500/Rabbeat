@@ -121,6 +121,12 @@ class MongoDBApi:
             logging.error(f"Error updating lesson status: {e}")
             return None
 
+    def update_study_zone(self, field: str, value, updated: bool):
+        return self._db.study_zone.update_one(
+            {field: value},
+            {"$set": {'updated': updated}}
+        )
+
     def update_lesson_comment(self, comment_id, update: UpdateComment):
         try:
             return self._db.lesson_comments.update_one(

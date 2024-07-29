@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from pydantic import BaseModel
 
@@ -29,6 +29,7 @@ class StudyZoneResponse(BaseModel):
     chatId: str
     testAudioId: str
     status: str
+    updated: Optional[bool] = False
 
 
 class ExtendLessonDetailsResponse(LessonDetailsResponse):
