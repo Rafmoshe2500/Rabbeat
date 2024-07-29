@@ -52,7 +52,7 @@ type Student = {
   lastName: string;
   phoneNumber: string;
   expired_date: string;
-  updated?: boolean;
+  updated: boolean;
 };
 
 
