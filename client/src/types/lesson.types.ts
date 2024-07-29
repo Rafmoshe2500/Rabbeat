@@ -39,4 +39,5 @@ type StudyZone = {
   chatId?: string;
   testAudioId?: string;
   status?: LessonStatus;
+  updated: boolean;
 }

@@ -18,7 +18,8 @@ type StyledPaperProps = {
 const StyledPaper = styled(Paper, {
   shouldForwardProp: (prop) => prop !== "$viewMode" && prop !== "$isExpired",
 })<StyledPaperProps>(({ $isExpired, $viewMode }) => ({
-  padding: "16px", // הפחתנו את ה-padding מ-24px ל-16px
+  padding: "16px",
+  margin: '10px',
   textAlign: "center",
   color: $isExpired ? "#666666" : "#333333",
   height: $viewMode === "grid" ? "100%" : "auto",
@@ -33,14 +34,14 @@ const StyledPaper = styled(Paper, {
     : "linear-gradient(145deg, #ffffff, #f0f0f0)",
   boxShadow: $isExpired
     ? "inset 5px 5px 10px #cccccc, inset -5px -5px 10px #d9d9d9"
-    : "5px 5px 10px #d9d9d9, -5px -5px 10px #d9d9d9", // הורדנו את הזוהר הלבן
+    : "5px 5px 10px #d9d9d9, -5px -5px 10px #d9d9d9",
   position: "relative",
   overflow: "hidden",
   "&:hover": {
     transform: "translateY(-5px)",
     boxShadow: $isExpired
       ? "inset 7px 7px 14px #cccccc, inset -7px -7px 14px #d9d9d9"
-      : "7px 7px 14px #d9d9d9, -7px -7px 14px #d9d9d9", // הורדנו את הזוהר הלבן
+      : "7px 7px 14px #d9d9d9, -7px -7px 14px #d9d9d9",
   },
 }));
 
