@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import RTLDatePicker from "../common/rtl-inputs/rtl-date-picker";
 import dayjs from 'dayjs';
 import DialogComponent from "../common/dialog";
+import LED from '../common/led'
 
 type StyledPaperProps = {
   $viewMode: "grid" | "list";
@@ -87,33 +88,11 @@ const handleCloseDatePicker = () => {
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
   };
 
-  const LED = styled('div')<{ $isExpired: boolean }>(({ $isExpired }) => ({
-    width: '12px',
-    height: '12px',
-    borderRadius: '50%',
-    backgroundColor: $isExpired ? '#808080' : '#90EE90',
+  const LEDContainer = styled('div')({
     position: 'absolute',
     top: '10px',
     left: '10px',
-    boxShadow: $isExpired 
-      ? 'inset 0 0 2px #ffffff, 0 0 2px #808080'
-      : 'inset 0 0 5px #ffffff, 0 0 10px #90EE90',
-    border: $isExpired 
-      ? '1px solid #606060'
-      : '1px solid #60c060',
-    animation: $isExpired ? 'none' : 'pulse 2s infinite',
-    '@keyframes pulse': {
-      '0%': {
-        boxShadow: 'inset 0 0 5px #ffffff, 0 0 10px #90EE90',
-      },
-      '50%': {
-        boxShadow: 'inset 0 0 10px #ffffff, 0 0 20px #90EE90',
-      },
-      '100%': {
-        boxShadow: 'inset 0 0 5px #ffffff, 0 0 10px #90EE90',
-      },
-    },
-  }));
+  });
 
   const calculateDaysLeft = (expiredDate: string) => {
     const today = new Date();
@@ -134,7 +113,9 @@ const handleCloseDatePicker = () => {
         $viewMode={viewMode}
         $isExpired={isExpired}
       >
-        <LED $isExpired={isExpired} />
+        <LEDContainer>
+          <LED status={!isExpired ? 'ok' : 'off'} />
+        </LEDContainer>
         <Typography variant={viewMode === "grid" ? "h5" : "body1"} gutterBottom>
           {`${student.firstName} ${student.lastName}`}
         </Typography>
