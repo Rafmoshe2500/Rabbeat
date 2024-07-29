@@ -121,6 +121,12 @@ class MongoDBApi:
             logging.error(f"Error updating lesson status: {e}")
             return None
 
+    def update_study_zone(self, field: str, value, updated: bool):
+        return self._db.study_zone.update_one(
+            {field: value},
+            {"$set": {'updated': updated}}
+        )
+
     def update_lesson_comment(self, comment_id, update: UpdateComment):
         try:
             return self._db.lesson_comments.update_one(
@@ -279,7 +285,11 @@ class MongoDBApi:
 
     def associate_student_to_teacher(self, new_associate: AssociateNewStudent):
         try:
-            return self._db.students_by_teacher.insert_one(new_associate.dict())
+            return self._db.students_by_teacher.update_one(
+                {"studentId": new_associate.studentId, "teacherId": new_associate.teacherId},
+                {"$set": new_associate.dict()},
+                upsert=True
+            )
         except Exception as e:
             logging.error(f"Error associate new student to teacher: {e}")
             return None
@@ -300,7 +310,9 @@ class MongoDBApi:
 
     def add_test_chat(self, lesson_id, user_id):
         try:
-            return self._db.test_chat_lesson.insert_one({"userId": user_id, "lessonId": lesson_id, "messages": []})
+            return self._db.test_chat_lesson.insert_one({"userId": user_id, "lessonId": lesson_id, "messages": [],
+                                                         "studentUnread": 0,
+                                                         "teacherUnread": 0})
         except Exception as e:
             logging.error(f"Error adding lesson chat: {e}")
             return None
@@ -323,6 +335,11 @@ class MongoDBApi:
 
         return result.modified_count > 0 or result.upserted_id is not None
 
+    def update_chat_id(self, chat_id: str, sender, zero=None):
+        if zero:
+            return self._db.test_chat_lesson.update_one({'_id': ObjectId(chat_id)}, {"$set": {f'{sender}Unread': 0}})
+        return self._db.test_chat_lesson.update_one({'_id': ObjectId(chat_id)}, {"$inc": {f'{sender}Unread': 1}})
+
     def add_lesson_test_audio(self):
         return self._db.lesson_test_audio.insert_one({'audio': ''})
 
@@ -332,11 +349,11 @@ class MongoDBApi:
     def get_lesson_test_audio(self, audio_id):
         return self._db.lesson_test_audio.find_one({'_id': ObjectId(audio_id)})
 
-    def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id):
+    def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id, teacher_id):
         try:
             return self._db.study_zone.insert_one(
                 {'chatId': chat_id, 'testAudioId': test_audio_id, 'status': 'not-started',
-                 'lessonId': lesson_id, 'userId': user_id})
+                 'lessonId': lesson_id, 'userId': user_id, 'teacherId': teacher_id, 'updated': False})
         except Exception as e:
             return None
 
