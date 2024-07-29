@@ -114,7 +114,7 @@ const handleCloseDatePicker = () => {
         $isExpired={isExpired}
       >
         <LEDContainer>
-          <LED status={!isExpired ? 'ok' : 'off'} />
+          <LED status={!isExpired ? student.updated ? 'half' : 'ok' : 'off'} />
         </LEDContainer>
         <Typography variant={viewMode === "grid" ? "h5" : "body1"} gutterBottom>
           {`${student.firstName} ${student.lastName}`}
