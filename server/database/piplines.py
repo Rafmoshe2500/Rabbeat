@@ -168,31 +168,25 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                         "$match": {
                             "$expr": {
                                 "$and": [
-                                    {"$eq": ["$userId", "$$student_id"]},
-                                    {"$eq": ["$teacherId", "$$teacher_id"]},
+                                    { "$eq": ["$userId", "$$student_id"] },
+                                    { "$eq": ["$teacherId", "$$teacher_id"] },
                                 ]
                             }
                         }
                     },
                     {
-                        "$sort": {"updated": -1}
-                    },
-                    {
-                        "$limit": 1
-                    },
-                    {
-                        "$project": {
-                            "_id": 0,
-                            "updated": 1
+                        "$group": {
+                            "_id": None,
+                            "anyUpdated": { "$max": "$updated" }
                         }
                     }
                 ],
-                "as": "study_zone"
+                "as": "study_zone_summary"
             }
         },
         {
             "$unwind": {
-                "path": "$study_zone",
+                "path": "$study_zone_summary",
                 "preserveNullAndEmptyArrays": True
             }
         },
@@ -204,7 +198,13 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                 "lastName": "$student_info.lastName",
                 "phoneNumber": "$student_info.phoneNumber",
                 "expired_date": 1,
-                "updated": "$study_zone.updated"
+                "updated": {
+                    "$cond": {
+                        "if": { "$eq": [{ "$ifNull": ["$study_zone_summary.anyUpdated", False] }, True] },
+                        "then": True,
+                        "else": False
+                    }
+                }
             }
         },
         {"$sort": {"expired_date": -1}}
