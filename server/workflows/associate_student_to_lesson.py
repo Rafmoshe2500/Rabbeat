@@ -29,4 +29,4 @@ class AssociateUserToLessonFlow(BaseWorkflow):
         chat_id = self.__create_chat_room()
         test_audio_id = self.__create_self_test_audio()
         return mongo_db.add_new_study_zone(str(chat_id.inserted_id), str(test_audio_id.inserted_id), self.lesson_id,
-                                           self.student_id)
+                                           self.student_id, self.teacher_id)
