@@ -75,7 +75,7 @@ const TeacherSearch: React.FC = () => {
         gutterBottom
         sx={{ color: theme.palette.text.primary }}
       >
-        חיפוש מרצה
+        חיפוש מורה לקריאה בתורה
       </Typography>
 
       <Box

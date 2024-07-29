@@ -30,7 +30,7 @@ type LessonDetails = {
   pentateuch: string;
   version: LessonVersion;
   creationDate: string;
-} & StudyZone;
+} & StudyZone & NotificationsDetails;
 
 
 type LessonVersion = "Spanish" | "Ashkenaz";
@@ -39,5 +39,9 @@ type StudyZone = {
   chatId?: string;
   testAudioId?: string;
   status?: LessonStatus;
-  updated: boolean;
+}
+
+type NotificationsDetails = {
+  audioNotification: boolean;
+  messageNotifications: boolean
 }

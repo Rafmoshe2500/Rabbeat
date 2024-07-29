@@ -56,7 +56,7 @@ const Navbar = () => {
 
 
   const commonPages = [
-    { label: "חיפוש מרצה", path: "/search", icon: <SearchIcon /> },
+    { label: "חיפוש מורה", path: "/search", icon: <SearchIcon /> },
   ];
 
   const userPages = userDetails

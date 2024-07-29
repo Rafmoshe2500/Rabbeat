@@ -22,6 +22,8 @@ export const getLessonsDetailsByUser = async (
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
       const { chatId, status, testAudioId } = les.studyZoneDetails || {};
+      const {audioNotification, messageNotifications} = les.notificationsDetails || {}
+
       lessons.push({
         id: les.lessonId,
         creationDate: les.details.creationDate,
@@ -35,6 +37,8 @@ export const getLessonsDetailsByUser = async (
         status: status,
         chatId: chatId,
         testAudioId: testAudioId,
+        audioNotification: audioNotification,
+        messageNotifications: messageNotifications
       } as LessonDetails);
     }
 
@@ -105,7 +109,9 @@ export const getSharedLessonsDetails = async (
 
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
-      const { chatId, status, testAudioId, updated } = les.studyZoneDetails;
+      const { chatId, status, testAudioId } = les.studyZoneDetails;
+      const {audioNotification, messageNotifications} = les.notificationsDetails || {}
+
       lessons.push({
         id: les.lessonId,
         creationDate: les.details.creationDate,
@@ -119,7 +125,8 @@ export const getSharedLessonsDetails = async (
         status: status,
         chatId: chatId,
         testAudioId: testAudioId,
-        updated: updated,
+        audioNotification: audioNotification,
+        messageNotifications: messageNotifications
       } as LessonDetails);
     }
 

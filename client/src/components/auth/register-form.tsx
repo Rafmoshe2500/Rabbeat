@@ -87,7 +87,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
     required
   >
     <MenuItem value="student" dir='rtl'>תלמיד</MenuItem>
-    <MenuItem value="teacher" dir='rtl'>מרצה</MenuItem>
+    <MenuItem value="teacher" dir='rtl'>מורה</MenuItem>
   </Select>
 </FormControl>
           <TextField fullWidth margin="normal" type="password" name="password" label="סיסמא" value={userData.password} onChange={handleChange} required />

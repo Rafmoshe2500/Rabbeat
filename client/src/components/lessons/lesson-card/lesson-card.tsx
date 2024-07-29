@@ -26,7 +26,8 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
     id, 
     status, 
     title, 
-    updated, 
+    messageNotifications, 
+    audioNotification,
     startChapter, 
     startVerse, 
     endChapter, 
@@ -34,7 +35,7 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
     pentateuch, 
     version 
   } = lessonDetails;
-
+  console.log(lessonDetails)
   const onClick = () => {
     let route = "";
     if (userDetails?.type === "student") {
@@ -58,7 +59,26 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
         return "#E0E0E0";
     }
   };
+  const isStudent = userDetails?.type === "student";
 
+  const getTooltipTitle = () => {
+    if (status === "finished") {
+      return 'בוצע';
+    }
+
+    if (!audioNotification && !messageNotifications) {
+      return 'אין עדכון זמין';
+    }
+
+    const messageText = messageNotifications ? 'קיימים הודעות חדשות' : '';
+    const audioText = audioNotification
+      ? isStudent
+        ? 'מחכה לבדיקת המרצה'
+        : 'קיים נסיון חדש לבדיקה'
+      : '';
+
+    return [audioText, messageText].filter(Boolean).join('<br />');
+  };
   return (
     <Box sx={{ minWidth: 275, maxWidth: 345, margin: "1rem" }}>
       <Card 
@@ -73,9 +93,11 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
         }}
       >
         <CardActionArea onClick={onClick}>
-          <Tooltip title={updated ? userDetails?.type === 'student' ? 'מחכה לבדיקת המורה' : 'קיים נסיון חדש לבדיקה' : 'אין עדכונים'} placement="top-start">
+
+        <Tooltip sx={{textAlign: 'right'}} title={<div dangerouslySetInnerHTML={{ __html: getTooltipTitle() }} />}>
             <Box sx={{ position: "absolute", top: 8, left: 8, zIndex: 1 }}>
-              <LED status={updated ? "half" : "ok"} />
+
+              <LED status={status === 'finished' ? 'off' : audioNotification ? "half" : "ok"} />
             </Box>
           </Tooltip>
           <CardContent>
