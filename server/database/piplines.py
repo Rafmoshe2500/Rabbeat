@@ -127,7 +127,8 @@ def get_shared_lessons_pipeline(student_id, teacher_id):
                         "then": {
                             "chatId": "$studyZoneDetails.chatId",
                             "testAudioId": "$studyZoneDetails.testAudioId",
-                            "status": "$studyZoneDetails.status"
+                            "status": "$studyZoneDetails.status",
+                            "notificationsId": "$studyZoneDetails.notificationsId",
                         },
                         "else": None
                     }
@@ -168,26 +169,46 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                         "$match": {
                             "$expr": {
                                 "$and": [
-                                    { "$eq": ["$userId", "$$student_id"] },
-                                    { "$eq": ["$teacherId", "$$teacher_id"] },
+                                    {"$eq": ["$userId", "$$student_id"]},
+                                    {"$eq": ["$teacherId", "$$teacher_id"]},
                                 ]
                             }
                         }
                     },
                     {
-                        "$group": {
-                            "_id": None,
-                            "anyUpdated": { "$max": "$updated" }
+                        "$project": {
+                            "notificationsId": 1
                         }
                     }
                 ],
-                "as": "study_zone_summary"
+                "as": "study_zone"
             }
         },
         {
-            "$unwind": {
-                "path": "$study_zone_summary",
-                "preserveNullAndEmptyArrays": True
+            "$lookup": {
+                "from": "lesson_notifications",
+                "let": {"notifications_ids": "$study_zone.notificationsId"},
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$in": ["$_id", {
+                                    "$map": {
+                                        "input": "$$notifications_ids",
+                                        "as": "id",
+                                        "in": {"$toObjectId": "$$id"}
+                                    }
+                                }]
+                            }
+                        }
+                    },
+                    {
+                        "$project": {
+                            "audioNotification": 1
+                        }
+                    }
+                ],
+                "as": "lesson_notifications"
             }
         },
         {
@@ -200,12 +221,24 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                 "expired_date": 1,
                 "updated": {
                     "$cond": {
-                        "if": { "$eq": [{ "$ifNull": ["$study_zone_summary.anyUpdated", False] }, True] },
+                        "if": {"$anyElementTrue": ["$lesson_notifications.audioNotification"]},
                         "then": True,
                         "else": False
                     }
                 }
             }
+        },
+        {
+            "$group": {
+                "_id": {
+                    "teacherId": "$teacherId",
+                    "studentId": "$id"
+                },
+                "student": {"$first": "$$ROOT"}
+            }
+        },
+        {
+            "$replaceRoot": {"newRoot": "$student"}
         },
         {"$sort": {"expired_date": -1}}
     ]

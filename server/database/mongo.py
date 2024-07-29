@@ -121,11 +121,14 @@ class MongoDBApi:
             logging.error(f"Error updating lesson status: {e}")
             return None
 
-    def update_study_zone(self, field: str, value, updated: bool):
+    def update_study_zone(self, field: str, value, update: dict):
         return self._db.study_zone.update_one(
             {field: value},
-            {"$set": {'updated': updated}}
+            {"$set": update}
         )
+
+    def get_study_zone_by_field(self, field, value):
+        return self._db.study_zone.find_one({field: value})
 
     def update_lesson_comment(self, comment_id, update: UpdateComment):
         try:
@@ -349,13 +352,27 @@ class MongoDBApi:
     def get_lesson_test_audio(self, audio_id):
         return self._db.lesson_test_audio.find_one({'_id': ObjectId(audio_id)})
 
-    def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id, teacher_id):
+    def add_new_study_zone(self, chat_id, test_audio_id, lesson_id, user_id, teacher_id, notifications_id):
         try:
             return self._db.study_zone.insert_one(
                 {'chatId': chat_id, 'testAudioId': test_audio_id, 'status': 'not-started',
-                 'lessonId': lesson_id, 'userId': user_id, 'teacherId': teacher_id, 'updated': False})
+                 'lessonId': lesson_id, 'userId': user_id, 'teacherId': teacher_id,
+                 'notificationsId': notifications_id})
         except Exception as e:
             return None
+
+    def add_lesson_notifications(self):
+        return self._db.lesson_notifications.insert_one({'messageNotifications': False, 'audioNotification': False,
+                                                         'lastSender': ''})
+
+    def update_notification_by_id(self, notification_id, update: dict):
+        return self._db.lesson_notifications.update_one(
+            {"_id": ObjectId(notification_id)},
+            {"$set": update}
+        )
+
+    def get_notification_by_id(self, notification_id):
+        return self._db.lesson_notifications.find_one({'_id': ObjectId(notification_id)})
 
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

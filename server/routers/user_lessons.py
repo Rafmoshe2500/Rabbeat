@@ -51,6 +51,12 @@ async def check_if_Student_have_connection_to_teacher(student_id, teacher_id):
 @router.get("/teacher/{teacher_id}/student/{student_id}/lessons", response_model=List[ExtendLessonDetailsResponse])
 async def get_shared_lessons(student_id: str, teacher_id: str):
     try:
-        return mongo_db.get_shared_lessons(student_id, teacher_id)
+        result = mongo_db.get_shared_lessons(student_id, teacher_id)
+        for shared_lesson in result:
+            notifications = mongo_db.get_notification_by_id(shared_lesson['studyZoneDetails']['notificationsId'])
+            if notifications['lastSender'] == 'teacher':
+                notifications['messageNotifications'] = False
+            shared_lesson['notificationsDetails'] = notifications
+        return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

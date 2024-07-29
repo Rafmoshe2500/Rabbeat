@@ -58,7 +58,11 @@ async def get_lessons_details_by_user_id(user_id: str):
             )
             if user['type'] == 'student':
                 study_zone = mongo_db.get_study_zone_by_ids(user_id, lesson_id['lessonId'])
-                lesson_details = ExtendLessonDetailsResponse(**lesson_details.dict(), studyZoneDetails=study_zone)
+                notifications = mongo_db.get_notification_by_id(study_zone['notificationsId'])
+                if notifications['lastSender'] == 'student':
+                    notifications['messageNotifications'] = False
+                lesson_details = ExtendLessonDetailsResponse(**lesson_details.dict(), studyZoneDetails=study_zone,
+                                                             notificationsDetails=notifications)
             lessons.append(lesson_details)
 
         return lessons
