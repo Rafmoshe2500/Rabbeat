@@ -3,7 +3,6 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
-from models.response import ResponseGetChatNotifications
 from models.tests import Message, LessonTestAudio
 
 router = APIRouter(tags=['Student - Tests'])
@@ -15,14 +14,19 @@ async def update_test_messages(chat_id: str, message: Message):
         mongo_db.update_chat_id(chat_id, 'student')
     else:
         mongo_db.update_chat_id(chat_id, 'teacher')
-        mongo_db.update_study_zone('chatId', chat_id, True)
+    study_zone = mongo_db.get_study_zone_by_field('chatId', chat_id)
+    mongo_db.update_notification_by_id(study_zone['notificationsId'],
+                                       {'messageNotifications': True, 'lastSender': message.sender})
     mongo_db.add_message_to_chat(chat_id, message)
     return "Success send message"
 
 
 @router.put("/lesson/chat/{chat_id}/open/{user_type}", status_code=200)
-async def update_test_messages(chat_id: str, user_type: str):
+async def clear_chat_notifications(chat_id: str, user_type: str):
     mongo_db.update_chat_id(chat_id, user_type, zero=True)
+    study_zone = mongo_db.get_study_zone_by_field('chatId', chat_id)
+    mongo_db.update_notification_by_id(study_zone['notificationsId'],
+                                       {'messageNotifications': False})
     return "Success update chat"
 
 
@@ -54,7 +58,9 @@ def get_self_test_audio(audio_id: str):
 @router.put("/test-audio/{audio_id}", status_code=200)
 def update_self_test_audio(audio_id: str, audio: LessonTestAudio):
     result = mongo_db.update_lesson_test_audio(audio_id, audio.audio)
-    mongo_db.update_study_zone('testAudioId', audio_id, True)
+    study_zone = mongo_db.get_study_zone_by_field('testAudioId', audio_id)
+    mongo_db.update_notification_by_id(study_zone['notificationsId'],
+                                       {'audioNotification': True})
     if not result:
         raise HTTPException(status_code=404, detail="Audio not found")
     return "Success to update test audio"
