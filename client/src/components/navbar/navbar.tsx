@@ -25,6 +25,13 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { useUser } from "../../contexts/user-context";
 import RabBeatLogo from "../../assets/images/RabBeat-logo.png";
 
+type PageLink = {
+  label: string;
+  path: string;
+  icon: JSX.Element;
+  onClick?: () => void;
+};
+
 const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -70,40 +77,71 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  const commonPages = [
-    { label: "חיפוש מורה", path: "/search", icon: <SearchIcon /> },
+  const searchTeacherPage = {
+    label: "חיפוש מורה",
+    path: "/search",
+    icon: <SearchIcon />,
+  };
+
+  const loggedInCommonPages = [
+    {
+      label: "התנתק",
+      path: `/login`,
+      icon: <ExitToAppRoundedIcon />,
+      onClick: handleLogout,
+    },
+    {
+      label: "פרופיל",
+      path: `/profile/${userDetails?.id}`,
+      icon: <AccountCircleOutlinedIcon />,
+    },
   ];
 
-  const userPages = userDetails
-    ? userDetails.type === "student"
-      ? [
-          {
-            label: "אזור תלמיד",
-            path: "/student-personal-area",
-            icon: <PersonIcon />,
-          },
-          ...commonPages,
-        ]
-      : [
-          {
-            label: "אזור מורה",
-            path: "/teacher-personal-area",
-            icon: <PersonIcon />,
-          },
-          {
-            label: "העלאת שיעור",
-            path: "/upload-lesson",
-            icon: <UploadFileIcon />,
-          },
-          { label: "התלמידים שלי", path: "/my-students", icon: <SchoolIcon /> },
-        ]
-    : [
-        { label: "התחברות", path: "/login", icon: <PersonIcon /> },
-        { label: "הרשמה", path: "/register", icon: <PersonIcon /> },
-        ...commonPages,
-      ];
+  const studentPages = [
+    searchTeacherPage,
+    {
+      label: "השיעורים שלי",
+      path: "/student-personal-area",
+      icon: <PersonIcon />,
+    },
+  ];
 
-  const pages = [...userPages];
+  const teacherPages = [
+    {
+      label: "אזור מורה",
+      path: "/teacher-personal-area",
+      icon: <PersonIcon />,
+    },
+    {
+      label: "העלאת שיעור",
+      path: "/upload-lesson",
+      icon: <UploadFileIcon />,
+    },
+    {
+      label: "התלמידים שלי",
+      path: "/my-students",
+      icon: <SchoolIcon />,
+    },
+  ];
+
+  const guestPages = [
+    { label: "הרשמה", path: "/register", icon: <PersonIcon /> },
+    { label: "התחברות", path: "/login", icon: <PersonIcon /> },
+    searchTeacherPage,
+  ];
+
+  const getPages = () => {
+    if (!userDetails) return guestPages;
+
+    const userSpecificPages =
+      userDetails.type === "student" ? studentPages : teacherPages;
+
+    return isMobile
+      ? [...loggedInCommonPages, ...userSpecificPages]
+      : userSpecificPages;
+  };
+
+  const pages: PageLink[] = getPages();
 
   return (
     <AppBar
@@ -151,40 +189,21 @@ const Navbar = () => {
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
               >
-                {pages.map((page) => (
+                {pages.reverse().map((page) => (
                   <MenuItem
                     key={page.label}
-                    onClick={handleCloseNavMenu}
+                    onClick={page.onClick ? page.onClick : handleCloseNavMenu}
                     component={Link}
                     to={page.path}
+                    sx={{ direction: "rtl" }}
                   >
                     {page.icon}
-                    <Typography textAlign="center" sx={{ marginRight: 1 }}>
+
+                    <Typography textAlign="right" sx={{ marginRight: 0 }}>
                       {page.label}
                     </Typography>
                   </MenuItem>
                 ))}
-                {userDetails && (
-                  <>
-                    <MenuItem
-                      onClick={() => {
-                        handleCloseNavMenu();
-                        navigate(`/profile/${userDetails.id}`);
-                      }}
-                    >
-                      <AccountCircleOutlinedIcon />
-                      <Typography textAlign="center" sx={{ marginRight: 1 }}>
-                        פרופיל
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem onClick={handleLogout}>
-                      <ExitToAppRoundedIcon />
-                      <Typography textAlign="center" sx={{ marginRight: 1 }}>
-                        התנתק
-                      </Typography>
-                    </MenuItem>
-                  </>
-                )}
               </Menu>
             </>
           ) : (
@@ -215,6 +234,7 @@ const Navbar = () => {
                       marginRight: 2,
                       display: "flex",
                       alignItems: "center",
+                      direction: "rtl",
                     }}
                   >
                     {page.icon}
@@ -250,27 +270,23 @@ const Navbar = () => {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    <MenuItem
-                      onClick={() => {
-                        handleCloseUserMenu();
-                        navigate(`/profile/${userDetails.id}`);
-                      }}
-                    >
-                      <Typography
-                        textAlign="center"
-                        sx={{ color: theme.palette.text.primary }}
+                    {loggedInCommonPages.reverse().map((page) => (
+                      <MenuItem
+                        key={page.label}
+                        onClick={
+                          page.onClick ? page.onClick : handleCloseNavMenu
+                        }
+                        component={Link}
+                        to={page.path}
+                        sx={{ direction: "rtl" }}
                       >
-                        פרופיל
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem onClick={handleLogout}>
-                      <Typography
-                        textAlign="center"
-                        sx={{ color: theme.palette.text.primary }}
-                      >
-                        התנתק
-                      </Typography>
-                    </MenuItem>
+                        {page.icon}
+
+                        <Typography textAlign="right" sx={{ marginRight: 0 }}>
+                          {page.label}
+                        </Typography>
+                      </MenuItem>
+                    ))}
                   </Menu>
                 </Box>
               )}
