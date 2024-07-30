@@ -21,6 +21,7 @@ import {
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { styled } from "@mui/material/styles";
 import withFade from "../hoc/withFade.hoc";
+import { lessonVersionsMapper } from "../utils/utils";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -192,8 +193,11 @@ const UploadLessonPage: React.FC = () => {
                   onChange={handleChange}
                   label="נוסח"
                 >
-                  <MenuItem value="Ashkenaz">אשכנזי</MenuItem>
-                  <MenuItem value="Spanish">ספרדי</MenuItem>
+                  {Object.entries(lessonVersionsMapper).map(([key, value]) => (
+                    <MenuItem sx={{ direction: "rtl" }} value={key}>
+                      {value}
+                    </MenuItem>
+                  ))}
                 </StyledSelect>
               </FormControl>
             </Grid>
