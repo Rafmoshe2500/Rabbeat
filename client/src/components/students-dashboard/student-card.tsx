@@ -10,38 +10,40 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-type StyledPaperProps = {
-  $viewMode: "grid" | "list";
-  $isExpired: boolean;
-};
-
 const StyledPaper = styled(Paper, {
   shouldForwardProp: (prop) => prop !== "$viewMode" && prop !== "$isExpired",
-})<StyledPaperProps>(({ $isExpired, $viewMode }) => ({
-  padding: "16px",
-  margin: '10px',
+})<{ $viewMode: "grid" | "list"; $isExpired: boolean }>(({ theme, $isExpired, $viewMode }) => ({
+  padding: theme.spacing(3),
+  margin: theme.spacing(1),
   textAlign: "center",
-  color: $isExpired ? "#666666" : "#333333",
+  color: $isExpired ? theme.palette.text.secondary : theme.palette.text.primary,
+  width: '100%',
+  maxWidth: $viewMode === "grid" ? "350px" : "100%",
   height: $viewMode === "grid" ? "100%" : "auto",
   display: "flex",
   flexDirection: $viewMode === "grid" ? "column" : "row",
   justifyContent: "space-between",
-  alignItems: "center",
-  borderRadius: 16,
+  alignItems: $viewMode === "grid" ? "center" : "flex-start",
+  borderRadius: theme.shape.borderRadius * 2,
   transition: "all 0.3s",
   background: $isExpired
-    ? "linear-gradient(145deg, #f0f0f0, #d9d9d9)"
-    : "linear-gradient(145deg, #ffffff, #f0f0f0)",
+    ? theme.palette.action.disabledBackground
+    : theme.palette.background.paper,
   boxShadow: $isExpired
-    ? "inset 5px 5px 10px #cccccc, inset -5px -5px 10px #d9d9d9"
-    : "5px 5px 10px #d9d9d9, -5px -5px 10px #d9d9d9",
+    ? 'inset 5px 5px 10px rgba(0, 0, 0, 0.1), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
+    : '5px 5px 10px rgba(0, 0, 0, 0.1), -5px -5px 10px rgba(255, 255, 255, 0.5)',
   position: "relative",
   overflow: "hidden",
   "&:hover": {
     transform: "translateY(-5px)",
     boxShadow: $isExpired
-      ? "inset 7px 7px 14px #cccccc, inset -7px -7px 14px #d9d9d9"
-      : "7px 7px 14px #d9d9d9, -7px -7px 14px #d9d9d9",
+      ? 'inset 7px 7px 14px rgba(0, 0, 0, 0.1), inset -7px -7px 14px rgba(255, 255, 255, 0.5)'
+      : '7px 7px 14px rgba(0, 0, 0, 0.1), -7px -7px 14px rgba(255, 255, 255, 0.5)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: "column",
+    alignItems: "center",
+    padding: theme.spacing(2),
   },
 }));
 
@@ -49,7 +51,11 @@ const InfoContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: theme.spacing(1),
+  gap: theme.spacing(1.5),
+  marginTop: theme.spacing(2),
+  [theme.breakpoints.down('sm')]: {
+    alignItems: 'center',
+  },
 }));
 
 const InfoItem = styled('div')(({ theme }) => ({
@@ -93,10 +99,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode, onUpdateEx
     setContextMenu(null);
   };
 
-const handleCloseDatePicker = () => {
-  setOpenDatePicker(false)
-
-}
+  const handleCloseDatePicker = () => {
+    setOpenDatePicker(false);
+  };
 
   const handleDateChange = (newDate: dayjs.Dayjs | null) => {
     setSelectedDate(newDate);
@@ -106,19 +111,13 @@ const handleCloseDatePicker = () => {
     if (selectedDate) {
       onUpdateExpiredDate(student.id, selectedDate.toISOString());
     }
-    setOpenDatePicker(false)
-  }
+    setOpenDatePicker(false);
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
   };
-
-  const LEDContainer = styled('div')({
-    position: 'absolute',
-    top: '10px',
-    left: '10px',
-  });
 
   const calculateDaysLeft = (expiredDate: string) => {
     const today = new Date();
@@ -139,33 +138,30 @@ const handleCloseDatePicker = () => {
         $viewMode={viewMode}
         $isExpired={isExpired}
       >
-        <LEDContainer>
-          <Tooltip title={isExpired ? 'לא בשימוש' : (student.updated ? 'קיים עדכון' : 'אין עדכונים')}>
-            <div>
-              <LED status={isExpired ? 'off' : (student.updated ? 'half' : 'ok')} />
-            </div>
-          </Tooltip>
-        </LEDContainer>
-        
-        <Typography variant="h5" gutterBottom>
+        <Tooltip title={isExpired ? 'לא בשימוש' : (student.updated ? 'קיים עדכון' : 'אין עדכונים')}>
+          <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+            <LED status={isExpired ? 'off' : (student.updated ? 'half' : 'ok')} />
+          </div>
+        </Tooltip>        
+        <Typography variant="h4" gutterBottom>
           {`${student.firstName} ${student.lastName}`}
         </Typography>
         
         <InfoContainer>
           <InfoItem>
-            <PhoneIcon fontSize="small" />
+            <PhoneIcon fontSize="medium" color="primary" />
             <Typography variant="body1">{student.phoneNumber}</Typography>
           </InfoItem>
           <InfoItem>
-            <AccessTimeIcon fontSize="small" />
-            <Typography variant="body1">
+            <AccessTimeIcon fontSize="medium" color={isExpired ? "error" : "primary"} />
+            <Typography variant="body1" color={isExpired ? "error" : "#616161"}>
               {isExpired 
                 ? "הסתיים" 
                 : `${daysLeft} ימים לסיום`}
             </Typography>
           </InfoItem>
           <InfoItem>
-            <EventIcon fontSize="small" />
+            <EventIcon fontSize="medium" color="primary" />
             <Typography variant="body1">
               {formatDate(student.expired_date)}
             </Typography>
@@ -186,11 +182,10 @@ const handleCloseDatePicker = () => {
         <MenuItem onClick={() => setOpenDatePicker(true)}>עדכן תאריך סיום.</MenuItem>
       </Menu>
       
-      
       <DialogComponent 
         open={openDatePicker}
         title="עדכן תאריך."
-        onClose={() => handleCloseDatePicker}
+        onClose={handleCloseDatePicker}
         onConfirm={handleConfirmUpdateDate}
       >
         <RTLDatePicker
