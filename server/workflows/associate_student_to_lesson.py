@@ -22,11 +22,17 @@ class AssociateUserToLessonFlow(BaseWorkflow):
     def __create_self_test_audio():
         return mongo_db.add_lesson_test_audio()
 
+    @staticmethod
+    def __create_lesson_notifications():
+        return mongo_db.add_lesson_notifications()
+
     def run(self):
         if not self.__is_connected():
             raise Exception("Student has no relationship with that teacher. please make connection.")
         self.__associate_user_to_lesson()
         chat_id = self.__create_chat_room()
         test_audio_id = self.__create_self_test_audio()
-        return mongo_db.add_new_study_zone(str(chat_id.inserted_id), str(test_audio_id.inserted_id), self.lesson_id,
-                                           self.student_id)
+        notifications = self.__create_lesson_notifications()
+        return mongo_db.add_new_study_zone(str(chat_id.inserted_id), str(test_audio_id.inserted_id),
+                                           str(notifications.insered_id), self.lesson_id,
+                                           self.student_id, self.teacher_id)

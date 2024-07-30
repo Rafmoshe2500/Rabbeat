@@ -4,8 +4,9 @@ import MicIcon from "@mui/icons-material/Mic";
 import StopIcon from "@mui/icons-material/Stop";
 import styles from "./chat.module.scss";
 import { useUser } from "../../contexts/user-context";
-import { useChat } from "../../hooks/chat/useChatMessages";
+import { useChat } from "../../hooks/chat/useChat";
 import { ChatBubble } from "@mui/icons-material";
+import { Badge } from "@mui/material";
 
 interface ChatProps {
   chatId: string;
@@ -15,9 +16,16 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
   const [isOpen, setIsOpen] = useState<boolean>();
   const { userDetails } = useUser();
   const userType = userDetails!.type!;
-  const { messagesQuery, sendMessageMutation } = useChat(chatId);
+  const {
+    messagesQuery,
+    sendMessageMutation,
+    fetchChatNotificationsQuery,
+    clearChatNotificationsMutation,
+  } = useChat(chatId, userDetails?.type!);
   const { data: messages } = messagesQuery;
   const { mutate: setMessages } = sendMessageMutation;
+  const { data: notifications } = fetchChatNotificationsQuery;
+  const { mutate: clearNotifications } = clearChatNotificationsMutation;
 
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -28,6 +36,7 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
 
   const toggleChat = () => {
     setIsOpen((prev) => !prev);
+    if (notifications) clearNotifications();
   };
 
   useEffect(() => {
@@ -99,7 +108,17 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
   return (
     <>
       <button onClick={toggleChat} className={styles.imageButton} id="chat">
-        <ChatBubble />
+        {notifications ? (
+          <Badge
+            color="success"
+            overlap="circular"
+            badgeContent={notifications}
+          >
+            <ChatBubble />
+          </Badge>
+        ) : (
+          <ChatBubble />
+        )}
       </button>
 
       {isOpen && (

@@ -19,6 +19,11 @@ class ResponseTeacherProfile(User, TeacherProfile):
     pass
 
 
+class NotificationsDetails(BaseModel):
+    audioNotification: bool
+    messageNotifications: bool
+
+
 class LessonDetailsResponse(BaseModel):
     lessonId: str
     userId: str
@@ -33,3 +38,9 @@ class StudyZoneResponse(BaseModel):
 
 class ExtendLessonDetailsResponse(LessonDetailsResponse):
     studyZoneDetails: StudyZoneResponse
+    notificationsDetails: NotificationsDetails
+
+
+class ResponseGetChatNotifications(BaseModel):
+    studentUnread: int
+    teacherUnread: int

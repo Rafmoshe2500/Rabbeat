@@ -127,7 +127,8 @@ def get_shared_lessons_pipeline(student_id, teacher_id):
                         "then": {
                             "chatId": "$studyZoneDetails.chatId",
                             "testAudioId": "$studyZoneDetails.testAudioId",
-                            "status": "$studyZoneDetails.status"
+                            "status": "$studyZoneDetails.status",
+                            "notificationsId": "$studyZoneDetails.notificationsId",
                         },
                         "else": None
                     }
@@ -157,14 +158,87 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
             "$unwind": "$student_info"
         },
         {
+            "$lookup": {
+                "from": "study_zone",
+                "let": {
+                    "student_id": "$student_info.id",
+                    "teacher_id": "$teacherId"
+                },
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$and": [
+                                    {"$eq": ["$userId", "$$student_id"]},
+                                    {"$eq": ["$teacherId", "$$teacher_id"]},
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "$project": {
+                            "notificationsId": 1
+                        }
+                    }
+                ],
+                "as": "study_zone"
+            }
+        },
+        {
+            "$lookup": {
+                "from": "lesson_notifications",
+                "let": {"notifications_ids": "$study_zone.notificationsId"},
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$in": ["$_id", {
+                                    "$map": {
+                                        "input": "$$notifications_ids",
+                                        "as": "id",
+                                        "in": {"$toObjectId": "$$id"}
+                                    }
+                                }]
+                            }
+                        }
+                    },
+                    {
+                        "$project": {
+                            "audioNotification": 1
+                        }
+                    }
+                ],
+                "as": "lesson_notifications"
+            }
+        },
+        {
             "$project": {
                 "_id": 0,
                 "id": "$student_info.id",
                 "firstName": "$student_info.firstName",
                 "lastName": "$student_info.lastName",
                 "phoneNumber": "$student_info.phoneNumber",
-                "expired_date": 1
+                "expired_date": 1,
+                "updated": {
+                    "$cond": {
+                        "if": {"$anyElementTrue": ["$lesson_notifications.audioNotification"]},
+                        "then": True,
+                        "else": False
+                    }
+                }
             }
+        },
+        {
+            "$group": {
+                "_id": {
+                    "teacherId": "$teacherId",
+                    "studentId": "$id"
+                },
+                "student": {"$first": "$$ROOT"}
+            }
+        },
+        {
+            "$replaceRoot": {"newRoot": "$student"}
         },
         {"$sort": {"expired_date": -1}}
     ]

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DialogComponent from '../common/dialog';
-import { useSearchStudentByEmail, useAccosiateStudentToTeacher } from '../../hooks/useStudents';
+import { useSearchStudentByEmail, useAssociateStudentToTeacher } from '../../hooks/useStudents';
 import { useUser } from '../../contexts/user-context';
 import { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,7 +16,7 @@ interface AddStudentDialogProps {
 const AddStudentDialog: React.FC<AddStudentDialogProps> = ({ open, onClose }) => {
   const [email, setEmail] = useState('');
   const [expiredDate, setExpiredDate] = useState<Dayjs | null>(null);
-  const { mutate: accosiateStudentToTeacher } = useAccosiateStudentToTeacher();
+  const { mutate: accosiateStudentToTeacher } = useAssociateStudentToTeacher();
   const { data: student } = useSearchStudentByEmail(email);
   const { userDetails } = useUser();
 

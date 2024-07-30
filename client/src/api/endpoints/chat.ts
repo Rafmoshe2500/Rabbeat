@@ -31,3 +31,23 @@ export const postMessage = async (chatId: string, message: Message) => {
   );
   return data;
 };
+
+export const clearChatNotifications = async (
+  chatId: string,
+  userType: User["type"]
+) => {
+  const { data } = await apiClient.put(
+    `/lesson/chat/${chatId}/open/${userType}`
+  );
+  return data;
+};
+
+export const fetchChatNotifications = async (
+  chatId: string,
+  userType: User["type"]
+): Promise<number> => {
+  const { data } = await apiClient.get<number>(
+    `/lesson/chat/notifications/${chatId}/userType/${userType}`
+  );
+  return data;
+};
