@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -19,19 +19,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SchoolIcon from "@mui/icons-material/School";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { useUser } from "../../contexts/user-context";
-import RabBeatLogo from '../../assets/images/RabBeat-logo.png';
+import RabBeatLogo from "../../assets/images/RabBeat-logo.png";
 
 const Navbar = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const { userDetails, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollPos, setLastScrollPos] = useState(0);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -54,6 +57,18 @@ const Navbar = () => {
     handleCloseUserMenu();
   };
 
+  const handleScroll = useCallback(() => {
+    const currentScrollPos = window.pageYOffset;
+    const visible = currentScrollPos < lastScrollPos || currentScrollPos < 10;
+
+    setVisible(visible);
+    setLastScrollPos(currentScrollPos);
+  }, [lastScrollPos]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   const commonPages = [
     { label: "חיפוש מורה", path: "/search", icon: <SearchIcon /> },
@@ -91,13 +106,31 @@ const Navbar = () => {
   const pages = [...userPages];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.main, marginBottom: theme.spacing(2.5) }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        zIndex: 1,
+        backgroundColor: theme.palette.primary.main,
+        transition: "top 0.3s",
+        top: visible ? 0 : "-64px", // Adjust this value based on your AppBar height
+      }}
+    >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ flexDirection: 'row-reverse' }}>
+        <Toolbar sx={{ flexDirection: "row-reverse" }}>
           {isMobile ? (
             <>
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                <img src={RabBeatLogo} alt="RabBeat Logo" style={{ width: '120px', height: 'auto' }} />
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={RabBeatLogo}
+                  alt="RabBeat Logo"
+                  style={{ width: "120px", height: "auto" }}
+                />
               </Box>
               <IconButton
                 size="large"
@@ -119,21 +152,36 @@ const Navbar = () => {
                 onClose={handleCloseNavMenu}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.path}>
+                  <MenuItem
+                    key={page.label}
+                    onClick={handleCloseNavMenu}
+                    component={Link}
+                    to={page.path}
+                  >
                     {page.icon}
-                    <Typography textAlign="center" sx={{ marginRight: 1 }}>{page.label}</Typography>
+                    <Typography textAlign="center" sx={{ marginRight: 1 }}>
+                      {page.label}
+                    </Typography>
                   </MenuItem>
-                  
                 ))}
                 {userDetails && (
                   <>
-                    <MenuItem onClick={() => { handleCloseNavMenu(); navigate(`/profile/${userDetails.id}`); }}>
+                    <MenuItem
+                      onClick={() => {
+                        handleCloseNavMenu();
+                        navigate(`/profile/${userDetails.id}`);
+                      }}
+                    >
                       <AccountCircleOutlinedIcon />
-                      <Typography textAlign="center" sx={{ marginRight: 1 }}>פרופיל</Typography>
+                      <Typography textAlign="center" sx={{ marginRight: 1 }}>
+                        פרופיל
+                      </Typography>
                     </MenuItem>
                     <MenuItem onClick={handleLogout}>
                       <ExitToAppRoundedIcon />
-                      <Typography textAlign="center" sx={{ marginRight: 1 }}>התנתק</Typography>
+                      <Typography textAlign="center" sx={{ marginRight: 1 }}>
+                        התנתק
+                      </Typography>
                     </MenuItem>
                   </>
                 )}
@@ -141,73 +189,91 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
-                <img src={RabBeatLogo} alt="RabBeat Logo" style={{ width: '120px', height: 'auto' }} />
+              <Box
+                sx={{ display: "flex", alignItems: "center", marginLeft: 2 }}
+              >
+                <img
+                  src={RabBeatLogo}
+                  alt="RabBeat Logo"
+                  style={{ width: "120px", height: "auto" }}
+                />
               </Box>
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
                 {pages.map((page) => (
                   <Button
                     key={page.label}
                     component={Link}
                     to={page.path}
-                    sx={{ color: 'white', marginRight: 2, display: 'flex', alignItems: 'center' }}
+                    sx={{
+                      color: "white",
+                      marginRight: 2,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   >
                     {page.icon}
-                    <Typography sx={{ marginRight: 1 }}>{page.label}</Typography>
+                    <Typography sx={{ marginRight: 1 }}>
+                      {page.label}
+                    </Typography>
                   </Button>
                 ))}
               </Box>
               {userDetails && (
-            <Box sx={{ flexGrow: 0, mr: 2 }}>
-              <Tooltip title="פתח הגדרות">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt={userDetails.firstName}
-                    src="/src/public/images/profile.jpg"
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem
-                  onClick={() => {
-                    handleCloseUserMenu();
-                    navigate(`/profile/${userDetails.id}`);
-                  }}
-                >
-                  <Typography
-                    textAlign="center"
-                    sx={{ color: theme.palette.text.primary }}
+                <Box sx={{ flexGrow: 0, mr: 2 }}>
+                  <Tooltip title="פתח הגדרות">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar
+                        alt={userDetails.firstName}
+                        src="/src/public/images/profile.jpg"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
                   >
-                    פרופיל
-                  </Typography>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  <Typography
-                    textAlign="center"
-                    sx={{ color: theme.palette.text.primary }}
-                  >
-                    התנתק
-                  </Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
-          )}
-
+                    <MenuItem
+                      onClick={() => {
+                        handleCloseUserMenu();
+                        navigate(`/profile/${userDetails.id}`);
+                      }}
+                    >
+                      <Typography
+                        textAlign="center"
+                        sx={{ color: theme.palette.text.primary }}
+                      >
+                        פרופיל
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>
+                      <Typography
+                        textAlign="center"
+                        sx={{ color: theme.palette.text.primary }}
+                      >
+                        התנתק
+                      </Typography>
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              )}
             </>
           )}
         </Toolbar>
