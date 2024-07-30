@@ -55,9 +55,15 @@ export const findWord = (torahSection: TorahSection, length: number) => {
   }
 };
 
-export const lessonStatusMapper: Record<(typeof lessonStatus)[number], string> =
-  {
-    "not-started": "טרם התחיל",
-    "in-progress": "בתהליך לימוד",
-    finished: "הסתיים",
-  };
+export const lessonStatusMapper: Record<LessonStatus, string> = {
+  "not-started": "טרם התחיל",
+  "in-progress": "בתהליך לימוד",
+  finished: "הסתיים",
+};
+
+export const lessonVersionsMapper: Record<LessonVersion, string> = {
+  Ashkenaz: "אשכנזי",
+  Jerusalemite: "ירושלמי",
+  Moroccan: "מרוקאי",
+  Yemeni: "תימני",
+};

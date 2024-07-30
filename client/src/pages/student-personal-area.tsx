@@ -18,7 +18,7 @@ const StudentPersonalArea = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: "8rem" }}>אזור אישי לתלמיד</div>
+      <div style={{ marginBottom: "8rem" }}>השיעורים שלי</div>
 
       {lessons ? (
         <DisplayCards
