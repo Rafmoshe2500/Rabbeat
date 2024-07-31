@@ -20,6 +20,8 @@ async def associate_student_to_lesson(new_associate: AssociateUserToLesson):
             raise HTTPException(status_code=500, detail="Failed to associate user to lesson")
         return "Success to associate a new student to teacher lesson"
     except Exception as e:
+        mongo_db.remove_all_lesson_data_from_user(new_associate.lessonId, new_associate.studentId)
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -59,4 +61,5 @@ async def get_shared_lessons(student_id: str, teacher_id: str):
             shared_lesson['notificationsDetails'] = notifications
         return result
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))

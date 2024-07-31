@@ -359,6 +359,7 @@ class MongoDBApi:
                  'lessonId': lesson_id, 'userId': user_id, 'teacherId': teacher_id,
                  'notificationsId': notifications_id})
         except Exception as e:
+            print(e)
             return None
 
     def add_lesson_notifications(self):
