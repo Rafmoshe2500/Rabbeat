@@ -2,77 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
 import StopIcon from "@mui/icons-material/Stop";
+import styles from "./chat.module.scss";
 import { useUser } from "../../contexts/user-context";
 import { useChat } from "../../hooks/chat/useChat";
-import { Box, Typography, IconButton } from "@mui/material";
-import { styled } from "@mui/system";
+import { ChatBubble } from "@mui/icons-material";
+import { Badge } from "@mui/material";
 
 interface ChatProps {
   chatId: string;
 }
 
-const ChatContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-  maxHeight: '500px',
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-}));
-
-const MessagesContainer = styled(Box)({
-  flexGrow: 1,
-  overflowY: 'auto',
-  padding: '16px',
-});
-
-const MessageWrapper = styled(Box)<{ isCurrentUser: boolean }>(({ isCurrentUser }) => ({
-  display: 'flex',
-  justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
-  marginBottom: '8px',
-}));
-
-const MessageBubble = styled(Box)<{ isCurrentUser: boolean }>(({ theme, isCurrentUser }) => ({
-  maxWidth: '70%',
-  padding: '8px 12px',
-  borderRadius: '12px',
-  backgroundColor: isCurrentUser ? theme.palette.primary.main : theme.palette.grey[300],
-  color: isCurrentUser ? theme.palette.primary.contrastText : theme.palette.text.primary,
-}));
-
-const InputContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: '8px',
-  borderTop: `1px solid ${theme.palette.divider}`,
-}));
-
-const InputField = styled('input')(({ theme }) => ({
-  flexGrow: 1,
-  border: 'none',
-  padding: '8px',
-  fontSize: '14px',
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  '&:focus': {
-    outline: 'none',
-  },
-}));
-
-const ButtonGroup = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-}));
-
-const ActionButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  padding: '8px',
-  '&:hover': {
-    backgroundColor: 'rgba(139, 69, 19, 0.04)',
-  },
-}));
-
 const Chat: React.FC<ChatProps> = ({ chatId }) => {
+  const [isOpen, setIsOpen] = useState<boolean>();
   const { userDetails } = useUser();
   const userType = userDetails!.type!;
   const {
@@ -92,11 +33,11 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    clearNotifications();
-  }, []);
+  const toggleChat = () => {
+    setIsOpen((prev) => !prev);
+    if (notifications) clearNotifications();
+  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -113,10 +54,6 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
     }
     return () => clearInterval(interval);
   }, [isRecording]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
@@ -169,54 +106,89 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
   };
 
   return (
-    <ChatContainer>
-      <MessagesContainer>
-        {messages?.map((msg, index) => (
-          <MessageWrapper key={index} isCurrentUser={msg.sender === userType}>
-            <MessageBubble isCurrentUser={msg.sender === userType}>
-              {msg.type === "text" ? (
-                <Typography variant="body2">{msg.content as string}</Typography>
-              ) : (
-                <audio
-                  ref={audioRef}
-                  controls
-                  src={URL.createObjectURL(msg.content as Blob)}
-                  style={{ maxWidth: '100%', height: '30px' }}
-                />
-              )}
-            </MessageBubble>
-          </MessageWrapper>
-        ))}
-        <div ref={messagesEndRef} />
-      </MessagesContainer>
-      <InputContainer>
-        <InputField
-          ref={inputRef}
-          type="text"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-          placeholder="Type a message..."
-        />
-        <ButtonGroup>
-          <ActionButton onClick={handleSendMessage}>
-            <SendIcon fontSize="small" />
-          </ActionButton>
-          <ActionButton onClick={isRecording ? stopRecording : startRecording}>
-            {isRecording ? (
-              <>
-                <StopIcon fontSize="small" />
-                <span style={{ marginLeft: '4px', fontSize: '12px' }}>
-                  {recordingTime}s
-                </span>
-              </>
-            ) : (
-              <MicIcon fontSize="small" />
-            )}
-          </ActionButton>
-        </ButtonGroup>
-      </InputContainer>
-    </ChatContainer>
+    <>
+      <button onClick={toggleChat} className={styles.imageButton} id="chat">
+        {notifications ? (
+          <Badge
+            color="success"
+            overlap="circular"
+            badgeContent={notifications}
+          >
+            <ChatBubble />
+          </Badge>
+        ) : (
+          <ChatBubble />
+        )}
+      </button>
+
+      {isOpen && (
+        <div className={styles.chatWindow}>
+          <div className={styles.chatHeader}>
+            <h3>Chat</h3>
+            <button
+              onClick={() => setIsOpen(false)}
+              className={styles.closeButton}
+            >
+              X
+            </button>
+          </div>
+          <div className={styles.chatMessages}>
+            {messages?.map((msg, index) => (
+              <div
+                key={index}
+                className={`${styles.chatMessage}  ${
+                  styles[
+                    msg.sender === userType ? "my-messages" : "not-my-messages"
+                  ]
+                }`}
+              >
+                {msg.type === "text" ? (
+                  <div>{msg.content as string}</div>
+                ) : (
+                  <audio
+                    ref={audioRef}
+                    controls
+                    src={URL.createObjectURL(msg.content as Blob)}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className={styles.chatInput}>
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              placeholder="Type a message..."
+            />
+            <div className={styles.buttonGroup}>
+              <button onClick={handleSendMessage} className={styles.sendButton}>
+                <SendIcon fontSize="small" />
+              </button>
+              <button
+                onClick={isRecording ? stopRecording : startRecording}
+                className={`${styles.recordButton} ${
+                  isRecording ? styles.recording : ""
+                }`}
+              >
+                {isRecording ? (
+                  <>
+                    <StopIcon fontSize="small" />
+                    <span className={styles.recordingTime}>
+                      {recordingTime}s
+                    </span>
+                  </>
+                ) : (
+                  <MicIcon fontSize="small" />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

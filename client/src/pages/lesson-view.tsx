@@ -13,7 +13,6 @@ import ConfettiExplosion from "react-confetti-explosion";
 import { Box, Paper, Typography } from "@mui/material";
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
-import ChatIcon from '@mui/icons-material/Chat';
 import TabComponent from "../components/common/tabs-wrapper/tabs-wrapper";
 
 const LessonView = () => {
@@ -52,15 +51,6 @@ const LessonView = () => {
       component: <SelfTesting lesson={lessonForView} />,
       icon: <QuizIcon />,
     },
-    {
-      name: "צ'אט",
-      component: (
-        <Box sx={{ height: '500px', border: '1px solid #ccc', borderRadius: '4px', overflow: 'hidden' }}>
-          <Chat chatId={lessonDetails.chatId!} />
-        </Box>
-      ),
-      icon: <ChatIcon />,
-    },
   ];
 
   if (isLoading) return <Loader />;
@@ -81,7 +71,7 @@ const LessonView = () => {
         
         <TabComponent tabs={tabs} />
       </Paper>
-
+      <Chat chatId={lessonDetails.chatId!} />
       <ChatComponent
         messageContext={{
           pentateuch: lessonDetails.pentateuch,
