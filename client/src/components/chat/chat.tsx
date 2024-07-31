@@ -78,10 +78,12 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
   const {
     messagesQuery,
     sendMessageMutation,
+    fetchChatNotificationsQuery,
     clearChatNotificationsMutation,
   } = useChat(chatId, userDetails?.type!);
   const { data: messages } = messagesQuery;
   const { mutate: setMessages } = sendMessageMutation;
+  const { data: notifications } = fetchChatNotificationsQuery;
   const { mutate: clearNotifications } = clearChatNotificationsMutation;
 
   const [inputMessage, setInputMessage] = useState<string>("");
