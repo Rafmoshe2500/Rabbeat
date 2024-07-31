@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useLessonsById } from "../hooks/lessons/useLessonById";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
@@ -10,10 +10,11 @@ import withFade from "../hoc/withFade.hoc";
 import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
 import { useUser } from "../contexts/user-context";
 import ConfettiExplosion from "react-confetti-explosion";
-import { Box, Paper, Tab, Tabs, Typography, Button, Grid } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
 import ChatIcon from '@mui/icons-material/Chat';
+import TabComponent from "../components/common/tabs-wrapper/tabs-wrapper";
 
 const LessonView = () => {
   const { userDetails } = useUser();
@@ -22,7 +23,6 @@ const LessonView = () => {
   const { id } = useParams<{ id: string }>();
   const { data: lesson, isLoading } = useLessonsById(id!);
   const { mutate: updateLessonStatus } = useUpdateLessonStatus();
-  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     if (lessonDetails.status === "not-started") {
@@ -39,9 +39,29 @@ const LessonView = () => {
     [lesson, lessonDetails]
   );
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
+  if (isLoading) return <Loader />;
+
+  const tabs = [
+    {
+      name: "לימוד",
+      component: <LessonContent lesson={lessonForView} />,
+      icon: <BookIcon />,
+    },
+    {
+      name: "בחינה עצמית",
+      component: <SelfTesting lesson={lessonForView} />,
+      icon: <QuizIcon />,
+    },
+    {
+      name: "צ'אט",
+      component: (
+        <Box sx={{ height: '500px', border: '1px solid #ccc', borderRadius: '4px', overflow: 'hidden' }}>
+          <Chat chatId={lessonDetails.chatId!} />
+        </Box>
+      ),
+      icon: <ChatIcon />,
+    },
+  ];
 
   if (isLoading) return <Loader />;
 
@@ -59,49 +79,18 @@ const LessonView = () => {
           {`${lessonForView.pentateuch} ${lessonForView.startChapter}:${lessonForView.startVerse} - ${lessonForView.endChapter}:${lessonForView.endVerse}`}
         </Typography>
         
-        <Tabs value={activeTab} onChange={handleTabChange} centered sx={{ marginBottom: '2rem' }}>
-          <Tab icon={<BookIcon />} label="לימוד" />
-          <Tab icon={<QuizIcon />} label="בחינה עצמית" />
-          <Tab icon={<ChatIcon />} label="צ'אט" />
-        </Tabs>
-
-        <Box sx={{ minHeight: '400px' }}>
-          {activeTab === 0 && <LessonContent lesson={lessonForView} />}
-          {activeTab === 1 && <SelfTesting lesson={lessonForView} />}
-          {activeTab === 2 && (
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Box sx={{ height: '500px', border: '1px solid #ccc', borderRadius: '4px', overflow: 'hidden' }}>
-                  <Chat chatId={lessonDetails.chatId!} />
-                </Box>
-              </Grid>
-            </Grid>
-          )}
-        </Box>
+        <TabComponent tabs={tabs} />
       </Paper>
-                  <ChatComponent
-                    messageContext={{
-                      pentateuch: lessonDetails.pentateuch,
-                      startChapter: lessonDetails.startChapter,
-                      startVerse: lessonDetails.startVerse,
-                      endChapter: lessonDetails.endChapter,
-                      endVerse: lessonDetails.endVerse,
-                    }}
-                  />
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={() => updateLessonStatus({
-            lessonId: lessonDetails.id!,
-            userId: userDetails?.id!,
-            newStatus: "finished",
-          })}
-          disabled={lessonDetails.status === "finished"}
-        >
-          סיים שיעור
-        </Button>
-      </Box>
+
+      <ChatComponent
+        messageContext={{
+          pentateuch: lessonDetails.pentateuch,
+          startChapter: lessonDetails.startChapter,
+          startVerse: lessonDetails.startVerse,
+          endChapter: lessonDetails.endChapter,
+          endVerse: lessonDetails.endVerse,
+        }}
+      />
     </Box>
   );
 };

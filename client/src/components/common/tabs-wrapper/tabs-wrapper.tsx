@@ -4,6 +4,7 @@ import styles from "./tabs-wrapper.module.scss";
 interface TabItem {
   name: string;
   component: React.ReactNode;
+  icon?: React.ReactNode; // Optional icon
 }
 
 interface TabComponentProps {
@@ -37,7 +38,8 @@ const TabComponent: React.FC<TabComponentProps> = ({ tabs }) => {
             }`}
             onClick={() => setActiveTab(index)}
           >
-            {tab.name}
+            {tab.icon && <span className={styles["tab-icon"]}>{tab.icon}</span>}
+            <span className={styles["tab-name"]}>{tab.name}</span>
           </button>
         ))}
         <div className={styles["tab-indicator"]} style={indicatorStyle} />
