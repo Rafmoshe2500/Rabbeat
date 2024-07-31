@@ -1,19 +1,19 @@
-import { useEffect, useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { useLessonsById } from "../hooks/lessons/useLessonById";
-import LessonContent from "../components/lessons/lesson-content/lesson-content";
-import Loader from "../components/common/loader";
-import ChatComponent from "../components/chatbot/ChatComponent";
-import SelfTesting from "../components/self-testing/self-testing";
-import Chat from "../components/chat/chat";
-import withFade from "../hoc/withFade.hoc";
-import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
-import { useUser } from "../contexts/user-context";
-import ConfettiExplosion from "react-confetti-explosion";
-import { Box, Paper, Typography } from "@mui/material";
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
+import { Box, Paper, Typography } from "@mui/material";
+import { useEffect, useMemo } from "react";
+import ConfettiExplosion from "react-confetti-explosion";
+import { useLocation, useParams } from "react-router-dom";
+import Chat from "../components/chat/chat";
+import ChatComponent from "../components/chatbot/ChatComponent";
+import Loader from "../components/common/loader";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
+import LessonContent from "../components/lessons/lesson-content/lesson-content";
+import SelfTesting from "../components/self-testing/self-testing";
+import { useUser } from "../contexts/user-context";
+import withFade from "../hoc/withFade.hoc";
+import { useLessonsById } from "../hooks/lessons/useLessonById";
+import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
 
 const LessonView = () => {
   const { userDetails } = useUser();
@@ -57,6 +57,20 @@ const LessonView = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: '2rem' }}>
+          <Box
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    {lessonDetails.status! === "finished" ? (
+      <ConfettiExplosion particleCount={200} zIndex={1000} duration={5000} />
+    ) : (
+      <></>
+    )}
+    </Box>
       <Paper elevation={3} sx={{ padding: '2rem', marginBottom: '2rem' }}>
       <Typography variant="h4" gutterBottom>
           {lessonForView.title}
