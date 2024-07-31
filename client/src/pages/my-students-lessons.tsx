@@ -52,7 +52,6 @@ const MyStudentLessons: React.FC = () => {
       try {
         await associateLessonMutation.mutateAsync(lessonId);
         await refetchStudentLessons();
-        closeDialog();
       } catch (error) {
         console.error("Failed to associate lesson:", error);
       }
