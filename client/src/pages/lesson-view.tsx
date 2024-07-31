@@ -13,7 +13,7 @@ import ConfettiExplosion from "react-confetti-explosion";
 import { Box, Paper, Typography } from "@mui/material";
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
-import TabComponent from "../components/common/tabs-wrapper/tabs-wrapper";
+import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 
 const LessonView = () => {
   const { userDetails } = useUser();
@@ -57,16 +57,15 @@ const LessonView = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: '2rem' }}>
-      
       <Paper elevation={3} sx={{ padding: '2rem', marginBottom: '2rem' }}>
-        <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom>
           {lessonForView.title}
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           {`${lessonForView.pentateuch} ${lessonForView.startChapter}:${lessonForView.startVerse} - ${lessonForView.endChapter}:${lessonForView.endVerse}`}
         </Typography>
+      {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
         
-        <TabComponent tabs={tabs} />
       </Paper>
       <Chat chatId={lessonDetails.chatId!} />
       <ChatComponent
