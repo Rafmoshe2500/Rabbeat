@@ -36,11 +36,7 @@
   position: relative;
   z-index: 1;
   min-width: 80px;
-
-  &.clicked {
-    border: none;
-  }
-  
+  outline: none !important;
   &:hover {
     color: #8B4513;
   }
@@ -66,12 +62,13 @@
   bottom: 0;
   height: 2px;
   background-color: #8B4513;
+  transition: all 0.3s ease;
   border-radius: 2px;
 }
 
 .tab-content {
   background-color: #FFFFFF;
-  border-radius: 12px;
+  border-radius: 12px; 
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

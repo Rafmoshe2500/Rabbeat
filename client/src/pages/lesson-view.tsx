@@ -57,9 +57,6 @@ const LessonView = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: '2rem' }}>
-      {lessonDetails.status === "finished" && (
-        <ConfettiExplosion particleCount={200} duration={5000} />
-      )}
       
       <Paper elevation={3} sx={{ padding: '2rem', marginBottom: '2rem' }}>
         <Typography variant="h4" gutterBottom>
