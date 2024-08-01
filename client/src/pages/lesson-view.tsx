@@ -38,8 +38,6 @@ const LessonView = () => {
     [lesson, lessonDetails]
   );
 
-  if (isLoading) return <Loader />;
-
   const tabs = [
     {
       name: "לימוד",
@@ -53,18 +51,15 @@ const LessonView = () => {
     },
   ];
 
-  if (isLoading) return <Loader />;
-
   return (
-    <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: '2rem' }}>
+    <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: '2rem', direction: 'rtl'}}>
           <Box
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-  >
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
     {lessonDetails.status! === "finished" ? (
       <ConfettiExplosion particleCount={200} zIndex={1000} duration={5000} />
     ) : (
@@ -72,14 +67,13 @@ const LessonView = () => {
     )}
     </Box>
       <Paper elevation={3} sx={{ padding: '2rem', marginBottom: '2rem' }}>
-      <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {lessonForView.title}
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           {`${lessonForView.pentateuch} ${lessonForView.startChapter}:${lessonForView.startVerse} - ${lessonForView.endChapter}:${lessonForView.endVerse}`}
         </Typography>
-      {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
-        
+        {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
       </Paper>
       <Chat chatId={lessonDetails.chatId!} />
       <ChatComponent

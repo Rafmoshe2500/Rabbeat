@@ -5,6 +5,7 @@ import HighlightedText from "../../highlighted-text/highlighted-text";
 import styles from "./lesson-content.module.css";
 import { StickyNote2 } from "@mui/icons-material";
 import { Button, Tooltip } from "@mui/material";
+import withFade from "../../../hoc/withFade.hoc";
 
 interface LessonContentProps {
   lesson?: Lesson;
@@ -67,4 +68,4 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   );
 };
 
-export default LessonContent;
+export default withFade(LessonContent);
