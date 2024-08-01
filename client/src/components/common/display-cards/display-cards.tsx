@@ -51,7 +51,6 @@ function DisplayCards<T>({
     return (
       <AnimatePresence mode="wait">
         <motion.div
-          style={{direction: 'rtl'}}
           key={currentPage}
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
@@ -73,13 +72,18 @@ function DisplayCards<T>({
   return (
     <Box>
       {renderContent()}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2}}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
         <Pagination
           count={pageCount}
           page={currentPage}
           onChange={handlePageChange}
           color="primary"
           dir="rtl"
+          sx={{
+            '& .MuiPaginationItem-root': {
+              fontFamily: 'inherit',
+            },
+          }}
         />
       </Box>
     </Box>
