@@ -32,6 +32,7 @@ export const rtlInputStyles = {
 
 
 const theme = createTheme({
+  direction: 'rtl',
   palette: {
     primary: {
       main: '#8B4513', // SaddleBrown

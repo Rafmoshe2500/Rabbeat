@@ -1,10 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
-import "regenerator-runtime/runtime";
+import { 
+  Box, 
+  IconButton,
+  Tooltip,
+  Divider,
+  Grid,
+  Collapse
+} from "@mui/material";
+import { StickyNote2, VolumeUp, VolumeMute } from "@mui/icons-material";
 import NotesPanel from "../../notes-panel/notes-panel";
 import HighlightedText from "../../highlighted-text/highlighted-text";
-import styles from "./lesson-content.module.css";
-import { StickyNote2 } from "@mui/icons-material";
-import { Button, Tooltip } from "@mui/material";
 import withFade from "../../../hoc/withFade.hoc";
 
 interface LessonContentProps {
@@ -13,58 +18,68 @@ interface LessonContentProps {
 
 const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const [audioURL, setAudioURL] = useState<string | null>(null);
-  const [isNotesPanelOpen, setIsNotesPanelOpen] = useState<boolean>();
+  const [isNotesPanelOpen, setIsNotesPanelOpen] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [asd, setAsd] = useState("asd");
 
   const toggleNotesPanel = () => {
     setIsNotesPanelOpen((prev) => !prev);
+  };
+
+  const toggleAudioPlayback = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
   useEffect(() => {
     if (lesson?.audio) {
       const url = URL.createObjectURL(lesson.audio);
       setAudioURL(url);
-
-      return () => {
-        URL.revokeObjectURL(url);
-      };
+      return () => URL.revokeObjectURL(url);
     }
   }, [lesson?.audio]);
 
-  useEffect(() => {
-    setAsd("qwe");
-  }, [audioURL]);
-
   return (
-    <div>
-      <div>
+    <Box sx={{ maxWidth: 800, margin: '0 auto' }}>
+        <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              {audioURL && (
+                <Tooltip title={isPlaying ? "השהה אודיו" : "נגן אודיו"}>
+                  <IconButton onClick={toggleAudioPlayback} color="primary">
+                    {isPlaying ? <VolumeMute /> : <VolumeUp />}
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Tooltip title={isNotesPanelOpen ? "סגור הערות" : "פתח הערות"}>
+                <IconButton onClick={toggleNotesPanel} color="primary">
+                  <StickyNote2 />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Divider sx={{ my: 2 }} />
+        <Collapse in={isNotesPanelOpen}>
+          {lesson && lesson.id && (
+            <NotesPanel lessonId={lesson.id} audioRef={audioRef} />
+          )}
+      </Collapse>
+        <Box sx={{ mt: 3 }}>
+          <HighlightedText lesson={lesson!} audioRef={audioRef} />
+        </Box>
+
         {audioURL && (
-          <div className={styles["audio-container"]}>
-            <audio ref={audioRef} controls>
-              <source src={audioURL} type="audio/wav" />
-              Your browser does not support the audio element.
-            </audio>
-
-            <Tooltip title="ההערות שלי">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={toggleNotesPanel}
-                id="notes-button"
-              >
-                <StickyNote2 />
-              </Button>
-            </Tooltip>
-          </div>
+          <audio ref={audioRef} src={audioURL} onEnded={() => setIsPlaying(false)} />
         )}
-
-        {isNotesPanelOpen && (
-          <NotesPanel lessonId={lesson!.id!} audioRef={audioRef} />
-        )}
-        <HighlightedText key={asd} lesson={lesson!} audioRef={audioRef} />
-      </div>
-    </div>
+    </Box>
   );
 };
 

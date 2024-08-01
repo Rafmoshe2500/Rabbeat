@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { Typography, Box, useMediaQuery, Button, Stack, TextField, Pagination } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
+import { Typography, Box, useMediaQuery, Button, Stack, TextField } from "@mui/material";
 import StudentCard from "./student-card";
+import DisplayCards from "../common/display-cards/display-cards";
 import { useUser } from "../../contexts/user-context";
 import { useGetStudents, useAssociateStudentToTeacher } from "../../hooks/useStudents";
 import Loader from '../common/loader'
@@ -21,9 +21,6 @@ const StudentGrid: React.FC = () => {
   const [showOnlyActive, setShowOnlyActive] = useState(true);
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const itemsPerPage = viewMode === "list" ? 10 : 16;
 
   const students = useMemo(() => {
     let filteredStudents = fetchedStudents;
@@ -47,9 +44,6 @@ const StudentGrid: React.FC = () => {
     });
   }, [fetchedStudents, showOnlyActive, sortOrder, searchQuery]);
 
-  const pageCount = Math.ceil(students.length / itemsPerPage);
-  const displayedStudents = students.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
   const onUpdateExpiredDate = async (studentId: string, newExpiredDate: string) => {
     await associateStudentMutation.mutateAsync({
       teacherId: userDetails!.id,
@@ -60,11 +54,29 @@ const StudentGrid: React.FC = () => {
   };
 
   if (isLoading) return <Typography><Loader message="טוען תלמידים..."/></Typography>;
-  if (error) return <Typography>An error occurred: {(error as Error).message}</Typography>;
+  if (error)
+    return (
+      <Typography>An error occurred: {(error as Error).message}</Typography>
+    );
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    console.log(event)
-    setCurrentPage(value);
+  const renderStudentCard = (student: Student) => (
+    <StudentCard 
+      student={student} 
+      viewMode={viewMode} 
+      onUpdateExpiredDate={onUpdateExpiredDate}
+    />
+  );
+
+  const toggleFilter = () => {
+    setShowOnlyActive(!showOnlyActive);
+  };
+
+  const toggleSortOrder = () => {
+    setSortOrder(prevOrder => prevOrder === 'desc' ? 'asc' : 'desc');
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -73,21 +85,21 @@ const StudentGrid: React.FC = () => {
         <Box 
           display="flex"
           justifyContent="center"
-          sx={{ gap: 2 }}  // This adds space between buttons
+          sx={{ gap: 2 }}
         >
           <Button 
             variant="contained"
             color={showOnlyActive ? "primary" : "secondary"}
-            onClick={() => setShowOnlyActive(!showOnlyActive)}
+            onClick={toggleFilter}
             size="small"
-            sx={{ minWidth: '120px' }}
+            sx={{ minWidth: '120px', mr: 2 }}
           >
             {showOnlyActive ? "הצג את כולם" : "הצג פעילים"}
           </Button>
           <Button 
             variant="contained"
             color={sortOrder === 'desc' ? "primary" : "secondary"}
-            onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
+            onClick={toggleSortOrder}
             size="small"
             sx={{ minWidth: '120px' }}
           >
@@ -98,46 +110,18 @@ const StudentGrid: React.FC = () => {
           variant="outlined"
           label="חיפוש תלמיד לפי שם מלא"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleSearchChange}
           sx={{ maxWidth: '400px', width: '100%' }}
         />
       </Stack>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentPage}
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
-          transition={{ type: "tween", duration: 0.3 }}
-        >
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: viewMode === 'grid' ? 'repeat(4, 1fr)' : '1fr',
-              gap: 2,
-            }}
-          >
-            {displayedStudents.map((student) => (
-              <StudentCard
-                key={student.id}
-                student={student}
-                viewMode={viewMode}
-                onUpdateExpiredDate={onUpdateExpiredDate}
-              />
-            ))}
-          </Box>
-        </motion.div>
-      </AnimatePresence>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <Pagination
-          count={pageCount}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </Box>
+      <DisplayCards
+        items={students}
+        renderCard={renderStudentCard}
+        viewMode={viewMode}
+        xs={12}
+        sm={6}
+        md={3}
+      />
     </Box>
   );
 };
