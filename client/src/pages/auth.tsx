@@ -7,7 +7,6 @@ import RegisterForm from "../components/auth/register-form";
 import { useUser } from "../contexts/user-context";
 import { storeToken, decodeToken, isTokenValid } from "../utils/jwt-cookies";
 import { useLogin, useRegister } from "../hooks/useAuth";
-import Loader from "../components/common/loader";
 import withFade from "../hoc/withFade.hoc";
 import HomeSkeleton from "../components/skeletons/home-skeleton";
 
