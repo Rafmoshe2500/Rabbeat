@@ -1,41 +1,44 @@
 // MyStudentLessons.tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import { useUser } from "../contexts/user-context";
 import { useStudentLessonsByTeacher } from "../hooks/lessons/useStudentLessonsByTeacher";
-import { useAssociateLesson, useDisassociateLesson } from "../hooks/useAssociateLesson";
-import Loader from "../components/common/loader";
+import {
+  useAssociateLesson,
+  useDisassociateLesson,
+} from "../hooks/useAssociateLesson";
 import DisplayCards from "../components/common/display-cards/display-cards";
 import LessonCard from "../components/lessons/lesson-card/lesson-card";
 import DialogComponent from "../components/common/dialog";
 import withFade from "../hoc/withFade.hoc";
-import { useLessonsDetailsByUser } from '../hooks/lessons/useLessonsDetailsByUser';
-import FloatingActionButton from '../components/common/floating-action-button';
-import DialogContent from '../components/teacher-lessons/dialog-content';
-import AddIcon from '@mui/icons-material/Add';
+import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUser";
+import FloatingActionButton from "../components/common/floating-action-button";
+import DialogContent from "../components/teacher-lessons/dialog-content";
+import AddIcon from "@mui/icons-material/Add";
 
 const MyStudentLessons: React.FC = () => {
   const location = useLocation();
   const studentId: string = location.state?.id;
   const { userDetails } = useUser();
 
-  const { 
-    data: studentLessons, 
-    isLoading: isStudentLessonsLoading, 
-    refetch: refetchStudentLessons 
+  const {
+    data: studentLessons,
+    isLoading: isStudentLessonsLoading,
+    refetch: refetchStudentLessons,
   } = useStudentLessonsByTeacher(userDetails!.id, studentId);
 
-  const { 
-    data: teacherLessons, 
-    isLoading: isTeacherLessonsLoading 
-  } = useLessonsDetailsByUser(userDetails!.id);
+  const { data: teacherLessons, isLoading: isTeacherLessonsLoading } =
+    useLessonsDetailsByUser(userDetails!.id);
 
-  const associateLessonMutation = useAssociateLesson(studentId, userDetails!.id);
+  const associateLessonMutation = useAssociateLesson(
+    studentId,
+    userDetails!.id
+  );
   const disassociateLessonMutation = useDisassociateLesson(studentId);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");
@@ -46,9 +49,9 @@ const MyStudentLessons: React.FC = () => {
 
   const handleLessonClick = async (lessonId: string, isAssociated: boolean) => {
     if (!isAssociated) {
-      console.log(selectedLessonId)
+      console.log(selectedLessonId);
       setSelectedLessonId(lessonId);
-      
+
       try {
         await associateLessonMutation.mutateAsync(lessonId);
         await refetchStudentLessons();
@@ -59,7 +62,7 @@ const MyStudentLessons: React.FC = () => {
   };
 
   const handleDisassociate = async (lessonId: string) => {
-    if (window.confirm('האם אתה בטוח שברצונך לבטל את פתיחת השיעור הזה?')) {
+    if (window.confirm("האם אתה בטוח שברצונך לבטל את פתיחת השיעור הזה?")) {
       try {
         await disassociateLessonMutation.mutateAsync(lessonId);
         await refetchStudentLessons();
@@ -73,33 +76,29 @@ const MyStudentLessons: React.FC = () => {
     <LessonCard lessonDetails={lesson} studentId={studentId} />
   );
 
-  const filteredLessons = Array.isArray(teacherLessons) 
-    ? teacherLessons.filter(lesson => lesson.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredLessons = Array.isArray(teacherLessons)
+    ? teacherLessons.filter((lesson) =>
+        lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     : [];
 
   return (
     <div>
       <div style={{ marginBottom: "8rem" }}>תלמיד חכם</div>
 
-      {studentLessons ? (
-        <DisplayCards
-          items={studentLessons}
-          renderCard={renderStudentCard}
-          viewMode={viewMode}
-          xs={12}
-          sm={6}
-          md={3}
-        />
-      ) : (
-        isStudentLessonsLoading ? (
-          <Loader message="טוען שיעורים" />
-        ) : (
-          <div>אין לך שיעורים כרגע</div>
-        )
-      )}
+      <DisplayCards
+        items={studentLessons || []}
+        renderCard={renderStudentCard}
+        viewMode={viewMode}
+        isLoading={isStudentLessonsLoading}
+        noItemsMessage={"אין לך שיעורים כרגע"}
+        xs={12}
+        sm={6}
+        md={3}
+      />
 
-      <FloatingActionButton 
-        onClick={openDialog} 
+      <FloatingActionButton
+        onClick={openDialog}
         icon={<AddIcon />}
         ariaLabel="add lesson"
       />
