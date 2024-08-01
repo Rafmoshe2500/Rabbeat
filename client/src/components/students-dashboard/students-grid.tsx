@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { Typography, Box, useMediaQuery, Button, Stack, TextField } from "@mui/material";
+import { Typography, Box, useMediaQuery, Button, Stack, TextField, Pagination } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 import StudentCard from "./student-card";
-import DisplayCards from "../common/display-cards/display-cards";
 import { useUser } from "../../contexts/user-context";
 import { useGetStudents, useAssociateStudentToTeacher } from "../../hooks/useStudents";
 import Loader from '../common/loader'
@@ -21,6 +21,9 @@ const StudentGrid: React.FC = () => {
   const [showOnlyActive, setShowOnlyActive] = useState(true);
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = viewMode === "list" ? 10 : 16;
 
   const students = useMemo(() => {
     let filteredStudents = fetchedStudents;
@@ -43,6 +46,9 @@ const StudentGrid: React.FC = () => {
       return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
     });
   }, [fetchedStudents, showOnlyActive, sortOrder, searchQuery]);
+
+  const pageCount = Math.ceil(students.length / itemsPerPage);
+  const displayedStudents = students.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const onUpdateExpiredDate = async (studentId: string, newExpiredDate: string) => {
     await associateStudentMutation.mutateAsync({
@@ -102,14 +108,42 @@ const StudentGrid: React.FC = () => {
           sx={{ maxWidth: '400px', width: '100%' }}
         />
       </Stack>
-      <DisplayCards
-        items={students}
-        renderCard={renderStudentCard}
-        viewMode={viewMode}
-        xs={12}
-        sm={6}
-        md={3}
-      />
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPage}
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ type: "tween", duration: 0.3 }}
+        >
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: viewMode === 'grid' ? 'repeat(4, 1fr)' : '1fr',
+              gap: 2,
+            }}
+          >
+            {displayedStudents.map((student) => (
+              <StudentCard
+                key={student.id}
+                student={student}
+                viewMode={viewMode}
+                onUpdateExpiredDate={onUpdateExpiredDate}
+              />
+            ))}
+          </Box>
+        </motion.div>
+      </AnimatePresence>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Pagination
+          count={pageCount}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
     </Box>
   );
 };

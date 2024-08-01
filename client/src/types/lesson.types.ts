@@ -30,18 +30,25 @@ type LessonDetails = {
   pentateuch: string;
   version: LessonVersion;
   creationDate: string;
-} & StudyZone & NotificationsDetails;
+} & StudyZone &
+  NotificationsDetails;
 
+const lessonVersion = [
+  "Ashkenaz",
+  "Jerusalemite",
+  "Moroccan",
+  "Yemeni",
+] as const;
 
-type LessonVersion = "Spanish" | "Ashkenaz";
+type LessonVersion = (typeof lessonVersion)[number];
 
 type StudyZone = {
   chatId?: string;
   testAudioId?: string;
   status?: LessonStatus;
-}
+};
 
 type NotificationsDetails = {
   audioNotification: boolean;
-  messageNotifications: boolean
-}
+  messageNotifications: boolean;
+};

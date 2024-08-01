@@ -17,7 +17,7 @@ import { useState } from "react";
 import ChatIcon from "@mui/icons-material/Chat";
 import AudioFileIcon from "@mui/icons-material/AudioFile";
 import CloseIcon from "@mui/icons-material/Close";
-import { lessonStatusMapper } from "../../../utils/utils";
+import { lessonStatusMapper, lessonVersionsMapper } from "../../../utils/utils";
 
 type LessonCardProps = {
   lessonDetails: Partial<LessonDetails>;
@@ -39,7 +39,7 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
     endChapter,
     endVerse,
     pentateuch,
-    version
+    version,
   } = lessonDetails;
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -57,21 +57,21 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
 
   const getTooltipTitle = () => {
     if (status === "finished") {
-      return 'בוצע';
+      return "בוצע";
     }
 
     if (!audioNotification && !messageNotifications) {
-      return 'אין עדכון זמין';
+      return "אין עדכון זמין";
     }
 
-    const messageText = messageNotifications ? 'קיימים הודעות חדשות' : '';
+    const messageText = messageNotifications ? "קיימים הודעות חדשות" : "";
     const audioText = audioNotification
       ? userDetails?.type === "student"
-        ? 'מחכה לבדיקת המורה'
-        : 'אודיו חדש לבדיקה'
-      : '';
+        ? "מחכה לבדיקת המורה"
+        : "אודיו חדש לבדיקה"
+      : "";
 
-    return [audioText, messageText].filter(Boolean).join('<br />');
+    return [audioText, messageText].filter(Boolean).join("<br />");
   };
 
   const getBorderColor = () => {
@@ -102,7 +102,7 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
 
   return (
     <Box sx={{ minWidth: 275, maxWidth: 345, margin: "1rem" }}>
-      <Card 
+      <Card
         variant="outlined"
         sx={{
           position: "relative",
@@ -115,11 +115,17 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
       >
         <CardActionArea onClick={onClick}>
           <CardContent>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Typography variant="h5" component="div" gutterBottom>
                 {title}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 {messageNotifications && (
                   <Tooltip title="קיימות הודעות חדשות" arrow>
                     <Badge color="primary" variant="dot">
@@ -128,7 +134,14 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
                   </Tooltip>
                 )}
                 {audioNotification && (
-                  <Tooltip title={userDetails?.type === "student" ? "מחכה לבדיקת המורה" : "אודיו חדש לבדיקה"} arrow>
+                  <Tooltip
+                    title={
+                      userDetails?.type === "student"
+                        ? "מחכה לבדיקת המורה"
+                        : "אודיו חדש לבדיקה"
+                    }
+                    arrow
+                  >
                     <Badge color="primary" variant="dot">
                       <AudioFileIcon />
                     </Badge>
@@ -142,14 +155,23 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
             <Typography variant="body2" gutterBottom>
               {`${startChapter}:${startVerse} - ${endChapter}:${endVerse}`}
             </Typography>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mt: 2,
+              }}
+            >
               <Chip
-                label={status === "finished" ? "הסתיים" : lessonStatusMapper[status!]}
+                label={
+                  status === "finished" ? "הסתיים" : lessonStatusMapper[status!]
+                }
                 size="small"
                 color={getStatusColor()}
               />
               <Typography variant="caption" color="text.secondary">
-                {`Version: ${version}`}
+                {`Version: ${lessonVersionsMapper[version!]}`}
               </Typography>
             </Box>
           </CardContent>
@@ -158,17 +180,30 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >
-        <Box sx={{ width: 300, bgcolor: 'background.paper', p: 4, borderRadius: 2, position: 'relative' }}>
-          <IconButton 
-            sx={{ position: 'absolute', top: 8, right: 8 }} 
+        <Box
+          sx={{
+            width: 300,
+            bgcolor: "background.paper",
+            p: 4,
+            borderRadius: 2,
+            position: "relative",
+          }}
+        >
+          <IconButton
+            sx={{ position: "absolute", top: 8, right: 8 }}
             onClick={() => setModalOpen(false)}
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" gutterBottom>Notification Details</Typography>
-          <Typography variant="body2" dangerouslySetInnerHTML={{ __html: getTooltipTitle() }} />
+          <Typography variant="h6" gutterBottom>
+            Notification Details
+          </Typography>
+          <Typography
+            variant="body2"
+            dangerouslySetInnerHTML={{ __html: getTooltipTitle() }}
+          />
         </Box>
       </Modal>
     </Box>
