@@ -60,12 +60,18 @@ const StudentGrid: React.FC = () => {
   };
 
   if (isLoading) return <Typography><Loader message="טוען תלמידים..."/></Typography>;
-  if (error) return <Typography>An error occurred: {(error as Error).message}</Typography>;
+  if (error)
+    return (
+      <Typography>An error occurred: {(error as Error).message}</Typography>
+    );
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    console.log(event)
-    setCurrentPage(value);
-  };
+  const renderStudentCard = (student: Student) => (
+    <StudentCard 
+      student={student} 
+      viewMode={viewMode} 
+      onUpdateExpiredDate={onUpdateExpiredDate}
+    />
+  );
 
   return (
     <Box sx={{ flexGrow: 1, p: 4, direction: "rtl" }}>

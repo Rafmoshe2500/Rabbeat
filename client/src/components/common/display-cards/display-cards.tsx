@@ -1,5 +1,6 @@
-import React from "react";
-import { Grid, GridSize, List, ListItem } from "@mui/material";
+import React, { useState } from "react";
+import { Grid, GridSize, List, ListItem, Pagination, Box } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./display-cards.module.scss";
 
 interface DisplayCards<T> {
@@ -23,26 +24,65 @@ function DisplayCards<T>({
   lg = 3,
   xl = 3,
 }: DisplayCards<T>) {
-  if (viewMode === "list") {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = viewMode === "list" ? 10 : 16;
+  const pageCount = Math.ceil(items.length / itemsPerPage);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    console.log(event)
+    setCurrentPage(value);
+  };
+
+  const displayedItems = items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const renderContent = () => {
+    if (viewMode === "list") {
+      return (
+        <List className={styles.rtlList}>
+          {displayedItems.map((item, index) => (
+            <ListItem key={index} disablePadding>
+              {renderCard(item, index)}
+            </ListItem>
+          ))}
+        </List>
+      );
+    }
+
     return (
-      <List className={styles.rtlList}>
-        {items.map((item, index) => (
-          <ListItem key={index} disablePadding>
-            {renderCard(item, index)}
-          </ListItem>
-        ))}
-      </List>
+      <AnimatePresence mode="wait">
+        <motion.div
+          style={{direction: 'rtl'}}
+          key={currentPage}
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ type: "tween", duration: 0.3 }}
+        >
+          <Grid className={styles.rtlGrid} container spacing={3}>
+            {displayedItems.map((item, index) => (
+              <Grid item xs={xs} sm={sm} md={md} lg={lg} xl={xl} key={index}>
+                {renderCard(item, index)}
+              </Grid>
+            ))}
+          </Grid>
+        </motion.div>
+      </AnimatePresence>
     );
-  }
+  };
 
   return (
-    <Grid className={styles.rtlGrid} container spacing={3}>
-      {items.map((item, index) => (
-        <Grid item xs={xs} sm={sm} md={md} lg={lg} xl={xl} key={index}>
-          {renderCard(item, index)}
-        </Grid>
-      ))}
-    </Grid>
+    <Box>
+      {renderContent()}
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2}}>
+        <Pagination
+          count={pageCount}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          dir="rtl"
+        />
+      </Box>
+    </Box>
   );
 }
 
