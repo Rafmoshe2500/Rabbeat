@@ -44,7 +44,7 @@ function DisplayCards<T>({
   const [isPageTransition, setIsPageTransition] = useState(false);
   const [pageChangeDirection, setPageChangeDirection] = useState<Direction>(null);
 
-  const itemsPerPage = viewMode === "list" ? 10 : 9;
+  const itemsPerPage = viewMode === "list" ? 10 : 16;
   const pageCount = Math.ceil(items.length / itemsPerPage);
   const needsPagination = items.length > itemsPerPage;
 
