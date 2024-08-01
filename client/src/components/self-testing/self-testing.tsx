@@ -10,6 +10,7 @@ import styles from "./self-testing.module.scss";
 import { useTestAudio } from "../../hooks/useTestAudio";
 import { useUser } from "../../contexts/user-context";
 import AnimatedButton from "../common/animated-button";
+import withFade from "../../hoc/withFade.hoc";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -31,7 +32,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       setAudioUrl(url);
 
       return () => {
-        URL.revokeObjectURL(url); // Cleanup the URL object when the component is unmounted
+        URL.revokeObjectURL(url);
       };
     }
   }, [lesson?.testAudioId, testAudio]);
@@ -125,4 +126,4 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   );
 };
 
-export default SelfTesting;
+export default withFade(SelfTesting);

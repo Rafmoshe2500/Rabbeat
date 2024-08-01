@@ -67,4 +67,7 @@ async def get_lessons_details_by_user_id(user_id: str):
 
         return lessons
     except Exception as e:
+        print(lesson_id['lessonId'])
+        print(lesson_details)
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))
