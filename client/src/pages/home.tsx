@@ -21,7 +21,12 @@ const Home: React.FC = () => {
         </Typography>
         <Box
           component="ul"
-          sx={{ listStyleType: "none", padding: 0, direction: "rtl" }}
+          sx={{
+            listStyleType: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
         >
           <li>
             <Typography sx={{ direction: "rtl" }}>
