@@ -131,6 +131,36 @@ const theme = createTheme({
       },
     },
   },
+  MuiInputBase: {
+    styleOverrides: {
+      root: {
+        backgroundColor: '#FFFFFF', // White background for inputs
+        color: '#4B4949', // Dark gray text color
+      },
+    },
+  },
+  MuiOutlinedInput: {
+    styleOverrides: {
+      root: {
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#8B4513', // SaddleBrown on hover
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#8B4513', // SaddleBrown when focused
+        },
+      },
+    },
+  },
+  MuiIconButton: {
+    styleOverrides: {
+      root: {
+        color: '#8B4513', // SaddleBrown for icon buttons
+        '&:hover': {
+          backgroundColor: 'rgba(139, 69, 19, 0.04)', // Light SaddleBrown background on hover
+        },
+      },
+    },
+  },
 }
 });
 
