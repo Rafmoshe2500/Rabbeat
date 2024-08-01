@@ -124,7 +124,7 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
       {isOpen && (
         <div className={styles.chatWindow}>
           <div className={styles.chatHeader}>
-            <h3>Chat</h3>
+            <h3>צ'אט</h3>
             <button
               onClick={() => setIsOpen(false)}
               className={styles.closeButton}
@@ -136,12 +136,10 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
             {messages?.map((msg, index) => (
               <div
                 key={index}
-                className={`${styles.chatMessage}  ${
-                  styles[
-                    msg.sender === userType ? "my-messages" : "not-my-messages"
-                  ]
+                className={`${styles.chatMessage} ${
+                  msg.sender === userType ? styles['my-messages'] : styles['not-my-messages']
                 }`}
-              >
+                >
                 {msg.type === "text" ? (
                   <div>{msg.content as string}</div>
                 ) : (
@@ -161,7 +159,7 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="Type a message..."
+              placeholder="הכנס הודעה..."
             />
             <div className={styles.buttonGroup}>
               <button onClick={handleSendMessage} className={styles.sendButton}>
@@ -169,16 +167,12 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
               </button>
               <button
                 onClick={isRecording ? stopRecording : startRecording}
-                className={`${styles.recordButton} ${
-                  isRecording ? styles.recording : ""
-                }`}
+                className={`${styles.recordButton} ${isRecording ? styles.recording : ""}`}
               >
                 {isRecording ? (
                   <>
                     <StopIcon fontSize="small" />
-                    <span className={styles.recordingTime}>
-                      {recordingTime}s
-                    </span>
+                    <span className={styles.recordingTime}>{recordingTime}s</span>
                   </>
                 ) : (
                   <MicIcon fontSize="small" />
