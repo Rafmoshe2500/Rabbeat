@@ -7,8 +7,8 @@ import RegisterForm from "../components/auth/register-form";
 import { useUser } from "../contexts/user-context";
 import { storeToken, decodeToken, isTokenValid } from "../utils/jwt-cookies";
 import { useLogin, useRegister } from "../hooks/useAuth";
-import Loader from "../components/common/loader";
 import withFade from "../hoc/withFade.hoc";
+import HomeSkeleton from "../components/skeletons/home-skeleton";
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
   ({ isflipped }) => ({
@@ -154,11 +154,7 @@ const AuthForm: React.FC = () => {
   };
 
   if (loading || loginMutation.isPending || registerMutation.isPending) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <HomeSkeleton />;
   }
 
   return (

@@ -1,13 +1,13 @@
 import { useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { useLessonsById } from "../hooks/lessons/useLessonById";
-import Loader from "../components/common/loader";
 import SelfTesting from "../components/self-testing/self-testing";
 import Chat from "../components/chat/chat";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 import withFade from "../hoc/withFade.hoc";
 import Checkbox from "@mui/material/Checkbox";
 import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
+import SelfTestSkeleton from "../components/skeletons/self-test-skeleton";
 
 const MyStudentLesson = () => {
   const location = useLocation();
@@ -68,7 +68,7 @@ const MyStudentLesson = () => {
           inputProps={{ "aria-label": "controlled" }}
         />
       </div>
-      {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
+      {isLoading ? <SelfTestSkeleton /> : <TabsWrapper tabs={tabs} />}
 
       <Chat chatId={lessonDetails.chatId!} />
     </div>

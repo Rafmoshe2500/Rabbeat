@@ -59,7 +59,14 @@ const VersionSelector: React.FC<VersionSelectorProps> = ({
       mt={2}
       sx={{ backgroundColor: "white" }}
     >
-      <ButtonGroup variant="contained" style={{ marginBottom: "10px" }}>
+      <ButtonGroup
+        variant="contained"
+        style={{
+          marginBottom: "10px",
+          display: "flex",
+          flexDirection: "row-reverse",
+        }}
+      >
         <Button
           onClick={handleNikudClick}
           variant={nikudSelected ? "contained" : "outlined"}
