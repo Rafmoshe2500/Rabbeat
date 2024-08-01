@@ -90,7 +90,7 @@ function DisplayCards<T>({
   };
 
   return (
-    <Box>
+    <Box dir='rtl'>
       {needsPagination && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
           <Pagination
