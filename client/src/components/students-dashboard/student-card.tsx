@@ -1,69 +1,52 @@
 import React, { useState } from "react";
-import { Paper, Typography, Menu, MenuItem, Tooltip } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Typography,
+  Chip,
+  Badge,
+  Tooltip,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-import RTLDatePicker from "../common/rtl-inputs/rtl-date-picker";
 import dayjs from 'dayjs';
 import DialogComponent from "../common/dialog";
-import LED from '../common/led';
+import RTLDatePicker from "../common/rtl-inputs/rtl-date-picker";
 import PhoneIcon from '@mui/icons-material/Phone';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
-const StyledPaper = styled(Paper, {
-  shouldForwardProp: (prop) => prop !== "$viewMode" && prop !== "$isExpired",
-})<{ $viewMode: "grid" | "list"; $isExpired: boolean }>(({ theme, $isExpired, $viewMode }) => ({
-  padding: theme.spacing(3),
-  margin: theme.spacing(1),
-  textAlign: "center",
-  color: $isExpired ? theme.palette.text.secondary : theme.palette.text.primary,
-  width: '100%',
-  maxWidth: $viewMode === "grid" ? "350px" : "100%",
-  height: $viewMode === "grid" ? "100%" : "auto",
-  display: "flex",
-  flexDirection: $viewMode === "grid" ? "column" : "row",
-  justifyContent: "space-between",
-  alignItems: $viewMode === "grid" ? "center" : "flex-start",
-  borderRadius: theme.shape.borderRadius * 2,
-  transition: "all 0.3s",
-  background: $isExpired
-    ? theme.palette.action.disabledBackground
-    : theme.palette.background.paper,
-  boxShadow: $isExpired
-    ? 'inset 5px 5px 10px rgba(0, 0, 0, 0.1), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
-    : '5px 5px 10px rgba(0, 0, 0, 0.1), -5px -5px 10px rgba(255, 255, 255, 0.5)',
+const StyledCard = styled(Card, {
+  shouldForwardProp: (prop) => prop !== "$isExpired" && prop !== "$viewMode",
+})<{ $isExpired: boolean; $viewMode: "grid" | "list" }>(({ theme, $isExpired, $viewMode }) => ({
+  width: $viewMode === "grid" ? 280 : "100%",
+  height: $viewMode === "grid" ? 200 : "auto",
+  margin: $viewMode === "grid" ? "1rem" : "0.5rem 0",
   position: "relative",
-  overflow: "hidden",
+  border: `2px solid ${$isExpired ? theme.palette.grey[400] : theme.palette.success.main}`,
+  transition: "0.3s",
   "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: $isExpired
-      ? 'inset 7px 7px 14px rgba(0, 0, 0, 0.1), inset -7px -7px 14px rgba(255, 255, 255, 0.5)'
-      : '7px 7px 14px rgba(0, 0, 0, 0.1), -7px -7px 14px rgba(255, 255, 255, 0.5)',
-  },
-  [theme.breakpoints.down('sm')]: {
-    flexDirection: "column",
-    alignItems: "center",
-    padding: theme.spacing(2),
+    boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
   },
 }));
 
-const InfoContainer = styled('div')(({ theme }) => ({
+const ContentWrapper = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  gap: theme.spacing(1.5),
-  marginTop: theme.spacing(2),
-  [theme.breakpoints.down('sm')]: {
-    alignItems: 'center',
-  },
-}));
+  height: '100%',
+});
 
-const InfoItem = styled('div')(({ theme }) => ({
+const InfoRow = styled(Box)(({ theme }) => ({
   display: 'flex',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  gap: theme.spacing(1),
+  marginBottom: theme.spacing(1),
 }));
-
 
 interface StudentCardProps {
   student: Student;
@@ -77,8 +60,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode, onUpdateEx
   const [openDatePicker, setOpenDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(dayjs(student.expired_date));
 
-  const handleClick = (event: React.MouseEvent) => {
-    event.preventDefault();
+  const handleClick = () => {
     const route = `/my-students/${student.firstName}-${student.lastName}`;
     navigate(route, { state: { id: student.id } });
   };
@@ -131,47 +113,54 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode, onUpdateEx
 
   return (
     <>
-      <StyledPaper
-        onClick={handleClick}
-        onContextMenu={handleContextMenu}
-        elevation={0}
-        $viewMode={viewMode}
-        $isExpired={isExpired}
-      >
-        <Tooltip title={isExpired ? 'לא בשימוש' : (student.updated ? 'קיים עדכון' : 'אין עדכונים')}>
-          <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-            <LED status={isExpired ? 'off' : (student.updated ? 'half' : 'ok')} />
-          </div>
-        </Tooltip>        
-        <Typography variant="h4" gutterBottom>
-          {`${student.firstName} ${student.lastName}`}
-        </Typography>
-        
-        <InfoContainer>
-          <InfoItem>
-            <PhoneIcon fontSize="medium" color="primary" />
-            <Typography variant="body1">{student.phoneNumber}</Typography>
-          </InfoItem>
-          <InfoItem>
-            <AccessTimeIcon fontSize="medium" color={isExpired ? "error" : "primary"} />
-            <Typography variant="body1" color={isExpired ? "error" : "#616161"}>
-              {isExpired 
-                ? "הסתיים" 
-                : `${daysLeft} ימים לסיום`}
-            </Typography>
-          </InfoItem>
-          <InfoItem>
-            <EventIcon fontSize="medium" color="primary" />
-            <Typography variant="body1">
-              {formatDate(student.expired_date)}
-            </Typography>
-          </InfoItem>
-        </InfoContainer>
-      </StyledPaper>
+      <StyledCard $isExpired={isExpired} $viewMode={viewMode} onContextMenu={handleContextMenu}>
+        <CardActionArea onClick={handleClick} sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%' }}>
+            <ContentWrapper>
+              <InfoRow>
+                <Typography variant="h6" component="div" noWrap>
+                  {`${student.firstName} ${student.lastName}`}
+                </Typography>
+                {student.updated && (
+                  <Tooltip title="קיים עדכון" arrow>
+                    <Badge color="primary" variant="dot">
+                      <NotificationsActiveIcon sx={{ color: 'text.secondary' }} />
+                    </Badge>
+                  </Tooltip>
+                )}
+              </InfoRow>
+              <InfoRow>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <PhoneIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
+                  <Typography variant="body2" noWrap>{student.phoneNumber}</Typography>
+                </Box>
+                <Chip
+                  label={isExpired ? "לא פעיל" : "פעיל"}
+                  size="small"
+                  color={isExpired ? "default" : "success"}
+                />
+              </InfoRow>
+              <InfoRow sx={{ mt: 'auto' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, mr: 1 }}>
+                  <AccessTimeIcon fontSize="small" sx={{ mr: 1, color: isExpired ? 'error.main' : 'text.secondary' }} />
+                  <Typography variant="body2" color="text.secondary" noWrap>
+                    {isExpired ? "הסתיים" : `${daysLeft} ימים לסיום`}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                  <EventIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
+                  <Typography variant="body2" color="text.secondary">
+                    {formatDate(student.expired_date)}
+                  </Typography>
+                </Box>
+              </InfoRow>
+            </ContentWrapper>
+          </CardContent>
+        </CardActionArea>
+      </StyledCard>
       <Menu
         open={contextMenu !== null}
         onClose={handleCloseMenu}
-        dir="rtl"
         anchorReference="anchorPosition"
         anchorPosition={
           contextMenu !== null
@@ -179,18 +168,20 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode, onUpdateEx
             : undefined
         }
       >
-        <MenuItem onClick={() => setOpenDatePicker(true)}>עדכן תאריך סיום.</MenuItem>
+        <MenuItem onClick={() => { setOpenDatePicker(true); handleCloseMenu(); }}>
+          עדכן תאריך סיום
+        </MenuItem>
       </Menu>
       
       <DialogComponent 
         open={openDatePicker}
-        title="עדכן תאריך."
+        title="עדכן תאריך סיום"
         onClose={handleCloseDatePicker}
         onConfirm={handleConfirmUpdateDate}
       >
         <RTLDatePicker
           label="תאריך סיום חדש"
-          value={dayjs(student.expired_date)}
+          value={selectedDate}
           onChange={handleDateChange}
         />
       </DialogComponent>
