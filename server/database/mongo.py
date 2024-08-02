@@ -10,7 +10,7 @@ from database.piplines import PIPELINE_ALL_TEACHERS_WITH_PROFILE, get_shared_les
     get_students_by_teacher_ids_pipeline
 from models.lesson import Lesson, LessonDetails, UpdateComment, LessonStatus, LessonComments, ChatBotMessages, \
     AssociateNewStudent
-from models.profile import TeacherProfile, UpdateProfile
+from models.profile import TeacherProfile, UpdateProfile, CreateSample
 from models.tests import Message
 from models.user import User, UserCredentials
 from tools.consts import MONGO_DB_NAME, MONGO_URI
@@ -57,10 +57,11 @@ class MongoDBApi:
             self._db.user_lessons.delete_one({"lessonId": lesson_id, "userId": user_id})
             study_zone = mongo_db.get_study_zone_by_ids(user_id, lesson_id)
             self._db.lesson_test_audio.delete_one({'_id': ObjectId(study_zone['testAudioId'])})
+            self._db.lesson_notifications.delete_one({'id': ObjectId(study_zone['notificationsId'])})
             self._db.study_zone.delete_one({"lessonId": lesson_id, "userId": user_id})
             self._db.lesson_comments.delete_many({"lessonsId": lesson_id, "userId": user_id})
             self._db.chatbot_messages.delete_many({"lessonId": lesson_id, "userId": user_id})
-            self._db.test_chat_lesson.delete_many({"lessonId": lesson_id, "userId": user_id})
+            self._db.test_chat_lesson.delete_one({"_id": ObjectId(study_zone['chatId'])})
         except Exception as e:
             logging.error(f"Error disassociating user from lesson: {e}")
 
@@ -374,6 +375,12 @@ class MongoDBApi:
 
     def get_notification_by_id(self, notification_id):
         return self._db.lesson_notifications.find_one({'_id': ObjectId(notification_id)})
+
+    def add_new_sample(self, sample: CreateSample):
+        return self._db.teacher_samples.insert_one(sample.dict())
+
+    def remove_sample(self, sample_id):
+        return self._db.teacher_samples.delete_one({"_id": ObjectId(sample_id)})
 
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)
