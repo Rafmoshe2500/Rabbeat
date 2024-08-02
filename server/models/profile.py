@@ -28,3 +28,8 @@ class TeacherProfile(BaseModel):
 class UpdateProfile(BaseModel):
     key: str
     value: str | List[str | Recommendation]
+
+
+class CreateSample(BaseModel):
+    audio: str
+    title: str
