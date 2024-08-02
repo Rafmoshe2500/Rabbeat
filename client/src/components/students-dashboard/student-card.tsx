@@ -5,7 +5,6 @@ import {
   CardActionArea,
   CardContent,
   Typography,
-  Chip,
   Badge,
   Tooltip,
   Menu,
@@ -25,7 +24,6 @@ const StyledCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== "$isExpired" && prop !== "$viewMode",
 })<{ $isExpired: boolean; $viewMode: "grid" | "list" }>(({ theme, $isExpired, $viewMode }) => ({
   width: $viewMode === "grid" ? 280 : "100%",
-  height: $viewMode === "grid" ? 200 : "auto",
   margin: $viewMode === "grid" ? "1rem" : "0.5rem 0",
   position: "relative",
   border: `2px solid ${$isExpired ? theme.palette.grey[400] : theme.palette.success.main}`,
@@ -33,19 +31,6 @@ const StyledCard = styled(Card, {
   "&:hover": {
     boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
   },
-}));
-
-const ContentWrapper = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-});
-
-const InfoRow = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: theme.spacing(1),
 }));
 
 interface StudentCardProps {
@@ -113,48 +98,37 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, viewMode, onUpdateEx
 
   return (
     <>
-      <StyledCard $isExpired={isExpired} $viewMode={viewMode} onContextMenu={handleContextMenu}>
-        <CardActionArea onClick={handleClick} sx={{ height: '100%' }}>
-          <CardContent sx={{ height: '100%' }}>
-            <ContentWrapper>
-              <InfoRow>
-                <Typography variant="h6" component="div" noWrap>
-                  {`${student.firstName} ${student.lastName}`}
-                </Typography>
-                {student.updated && (
-                  <Tooltip title="קיים עדכון" arrow>
-                    <Badge color="primary" variant="dot">
-                      <NotificationsActiveIcon sx={{ color: 'text.secondary' }} />
-                    </Badge>
-                  </Tooltip>
-                )}
-              </InfoRow>
-              <InfoRow>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <PhoneIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
-                  <Typography variant="body2" noWrap>{student.phoneNumber}</Typography>
-                </Box>
-                <Chip
-                  label={isExpired ? "לא פעיל" : "פעיל"}
-                  size="small"
-                  color={isExpired ? "default" : "success"}
-                />
-              </InfoRow>
-              <InfoRow sx={{ mt: 'auto' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, mr: 1 }}>
-                  <AccessTimeIcon fontSize="small" sx={{ mr: 1, color: isExpired ? 'error.main' : 'text.secondary' }} />
-                  <Typography variant="body2" color="text.secondary" noWrap>
-                    {isExpired ? "הסתיים" : `${daysLeft} ימים לסיום`}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-                  <EventIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
-                  <Typography variant="body2" color="text.secondary">
-                    {formatDate(student.expired_date)}
-                  </Typography>
-                </Box>
-              </InfoRow>
-            </ContentWrapper>
+      <StyledCard $isExpired={isExpired} onContextMenu={handleContextMenu} $viewMode={viewMode}>
+        <CardActionArea onClick={handleClick}>
+          <CardContent>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+              <Typography variant="h5" component="div">
+                {`${student.firstName} ${student.lastName}`}
+              </Typography>
+              {student.updated && (
+                <Tooltip title="קיים עדכון" arrow>
+                  <Badge color="primary" variant="dot">
+                    <NotificationsActiveIcon />
+                  </Badge>
+                </Tooltip>
+              )}
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+              <PhoneIcon fontSize="small" sx={{ mr: 1, marginLeft: '10px' }} />
+              <Typography variant="body2">{student.phoneNumber}</Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <EventIcon fontSize="small" sx={{ mr: 1, marginLeft: '10px' }} />
+              <Typography variant="body2">
+                {formatDate(student.expired_date)}
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+              <AccessTimeIcon fontSize="small" color={isExpired ? "error" : "success"} sx={{ mr: 1, marginLeft: '10px' }} />
+              <Typography variant="body2" color={isExpired ? "error" : "textSecondary"}>
+                {isExpired ? "הסתיים" : `${daysLeft} ימים לסיום`}
+              </Typography>
+            </Box>
           </CardContent>
         </CardActionArea>
       </StyledCard>
