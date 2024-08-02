@@ -33,3 +33,7 @@ class UpdateProfile(BaseModel):
 class CreateSample(BaseModel):
     audio: str
     title: str
+
+
+class DeleteSample(BaseModel):
+    sampleId: str
