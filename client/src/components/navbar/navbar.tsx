@@ -151,6 +151,7 @@ const Navbar = () => {
         backgroundColor: theme.palette.primary.main,
         transition: "top 0.3s",
         top: visible ? 0 : "-64px", // Adjust this value based on your AppBar height
+        marginBottom: "3rem",
       }}
     >
       <Container maxWidth="xl">

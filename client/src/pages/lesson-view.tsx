@@ -1,12 +1,11 @@
-import BookIcon from '@mui/icons-material/Book';
-import QuizIcon from '@mui/icons-material/Quiz';
+import BookIcon from "@mui/icons-material/Book";
+import QuizIcon from "@mui/icons-material/Quiz";
 import { Box, Paper, Typography } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import ConfettiExplosion from "react-confetti-explosion";
 import { useLocation, useParams } from "react-router-dom";
 import Chat from "../components/chat/chat";
 import ChatComponent from "../components/chatbot/ChatComponent";
-import Loader from "../components/common/loader";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
 import LessonContent from "../components/lessons/lesson-content/lesson-content";
 import SelfTesting from "../components/self-testing/self-testing";
@@ -14,6 +13,7 @@ import { useUser } from "../contexts/user-context";
 import withFade from "../hoc/withFade.hoc";
 import { useLessonsById } from "../hooks/lessons/useLessonById";
 import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
+import LessonSkeleton from "../components/skeletons/lesson-skeleton";
 
 const LessonView = () => {
   const { userDetails } = useUser();
@@ -52,28 +52,33 @@ const LessonView = () => {
   ];
 
   return (
-    <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: '2rem', direction: 'rtl'}}>
-          <Box
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-    {lessonDetails.status! === "finished" ? (
-      <ConfettiExplosion particleCount={200} zIndex={1000} duration={5000} />
-    ) : (
-      <></>
-    )}
-    </Box>
-      <Paper elevation={3} sx={{ padding: '2rem', marginBottom: '2rem' }}>
+    <Box sx={{ maxWidth: 1200, direction: "rtl" }}>
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {lessonDetails.status! === "finished" ? (
+          <ConfettiExplosion
+            particleCount={200}
+            zIndex={1000}
+            duration={5000}
+          />
+        ) : (
+          <></>
+        )}
+      </Box>
+      <Paper elevation={3} sx={{ padding: "2rem" }}>
         <Typography variant="h4" gutterBottom>
           {lessonForView.title}
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           {`${lessonForView.pentateuch} ${lessonForView.startChapter}:${lessonForView.startVerse} - ${lessonForView.endChapter}:${lessonForView.endVerse}`}
         </Typography>
-        {isLoading ? <Loader /> : <TabsWrapper tabs={tabs} />}
+        {isLoading ? <LessonSkeleton /> : <TabsWrapper tabs={tabs} />}
       </Paper>
       <Chat chatId={lessonDetails.chatId!} />
       <ChatComponent
