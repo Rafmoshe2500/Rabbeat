@@ -85,6 +85,8 @@ const TeacherPersonalArea = () => {
           items={filteredLessons}
           renderCard={renderStudentCard}
           viewMode={viewMode}
+          isLoading={isLoading}
+          noItemsMessage={"אין לך שיעורים כרגע"}
           xs={12}
           sm={6}
           md={4}
