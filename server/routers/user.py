@@ -5,7 +5,7 @@ from pymongo.errors import DuplicateKeyError
 from starlette import status
 
 from database.mongo import mongo_db
-from models.profile import UpdateProfile
+from models.profile import UpdateProfile, CreateSample
 from models.response import ResponseTeacherProfile
 from models.user import UserRegister, UserCredentials, User
 from tools.utils import create_jwt_token
@@ -84,3 +84,16 @@ async def search_student_by_email(email: str):
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
     return {'id': student['id'], 'name': f'{student["firstName"]} {student["lastName"]}'}
+
+
+@router.post("/profile/{teacher_id}/sample", status_code=201)
+async def add_new_sample(teacher_id: str, sample: CreateSample):
+    result = mongo_db.add_new_sample(sample)
+    if result:
+        profile = mongo_db.get_teacher_profile(teacher_id)
+        profile['sampleIds'].append(str(result.inserted_id))
+        result2 = mongo_db.update_profile(teacher_id, UpdateProfile(key='sampleIds', value=profile['sampleIds']))
+        if result2:
+            return "Success adding new sample"
+        mongo_db.remove_sample(str(result.inserted_id))
+    raise HTTPException(status_code=500, detail="Failed to add new sample")
