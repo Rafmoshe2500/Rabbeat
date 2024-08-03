@@ -171,7 +171,7 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
                 color={getStatusColor()}
               />
               <Typography variant="caption" color="text.secondary">
-                {`Version: ${lessonVersionsMapper[version!]}`}
+                {`סגנון קריאה: ${lessonVersionsMapper[version!]}`}
               </Typography>
             </Box>
           </CardContent>
