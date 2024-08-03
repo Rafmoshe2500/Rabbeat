@@ -16,7 +16,6 @@ import FloatingActionButton from "../components/common/floating-action-button";
 import DialogContent from "../components/teacher-lessons/dialog-content";
 import AddIcon from "@mui/icons-material/Add";
 import { useGetStudents } from "../hooks/useStudents";
-import StudentCard from "../components/students-dashboard/student-card";
 
 const MyStudentLessons: React.FC = () => {
   const { userDetails } = useUser();
