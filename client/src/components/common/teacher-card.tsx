@@ -74,9 +74,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
               </Grid>
               <Grid item xs={6}>
                 <ProfileSamples 
-                  onUpdate={() => {}} 
-                  samples={teacher.sampleIds} 
-                  canEdit={false} 
+                  teacherId={teacher.id} 
                 />
               </Grid>
               {isUserConnected && (

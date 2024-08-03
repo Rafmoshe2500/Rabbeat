@@ -25,3 +25,16 @@ export const getProfile = async (id: string): Promise<teacherProfile> => {
     return response.data;
   };
   
+  export const createSample = async (newSample: NewSample) => {
+    const response = await apiClient.post('/profile/sample', newSample);
+    return response.data;
+  };
+  
+  export const deleteSample = async (sampleId: string) => {
+    await apiClient.delete(`/profile/sample`, { data: { sampleId } });
+  };
+
+  export const getSamples = async (teacherId: string) => {
+    const response = await apiClient.get(`/profile/${teacherId}/samples`, { data: { teacherId } });
+    return response.data
+  }; 
