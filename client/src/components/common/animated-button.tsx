@@ -56,7 +56,7 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
             onClick={handleClick}
             disabled={isLoading || success}
             sx={{
-              minWidth: 150,
+              minWidth: 50,
               minHeight: 40,
               position: "relative",
             }}

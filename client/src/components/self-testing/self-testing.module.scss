@@ -2,7 +2,7 @@
     display: flex;
     place-content: center;
     align-items: center;
-    flex-direction: row-reverse;
+    flex-direction: column;
     direction: rtl;
 }
 
@@ -14,12 +14,10 @@
 }
 
 .correct-word {
-    padding-left: 3px;
     color: green;
 }
 
 .wrong-word {
-    padding-left: 3px;
     color: red;
 }
 
