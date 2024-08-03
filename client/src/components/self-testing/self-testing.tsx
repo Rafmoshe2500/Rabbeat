@@ -11,6 +11,7 @@ import { useTestAudio } from "../../hooks/useTestAudio";
 import { useUser } from "../../contexts/user-context";
 import AnimatedButton from "../common/animated-button";
 import withFade from "../../hoc/withFade.hoc";
+import { useNavigate } from "react-router-dom";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -25,6 +26,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (testAudio) {
@@ -61,7 +63,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     updateTestAudioMutation.mutate(convertedAudio, {
       onSuccess: () => {
         setIsSuccess(true);
-        console.log(isSuccess)
+        console.log(isSuccess);
+        setTimeout(() => {
+          navigate("/student-personal-area");
+        }, 1000);
       },
     });
   };
@@ -72,24 +77,18 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
       {userDetails?.type !== "teacher" ? (
         <div className={styles["record-container"]}>
+          {audioBlob && (
+            <AnimatedButton
+              onClick={handleUpload}
+              buttonText="שמור"
+              isLoading={updateTestAudioMutation.isPending}
+            />
+          )}
           <AudioRecorder
             onRecordingComplete={handleRecordingComplete}
             shouldStopRecording={shouldStopRecording}
             shouldDisplayTranscript
           />
-          {audioBlob && (
-            <AnimatedButton
-              onClick={handleUpload}
-              buttonText="שמור נסיון חדש"
-              isLoading={updateTestAudioMutation.isPending}
-              // You can customize other props as needed:
-              // successDuration={5000}
-              // loadingSize={28}
-              // successIconSize={36}
-              // variant="outlined"
-              // color="secondary"
-            />
-          )}
         </div>
       ) : (
         <></>
