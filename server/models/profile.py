@@ -11,11 +11,6 @@ class Recommendation(BaseModel):
     text: str
 
 
-class Sample(BaseModel):
-    audio: str
-    title: str
-
-
 class TeacherProfile(BaseModel):
     id: str
     image: str
@@ -30,9 +25,13 @@ class UpdateProfile(BaseModel):
     value: str | List[str | Recommendation]
 
 
-class CreateSample(BaseModel):
+class Sample(BaseModel):
     audio: str
     title: str
+
+
+class CreateSample(Sample):
+    teacherId: str
 
 
 class DeleteSample(BaseModel):
