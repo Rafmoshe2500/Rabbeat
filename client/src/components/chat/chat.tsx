@@ -30,8 +30,6 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recordingTime, setRecordingTime] = useState<number>(0);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   const toggleChat = () => {
@@ -137,14 +135,15 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
               <div
                 key={index}
                 className={`${styles.chatMessage} ${
-                  msg.sender === userType ? styles['my-messages'] : styles['not-my-messages']
+                  msg.sender === userType
+                    ? styles["my-messages"]
+                    : styles["not-my-messages"]
                 }`}
-                >
+              >
                 {msg.type === "text" ? (
                   <div>{msg.content as string}</div>
                 ) : (
                   <audio
-                    ref={audioRef}
                     controls
                     src={URL.createObjectURL(msg.content as Blob)}
                   />
@@ -153,31 +152,39 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
             ))}
           </div>
           <div className={styles.chatInput}>
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="הכנס הודעה..."
-            />
+            {isRecording ? (
+              <input type="text" value={`${recordingTime}s`}></input>
+            ) : (
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                placeholder="הכנס הודעה..."
+              />
+            )}
             <div className={styles.buttonGroup}>
-              <button onClick={handleSendMessage} className={styles.sendButton}>
-                <SendIcon fontSize="small" />
-              </button>
-              <button
-                onClick={isRecording ? stopRecording : startRecording}
-                className={`${styles.recordButton} ${isRecording ? styles.recording : ""}`}
-              >
-                {isRecording ? (
-                  <>
+              {inputMessage.trim() ? (
+                <button
+                  onClick={handleSendMessage}
+                  className={styles.sendButton}
+                >
+                  <SendIcon fontSize="small" />
+                </button>
+              ) : (
+                <button
+                  onClick={isRecording ? stopRecording : startRecording}
+                  className={`${styles.recordButton} ${
+                    isRecording ? styles.recording : ""
+                  }`}
+                >
+                  {isRecording ? (
                     <StopIcon fontSize="small" />
-                    <span className={styles.recordingTime}>{recordingTime}s</span>
-                  </>
-                ) : (
-                  <MicIcon fontSize="small" />
-                )}
-              </button>
+                  ) : (
+                    <MicIcon fontSize="small" />
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
