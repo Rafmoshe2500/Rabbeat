@@ -1,5 +1,4 @@
-// MyStudentLessons.tsx
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import { useUser } from "../contexts/user-context";
@@ -16,11 +15,18 @@ import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUse
 import FloatingActionButton from "../components/common/floating-action-button";
 import DialogContent from "../components/teacher-lessons/dialog-content";
 import AddIcon from "@mui/icons-material/Add";
+import { useGetStudents } from "../hooks/useStudents";
+import StudentCard from "../components/students-dashboard/student-card";
 
 const MyStudentLessons: React.FC = () => {
+  const { userDetails } = useUser();
   const location = useLocation();
   const studentId: string = location.state?.id;
-  const { userDetails } = useUser();
+  const { data: fetchedStudents = [] } = useGetStudents(userDetails!.id);
+  const studentDetails = useMemo(
+    () => fetchedStudents.find((student) => student.id === studentId),
+    [fetchedStudents]
+  );
 
   const {
     data: studentLessons,
@@ -84,14 +90,24 @@ const MyStudentLessons: React.FC = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: "8rem" }}>תלמיד חכם</div>
+      <div
+        style={{
+          marginBottom: "8rem",
+          pointerEvents: "none",
+          display: "flex",
+          flexDirection: "column",
+          placeContent: "center",
+        }}
+      >
+        <h1> {`${studentDetails?.firstName} ${studentDetails?.lastName}`}</h1>
+      </div>
 
       <DisplayCards
         items={studentLessons || []}
         renderCard={renderStudentCard}
         viewMode={viewMode}
         isLoading={isStudentLessonsLoading}
-        noItemsMessage={"אין לך שיעורים כרגע"}
+        noItemsMessage={"טרם הוספת שיעורים לתלמיד זה"}
         xs={12}
         sm={6}
         md={3}
