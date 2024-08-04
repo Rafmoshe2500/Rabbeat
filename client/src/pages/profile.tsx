@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   useTheme,
@@ -22,6 +22,7 @@ import withFade from "../hoc/withFade.hoc";
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { userDetails } = useUser();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -30,6 +31,9 @@ const Profile: React.FC = () => {
   const [editedProfile, setEditedProfile] = useState<teacherProfile | null>(
     null
   );
+
+  const route = `/my-students/${profile!.firstName}-${profile!.lastName}`;
+  navigate(route, { state: { id: profile!.id } });
 
   useEffect(() => {
     if (profile) {
