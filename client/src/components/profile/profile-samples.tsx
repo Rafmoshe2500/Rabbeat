@@ -178,25 +178,25 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
                   )}
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <CustomSlider
-                  size="small"
-                  value={currentTimes[sample.id] || 0}
-                  max={audioDurations[sample.id] || 100}
-                  onChange={(_, newValue) => {
-                    const audio = audioRefs.current[sample.id];
-                    if (audio) {
-                      audio.currentTime = newValue as number;
-                      setCurrentTimes(prev => ({ ...prev, [sample.id]: newValue as number }));
-                    }
-                  }}
-                  onChangeCommitted={(_, newValue) => {
-                    const audio = audioRefs.current[sample.id];
-                    if (audio) {
-                      audio.currentTime = newValue as number;
-                    }
-                  }}
-                />
-                  <Typography variant="caption" sx={{ ml: 2, minWidth: 40 }}>
+                  <CustomSlider
+                    size="small"
+                    value={currentTimes[sample.id] || 0}
+                    max={audioDurations[sample.id] || 100}
+                    onChange={(_, newValue) => {
+                      const audio = audioRefs.current[sample.id];
+                      if (audio) {
+                        audio.currentTime = newValue as number;
+                        setCurrentTimes(prev => ({ ...prev, [sample.id]: newValue as number }));
+                      }
+                    }}
+                    onChangeCommitted={(_, newValue) => {
+                      const audio = audioRefs.current[sample.id];
+                      if (audio) {
+                        audio.currentTime = newValue as number;
+                      }
+                    }}
+                  />
+                  <Typography variant="caption" sx={{ ml: 2, minWidth: 40}}>
                     {formatTime(currentTimes[sample.id] || 0)}
                   </Typography>
                 </Box>
