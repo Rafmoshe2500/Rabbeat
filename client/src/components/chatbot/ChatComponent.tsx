@@ -3,7 +3,8 @@ import styles from "./ChatComponent.module.scss";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { useSendMessageToChatbot } from "../../hooks/useSendMessagesToChatbot";
-import ChatBotHelper from '../../assets/images/bot.jpg'
+import ChatBotHelper from "../../assets/images/bot.jpg";
+import SendIcon from "@mui/icons-material/Send";
 
 interface Message {
   sender: "user" | "bot";
@@ -136,7 +137,11 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
                 isInputEmpty ? styles.disabled : ""
               } ${isPending ? styles.loading : ""}`}
             >
-              {isPending ? <div className={styles.loadingCircle}></div> : "➤"}
+              {isPending ? (
+                <div className={styles.loadingCircle}></div>
+              ) : (
+                <SendIcon fontSize="small" />
+              )}
             </button>
           </div>
         </div>
