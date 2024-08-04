@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     if (profile) {
-      const route = `/my-students/${profile.firstName}-${profile.lastName}`;
+      const route = `/profile/${profile.firstName}-${profile.lastName}`;
       navigate(route, { state: { id: profile.id } });
     }
   }, [profile, navigate]);
