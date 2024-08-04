@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 import uvicorn
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse
 
 from routers.chat import chat_router
-from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone
+from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone, profile
 from routers.torah import torah_router
 
 app = FastAPI(title='Rabbeat')
@@ -24,4 +26,17 @@ app.include_router(user.router, prefix="/api")
 app.include_router(chat_router, prefix="/api")
 app.include_router(study_zone.router, prefix="/api")
 app.include_router(student_tests.router, prefix="/api")
+app.include_router(profile.router, prefix="/api")
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    print(f"Request body: {await request.body()}")
+    print(f"Validation error: {exc}")
+    return JSONResponse(
+        status_code=422,
+        content={"detail": exc.errors()}
+    )
+
+
 uvicorn.run(app, host="0.0.0.0", port=3000)

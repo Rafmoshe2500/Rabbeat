@@ -382,5 +382,8 @@ class MongoDBApi:
     def remove_sample(self, sample_id):
         return self._db.teacher_samples.delete_one({"_id": ObjectId(sample_id)})
 
+    def get_samples(self, teacher_id):
+        return list(self._db.teacher_samples.find({"teacherId": teacher_id}))
+
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

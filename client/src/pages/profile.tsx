@@ -142,12 +142,11 @@ const Profile: React.FC = () => {
               }}
             >
               <ProfileSamples
-                samples={editedProfile.sampleIds}
-                canEdit={
-                  canEdit &&
-                  editedProfile.versions.length > editedProfile.sampleIds.length
-                }
-                onUpdate={(key, value) => handleProfileUpdate(key, value)}
+                teacherId={editedProfile.id}
+                // canEdit={
+                //   canEdit &&
+                //   editedProfile.versions.length > editedProfile.sampleIds.length
+                // }
               />
               <ProfileRecommendations
                 recommendations={editedProfile.recommendations}
