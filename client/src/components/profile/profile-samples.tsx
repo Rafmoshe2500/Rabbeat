@@ -1,17 +1,40 @@
-// ProfileSamples.tsx
-
-import React, { useState, useEffect } from 'react';
-import { Box, List, ListItem, ListItemText, Typography, IconButton, TextField } from '@mui/material';
-import { Add as AddIcon, Mic as MicIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, List, ListItem, Typography, IconButton, TextField, Divider } from '@mui/material';
+import { Add as AddIcon, Mic as MicIcon, Delete as DeleteIcon, PlayArrow as PlayArrowIcon, Pause as PauseIcon } from '@mui/icons-material';
 import DialogComponent from '../common/dialog';
 import { useTheme } from '@mui/material/styles';
 import AudioRecorder from '../audio-recorder/audio-recorder';
 import { useSamples } from '../../hooks/useProfile';
 import { useUser } from '../../contexts/user-context';
+import { Slider } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type ProfileSamplesProps = {
   teacherId: string;
 };
+
+const CustomSlider = styled(Slider)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  height: 4,
+  '& .MuiSlider-thumb': {
+    width: 8,
+    height: 8,
+    transition: '0.3s cubic-bezier(.47,1.64,.41,.8)',
+    '&:before': {
+      boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
+    },
+    '&:hover, &.Mui-focusVisible': {
+      boxShadow: `0px 0px 0px 8px ${theme.palette.primary.main}33`,
+    },
+    '&.Mui-active': {
+      width: 12,
+      height: 12,
+    },
+  },
+  '& .MuiSlider-rail': {
+    opacity: 0.28,
+  },
+}));
 
 const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
   const [samples, setSamples] = useState<Sample[]>([]);
@@ -22,6 +45,47 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
   const theme = useTheme();
   const { userDetails } = useUser()
   const { createSample, deleteSample, getSamples, isDeleting } = useSamples(teacherId);
+  const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
+  const [audioDurations, setAudioDurations] = useState<{ [key: string]: number }>({});
+  const [currentTimes, setCurrentTimes] = useState<{ [key: string]: number }>({});
+  const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newCurrentTimes: { [key: string]: number } = {};
+      samples.forEach((sample) => {
+        const audio = audioRefs.current[sample.id];
+        if (audio) {
+          newCurrentTimes[sample.id] = audio.currentTime;
+          if (!isFinite(audioDurations[sample.id]) && isFinite(audio.duration)) {
+            setAudioDurations((prev) => ({ ...prev, [sample.id]: audio.duration }));
+          }
+        }
+      });
+      setCurrentTimes(newCurrentTimes);
+    }, 10);
+  
+    return () => clearInterval(interval);
+  }, [samples, audioDurations]);
+  
+  const handleLoadedMetadata = (sampleId: string, e: React.SyntheticEvent<HTMLAudioElement>) => {
+    const audio = e.target as HTMLAudioElement;
+    if (isFinite(audio.duration) && audio.duration > 0) {
+      setAudioDurations(prev => ({ ...prev, [sampleId]: audio.duration }));
+    }
+  };
+
+  const togglePlayPause = (sampleId: string) => {
+    const audio = audioRefs.current[sampleId];
+    if (audio) {
+      if (isPlaying[sampleId]) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      setIsPlaying((prev) => ({ ...prev, [sampleId]: !prev[sampleId] }));
+    }
+  };
 
   useEffect(() => {
     if (samplesDialogOpen) {
@@ -73,6 +137,12 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
     });
   };
 
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   return (
     <Box sx={{ marginTop: theme.spacing(2.5), display: 'flex', justifyContent: 'center' }}>
       <IconButton 
@@ -92,24 +162,60 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
         onConfirm={() => setSamplesDialogOpen(false)}
       >
         <List>
-          {samples.map((sample) => (
-            <ListItem
-              key={sample.id}
-              secondaryAction={ teacherId === userDetails!.id &&
-                <IconButton edge="end" aria-label="delete" onClick={() => !isDeleting && handleDeleteSample(sample.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemText
-                primary={sample.title}
-                secondary={
-                  <audio controls src={sample.audio}>
-                    Your browser does not support the audio element.
-                  </audio>
-                }
-              />
-            </ListItem>
+          {samples.map((sample, index) => (
+            <React.Fragment key={sample.id}>
+              {index > 0 && <Divider />}
+              <ListItem sx={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 1 }}>
+                  <IconButton onClick={() => togglePlayPause(sample.id)}>
+                    {isPlaying[sample.id] ? <PauseIcon /> : <PlayArrowIcon />}
+                  </IconButton>
+                  <Typography variant="body2" sx={{ flexGrow: 1, ml: 2 }}>{sample.title}</Typography>
+                  {teacherId === userDetails!.id && (
+                    <IconButton edge="end" aria-label="delete" onClick={() => !isDeleting && handleDeleteSample(sample.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  )}
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <CustomSlider
+                  size="small"
+                  value={currentTimes[sample.id] || 0}
+                  max={audioDurations[sample.id] || 100}
+                  onChange={(_, newValue) => {
+                    const audio = audioRefs.current[sample.id];
+                    if (audio) {
+                      audio.currentTime = newValue as number;
+                      setCurrentTimes(prev => ({ ...prev, [sample.id]: newValue as number }));
+                    }
+                  }}
+                  onChangeCommitted={(_, newValue) => {
+                    const audio = audioRefs.current[sample.id];
+                    if (audio) {
+                      audio.currentTime = newValue as number;
+                    }
+                  }}
+                />
+                  <Typography variant="caption" sx={{ ml: 2, minWidth: 40 }}>
+                    {formatTime(currentTimes[sample.id] || 0)}
+                  </Typography>
+                </Box>
+                <audio 
+                  ref={(el) => { if (el) audioRefs.current[sample.id] = el; }}
+                  src={sample.audio}
+                  onLoadedMetadata={(e) => handleLoadedMetadata(sample.id, e)}
+                  onTimeUpdate={(e) => {
+                    const audio = e.target as HTMLAudioElement;
+                    setCurrentTimes(prev => ({ ...prev, [sample.id]: audio.currentTime }));
+                  }}
+                  onDurationChange={(e) => {
+                    const audio = e.target as HTMLAudioElement;
+                    setAudioDurations(prev => ({ ...prev, [sample.id]: audio.duration }));
+                  }}
+                  onEnded={() => setIsPlaying(prev => ({ ...prev, [sample.id]: false }))}
+                />
+              </ListItem>
+            </React.Fragment>
           ))}
         </List>
         {teacherId === userDetails!.id && <IconButton
