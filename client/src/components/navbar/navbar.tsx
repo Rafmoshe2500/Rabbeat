@@ -177,7 +177,7 @@ const Navbar = () => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
+                sx={{ outline: "none !important" }}
               >
                 <MenuIcon color="secondary" />
               </IconButton>
