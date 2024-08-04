@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container } from "@mui/material";
+import { styled } from "@mui/system";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 
 interface HighlightedTextProps {
   lesson: Lesson;
   audioRef: React.RefObject<HTMLAudioElement>;
 }
+
+const TextContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: "#f8f9fa",
+  padding: theme.spacing(3),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+  '& .highlighted': {
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.contrastText,
+    borderRadius: '4px',
+    transition: 'all 0.2s ease',
+  },
+}));
 
 const HighlightedText: React.FC<HighlightedTextProps> = ({
   lesson,
@@ -49,16 +63,16 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
   }, [audioRef.current, lesson?.text]);
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ bgcolor: "#cfe8fc" }}>
+    <Container maxWidth="md">
+      <TextContainer>
         {lesson?.text && (
           <DisplayText
-            highlightedWord={highlightedWord}
             text={lesson.text}
+            highlightedWord={highlightedWord}
             audioRef={audioRef}
           />
         )}
-      </Box>
+      </TextContainer>
     </Container>
   );
 };
