@@ -12,7 +12,7 @@
   justify-content: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  z-index: 1000;
+  z-index: 3;
   padding: 0%;
   margin: 0%;
 
@@ -69,6 +69,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 90%; // Mobile friendly width
   max-height: 90%; // Mobile friendly height
+  z-index: 5;
 }
 
 .chatHeader {
@@ -157,7 +158,7 @@
   position: absolute;
   left: 15px; // Moved 5px to the right
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(180deg);
   width: 35px;
   height: 35px;
   background: #007bff;
