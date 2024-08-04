@@ -34,10 +34,14 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     if (profile) {
-      const route = `/profile/${profile.firstName}-${profile.lastName}`;
-      navigate(route, { state: { id: profile.id } });
+      const route = `/profile/${profile.id}`;
+      navigate(route, { replace: true, state: { id: profile.id } });
+
+      const newUrl = `/profile/${profile.firstName}-${profile.lastName}`;
+      window.history.replaceState(null, '', newUrl);
     }
   }, [profile, navigate]);
+
 
   useEffect(() => {
     if (profile) {
