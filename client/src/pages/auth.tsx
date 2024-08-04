@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Paper, Button } from "@mui/material";
+import { Paper, Button, Box, TextField, TextFieldProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LoginForm from "../components/auth/login-form";
 import RegisterForm from "../components/auth/register-form";
@@ -11,9 +11,12 @@ import withFade from "../hoc/withFade.hoc";
 import HomeSkeleton from "../components/skeletons/home-skeleton";
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
-  ({ isflipped }) => ({
+  ({ theme, isflipped }) => ({
     width: "100%",
     maxWidth: 800,
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 1000, // Increased width for desktop
+    },
     minHeight: 600,
     position: "relative",
     transformStyle: "preserve-3d",
@@ -25,7 +28,7 @@ const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
   })
 );
 
-const FormSide = styled("div")({
+const FormSide = styled("div")(({ theme }) => ({
   position: "absolute",
   width: "100%",
   height: "100%",
@@ -33,9 +36,12 @@ const FormSide = styled("div")({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  // padding: '24px',
   overflowY: "auto",
-});
+  padding: theme.spacing(3),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2), // Less padding on mobile
+  },
+}));
 
 const FrontSide = styled(FormSide)({
   zIndex: 2,
@@ -54,7 +60,7 @@ const ButtonContainer = styled("div")({
   paddingTop: "24px",
 });
 
-const MessageOverlay = styled("div")<{ isError?: boolean }>(({ isError }) => ({
+const MessageOverlay = styled("div")<{ isError?: boolean }>(({ theme, isError }) => ({
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -68,6 +74,29 @@ const MessageOverlay = styled("div")<{ isError?: boolean }>(({ isError }) => ({
   fontSize: "18px",
   zIndex: 4,
   textAlign: "center",
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '16px',
+    padding: '12px 18px',
+  },
+}));
+
+const InputField = styled(TextField)<TextFieldProps>(({ theme }) => ({
+  margin: theme.spacing(1, 0),
+  [theme.breakpoints.down('sm')]: {
+    '& .MuiInputBase-input': {
+      fontSize: '0.875rem',
+    },
+    '& .MuiInputLabel-root': {
+      fontSize: '0.875rem',
+    },
+  },
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.875rem', // Smaller font size on mobile
+    padding: theme.spacing(1, 2), // Less padding on mobile
+  },
 }));
 
 const AuthForm: React.FC = () => {
@@ -158,7 +187,7 @@ const AuthForm: React.FC = () => {
   }
 
   return (
-    <div className="auth-container">
+    <Box>
       <RotatingPaper isflipped={!isLogin} elevation={3}>
         <FrontSide>
           {message && (
@@ -166,20 +195,20 @@ const AuthForm: React.FC = () => {
               {message.text}
             </MessageOverlay>
           )}
-          <div className="form-content">
-            <LoginForm onSubmit={handleSubmit} />
+          <Box>
+            <LoginForm onSubmit={handleSubmit} InputField={InputField} />
             <ButtonContainer>
-              <Button
+              <StyledButton
                 variant="contained"
                 color="primary"
                 type="submit"
                 form="login-form"
               >
                 התחבר
-              </Button>
-              <Button onClick={toggleForm}>להרשמה</Button>
+              </StyledButton>
+              <StyledButton onClick={toggleForm}>להרשמה</StyledButton>
             </ButtonContainer>
-          </div>
+          </Box>
         </FrontSide>
         <BackSide>
           {message && (
@@ -187,23 +216,23 @@ const AuthForm: React.FC = () => {
               {message.text}
             </MessageOverlay>
           )}
-          <div className="form-content">
-            <RegisterForm onSubmit={handleSubmit} />
+          <Box>
+            <RegisterForm onSubmit={handleSubmit} InputField={InputField} />
             <ButtonContainer>
-              <Button
+              <StyledButton
                 variant="contained"
                 color="primary"
                 type="submit"
                 form="register-form"
               >
                 הרשם
-              </Button>
-              <Button onClick={toggleForm}>להתחברות</Button>
+              </StyledButton>
+              <StyledButton onClick={toggleForm}>להתחברות</StyledButton>
             </ButtonContainer>
-          </div>
+          </Box>
         </BackSide>
       </RotatingPaper>
-    </div>
+    </Box>
   );
 };
 
