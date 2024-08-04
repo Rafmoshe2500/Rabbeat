@@ -2,7 +2,6 @@ import BookIcon from "@mui/icons-material/Book";
 import QuizIcon from "@mui/icons-material/Quiz";
 import { Box, Paper, Typography } from "@mui/material";
 import { useEffect, useMemo } from "react";
-import ConfettiExplosion from "react-confetti-explosion";
 import { useLocation, useParams } from "react-router-dom";
 import Chat from "../components/chat/chat";
 import ChatComponent from "../components/chatbot/ChatComponent";
@@ -14,6 +13,7 @@ import withFade from "../hoc/withFade.hoc";
 import { useLessonsById } from "../hooks/lessons/useLessonById";
 import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
 import LessonSkeleton from "../components/skeletons/lesson-skeleton";
+import { confetti } from "../utils/confetti";
 
 const LessonView = () => {
   const { userDetails } = useUser();
@@ -30,6 +30,8 @@ const LessonView = () => {
         userId: userDetails?.id!,
         newStatus: "in-progress",
       });
+    } else if (lessonDetails.status === "finished") {
+      confetti.start();
     }
   }, []);
 
@@ -62,11 +64,9 @@ const LessonView = () => {
         }}
       >
         {lessonDetails.status! === "finished" ? (
-          <ConfettiExplosion
-            particleCount={200}
-            zIndex={1000}
-            duration={5000}
-          />
+          <button style={{ outline: "none" }} onClick={confetti.start}>
+            קולולו!!!
+          </button>
         ) : (
           <></>
         )}
