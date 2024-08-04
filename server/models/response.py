@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 from pydantic import BaseModel
 
 from models.lesson import LessonDetails
-from models.profile import TeacherProfile
+from models.profile import TeacherProfile, Sample
 from models.user import User
 
 
@@ -44,3 +44,11 @@ class ExtendLessonDetailsResponse(LessonDetailsResponse):
 class ResponseGetChatNotifications(BaseModel):
     studentUnread: int
     teacherUnread: int
+
+
+class ResponseSample(Sample):
+    id: str
+
+
+class ResponseSamples(BaseModel):
+    samples: List[ResponseSample]

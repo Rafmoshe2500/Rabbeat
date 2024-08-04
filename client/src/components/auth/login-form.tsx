@@ -1,12 +1,13 @@
 // login-form.tsx
 import React, { useState } from 'react';
-import { Typography, Box, TextField } from '@mui/material';
+import { Typography, Box, TextFieldProps } from '@mui/material';
 
 interface LoginFormProps {
   onSubmit: (credentials: UserCredentials) => void;
+  InputField: React.ComponentType<TextFieldProps>;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, InputField }) => {
   const [credentials, setCredentials] = useState<UserCredentials>({ email: '', password: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
       <Typography variant="h4" gutterBottom sx={{direction: 'rtl', textAlign: 'center'}}>
         התחברות
       </Typography>
-      <TextField
+      <InputField
         fullWidth
         margin="normal"
         type="email"
@@ -33,7 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         onChange={handleChange}
         required
       />
-      <TextField
+      <InputField
         fullWidth
         margin="normal"
         type="password"

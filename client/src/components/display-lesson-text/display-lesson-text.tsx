@@ -34,6 +34,22 @@ const DisplayText: React.FC<DisplayTextProps> = ({
     }
   };
 
+  const renderWord = (word: string, isHighlighted: boolean) => {
+    const trimmedWord = word.trim();
+    const leadingSpaces = word.match(/^\s*/)?.[0] || '';
+    const trailingSpaces = word.match(/\s*$/)?.[0] || '';
+
+    return (
+      <>
+        {leadingSpaces}
+        <span className={isHighlighted ? "highlighted" : ""}>
+          {trimmedWord}
+        </span>
+        {trailingSpaces}
+      </>
+    );
+  };
+
   return (
     <div>
       <div
@@ -46,7 +62,7 @@ const DisplayText: React.FC<DisplayTextProps> = ({
             <h3>פרק {chapterKey}</h3>
             {Object.keys(textSection[chapterKey]).map((verseKey) => (
               <div key={verseKey}>
-                <span style={{ fontWeight: "bold" }}>{verseKey}:</span>
+                <span>{verseKey}:</span>
                 {Object.keys(textSection[chapterKey][verseKey]).map(
                   (wordIndex) => {
                     const word = textSection[chapterKey][verseKey][wordIndex];
@@ -60,21 +76,19 @@ const DisplayText: React.FC<DisplayTextProps> = ({
                       <span
                         key={wordIndex}
                         onClick={() => handleWordClick(word.time)}
-                        style={{
-                          backgroundColor: isHighlighted
-                            ? "yellow"
-                            : "transparent",
-                        }}
                       >
-                        {isTorahFontEnabled
-                          ? word.none
-                          : version === "both"
-                          ? word.both
-                          : version === "nikud"
-                          ? word.nikud
-                          : version === "teamim"
-                          ? word.teamim
-                          : word.none}{" "}
+                        {renderWord(
+                          isTorahFontEnabled
+                            ? word.none
+                            : version === "both"
+                            ? word.both
+                            : version === "nikud"
+                            ? word.nikud
+                            : version === "teamim"
+                            ? word.teamim
+                            : word.none,
+                          isHighlighted!
+                        )}<span> </span>
                       </span>
                     );
                   }

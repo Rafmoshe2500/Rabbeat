@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { getProfile, updateProfile, getAllTeachers, getConnection} from '../api/endpoints/profile'
+import { getProfile, updateProfile, getAllTeachers, getConnection, createSample, deleteSample, getSamples } from '../api/endpoints/profile'
 
 export const useGetProfile = (id: string | undefined) => {
     return useQuery({
@@ -39,3 +39,36 @@ export const useGetProfile = (id: string | undefined) => {
       queryFn: getAllTeachers
     });
   };
+
+  export const useSamples = (teacherId: string) => {
+    const queryClient = useQueryClient();
+  
+    const createSampleMutation = useMutation({
+      mutationFn: (newSample: NewSample) => createSample(newSample),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['profile', teacherId] });
+      },
+    });
+  
+    const deleteSampleMutation = useMutation({
+      mutationFn: (sampleId: string) => deleteSample(sampleId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['profile', teacherId] });
+      },
+    });
+    
+    const getSamplesMutation = useMutation({
+      mutationFn: () => getSamples(teacherId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['profile', teacherId] });
+      },
+    });
+  
+    return {
+      createSample: createSampleMutation.mutate,
+      deleteSample: deleteSampleMutation.mutate,
+      getSamples: getSamplesMutation.mutate,
+      isCreating: createSampleMutation.isPending,
+      isDeleting: deleteSampleMutation.isPending,
+    };
+};

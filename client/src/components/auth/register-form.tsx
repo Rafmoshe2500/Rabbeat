@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Typography, Box, Select, MenuItem, SelectChangeEvent, Grid, TextField, FormControl, InputLabel } from '@mui/material';
+import { Typography, Box, Select, MenuItem, SelectChangeEvent, Grid, TextFieldProps, FormControl, InputLabel } from '@mui/material';
 
 interface RegisterFormProps {
   onSubmit: (userData: UserRegister) => void;
+  InputField: React.ComponentType<TextFieldProps>;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, InputField }) => {
   const [userData, setUserData] = useState<UserRegister>({
     id: '',
     firstName: '',
@@ -27,31 +28,44 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (userData.password !== userData.confirm_password) {
-      // You might want to handle this error in the parent component
       alert('הסיסמאות אינן תואמות. אנא נסה שוב.');
       return;
     }
     onSubmit(userData);
   };
 
+  const inputStyle = {
+    width: '90%', // Reduce width by 30%
+    margin: '8px auto', // Center the input and add some vertical margin
+  };
+
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' , direction: 'rtl'}} id="register-form">
+    <Box 
+      component="form" 
+      onSubmit={handleSubmit} 
+      sx={{ 
+        width: '100%', 
+        maxWidth: { xs: '100%', sm: '600px', md: '800px' }, 
+        margin: '0 auto',
+        direction: 'rtl'
+      }} 
+      id="register-form"
+    >
       <Typography variant="h4" gutterBottom sx={{direction: 'rtl', textAlign: 'center'}}>
         הרשמה
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <TextField fullWidth margin="normal" name="id" label='ת"ז' value={userData.id} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" name="firstName" label="שם פרטי" value={userData.firstName} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" name="lastName" label="שם משפחה" value={userData.lastName} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" type="email" name="email" label='דוא"ל' value={userData.email} onChange={handleChange} required />
-          <TextField fullWidth margin="normal" name="phoneNumber" label="פלאפון" value={userData.phoneNumber} onChange={handleChange} required />
+          <InputField sx={inputStyle} name="id" label='ת"ז' value={userData.id} onChange={handleChange} required />
+          <InputField sx={inputStyle} name="firstName" label="שם פרטי" value={userData.firstName} onChange={handleChange} required />
+          <InputField sx={inputStyle} name="lastName" label="שם משפחה" value={userData.lastName} onChange={handleChange} required />
+          <InputField sx={inputStyle} type="email" name="email" label='דוא"ל' value={userData.email} onChange={handleChange} required />
+          <InputField sx={inputStyle} name="phoneNumber" label="פלאפון" value={userData.phoneNumber} onChange={handleChange} required />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField fullWidth margin="normal" name="address" label="כתובת מגורים" value={userData.address} onChange={handleChange} required />
-          <TextField
-            fullWidth
-            margin="normal"
+          <InputField sx={inputStyle} name="address" label="כתובת מגורים" value={userData.address} onChange={handleChange} required />
+          <InputField
+            sx={inputStyle}
             type="date"
             name="birthDay"
             label="תאריך לידה"
@@ -60,40 +74,39 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
             InputLabelProps={{ shrink: true }}
             required
           />
-<FormControl fullWidth margin="normal">
-  <InputLabel id="type-label">סוג משתמש</InputLabel>
-  <Select
-    labelId="type-label"
-    id="type"
-    name="type"
-    value={userData.type}
-    onChange={handleChange}
-    label="סוג משתמש"
-    sx={{
-      direction: 'rtl',
-      textAlign: 'right',
-      '& .MuiSelect-select': {
-        paddingRight: '32px',
-        paddingLeft: '14px',
-      },
-      '& .MuiSelect-icon': {
-        right: 'auto',
-        left: '7px',
-      },
-      '& .MuiOutlinedInput-notchedOutline': {
-        textAlign: 'right',
-      },
-    }}
-    required
-  >
-    <MenuItem value="student" dir='rtl'>תלמיד</MenuItem>
-    <MenuItem value="teacher" dir='rtl'>מורה</MenuItem>
-  </Select>
-</FormControl>
-          <TextField fullWidth margin="normal" type="password" name="password" label="סיסמא" value={userData.password} onChange={handleChange} required />
-          <TextField
-            fullWidth
-            margin="normal"
+          <FormControl sx={{...inputStyle, display: 'flex'}}>
+            <InputLabel id="type-label">סוג משתמש</InputLabel>
+            <Select
+              labelId="type-label"
+              id="type"
+              name="type"
+              value={userData.type}
+              onChange={handleChange}
+              label="סוג משתמש"
+              sx={{
+                direction: 'rtl',
+                textAlign: 'right',
+                '& .MuiSelect-select': {
+                  paddingRight: '32px',
+                  paddingLeft: '14px',
+                },
+                '& .MuiSelect-icon': {
+                  right: 'auto',
+                  left: '7px',
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  textAlign: 'right',
+                },
+              }}
+              required
+            >
+              <MenuItem value="student" dir='rtl'>תלמיד</MenuItem>
+              <MenuItem value="teacher" dir='rtl'>מורה</MenuItem>
+            </Select>
+          </FormControl>
+          <InputField sx={inputStyle} type="password" name="password" label="סיסמא" value={userData.password} onChange={handleChange} required />
+          <InputField
+            sx={inputStyle}
             type="password"
             name="confirm_password"
             label="אימות סיסמא"

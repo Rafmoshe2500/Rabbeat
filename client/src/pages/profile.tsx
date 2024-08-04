@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   useTheme,
@@ -22,6 +22,7 @@ import withFade from "../hoc/withFade.hoc";
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { userDetails } = useUser();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -30,6 +31,17 @@ const Profile: React.FC = () => {
   const [editedProfile, setEditedProfile] = useState<teacherProfile | null>(
     null
   );
+
+  useEffect(() => {
+    if (profile) {
+      const route = `/profile/${profile.id}`;
+      navigate(route, { replace: true, state: { id: profile.id } });
+
+      const newUrl = `/profile/${profile.firstName}-${profile.lastName}`;
+      window.history.replaceState(null, '', newUrl);
+    }
+  }, [profile, navigate]);
+
 
   useEffect(() => {
     if (profile) {
@@ -142,12 +154,11 @@ const Profile: React.FC = () => {
               }}
             >
               <ProfileSamples
-                samples={editedProfile.sampleIds}
-                canEdit={
-                  canEdit &&
-                  editedProfile.versions.length > editedProfile.sampleIds.length
-                }
-                onUpdate={(key, value) => handleProfileUpdate(key, value)}
+                teacherId={editedProfile.id}
+                // canEdit={
+                //   canEdit &&
+                //   editedProfile.versions.length > editedProfile.sampleIds.length
+                // }
               />
               <ProfileRecommendations
                 recommendations={editedProfile.recommendations}
