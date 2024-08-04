@@ -171,7 +171,7 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
                     {isPlaying[sample.id] ? <PauseIcon /> : <PlayArrowIcon />}
                   </IconButton>
                   <Typography variant="body2" sx={{ flexGrow: 1, ml: 2 }}>{sample.title}</Typography>
-                  {teacherId === userDetails!.id && (
+                  {userDetails && teacherId === userDetails.id && (
                     <IconButton edge="end" aria-label="delete" onClick={() => !isDeleting && handleDeleteSample(sample.id)}>
                       <DeleteIcon />
                     </IconButton>
@@ -218,7 +218,7 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
             </React.Fragment>
           ))}
         </List>
-        {teacherId === userDetails!.id && <IconButton
+        {userDetails && teacherId === userDetails.id && <IconButton
           color="primary"
           onClick={() => setAddSampleDialogOpen(true)}
           sx={{ padding: theme.spacing(1) }}
