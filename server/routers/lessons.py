@@ -65,7 +65,12 @@ async def get_lessons_details_by_user_id(user_id: str):
                                                              notificationsDetails=notifications)
             lessons.append(lesson_details)
 
-        return lessons
+        return sorted(lessons, key=lambda x: (
+            x.details.pentateuch,
+            x.details.startChapter,
+            x.details.startVerse
+        ))
+
     except Exception as e:
         print(lesson_id['lessonId'])
         print(lesson_details)
