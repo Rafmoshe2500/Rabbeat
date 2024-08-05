@@ -1,5 +1,5 @@
 import Home from "../pages/home";
-import LessonView from "../pages/lesson-view";
+import StudentLessonView from "../pages/student-lesson-view";
 import NotFound from "../pages/not-found";
 import Profile from "../pages/profile";
 import StudentPersonalArea from "../pages/student-personal-area";
@@ -10,6 +10,7 @@ import AuthForm from "../pages/auth";
 import TeacherStudents from "../pages/teacher-students";
 import MyStudentLessons from "../pages/my-students-lessons";
 import MyStudentLesson from "../pages/my-student-lesson";
+import TeacherLessonView from "../pages/teacher-lesson-view";
 
 const commonRoutes = [
   {
@@ -30,7 +31,7 @@ const baseRoutes = [
   ...commonRoutes,
   {
     path: "/lesson/:id",
-    element: <LessonView />,
+    element: <StudentLessonView />,
   },
 ];
 
@@ -47,6 +48,10 @@ export const teacherRoutes = [
   {
     path: "/teacher-personal-area",
     element: <TeacherPersonalArea />,
+  },
+  {
+    path: "/teacher-personal-area/lesson/:id",
+    element: <TeacherLessonView />,
   },
   {
     path: "/upload-lesson",
