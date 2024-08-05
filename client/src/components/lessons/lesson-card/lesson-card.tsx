@@ -22,9 +22,10 @@ import { lessonStatusMapper, lessonVersionsMapper } from "../../../utils/utils";
 type LessonCardProps = {
   lessonDetails: Partial<LessonDetails>;
   studentId?: string;
+  onClick?: () => void;
 };
 
-const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
+const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { userDetails } = useUser();
@@ -44,15 +45,19 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  const onClick = () => {
-    let route = "";
-    if (userDetails?.type === "student") {
-      route = `/lesson/${id}`;
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
     } else {
-      route = `${location.pathname}/lessons/${id}`;
-    }
+      let route = "";
+      if (userDetails?.type === "student") {
+        route = `/lesson/${id}`;
+      } else {
+        route = `${location.pathname}/lessons/${id}`;
+      }
 
-    navigate(route, { state: { id, lessonDetails, studentId } });
+      navigate(route, { state: { id, lessonDetails, studentId } });
+    }
   };
 
   const getTooltipTitle = () => {
@@ -113,7 +118,7 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
           },
         }}
       >
-        <CardActionArea onClick={onClick}>
+        <CardActionArea onClick={handleClick}>
           <CardContent>
             <Box
               sx={{
@@ -197,9 +202,6 @@ const LessonCard = ({ lessonDetails, studentId }: LessonCardProps) => {
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" gutterBottom>
-            Notification Details
-          </Typography>
           <Typography
             variant="body2"
             dangerouslySetInnerHTML={{ __html: getTooltipTitle() }}
