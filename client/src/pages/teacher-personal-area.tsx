@@ -12,6 +12,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import FloatingActionButton from '../components/common/floating-action-button';
 import DialogComponent from '../components/common/dialog';
 
+
 const TeacherPersonalArea = () => {
   const { userDetails } = useUser();
   const navigate = useNavigate();
@@ -38,6 +39,17 @@ const TeacherPersonalArea = () => {
     navigate("/upload-lesson");
   };
 
+  const handleLessonClick = (lesson: LessonDetails) => {
+    navigate(`/teacher-personal-area/lesson/${lesson.id}`, { state: { lesson } });
+  };
+
+  const renderStudentCard = (lesson: LessonDetails) => (
+    <LessonCard 
+      lessonDetails={lesson} 
+      onClick={() => handleLessonClick(lesson)}
+    />
+  );
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -57,10 +69,6 @@ const TeacherPersonalArea = () => {
   const handleFilterConfirm = () => {
     handleFilterClose();
   };
-
-  const renderStudentCard = (lesson: LessonDetails) => (
-    <LessonCard lessonDetails={lesson} />
-  );
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>

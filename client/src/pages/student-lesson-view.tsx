@@ -17,7 +17,7 @@ import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
 import LessonSkeleton from "../components/skeletons/lesson-skeleton";
 import { confetti } from "../utils/confetti";
 
-const LessonView = () => {
+const StudentLessonView = () => {
   const { userDetails } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
@@ -130,4 +130,4 @@ const LessonView = () => {
   );
 };
 
-export default withFade(LessonView);
+export default withFade(StudentLessonView);
