@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException
 from database.mongo import mongo_db
 from models.lesson import AssociateUserToLesson, AssociateNewStudent, DisassociateUserToLesson
 from models.response import ExtendLessonDetailsResponse
+from tools.utils import sorted_lessons
 from workflows.associate_student_to_lesson import AssociateUserToLessonFlow
 
 router = APIRouter(tags=['User-Lessons'])
@@ -59,7 +60,9 @@ async def get_shared_lessons(student_id: str, teacher_id: str):
             if notifications['lastSender'] == 'teacher':
                 notifications['messageNotifications'] = False
             shared_lesson['notificationsDetails'] = notifications
-        return result
+
+        return sorted_lessons(result)
+
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail=str(e))

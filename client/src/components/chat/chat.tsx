@@ -10,9 +10,10 @@ import { Badge } from "@mui/material";
 
 interface ChatProps {
   chatId: string;
+  title?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ chatId }) => {
+const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
   const [isOpen, setIsOpen] = useState<boolean>();
   const { userDetails } = useUser();
   const userType = userDetails!.type!;
@@ -122,7 +123,7 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
       {isOpen && (
         <div className={styles.chatWindow}>
           <div className={styles.chatHeader}>
-            <h3>צ'אט</h3>
+            <h3>צ'אט - {title}</h3>
             <button
               onClick={() => setIsOpen(false)}
               className={styles.closeButton}

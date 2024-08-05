@@ -1,8 +1,10 @@
 import datetime
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Union
 
 import jwt
 from bson import ObjectId
+
+from models.response import ExtendLessonDetailsResponse, LessonDetailsResponse
 
 
 def object_id_str(obj):
@@ -50,3 +52,19 @@ def trim_numbers(numbers: List[float], words: List[str], difference: int) -> Tup
 
 def create_jwt_token(user: dict):
     return jwt.encode(user, 'your_secret_key', algorithm='HS256')
+
+
+def sorted_lessons(lessons: List[Union[LessonDetailsResponse, ExtendLessonDetailsResponse, Dict]]):
+    def get_sort_keys(lesson):
+        if isinstance(lesson, dict):
+            details = lesson['details']
+        else:
+            details = lesson.details
+
+        return (
+            details['pentateuch'] if isinstance(details, dict) else details.pentateuch,
+            details['startChapter'] if isinstance(details, dict) else details.startChapter,
+            details['startVerse'] if isinstance(details, dict) else details.startVerse
+        )
+
+    return sorted(lessons, key=get_sort_keys)

@@ -1,8 +1,10 @@
 import BookIcon from "@mui/icons-material/Book";
 import QuizIcon from "@mui/icons-material/Quiz";
-import { Box, Paper, Typography } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Paper, Typography, Button } from "@mui/material";
 import { useEffect, useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Chat from "../components/chat/chat";
 import ChatComponent from "../components/chatbot/ChatComponent";
 import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
@@ -18,7 +20,11 @@ import { confetti } from "../utils/confetti";
 const LessonView = () => {
   const { userDetails } = useUser();
   const location = useLocation();
-  const lessonDetails: LessonDetails = location.state?.lessonDetails;
+  const navigate = useNavigate();
+  const { lessonDetails, allLessons } = location.state as { 
+    lessonDetails: LessonDetails; 
+    allLessons: LessonDetails[]; 
+  };
   const { id } = useParams<{ id: string }>();
   const { data: lesson, isLoading } = useLessonsById(id!);
   const { mutate: updateLessonStatus } = useUpdateLessonStatus();
@@ -33,12 +39,20 @@ const LessonView = () => {
     } else if (lessonDetails.status === "finished") {
       confetti.start();
     }
-  }, []);
+  }, [lessonDetails, updateLessonStatus, userDetails]);
 
   const lessonForView = useMemo(
-    () => ({ ...(lesson || {}), ...(lessonDetails || {}) } as Lesson),
+    () => ({ ...(lesson || {}), ...(lessonDetails || {}) }) as Lesson,
     [lesson, lessonDetails]
   );
+
+  const currentIndex = allLessons.findIndex((lesson) => lesson.id === id);
+  const previousLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
+  const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+
+  const navigateToLesson = (lesson: LessonDetails) => {
+    navigate(`/lesson/${lesson.id}`, { state: { lessonDetails: lesson, allLessons } });
+  };
 
   const tabs = [
     {
@@ -63,12 +77,10 @@ const LessonView = () => {
           justifyContent: "center",
         }}
       >
-        {lessonDetails.status! === "finished" ? (
+        {lessonDetails.status === "finished" && (
           <button style={{ outline: "none" }} onClick={confetti.start}>
             קולולו!!!
           </button>
-        ) : (
-          <></>
         )}
       </Box>
       <Paper elevation={3} sx={{ padding: "2rem" }}>
@@ -79,9 +91,33 @@ const LessonView = () => {
           {`${lessonForView.pentateuch} ${lessonForView.startChapter}:${lessonForView.startVerse} - ${lessonForView.endChapter}:${lessonForView.endVerse}`}
         </Typography>
         {isLoading ? <LessonSkeleton /> : <TabsWrapper tabs={tabs} />}
+
+    <Box sx={{ display: 'flex', mt: 2, justifyContent: 'space-between' }}>
+      <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+        {previousLesson && (
+          <Button
+            startIcon={<ArrowForwardIcon />}
+            onClick={() => navigateToLesson(previousLesson)}
+          >
+            שיעור קודם
+          </Button>
+        )}
+      </Box>
+      <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+        {nextLesson && (
+          <Button
+            endIcon={<ArrowBackIcon />}
+            onClick={() => navigateToLesson(nextLesson)}
+          >
+            שיעור הבא
+          </Button>
+        )}
+      </Box>
+    </Box>
       </Paper>
-      <Chat chatId={lessonDetails.chatId!} />
+      <Chat chatId={lessonDetails.chatId!} title={lessonDetails.title} />
       <ChatComponent
+        title={lessonDetails.title}
         messageContext={{
           pentateuch: lessonDetails.pentateuch,
           startChapter: lessonDetails.startChapter,
