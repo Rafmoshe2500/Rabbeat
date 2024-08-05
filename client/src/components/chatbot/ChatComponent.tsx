@@ -13,6 +13,7 @@ interface Message {
 }
 
 type ChatComponentProps = {
+  title?: string
   messageContext: {
     pentateuch: string;
     startChapter: string;
@@ -22,7 +23,7 @@ type ChatComponentProps = {
   };
 };
 
-const ChatComponent = ({ messageContext }: ChatComponentProps) => {
+const ChatComponent = ({ messageContext, title }: ChatComponentProps) => {
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [processedMessages, setProcessedMessages] = useState<Message[]>([]);
@@ -105,7 +106,7 @@ const ChatComponent = ({ messageContext }: ChatComponentProps) => {
       {isChatOpen && (
         <div className={styles.chatWindow}>
           <div className={styles.chatHeader}>
-            <h3>צ'אט על הפרשה</h3>
+            <h3>צ'אטבוט על - {title}</h3>
             <button onClick={toggleChat} className={styles.closeButton}>
               X
             </button>

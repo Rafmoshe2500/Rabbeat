@@ -115,8 +115,9 @@ const LessonView = () => {
       </Box>
     </Box>
       </Paper>
-      <Chat chatId={lessonDetails.chatId!} />
+      <Chat chatId={lessonDetails.chatId!} title={lessonDetails.title} />
       <ChatComponent
+        title={lessonDetails.title}
         messageContext={{
           pentateuch: lessonDetails.pentateuch,
           startChapter: lessonDetails.startChapter,
