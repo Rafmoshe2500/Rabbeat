@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException
 from database.mongo import mongo_db
 from models.lesson import Lesson, CreateLesson, LessonDetails
 from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonDetailsResponse
+from tools.utils import sorted_lessons
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
@@ -64,15 +65,7 @@ async def get_lessons_details_by_user_id(user_id: str):
                 lesson_details = ExtendLessonDetailsResponse(**lesson_details.dict(), studyZoneDetails=study_zone,
                                                              notificationsDetails=notifications)
             lessons.append(lesson_details)
-
-        return sorted(lessons, key=lambda x: (
-            x.details.pentateuch,
-            x.details.startChapter,
-            x.details.startVerse
-        ))
+        return sorted_lessons(lessons)
 
     except Exception as e:
-        print(lesson_id['lessonId'])
-        print(lesson_details)
-        print(e)
         raise HTTPException(status_code=500, detail=str(e))
