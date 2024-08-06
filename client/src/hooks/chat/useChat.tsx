@@ -17,7 +17,7 @@ export const useChat = (chatId: string, userType: User["type"]) => {
   const sendMessageMutation = useMutation({
     mutationFn: (message: Message) => postMessage(chatId, message),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chat"] });
+      queryClient.invalidateQueries({ queryKey: ["chat", "students"] });
     },
   });
 
