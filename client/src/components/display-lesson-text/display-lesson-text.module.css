@@ -1,4 +1,6 @@
 .container{
     max-height: 20rem;
     overflow-y: auto;
+    direction: ltr;
+    padding-right: 5px;
 }
