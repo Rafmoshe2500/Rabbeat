@@ -10,14 +10,13 @@ interface HighlightedTextProps {
 
 const TextContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "#f8f9fa",
-  padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius,
   boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-  '& .highlighted': {
+  "& .highlighted": {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText,
-    borderRadius: '4px',
-    transition: 'all 0.2s ease',
+    borderRadius: "4px",
+    transition: "all 0.2s ease",
   },
 }));
 

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { 
-  Box, 
+import {
+  Box,
   IconButton,
   Tooltip,
   Divider,
   Grid,
-  Collapse
+  Collapse,
 } from "@mui/material";
 import { StickyNote2, VolumeUp, VolumeMute } from "@mui/icons-material";
 import NotesPanel from "../../notes-panel/notes-panel";
@@ -46,39 +46,48 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   }, [lesson?.audio]);
 
   return (
-    <Box sx={{ maxWidth: 800, margin: '0 auto' }}>
-        <Grid container spacing={2} alignItems="center" justifyContent="space-between">
-          <Grid item>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              {audioURL && (
-                <Tooltip title={isPlaying ? "השהה אודיו" : "נגן אודיו"}>
-                  <IconButton onClick={toggleAudioPlayback} color="primary">
-                    {isPlaying ? <VolumeMute /> : <VolumeUp />}
-                  </IconButton>
-                </Tooltip>
-              )}
-              <Tooltip title={isNotesPanelOpen ? "סגור הערות" : "פתח הערות"}>
-                <IconButton onClick={toggleNotesPanel} color="primary">
-                  <StickyNote2 />
+    <Box sx={{ maxWidth: 800, margin: "0 auto" }}>
+      <Grid
+        container
+        spacing={2}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Grid item>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            {audioURL && (
+              <Tooltip title={isPlaying ? "השהה אודיו" : "נגן אודיו"}>
+                <IconButton onClick={toggleAudioPlayback} color="primary">
+                  {isPlaying ? <VolumeMute /> : <VolumeUp />}
                 </IconButton>
               </Tooltip>
-            </Box>
-          </Grid>
+            )}
+            <Tooltip title={isNotesPanelOpen ? "סגור הערות" : "פתח הערות"}>
+              <IconButton onClick={toggleNotesPanel} color="primary">
+                <StickyNote2 />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Grid>
+      </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Collapse in={isNotesPanelOpen}>
-          {lesson && lesson.id && (
-            <NotesPanel lessonId={lesson.id} audioRef={audioRef} />
-          )}
-      </Collapse>
-        <Box sx={{ mt: 3 }}>
-          <HighlightedText lesson={lesson!} audioRef={audioRef} />
-        </Box>
-
-        {audioURL && (
-          <audio ref={audioRef} src={audioURL} onEnded={() => setIsPlaying(false)} />
+      <Divider sx={{ my: 2 }} />
+      <Collapse in={isNotesPanelOpen}>
+        {lesson && lesson.id && (
+          <NotesPanel lessonId={lesson.id} audioRef={audioRef} />
         )}
+      </Collapse>
+      <Box sx={{ mt: 1 }}>
+        <HighlightedText lesson={lesson!} audioRef={audioRef} />
+      </Box>
+
+      {audioURL && (
+        <audio
+          ref={audioRef}
+          src={audioURL}
+          onEnded={() => setIsPlaying(false)}
+        />
+      )}
     </Box>
   );
 };
