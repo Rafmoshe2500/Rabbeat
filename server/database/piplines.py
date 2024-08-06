@@ -204,7 +204,8 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                     },
                     {
                         "$project": {
-                            "audioNotification": 1
+                            "audioNotification": 1,
+                            "messageNotifications": 1
                         }
                     }
                 ],
@@ -221,7 +222,20 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                 "expired_date": 1,
                 "updated": {
                     "$cond": {
-                        "if": {"$anyElementTrue": ["$lesson_notifications.audioNotification"]},
+                        "if": {
+                            "$anyElementTrue": {
+                                "$map": {
+                                    "input": "$lesson_notifications",
+                                    "as": "notification",
+                                    "in": {
+                                        "$or": [
+                                            {"$eq": ["$$notification.audioNotification", True]},
+                                            {"$eq": ["$$notification.messageNotifications", True]}
+                                        ]
+                                    }
+                                }
+                            }
+                        },
                         "then": True,
                         "else": False
                     }
