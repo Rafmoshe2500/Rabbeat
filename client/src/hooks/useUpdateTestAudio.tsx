@@ -13,8 +13,13 @@ export const useUpdateTestAudio = (testAudioId: string) => {
 };
 
 export const useMarkAudioAsRead = (options?: UseMutationOptions<void, Error, string>) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (audioId: string) => markAudioAsRead(audioId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+    },
     ...options,
   });
 };
