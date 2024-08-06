@@ -29,8 +29,8 @@ const MyStudentLesson = () => {
   useEffect(() => {
     if (lessonDetails.audioNotification && lessonDetails.testAudioId) {
       markAudioAsReadMutation.mutate(lessonDetails.testAudioId);
-      setMessage('שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר.');
-      setSeverity('info');
+      setMessage('שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך.');
+      setSeverity('success');
       setOpen(true);
       
       const timer = setTimeout(() => {
