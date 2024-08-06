@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateTestAudio } from "../api/endpoints/testAudio";
+import { useMutation, useQueryClient, UseMutationOptions } from "@tanstack/react-query";
+import { updateTestAudio, markAudioAsRead } from "../api/endpoints/testAudio";
 
 export const useUpdateTestAudio = (testAudioId: string) => {
   const queryClient = useQueryClient();
@@ -9,5 +9,12 @@ export const useUpdateTestAudio = (testAudioId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["testAudio"] });
     },
+  });
+};
+
+export const useMarkAudioAsRead = (options?: UseMutationOptions<void, Error, string>) => {
+  return useMutation({
+    mutationFn: (audioId: string) => markAudioAsRead(audioId),
+    ...options,
   });
 };

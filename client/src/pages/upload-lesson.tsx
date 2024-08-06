@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { convertBlobToBase64 } from "../utils/audio-parser";
 import BibleSelector from "../components/bible-selector/bible-selector";
 import { useCreateOrUpdateLesson } from "../hooks/useCreateOrUpdateLesson";
@@ -79,7 +80,7 @@ const UploadLessonPage: React.FC = () => {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
-
+  const navigate = useNavigate();
   const { mutate } = useCreateOrUpdateLesson(userDetails?.id!);
 
   const [lesson, setLesson] = useState({
@@ -122,7 +123,7 @@ const UploadLessonPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const lessonToUpload = {
       ...lesson,
       ...torahSection,
@@ -131,7 +132,21 @@ const UploadLessonPage: React.FC = () => {
       highlightsTimestamps: timestamps,
       sttText: transcript,
     } as FormattedLesson;
-    mutate(lessonToUpload);
+  
+    mutate(lessonToUpload, {
+      onSuccess: async (data) => {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+  
+        if (data && data.id) {
+          navigate(`/teacher-personal-area/lesson/${data.id}`);
+        } else {
+          console.error("Lesson ID not received in the response");
+        }
+      },
+      onError: (error) => {
+        console.error("Error creating lesson:", error);
+      }
+    });
   };
 
   const isFormComplete = (): boolean => {

@@ -27,3 +27,8 @@ export const getTestAudio = async (testAudioId: string): Promise<Blob> => {
     throw error;
   }
 };
+
+export const markAudioAsRead = async (audioId: string): Promise<void> => {
+  const response = await apiClient.put(`/test-audio/${audioId}/read`);
+  return response.data;
+};
