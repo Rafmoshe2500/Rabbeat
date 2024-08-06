@@ -64,3 +64,17 @@ def update_self_test_audio(audio_id: str, audio: LessonTestAudio):
     if not result:
         raise HTTPException(status_code=404, detail="Audio not found")
     return "Success to update test audio"
+
+
+@router.put("/test-audio/{audio_id}/read", status_code=200)
+async def teacher_read_audio(audio_id):
+    study_zone = mongo_db.get_study_zone_by_field('testAudioId', audio_id)
+    result = mongo_db.update_notification_by_id(study_zone['notificationsId'],
+                                                {'audioNotification': False})
+    if not result:
+        raise HTTPException(status_code=500, detail="Something went wrong")
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Audio not found")
+    if result.modified_count == 0:
+        raise HTTPException(status_code=304, detail="Audio notification not modified")
+    return "Audio notification marked as read"
