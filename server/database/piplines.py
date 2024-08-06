@@ -205,7 +205,8 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                     {
                         "$project": {
                             "audioNotification": 1,
-                            "messageNotifications": 1
+                            "messageNotifications": 1,
+                            "lastSender": 1,
                         }
                     }
                 ],
@@ -230,7 +231,12 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                                     "in": {
                                         "$or": [
                                             {"$eq": ["$$notification.audioNotification", True]},
-                                            {"$eq": ["$$notification.messageNotifications", True]}
+                                            {
+                                                "$and": [
+                                                    {"$eq": ["$$notification.messageNotifications", True]},
+                                                    {"$eq": ["$$notification.lastSender", "student"]}
+                                                ]
+                                            }
                                         ]
                                     }
                                 }
@@ -242,6 +248,7 @@ def get_students_by_teacher_ids_pipeline(teacher_id):
                 }
             }
         },
+
         {
             "$group": {
                 "_id": {
