@@ -150,12 +150,12 @@ const Navbar = () => {
         zIndex: 1,
         backgroundColor: theme.palette.primary.main,
         transition: "top 0.3s",
-        top: visible ? 0 : "-64px", // Adjust this value based on your AppBar height
+        top: visible ? 0 : "-64px",
         marginBottom: "3rem",
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar sx={{ flexDirection: "row-reverse" }}>
+        <Toolbar variant="dense" sx={{ flexDirection: "row-reverse" }}>
           {isMobile ? (
             <>
               <Box
@@ -168,7 +168,7 @@ const Navbar = () => {
                 <img
                   src={RabBeatLogo}
                   alt="RabBeat Logo"
-                  style={{ width: "120px", height: "auto" }}
+                  style={{ width: "120px" }}
                 />
               </Box>
               <IconButton
@@ -177,7 +177,7 @@ const Navbar = () => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                sx={{ outline: "none !important" }}
+                sx={{ outline: "none !important", padding: "0 !important" }}
               >
                 <MenuIcon color="secondary" />
               </IconButton>
@@ -215,7 +215,7 @@ const Navbar = () => {
                 <img
                   src={RabBeatLogo}
                   alt="RabBeat Logo"
-                  style={{ width: "120px", height: "auto" }}
+                  style={{ width: "120px" }}
                 />
               </Box>
               <Box
