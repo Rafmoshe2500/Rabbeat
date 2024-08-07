@@ -22,7 +22,7 @@ const StudentPersonalArea = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: "8rem" }}>השיעורים שלי</div>
+      <h1>השיעורים שלי</h1>
       <DisplayCards
         items={lessons || []}
         renderCard={renderLessonCard}
