@@ -29,13 +29,11 @@ app.include_router(student_tests.router, prefix="/api")
 app.include_router(profile.router, prefix="/api")
 
 
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
-    print(f"Request body: {await request.body()}")
-    print(f"Validation error: {exc}")
+@app.exception_handler(Exception)
+async def validation_exception_handler(_, exc):
     return JSONResponse(
-        status_code=422,
-        content={"detail": exc.errors()}
+        status_code=500,
+        content={"detail": 'Oops. something went wrong. try again later.'}
     )
 
 
