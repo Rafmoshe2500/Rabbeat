@@ -11,7 +11,7 @@ const TeacherStudents: React.FC = () => {
 
   return (
     <div>
-      <Typography variant="h1">התלמידים שלי</Typography>
+      <Typography variant="h1" gutterBottom>התלמידים שלי</Typography>
       <StudentGrid />
       <FloatingActionButton
         icon={<AddIcon />}

@@ -22,7 +22,7 @@ const StudentPersonalArea = () => {
 
   return (
     <div>
-      <Typography variant="h1">השיעורים שלי</Typography>
+      <Typography variant="h1" gutterBottom>השיעורים שלי</Typography>
       <DisplayCards
         items={lessons || []}
         renderCard={renderLessonCard}

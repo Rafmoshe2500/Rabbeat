@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useMediaQuery } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { useUser } from "../contexts/user-context";
 import { useStudentLessonsByTeacher } from "../hooks/lessons/useStudentLessonsByTeacher";
 import {
@@ -91,14 +91,13 @@ const MyStudentLessons: React.FC = () => {
     <div>
       <div
         style={{
-          marginBottom: "8rem",
           pointerEvents: "none",
           display: "flex",
           flexDirection: "column",
           placeContent: "center",
         }}
       >
-        <h1> {`${studentDetails?.firstName} ${studentDetails?.lastName}`}</h1>
+        <Typography variant="h1" gutterBottom> {`${studentDetails?.firstName} ${studentDetails?.lastName}`}</Typography>
       </div>
 
       <DisplayCards
