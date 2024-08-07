@@ -30,7 +30,6 @@ export const rtlInputStyles = {
   },
 };
 
-
 const theme = createTheme({
   direction: 'rtl',
   palette: {
@@ -57,12 +56,62 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
+      fontSize: '3rem',
+      fontWeight: 800,
+      textTransform: 'uppercase',
+      color: '#4B4949',
+      textShadow: '2px 2px 4px rgba(94,47,13,0.3)',
+      letterSpacing: '0.05em',
+      position: 'relative',
+      display: 'inline-block',
+      padding: '0 10px',
+      '&::before, &::after': {
+        content: '""',
+        position: 'absolute',
+        top: '50%',
+        height: '2px',
+        background: '#A0522D',
+        transition: 'width 0.3s ease-in-out',
+      },
+      '&::before': {
+        right: '100%',
+        width: '0',
+      },
+      '&::after': {
+        left: '100%',
+        width: '0',
+      },
+      '&:hover::before, &:hover::after': {
+        width: '50%',
+      },
     },
     h2: {
-      fontSize: '2rem',
-      fontWeight: 500,
+      fontSize: '1.5rem',
+      fontWeight: 600,
+      color: '#5E2F0D',
+      letterSpacing: '0.03em',
+      position: 'relative',
+      display: 'inline-block',
+      padding: '0 10px',
+      '&::before, &::after': {
+        content: '""',
+        position: 'absolute',
+        top: '50%',
+        height: '1px',
+        background: '#9E9E9E',
+        transition: 'width 0.3s ease-in-out',
+      },
+      '&::before': {
+        right: '100%',
+        width: '0',
+      },
+      '&::after': {
+        left: '100%',
+        width: '0',
+      },
+      '&:hover::before, &:hover::after': {
+        width: '100%',
+      },
     },
     body1: {
       fontSize: '1rem',

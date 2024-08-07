@@ -26,7 +26,7 @@ const TeacherCard: React.FC<TeacherCardProps> = ({ teacher }) => {
   return (
     <Card>
       <CardContent dir='rtl'>
-        <Typography variant="h5" component="h2" gutterBottom align="center">
+        <Typography variant="h2" component="h2" gutterBottom align="center">
           {`${teacher.firstName} ${teacher.lastName}`}
         </Typography>
         <Divider orientation="horizontal" flexItem sx={{marginBottom: '5px'}}/>

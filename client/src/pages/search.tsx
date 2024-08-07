@@ -70,13 +70,7 @@ const TeacherSearch: React.FC = () => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ color: theme.palette.text.primary }}
-      >
-        חיפוש מורה לקריאה בתורה
-      </Typography>
+      <Typography variant="h1" gutterBottom>חיפוש מורה לקריאה בתורה</Typography>
 
       <Box
         sx={{

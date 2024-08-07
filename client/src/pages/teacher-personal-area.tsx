@@ -4,7 +4,7 @@ import { useUser } from "../contexts/user-context";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/loader";
 import DisplayCards from "../components/common/display-cards/display-cards";
-import { useMediaQuery, TextField, Radio, RadioGroup, FormControlLabel, FormControl, IconButton } from "@mui/material";
+import { useMediaQuery, TextField, Radio, RadioGroup, FormControlLabel, FormControl, IconButton, Typography } from "@mui/material";
 import LessonCard from "../components/lessons/lesson-card/lesson-card";
 import withFade from "../hoc/withFade.hoc";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -72,7 +72,7 @@ const TeacherPersonalArea = () => {
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>אזור אישי למורה</h1>
+      <Typography variant="h1" gutterBottom>השיעורים שלי</Typography>
 
       <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
         <TextField

@@ -27,7 +27,7 @@ const StyledCard = styled(Card, {
   width: $viewMode === "grid" ? 280 : "100%",
   margin: $viewMode === "grid" ? "1rem" : "0.5rem 0",
   position: "relative",
-  border: `1px solid ${$isExpired ? theme.palette.grey[400] : theme.palette.success.main}`,
+  border: `2px solid ${$isExpired ? theme.palette.grey[400] : theme.palette.success.main}`,
   transition: "0.3s",
   "&:hover": {
     boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",

@@ -1,7 +1,7 @@
 import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUser";
 import { useUser } from "../contexts/user-context";
 import DisplayCards from "../components/common/display-cards/display-cards";
-import { useMediaQuery } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import LessonCard from "../components/lessons/lesson-card/lesson-card";
 import withFade from "../hoc/withFade.hoc";
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ const StudentPersonalArea = () => {
 
   return (
     <div>
-      <h1>השיעורים שלי</h1>
+      <Typography variant="h1">השיעורים שלי</Typography>
       <DisplayCards
         items={lessons || []}
         renderCard={renderLessonCard}
