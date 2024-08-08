@@ -11,6 +11,7 @@ import { StickyNote2, VolumeUp, VolumeMute } from "@mui/icons-material";
 import NotesPanel from "../../notes-panel/notes-panel";
 import HighlightedText from "../../highlighted-text/highlighted-text";
 import withFade from "../../../hoc/withFade.hoc";
+import styles from './lesson-content.module.css';
 
 interface LessonContentProps {
   lesson?: Lesson;
@@ -46,7 +47,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   }, [lesson?.audio]);
 
   return (
-    <Box sx={{ maxWidth: 800, margin: "0 auto" }}>
+    <Box className={styles['lesson-content']} sx={{ maxWidth: 800, margin: "0 auto" }}>
       <Grid
         container
         spacing={2}
