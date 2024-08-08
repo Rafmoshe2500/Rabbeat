@@ -6,6 +6,7 @@ import {
   Divider,
   Grid,
   Collapse,
+  useMediaQuery, useTheme
 } from "@mui/material";
 import { StickyNote2, VolumeUp, VolumeMute } from "@mui/icons-material";
 import NotesPanel from "../../notes-panel/notes-panel";
@@ -22,6 +23,8 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const [isNotesPanelOpen, setIsNotesPanelOpen] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const toggleNotesPanel = () => {
     setIsNotesPanelOpen((prev) => !prev);
@@ -47,7 +50,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   }, [lesson?.audio]);
 
   return (
-    <Box className={styles['lesson-content']} sx={{ maxWidth: 800, margin: "0 auto" }}>
+    <Box className={styles['lesson-content']} sx={{ maxWidth: 800, margin: "0 auto", width: isMobile ? "100%" : "auto" }}>
       <Grid
         container
         spacing={2}
@@ -78,7 +81,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
           <NotesPanel lessonId={lesson.id} audioRef={audioRef} />
         )}
       </Collapse>
-      <Box sx={{ mt: 1 }}>
+      <Box sx={{ mt: 1, width: isMobile ? "100%" : "auto" }}>
         <HighlightedText lesson={lesson!} audioRef={audioRef} />
       </Box>
 
