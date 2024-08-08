@@ -24,6 +24,7 @@ import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { useUser } from "../../contexts/user-context";
 import RabBeatLogo from "../../assets/images/RabBeat-logo.png";
+import styles from "./navbar.module.scss";
 
 type PageLink = {
   label: string;
@@ -154,35 +155,42 @@ const Navbar = () => {
         marginBottom: "3rem",
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar variant="dense" sx={{ flexDirection: "row-reverse" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: theme.palette.background.default,
+          border: "none",
+        }}
+      >
+        <div className={styles["logo-container"]}>
+          <img src={RabBeatLogo} alt="RabBeat Logo" />
+        </div>
+      </Box>
+      <Container maxWidth="xl" sx={{ padding: "0 0 0 20px !important" }}>
+        <Toolbar
+          variant="dense"
+          sx={{ padding: "0 !important", flexDirection: "row-reverse" }}
+        >
           {isMobile ? (
             <>
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={RabBeatLogo}
-                  alt="RabBeat Logo"
-                  style={{ width: "120px" }}
-                />
-              </Box>
               <IconButton
                 size="large"
                 aria-label="menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                sx={{ outline: "none !important", padding: "0 !important" }}
+                sx={{
+                  outline: "none !important",
+                  padding: "0 20px 0 0 !important",
+                }}
               >
                 <MenuIcon color="secondary" />
               </IconButton>
               <Menu
                 id="menu-appbar"
+                sx={{ marginTop: "none" }}
                 anchorEl={anchorElNav}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 keepMounted
@@ -210,15 +218,6 @@ const Navbar = () => {
           ) : (
             <>
               <Box
-                sx={{ display: "flex", alignItems: "center", marginLeft: 2 }}
-              >
-                <img
-                  src={RabBeatLogo}
-                  alt="RabBeat Logo"
-                  style={{ width: "120px" }}
-                />
-              </Box>
-              <Box
                 sx={{
                   flexGrow: 1,
                   display: "flex",
@@ -239,7 +238,7 @@ const Navbar = () => {
                     }}
                   >
                     {page.icon}
-                    <Typography sx={{ marginRight: 1 }}>
+                    <Typography sx={{ marginRight: "1px" }}>
                       {page.label}
                     </Typography>
                   </Button>
@@ -256,7 +255,6 @@ const Navbar = () => {
                     </IconButton>
                   </Tooltip>
                   <Menu
-                    sx={{ mt: "45px" }}
                     id="menu-appbar"
                     anchorEl={anchorElUser}
                     anchorOrigin={{
