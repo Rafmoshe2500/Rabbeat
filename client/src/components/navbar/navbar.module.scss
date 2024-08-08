@@ -1,0 +1,28 @@
+.app-bar{ 
+    direction: rtl;
+    margin-bottom: 3rem;
+}
+
+.logo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -95%);
+  width: 225px;
+  height: 50px;
+  background-color: white;
+  border-top-left-radius: 75px;
+  border-top-right-radius: 75px;
+  border-bottom-right-radius: 75px;
+  border-bottom-left-radius: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container img {
+  width: 175px;
+  height: auto;
+  object-fit: contain;
+}

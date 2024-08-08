@@ -5,6 +5,17 @@
   text-align: center;
 }
 
+  body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    background: url('./assets/images/Background.jpg');
+    background-size: cover;
+}
+
 @media (max-width: 768px) {
   #root {
     padding: 0 2px;
