@@ -5,10 +5,10 @@ import { styled } from "@mui/material/styles";
 import LoginForm from "../components/auth/login-form";
 import RegisterForm from "../components/auth/register-form";
 import { useUser } from "../contexts/user-context";
-import { storeToken, decodeToken, isTokenValid } from "../utils/jwt-cookies";
+import { storeToken, decodeToken, isTokenValid, getToken } from "../utils/jwt-cookies";
 import { useLogin, useRegister } from "../hooks/useAuth";
 import withFade from "../hoc/withFade.hoc";
-import HomeSkeleton from "../components/skeletons/home-skeleton";
+import CardSkeleton from "../components/skeletons/cards-skeleton";
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
   ({ theme, isflipped }) => ({
@@ -118,7 +118,9 @@ const AuthForm: React.FC = () => {
       try {
         const valid = await isTokenValid();
         if (valid) {
-          navigate("/home");
+          const token = getToken();
+          const decodedUser = decodeToken(token!)
+          navigate(decodedUser!.type === 'student' ? "/student-personal-area" : "/my-students")
         } else {
           setLoading(false);
         }
@@ -151,7 +153,7 @@ const AuthForm: React.FC = () => {
         text: isLogin ? "התחברת בהצלחה!" : "נרשמת בהצלחה!",
         isError: false,
       });
-      navigate("/home");
+      navigate(decodedUser.type === 'student' ? "/student-personal-area" : "/my-students")
     } else {
       handleError("אירעה שגיאה בעיבוד פרטי המשתמש");
     }
@@ -183,7 +185,7 @@ const AuthForm: React.FC = () => {
   };
 
   if (loading || loginMutation.isPending || registerMutation.isPending) {
-    return <HomeSkeleton />;
+    return <CardSkeleton />;
   }
 
   return (

@@ -2,8 +2,9 @@ import { useQuery, useQueryClient, useMutation  } from '@tanstack/react-query';
 import { fetchStudents, searchStudentByEmail, associateStudentToTeacher } from '../api/endpoints/teacher';
 
 export const useGetStudents = (teacherId: string) => {
+
   return useQuery({
-    queryKey: ['students', teacherId],
+    queryKey: ["students", teacherId],
     queryFn: () => fetchStudents(teacherId),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)

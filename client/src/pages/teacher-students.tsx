@@ -4,13 +4,14 @@ import AddStudentDialog from "../components/students/add-student-dialog";
 import withFade from "../hoc/withFade.hoc";
 import FloatingActionButton from '../components/common/floating-action-button';
 import AddIcon from '@mui/icons-material/Add';
+import { Typography } from "@mui/material";
 
 const TeacherStudents: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <div>
-      <h1>התלמידים שלי</h1>
+      <Typography variant="h1" gutterBottom>התלמידים שלי</Typography>
       <StudentGrid />
       <FloatingActionButton
         icon={<AddIcon />}

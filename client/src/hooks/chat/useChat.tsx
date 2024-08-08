@@ -17,7 +17,7 @@ export const useChat = (chatId: string, userType: User["type"]) => {
   const sendMessageMutation = useMutation({
     mutationFn: (message: Message) => postMessage(chatId, message),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chat"] });
+      queryClient.invalidateQueries({ queryKey: ["chat", "students"] });
     },
   });
 
@@ -33,7 +33,7 @@ export const useChat = (chatId: string, userType: User["type"]) => {
   const clearChatNotificationsMutation = useMutation({
     mutationFn: () => clearChatNotifications(chatId, userType),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chatNotifications"] });
+      queryClient.invalidateQueries({ queryKey: ["chatNotifications", "students"] });
     },
   });
 
