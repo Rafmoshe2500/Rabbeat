@@ -1,6 +1,6 @@
 // ProfileActions.tsx
 import React, { useState } from 'react';
-import { Box, Button, Typography, IconButton, TextField } from '@mui/material';
+import { Box, Button, Typography, IconButton, TextField, Snackbar } from '@mui/material';
 import { FaWhatsapp, FaEdit, FaSave } from 'react-icons/fa';
 import DialogComponent from '../common/dialog';
 import {useUser} from '../../contexts/user-context'
@@ -16,6 +16,8 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
   const [isEditing, setIsEditing] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(profile.phoneNumber);
   const {userDetails} = useUser()
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
   const handleContactClick = () => {
     setContactVisible(true);
   };
@@ -35,17 +37,69 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
     setIsEditing(false);
   };
 
+  const handleWhatsAppClick = () => {
+    let phoneNumber = profile.phoneNumber;
+    
+    // Remove any non-digit characters
+    phoneNumber = phoneNumber.replace(/\D/g, '');
+    
+    // If the number doesn't start with 972, add it
+    if (!phoneNumber.startsWith('972')) {
+      phoneNumber = phoneNumber.startsWith('0') ? phoneNumber.slice(1) : phoneNumber;
+      phoneNumber = `+972${phoneNumber}`;
+    }
+
+    const message = encodeURIComponent(`שלום ${profile.firstName} ${profile.lastName}, אני פונה אליך דרך אתר RabBeat. אני מעוניין ליצור איתך קשר על מנת לתאם איתך מספר שיעורים ללימוד לבר המצווה שלי. תודה`);
+
+    // URLs for different platforms
+    const iphoneUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+    const androidUrl = `intent://send/${phoneNumber}#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end`;
+    const webUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+
+    // Detect platform
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isIPhone = /iPhone/i.test(userAgent);
+    const isAndroid = /Android/i.test(userAgent);
+
+    let urlToUse = webUrl;
+    if (isIPhone) urlToUse = iphoneUrl;
+    if (isAndroid) urlToUse = androidUrl;
+
+    // Try to open WhatsApp
+    const link = document.createElement('a');
+    link.href = urlToUse;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Set a timeout to check if WhatsApp opened
+    setTimeout(() => {
+      if (!document.hidden) {
+        setOpenSnackbar(true);
+      }
+    }, 2000);
+  };
+
   return (
     <Box className="profile-actions" sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
       <Button variant="outlined" color="primary" onClick={handleContactClick}>צור קשר</Button>
-      {userDetails?.id !== profile.id &&  <Button 
-        variant="contained" 
-        color="success" 
-        startIcon={<FaWhatsapp />}
-        onClick={() => window.open(`https://wa.me/${profile.phoneNumber}`, '_blank')}
-      >
-        הודעה
-      </Button>}
+      {userDetails?.id !== profile.id && (
+        <Button 
+          variant="contained" 
+          color="success" 
+          startIcon={<FaWhatsapp />}
+          onClick={handleWhatsAppClick}
+        >
+          הודעה
+        </Button>
+      )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message="לא ניתן לפתוח את WhatsApp. אנא ודא שהאפליקציה מותקנת או נסה להעתיק את המספר ולפתוח ידנית."
+      />
       <DialogComponent 
         open={contactVisible}
         onClose={closeContact}

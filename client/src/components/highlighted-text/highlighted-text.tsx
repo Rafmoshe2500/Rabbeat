@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
 import { styled } from "@mui/system";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 
@@ -25,6 +25,8 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
   audioRef,
 }) => {
   const [highlightedWord, setHighlightedWord] = useState<WordToMark>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleTimeUpdate = () => {
     if (audioRef.current && lesson?.text) {
@@ -62,7 +64,7 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
   }, [audioRef.current, lesson?.text]);
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{width: isMobile ? "100%" : "auto", padding: 0 }}>
       <TextContainer>
         {lesson?.text && (
           <DisplayText

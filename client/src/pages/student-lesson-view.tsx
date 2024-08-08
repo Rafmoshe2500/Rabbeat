@@ -2,7 +2,7 @@ import BookIcon from "@mui/icons-material/Book";
 import QuizIcon from "@mui/icons-material/Quiz";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Box, Paper, Typography, Button } from "@mui/material";
+import { Box, Paper, Typography, Button, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Chat from "../components/chat/chat";
@@ -28,6 +28,8 @@ const StudentLessonView = () => {
   const { id } = useParams<{ id: string }>();
   const { data: lesson, isLoading } = useLessonsById(id!);
   const { mutate: updateLessonStatus } = useUpdateLessonStatus();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (lessonDetails.status === "not-started") {
@@ -57,7 +59,7 @@ const StudentLessonView = () => {
   const tabs = [
     {
       name: "לימוד",
-      component: <LessonContent lesson={lessonForView} />,
+      component: <LessonContent lesson={lessonForView}/>,
       icon: <BookIcon />,
     },
     {
@@ -83,7 +85,7 @@ const StudentLessonView = () => {
           </button>
         )}
       </Box>
-      <Paper elevation={3} sx={{ padding: "2rem" }}>
+      <Paper elevation={3} sx={{ padding: isMobile ? "5px" : "2rem" }}>
         <Typography variant="h4" gutterBottom>
           {lessonForView.title}
         </Typography>
