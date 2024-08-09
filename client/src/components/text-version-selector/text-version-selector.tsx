@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, ButtonGroup, Box, useTheme } from "@mui/material";
+import { Button, ButtonGroup, Box } from "@mui/material";
 
 type Version = "none" | "nikud" | "teamim" | "both";
 
@@ -15,7 +15,6 @@ const VersionSelector: React.FC<VersionSelectorProps> = ({
   const [nikudSelected, setNikudSelected] = useState(false);
   const [teamimSelected, setTeamimSelected] = useState(false);
   const [torahFontEnabled, setTorahFontEnabled] = useState(false);
-  const theme = useTheme()
   const handleNikudClick = () => {
     setNikudSelected(!nikudSelected);
   };
@@ -57,7 +56,7 @@ const VersionSelector: React.FC<VersionSelectorProps> = ({
       flexDirection="column"
       alignItems="center"
       mt={2}
-      sx={{ backgroundColor: theme.palette.background.default }}
+      sx={{ backgroundColor: 'inherit' }}
     >
       <ButtonGroup
         variant="contained"
