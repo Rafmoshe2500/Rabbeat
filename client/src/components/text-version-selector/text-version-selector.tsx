@@ -15,7 +15,6 @@ const VersionSelector: React.FC<VersionSelectorProps> = ({
   const [nikudSelected, setNikudSelected] = useState(false);
   const [teamimSelected, setTeamimSelected] = useState(false);
   const [torahFontEnabled, setTorahFontEnabled] = useState(false);
-
   const handleNikudClick = () => {
     setNikudSelected(!nikudSelected);
   };
@@ -57,7 +56,7 @@ const VersionSelector: React.FC<VersionSelectorProps> = ({
       flexDirection="column"
       alignItems="center"
       mt={2}
-      sx={{ backgroundColor: "white" }}
+      sx={{ backgroundColor: 'inherit' }}
     >
       <ButtonGroup
         variant="contained"
