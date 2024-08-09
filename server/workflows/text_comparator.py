@@ -1,7 +1,7 @@
 from Levenshtein import distance
 
 from tools.consts import GOD
-from tools.utils import is_string_numeric, number_to_torah_style, split_text_maybe_with_numbers_to_word
+from tools.utils import split_text_maybe_with_numbers_to_words
 
 
 class HebrewTextComparator:
