@@ -9,7 +9,7 @@ interface HighlightedTextProps {
 }
 
 const TextContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: "#f8f9fa",
+  backgroundColor: theme.palette.background.default,
   borderRadius: theme.shape.borderRadius,
   boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
   "& .highlighted": {
@@ -64,7 +64,7 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
   }, [audioRef.current, lesson?.text]);
 
   return (
-    <Container maxWidth="md" sx={{width: isMobile ? "100%" : "auto", padding: 0 }}>
+    <Container maxWidth="md" sx={{width: isMobile ? "100%" : "auto" }}>
       <TextContainer>
         {lesson?.text && (
           <DisplayText

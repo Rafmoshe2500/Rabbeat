@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Box, Typography, Container, useTheme } from "@mui/material";
 import VersionSelector from "../text-version-selector/text-version-selector";
-import styles from "./display-lesson-text.module.css";
 
 interface DisplayTextProps {
   text: TextSection;
@@ -15,7 +15,7 @@ const DisplayText: React.FC<DisplayTextProps> = ({
 }) => {
   const [version, setVersion] = useState<Version>("none");
   const [isTorahFontEnabled, setIsTorahFontEnabled] = useState<boolean>(false);
-
+  const theme = useTheme()
   const handleVersionChange = (newVersion: Version) => {
     setVersion(newVersion);
   };
@@ -42,69 +42,105 @@ const DisplayText: React.FC<DisplayTextProps> = ({
     return (
       <>
         {leadingSpaces}
-        <span className={isHighlighted ? "highlighted" : ""}>
+        <Box 
+          component="span" 
+          sx={{ 
+            backgroundColor: isHighlighted ? '#8B4513' : 'transparent',
+            color: isHighlighted ? '#FFFFFF' : theme.palette.text.primary,
+            borderRadius: isHighlighted ? '7px' : 0,
+            cursor: 'pointer',
+            display: 'inline-block',
+          }}
+        >
           {trimmedWord}
-        </span>
+        </Box>
         {trailingSpaces}
       </>
     );
   };
 
   return (
-    <div>
-      <div
-        className={`${styles["container"]} ${
-          isTorahFontEnabled ? "stam-font" : ""
-        }`}
-      >
-        {Object.keys(textSection).map((chapterKey) => (
-          <div key={chapterKey}>
-            <h3>פרק {chapterKey}</h3>
-            {Object.keys(textSection[chapterKey]).map((verseKey) => (
-              <div key={verseKey}>
-                <span>{verseKey}:</span>
-                {Object.keys(textSection[chapterKey][verseKey]).map(
-                  (wordIndex) => {
-                    const word = textSection[chapterKey][verseKey][wordIndex];
-                    const isHighlighted =
-                      highlightedWord &&
-                      highlightedWord.chapter === chapterKey &&
-                      highlightedWord.verse === verseKey &&
-                      highlightedWord.word === parseInt(wordIndex);
+    <Container maxWidth="lg" sx={{width:"100%", padding: '0 !important'}}>
+      <Box my={4}
+                sx={{
+                  height: 400,
+                  overflow: 'auto',
+                  overflowX: 'hidden',
+                  p: 3,
+                  borderRadius: 2,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                }}>
+          <Typography 
+            variant="body1" 
+            component="div" 
+            sx={{
+              fontFamily: isTorahFontEnabled ? 'StamFont, Arial, sans-serif' : 'inherit',
+              fontSize: '1.25rem',
+              direction: 'rtl',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+            }}
+          >
+            {Object.keys(textSection).map((chapterKey) => (
+              <Box key={chapterKey} mb={3}>
+                <Typography variant="h2" gutterBottom>
+                  פרק {chapterKey}
+                </Typography>
+                {Object.keys(textSection[chapterKey]).map((verseKey) => (
+                  <Box key={verseKey} mb={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <Typography component="span" fontWeight="bold" fontSize="1.1rem" sx={{ marginLeft: 1 }}>
+                      {verseKey}:
+                    </Typography>
+                    {Object.keys(textSection[chapterKey][verseKey]).map(
+                      (wordIndex) => {
+                        const word = textSection[chapterKey][verseKey][wordIndex];
+                        const isHighlighted =
+                          highlightedWord &&
+                          highlightedWord.chapter === chapterKey &&
+                          highlightedWord.verse === verseKey &&
+                          highlightedWord.word === parseInt(wordIndex);
 
-                    return (
-                      <span
-                        key={wordIndex}
-                        onClick={() => handleWordClick(word.time)}
-                      >
-                        {renderWord(
-                          isTorahFontEnabled
-                            ? word.none
-                            : version === "both"
-                            ? word.both
-                            : version === "nikud"
-                            ? word.nikud
-                            : version === "teamim"
-                            ? word.teamim
-                            : word.none,
-                          isHighlighted!
-                        )}<span> </span>
-                      </span>
-                    );
-                  }
-                )}
-              </div>
+                        return (
+                          <Box
+                            component="span"
+                            key={wordIndex}
+                            onClick={() => handleWordClick(word.time)}
+                            sx={{ 
+                              mx: 0.5,
+                              display: 'inline-block',
+                              maxWidth: '100%',
+                            }}
+                          >
+                            {renderWord(
+                              isTorahFontEnabled
+                                ? word.none
+                                : version === "both"
+                                ? word.both
+                                : version === "nikud"
+                                ? word.nikud
+                                : version === "teamim"
+                                ? word.teamim
+                                : word.none,
+                              isHighlighted!
+                            )}
+                          </Box>
+                        );
+                      }
+                    )}
+                  </Box>
+                ))}
+              </Box>
             ))}
-          </div>
-        ))}
-      </div>
-      <div>
+          </Typography>
+      </Box>
+      <Box mt={2}>
         <VersionSelector
           onVersionChange={handleVersionChange}
           onTorahFontChange={handleTorahFontChange}
         />
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };
 
