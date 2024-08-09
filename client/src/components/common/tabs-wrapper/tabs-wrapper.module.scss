@@ -1,6 +1,5 @@
 .tab-container {
   width: 100%;
-  margin-bottom: 1.5rem;
   direction: rtl ;
 }
 
@@ -8,9 +7,7 @@
   display: flex;
   position: relative;
   background-color: inherit;
-  border-radius: 8px;
-  padding: 0.25rem;
-  margin-bottom: 1rem;
+  padding: 0.25rem 0.25rem 0 0.25rem;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -23,7 +20,8 @@
 .tab-button {
   flex: 0 0 auto;
   padding: 0.5rem 0.75rem;
-  background: none;
+  border-radius: 0;
+  background: white;
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
@@ -63,14 +61,15 @@
   height: 2px;
   background-color: #8B4513;
   transition: all 0.3s ease;
-  border-radius: 2px;
+  z-index: 1;
 }
 
 .tab-content {
   background-color: #FFFFFF;
-  border-radius: 12px; 
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 30rem;
+  border-radius: 10px;
 }
 
 @media (max-width: 600px) {

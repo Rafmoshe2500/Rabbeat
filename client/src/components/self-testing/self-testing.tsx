@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../../hooks/lessons/useFlattedLessonText";
 import { useCompareTexts } from "../../hooks/useCompareTexts";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";
 import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
 import { convertBlobToBase64 } from "../../utils/audio-parser";
@@ -73,6 +73,20 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   return (
     <div>
+      <Box
+        mr={"10px"}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h4">{lesson?.title}</Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          {`${lesson?.pentateuch} ${lesson?.startChapter}:${lesson?.startVerse} - ${lesson?.endChapter}:${lesson?.endVerse}`}
+        </Typography>
+      </Box>
       <div>{lesson && <DisplayText text={lesson.text!} />}</div>
 
       {userDetails?.type !== "teacher" ? (
