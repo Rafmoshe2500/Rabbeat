@@ -26,23 +26,22 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef: Blob[] = [];
-  const [timestamps, setTimestamps] = useState<number[]>([0.0]);
+  const [timestamps, setTimestamps] = useState<number[]>([]);
   const [startTime, setStartTime] = useState<number | null>(null);
-  const [currentTranscript, setCurrentTranscript] = useState<
-    string | undefined
-  >(undefined);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>();
+  const [currentTranscript, setCurrentTranscript] = useState<string>("");
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [end, setEnd] = useState(false);
 
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  const { transcript, interimTranscript, resetTranscript } =
+    useSpeechRecognition();
 
   const handleStartRecording = async () => {
     resetTranscript();
-    setTimestamps([0.0]);
+    setTimestamps([0]);
     SpeechRecognition.startListening({ continuous: true, language });
     setIsRecording(true);
     audioChunksRef.splice(0, audioChunksRef.length);
-    shouldCalculateHighlights && setStartTime(Date.now());
+    setStartTime(new Date().getTime());
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorderRef.current = new MediaRecorder(stream);
@@ -65,7 +64,6 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const handleStopRecording = () => {
     setIsRecording(false);
     SpeechRecognition.stopListening();
-    setCurrentTranscript(transcript);
     mediaRecorderRef.current?.stop();
   };
 
@@ -78,32 +76,27 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
 
   useEffect(() => {
     if (shouldStopRecording?.(transcript)) {
-      setCurrentTranscript(transcript);
       handleStopRecording();
       return;
     }
-    if (!shouldCalculateHighlights) {
-      setCurrentTranscript(transcript);
-      return;
-    }
-    if (!startTime) return;
+    if (!shouldCalculateHighlights || !startTime) return;
 
-    const transLength = transcript ? transcript.split(" ").length : 0;
-    const currTransLength = currentTranscript
-      ? currentTranscript?.split(" ").length
-      : 0;
+    const previousWords = currentTranscript.split(" ");
+    const currentWords = interimTranscript.trim().split(" ");
+    
+    if (currentWords.length > previousWords.length) {
+      const newWords = currentWords.slice(previousWords.length);
 
-    if (transLength > currTransLength) {
-      setTimestamps((prevTimestamps) => [
-        ...prevTimestamps,
-        (Date.now() - startTime - 300) / 1000,
-      ]);
-    } else if (transLength < currTransLength) {
-      setTimestamps((prevTimestamps) => prevTimestamps.slice(0, -1));
+      // Add a timestamp for each new word
+      const newTimestamps = newWords.map(() => 
+        (new Date().getTime() - startTime!) / 1000
+      );
+      
+      setTimestamps((prev) => [...prev, ...newTimestamps]);
     }
 
-    setCurrentTranscript(transcript);
-  }, [transcript, startTime]);
+    setCurrentTranscript(interimTranscript);
+  }, [interimTranscript, startTime]);
 
   return (
     <div>
