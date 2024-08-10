@@ -1,8 +1,6 @@
-import datetime
-from typing import List, Tuple, Dict, Any, Union
+from typing import List, Tuple, Dict, Union
 
 import jwt
-from bson import ObjectId
 
 from models.response import ExtendLessonDetailsResponse, LessonDetailsResponse
 
@@ -68,3 +66,68 @@ def sorted_lessons(lessons: List[Union[LessonDetailsResponse, ExtendLessonDetail
         )
 
     return sorted(lessons, key=get_sort_keys)
+
+
+def is_string_numeric(s):
+    return s.isdigit()
+
+
+def number_to_torah_style(number):
+    units = ["", "אחד", "שניים", "שלושה", "ארבעה", "חמישה", "שישה", "שבעה", "שמונה", "תשעה"]
+    tens = ["", "עשרה", "עשרים", "שלושים", "ארבעים", "חמישים", "שישים", "שבעים", "שמונים", "תשעים"]
+    hundreds = ["", "מאה", "מאתיים", "שלוש מאות", "ארבע מאות", "חמש מאות", "שש מאות", "שבע מאות", "שמונה מאות",
+                "תשע מאות"]
+    thousands = ["", "אלף", "אלפיים", "שלושת אלפים", "ארבעת אלפים", "חמשת אלפים", "ששת אלפים", "שבעת אלפים",
+                 "שמונת אלפים", "תשעת אלפים"]
+
+    word = ""
+
+    if number >= 100000:
+        word += hundreds[number // 100000] + " אלף"
+        number %= 100000
+
+    if number >= 10000:
+        if word:
+            word += " ו"
+        word += tens[number // 10000] + " אלף"
+        number %= 10000
+
+    if number >= 1000:
+        if word:
+            word += " ו"
+        if number // 1000 > 1:
+            word += thousands[number // 1000]
+        else:
+            word += "אלף"
+        number %= 1000
+
+    if number >= 100:
+        if word:
+            word += " ו"
+        word += hundreds[number // 100]
+        number %= 100
+
+    if number >= 10:
+        if word:
+            word += " ו"
+        word += tens[number // 10]
+        number %= 10
+
+    if number > 0:
+        if word:
+            word += " ו"
+        word += units[number]
+
+    return word
+
+
+def split_text_maybe_with_numbers_to_words(text):
+    res = []
+    for word in text.split(' '):
+        if is_string_numeric(word):
+            hebrew_numbers = number_to_torah_style(int(word))
+            for hebrew_number in hebrew_numbers.split(" "):
+                res.append(hebrew_number)
+        else:
+            res.append(word)
+    return res

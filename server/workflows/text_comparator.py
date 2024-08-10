@@ -1,12 +1,13 @@
 from Levenshtein import distance
 
 from tools.consts import GOD
+from tools.utils import split_text_maybe_with_numbers_to_words
 
 
 class HebrewTextComparator:
     def __init__(self, text1, text2):
-        self.words1 = text1.split()
-        self.words2 = text2.split()
+        self.words1 = text1.split()  # source
+        self.words2 = split_text_maybe_with_numbers_to_words(text2)  # stt
         self.len1 = len(self.words1)
         self.len2 = len(self.words2)
         self.result = []

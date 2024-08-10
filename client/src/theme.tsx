@@ -126,6 +126,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
+          '&:focus': {
+            outline: 'none !important',
+          },
         },
       },
     },
@@ -207,7 +210,11 @@ const theme = createTheme({
         root: {
           color: "#8B4513", // SaddleBrown for icon buttons
           "&:hover": {
-            backgroundColor: "rgba(139, 69, 19, 0.04)", // Light SaddleBrown background on hover
+            backgroundColor: "rgba(139, 69, 19, 0.04)",
+            outline: 'none !important',
+          },
+          '&:focus': {
+            outline: 'none !important',
           },
         },
       },
