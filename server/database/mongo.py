@@ -52,6 +52,18 @@ class MongoDBApi:
     def get_lessons_details_by_lesson_id(self, lesson_id) -> List[LessonDetails]:
         return self._db.lessons_details.find_one({"_id": ObjectId(lesson_id)})
 
+    def get_users_associations_to_lesson(self, lesson_id):
+        return list(self._db.user_lessons.find({'lessonId': lesson_id}))
+
+    def delete_lesson_by_id(self, lesson_id):
+        return self._db.lessons.delete_one({"_id": ObjectId(lesson_id)})
+
+    def delete_lesson_details_by_id(self, lesson_id):
+        return self._db.lessons_details.delete_one({"_id": ObjectId(lesson_id)})
+
+    def delete_user_lessons_by_lesson_id(self, lesson_id):
+        self._db.user_lessons.delete_one({"lessonId": lesson_id})
+
     def remove_all_lesson_data_from_user(self, lesson_id, user_id) -> None:
         try:
             self._db.user_lessons.delete_one({"lessonId": lesson_id, "userId": user_id})
