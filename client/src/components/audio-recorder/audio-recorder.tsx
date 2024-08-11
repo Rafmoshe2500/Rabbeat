@@ -96,7 +96,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
     if (transLength > currTransLength) {
       setTimestamps((prevTimestamps) => [
         ...prevTimestamps,
-        (Date.now() - startTime) / 1000,
+        (Date.now() - startTime - 300) / 1000,
       ]);
     } else if (transLength < currTransLength) {
       setTimestamps((prevTimestamps) => prevTimestamps.slice(0, -1));
