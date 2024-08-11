@@ -1,17 +1,18 @@
-from fastapi import FastAPI
 import uvicorn
-from fastapi.exceptions import RequestValidationError
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.responses import JSONResponse
 
-from routers.chat import chat_router
 from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone, profile
+from routers.chat import chat_router
 from routers.torah import torah_router
 from tools.consts import MB
 
 app = FastAPI(title='Rabbeat')
 
 app.add_middleware(
+    TrustedHostMiddleware,
     CORSMiddleware,
     allow_origins=['*'],
     allow_credentials=True,
