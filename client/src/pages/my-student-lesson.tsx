@@ -23,16 +23,20 @@ const MyStudentLesson = () => {
   const [checked, setChecked] = useState(lessonDetails.status === "finished");
 
   const [openNotification, setOpen] = useState(false);
-  const [messageNotification, setMessage] = useState('');
-  const [severityNotification, setSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('info');
+  const [messageNotification, setMessage] = useState("");
+  const [severityNotification, setSeverity] = useState<
+    "success" | "error" | "info" | "warning"
+  >("info");
 
   useEffect(() => {
     if (lessonDetails.audioNotification && lessonDetails.testAudioId) {
       markAudioAsReadMutation.mutate(lessonDetails.testAudioId);
-      setMessage('שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך.');
-      setSeverity('success');
+      setMessage(
+        "שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך."
+      );
+      setSeverity("success");
       setOpen(true);
-      
+
       const timer = setTimeout(() => {
         setOpen(false);
       }, 3000);
@@ -85,14 +89,14 @@ const MyStudentLesson = () => {
         justifyContent: "center",
       }}
     >
-          <div>
-      <Notification
-        open={openNotification}
-        message={messageNotification}
-        severity={severityNotification}
-        onClose={handleClose}
-      />
-    </div>
+      <div>
+        <Notification
+          open={openNotification}
+          message={messageNotification}
+          severity={severityNotification}
+          onClose={handleClose}
+        />
+      </div>
       <div>
         שיעור הושלם בהצלחה
         <Checkbox
