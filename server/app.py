@@ -7,6 +7,7 @@ from starlette.responses import JSONResponse
 from routers.chat import chat_router
 from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone, profile
 from routers.torah import torah_router
+from tools.consts import MB
 
 app = FastAPI(title='Rabbeat')
 
@@ -16,6 +17,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    max_body_size=100 * MB  # 100 MB
+
 )
 app.include_router(torah_router)
 app.include_router(lessons.router, prefix="/api")
@@ -37,4 +40,4 @@ async def validation_exception_handler(_, exc):
     )
 
 
-uvicorn.run(app, host="0.0.0.0", port=3000)
+uvicorn.run(app, host="0.0.0.0", port=3000, limit_max_requests=100 * MB)
