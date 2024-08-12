@@ -66,4 +66,6 @@ export const lessonVersionsMapper: Record<LessonVersion, string> = {
   Jerusalemite: "ירושלמי",
   Moroccan: "מרוקאי",
   Yemeni: "תימני",
+  Kurdish: "כורדי",
+  Italian: "איטלקי"
 };
