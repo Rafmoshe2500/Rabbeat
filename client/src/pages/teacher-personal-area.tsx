@@ -42,8 +42,8 @@ const TeacherPersonalArea = () => {
   const renderStudentCard = (lesson: LessonDetails) => (
     <LessonCard 
       lessonDetails={lesson} 
-      onClick={() => navigate(`/lesson/${lesson.id}`, { state: { lessonDetails: lesson, allLessons: lessons } })}
-    />
+      onClick={() => navigate(`/teacher-personal-area/lesson/${lesson.id}`, { state: { lessonDetails: lesson } })}
+      />
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
