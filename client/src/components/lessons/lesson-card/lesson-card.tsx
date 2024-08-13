@@ -97,8 +97,6 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
 
   const { borderColor, statusColor } = getColorsByStatus(status || "default");
 
-
-
   return (
     <Box sx={{ minWidth: 275, maxWidth: 345, margin: "1rem" }}>
       <Card
