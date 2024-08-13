@@ -52,8 +52,10 @@
 }
 
 .chatHeader {
-  background-color: #8B4513;
-  color: #FFFFFF;
+  border-bottom: 1px solid #ccc;
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+  color: black; // Header text in black
   padding: 10px 15px;
   display: flex;
   justify-content: space-between;
@@ -65,8 +67,8 @@
 .closeButton {
   background: none;
   border: none;
-  color: #FFFFFF;
   font-size: 18px;
+  color: black; // Header text in black
   cursor: pointer;
 }
 
@@ -86,17 +88,17 @@
 }
 
 .my-messages {
-  background-color: #A0522D;
-  color: #FFFFFF;
+  background-color: #d4f5d4; // Green background for user messages
   float: right;
   clear: both;
+  border-bottom-right-radius: 0; // Flat corner for WhatsApp-like bubble
 }
 
 .not-my-messages {
-  background-color: #EEEEEE;
-  color: #4B4949;
+  background-color: #e0e0e0; // Gray background for bot messages
   float: left;
   clear: both;
+  border-bottom-left-radius: 0; // Flat corner for WhatsApp-like bubble
 }
 
 .chatInput {
@@ -139,11 +141,12 @@
 .sendButton {
   margin-right: 5px;
   transform : rotate(180deg);
-  background-color: #A0522D;
+  background: #007bff;
   color: white;
 
   &:hover {
-    background-color: #8B4513;
+    background-color: white;
+    color: #007bff;
   }
 }
 
@@ -152,7 +155,8 @@
   color: white;
 
   &:hover {
-    background-color: #d32f2f;
+    background-color: white;
+    color: #f44336;
   }
 
   &.recording {
