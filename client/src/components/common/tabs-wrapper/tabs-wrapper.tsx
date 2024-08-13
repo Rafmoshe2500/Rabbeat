@@ -21,7 +21,7 @@ const TabsWrapper: React.FC<TabsWrapperProps> = ({ tabs }) => {
     if (activeTabElement) {
       setIndicatorStyle({
         left: `${activeTabElement.offsetLeft}px`,
-        width: `${activeTabElement.offsetWidth}px`,
+        width: `${activeTabElement.offsetWidth - 20}px`,
       });
     }
   }, [activeTab]);

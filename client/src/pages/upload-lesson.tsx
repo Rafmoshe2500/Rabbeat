@@ -123,7 +123,7 @@ const UploadLessonPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const lessonToUpload = {
       ...lesson,
       ...torahSection,
@@ -132,20 +132,18 @@ const UploadLessonPage: React.FC = () => {
       highlightsTimestamps: timestamps,
       sttText: transcript,
     } as FormattedLesson;
-  
+
     mutate(lessonToUpload, {
       onSuccess: async (data) => {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-  
-        if (data && data.id) {
-          navigate(`/teacher-personal-area/lesson/${data.id}`);
+        if (data) {
+          navigate(`/teacher-personal-area/lesson/${data}`);
         } else {
           console.error("Lesson ID not received in the response");
         }
       },
       onError: (error) => {
         console.error("Error creating lesson:", error);
-      }
+      },
     });
   };
 

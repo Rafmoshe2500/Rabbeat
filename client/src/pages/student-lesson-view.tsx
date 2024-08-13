@@ -71,7 +71,13 @@ const StudentLessonView = () => {
   ];
 
   return (
-    <Box sx={{ maxWidth: 1200, direction: "rtl" }}>
+    <Box
+      sx={{
+        maxWidth: 1200,
+        marginTop: `${lessonDetails.status === "finished" ? "-46px" : 0}`,
+        direction: "rtl",
+      }}
+    >
       <Box
         style={{
           display: "flex",

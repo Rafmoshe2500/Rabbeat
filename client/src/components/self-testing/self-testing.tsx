@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../../hooks/lessons/useFlattedLessonText";
 import { useCompareTexts } from "../../hooks/useCompareTexts";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";
 import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
 import { convertBlobToBase64 } from "../../utils/audio-parser";
@@ -12,6 +18,7 @@ import { useUser } from "../../contexts/user-context";
 import AnimatedButton from "../common/animated-button";
 import withFade from "../../hoc/withFade.hoc";
 import { useNavigate } from "react-router-dom";
+import theme from "../../theme";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -27,6 +34,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [transcript, setTranscript] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (testAudio) {
@@ -82,12 +90,21 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h4">{lesson?.title}</Typography>
+        <Typography variant="h5">{lesson?.title}</Typography>
         <Typography variant="subtitle1" gutterBottom>
           {`${lesson?.pentateuch} ${lesson?.startChapter}:${lesson?.startVerse} - ${lesson?.endChapter}:${lesson?.endVerse}`}
         </Typography>
       </Box>
-      <div>{lesson && <DisplayText text={lesson.text!} />}</div>
+      <Container
+        maxWidth="md"
+        sx={{
+          marginLeft: 24,
+          marginRight: 24,
+          width: isMobile ? "100%" : "auto",
+        }}
+      >
+        {lesson && <DisplayText text={lesson.text!} />}
+      </Container>
 
       {userDetails?.type !== "teacher" ? (
         <div className={styles["record-container"]}>
