@@ -51,7 +51,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
 
       return () => URL.revokeObjectURL(`${audioURL}`);
     }
-  }, []);
+  }, [lesson?.id]);
 
   return (
     <Box
