@@ -14,7 +14,7 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
-  const [isOpen, setIsOpen] = useState<boolean>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { userDetails } = useUser();
   const userType = userDetails!.type!;
   const {
@@ -23,7 +23,7 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
     fetchChatNotificationsQuery,
     clearChatNotificationsMutation,
   } = useChat(chatId, userDetails?.type!);
-  const { data: messages } = messagesQuery;
+  const { data: messages, refetch: refetchMessages } = messagesQuery;
   const { mutate: setMessages } = sendMessageMutation;
   const { data: notifications } = fetchChatNotificationsQuery;
   const { mutate: clearNotifications } = clearChatNotificationsMutation;
@@ -32,6 +32,7 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recordingTime, setRecordingTime] = useState<number>(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chatMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const toggleChat = () => {
     setIsOpen((prev) => !prev);
@@ -54,6 +55,18 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
     return () => clearInterval(interval);
   }, [isRecording]);
 
+  const scrollToBottom = () => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [isOpen, messages]);
+
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
       const newMessage: Message = {
@@ -62,21 +75,30 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
         type: "text",
         timestamp: new Date().toISOString(),
       };
-      setMessages(newMessage);
+  
+      setMessages(newMessage, {
+        onSuccess: () => {
+          // Immediately refetch messages after sending
+          refetchMessages().then(() => {
+            scrollToBottom();
+          });
+        },
+      });
+  
       setInputMessage("");
     }
   };
-
+  
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
       const chunks: Blob[] = [];
-
+  
       mediaRecorderRef.current.ondataavailable = (e) => {
         if (e.data.size > 0) chunks.push(e.data);
       };
-
+  
       mediaRecorderRef.current.onstop = () => {
         const audioBlob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
         const newMessage: Message = {
@@ -85,9 +107,17 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
           type: "audio",
           timestamp: new Date().toISOString(),
         };
-        setMessages(newMessage);
+  
+        setMessages(newMessage, {
+          onSuccess: () => {
+            // Immediately refetch messages after sending the audio message
+            refetchMessages().then(() => {
+              scrollToBottom();
+            });
+          },
+        });
       };
-
+  
       mediaRecorderRef.current.start();
       setIsRecording(true);
       setRecordingTime(0);
@@ -95,6 +125,7 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
       console.error("Error accessing microphone:", error);
     }
   };
+  
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
@@ -131,7 +162,7 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
               X
             </button>
           </div>
-          <div className={styles.chatMessages}>
+          <div className={styles.chatMessages} ref={chatMessagesRef}>
             {messages?.map((msg, index) => (
               <div
                 key={index}
@@ -154,7 +185,7 @@ const Chat: React.FC<ChatProps> = ({ chatId, title }) => {
           </div>
           <div className={styles.chatInput}>
             {isRecording ? (
-              <input type="text" value={`${recordingTime}s`}></input>
+              <input type="text" value={`${recordingTime}s`} readOnly />
             ) : (
               <input
                 type="text"
