@@ -97,8 +97,6 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
 
   const { borderColor, statusColor } = getColorsByStatus(status || "default");
 
-
-
   return (
     <Box sx={{ minWidth: 275, maxWidth: 345, margin: "1rem" }}>
       <Card
@@ -148,12 +146,27 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
                 )}
               </Box>
             </Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="body1" color="text.secondary" gutterBottom>
               {pentateuch}
             </Typography>
             <Typography variant="body2" gutterBottom>
-              {`${startChapter}:${startVerse} - ${endChapter}:${endVerse}`}
-            </Typography>
+              {startChapter === endChapter ? (
+                startVerse === endVerse ? (
+                  <>
+                    <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{startChapter}</span>: {startVerse}
+                  </>
+                ) : (
+                  <>
+                    <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{startChapter}</span>: {startVerse} - {endVerse}
+                  </>
+                )
+              ) : (
+                <>
+                  <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{startChapter}</span>: {startVerse} - <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{endChapter}</span>: {endVerse}
+                </>
+              )}
+          </Typography>
+
             <Box
               sx={{
                 display: "flex",
