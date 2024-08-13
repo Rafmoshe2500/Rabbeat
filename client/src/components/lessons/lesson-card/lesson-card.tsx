@@ -12,6 +12,7 @@ import {
   Tooltip,
   Modal,
   IconButton,
+  useTheme
 } from "@mui/material";
 import { useState } from "react";
 import ChatIcon from "@mui/icons-material/Chat";
@@ -24,6 +25,8 @@ type LessonCardProps = {
   studentId?: string;
   onClick?: () => void;
 };
+
+type ChipColor = 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
 
 const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
   const navigate = useNavigate();
@@ -44,7 +47,7 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
   } = lessonDetails;
 
   const [modalOpen, setModalOpen] = useState(false);
-
+  const theme = useTheme()
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -79,31 +82,22 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
     return [audioText, messageText].filter(Boolean).join("<br />");
   };
 
-  const getBorderColor = () => {
+  const getColorsByStatus = (status: string): { borderColor: string; statusColor: ChipColor } => {
     switch (status) {
       case "not-started":
-        return "#9E9E9E";
+        return { borderColor: "#9E9E9E", statusColor: "default" };
       case "in-progress":
-        return "#FFB74D";
+        return { borderColor: theme.palette.primary.main, statusColor: "primary" };
       case "finished":
-        return "#4CAF50";
+        return { borderColor: "#4CAF50", statusColor: "success" };
       default:
-        return "#9E9E9E";
+        return { borderColor: "#9E9E9E", statusColor: "default" };
     }
   };
 
-  const getStatusColor = () => {
-    switch (status) {
-      case "not-started":
-        return "default";
-      case "in-progress":
-        return "warning";
-      case "finished":
-        return "success";
-      default:
-        return "default";
-    }
-  };
+  const { borderColor, statusColor } = getColorsByStatus(status || "default");
+
+
 
   return (
     <Box sx={{ minWidth: 275, maxWidth: 345, margin: "1rem" }}>
@@ -111,7 +105,7 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
         variant="outlined"
         sx={{
           position: "relative",
-          border: `1px solid ${getBorderColor()}`,
+          border: `2px solid ${borderColor}`,
           transition: "0.3s",
           "&:hover": {
             boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
@@ -173,7 +167,8 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
                   status === "finished" ? "הסתיים" : lessonStatusMapper[status!]
                 }
                 size="small"
-                color={getStatusColor()}
+                color={statusColor}
+                
               />
               <Typography variant="caption" color="text.secondary">
                 {`סגנון קריאה: ${lessonVersionsMapper[version!]}`}

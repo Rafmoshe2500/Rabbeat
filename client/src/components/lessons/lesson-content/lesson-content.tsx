@@ -15,6 +15,7 @@ import NotesPanel from "../../notes-panel/notes-panel";
 import HighlightedText from "../../highlighted-text/highlighted-text";
 import withFade from "../../../hoc/withFade.hoc";
 import styles from "./lesson-content.module.css";
+import { useUser } from '../../../contexts/user-context'
 
 interface LessonContentProps {
   lesson?: Lesson;
@@ -27,7 +28,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const { userDetails } = useUser()
   const toggleNotesPanel = () => {
     setIsNotesPanelOpen((prev) => !prev);
   };
@@ -88,11 +89,13 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
                   </IconButton>
                 </Tooltip>
               )}
+              { userDetails?.type === 'student' &&
               <Tooltip title={isNotesPanelOpen ? "סגור הערות" : "פתח הערות"}>
                 <IconButton onClick={toggleNotesPanel} color="primary">
                   <StickyNote2 />
                 </IconButton>
               </Tooltip>
+              }
             </Box>
           </Grid>
         </Grid>
