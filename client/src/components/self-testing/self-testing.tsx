@@ -98,8 +98,8 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       <Container
         maxWidth="md"
         sx={{
-          marginLeft: 24,
-          marginRight: 24,
+          marginLeft: isMobile ? 0 : 24,
+          marginRight: isMobile ? 0 : 24,
           width: isMobile ? "100%" : "auto",
         }}
       >
