@@ -15,7 +15,7 @@ import NotesPanel from "../../notes-panel/notes-panel";
 import HighlightedText from "../../highlighted-text/highlighted-text";
 import withFade from "../../../hoc/withFade.hoc";
 import styles from "./lesson-content.module.css";
-import { useUser } from '../../../contexts/user-context'
+import { useUser } from "../../../contexts/user-context";
 
 interface LessonContentProps {
   lesson?: Lesson;
@@ -28,7 +28,7 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { userDetails } = useUser()
+  const { userDetails } = useUser();
   const toggleNotesPanel = () => {
     setIsNotesPanelOpen((prev) => !prev);
   };
@@ -48,9 +48,10 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
     if (lesson?.audio) {
       const url = URL.createObjectURL(lesson.audio);
       setAudioURL(url);
-      return () => URL.revokeObjectURL(url);
+
+      return () => URL.revokeObjectURL(`${audioURL}`);
     }
-  }, [lesson?.audio]);
+  }, []);
 
   return (
     <Box
@@ -89,13 +90,13 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
                   </IconButton>
                 </Tooltip>
               )}
-              { userDetails?.type === 'student' &&
-              <Tooltip title={isNotesPanelOpen ? "סגור הערות" : "פתח הערות"}>
-                <IconButton onClick={toggleNotesPanel} color="primary">
-                  <StickyNote2 />
-                </IconButton>
-              </Tooltip>
-              }
+              {userDetails?.type === "student" && (
+                <Tooltip title={isNotesPanelOpen ? "סגור הערות" : "פתח הערות"}>
+                  <IconButton onClick={toggleNotesPanel} color="primary">
+                    <StickyNote2 />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Box>
           </Grid>
         </Grid>
@@ -114,6 +115,9 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
           <audio
             ref={audioRef}
             src={audioURL}
+            onPlay={() => {
+              !isPlaying && setIsPlaying(true);
+            }}
             onEnded={() => setIsPlaying(false)}
           />
         )}
