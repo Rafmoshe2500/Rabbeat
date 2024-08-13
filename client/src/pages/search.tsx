@@ -155,6 +155,7 @@ const TeacherSearch: React.FC = () => {
           </Grid>
 
           <Pagination
+          dir="rtl"
             count={Math.ceil(filteredTeachers.length / itemsPerPage)}
             page={page}
             onChange={(_, value) => setPage(value)}
