@@ -39,15 +39,11 @@ const TeacherPersonalArea = () => {
     navigate("/upload-lesson");
   };
 
-  const handleLessonClick = (lesson: LessonDetails) => {
-    navigate(`/teacher-personal-area/lesson/${lesson.id}`, { state: { lesson } });
-  };
-
   const renderStudentCard = (lesson: LessonDetails) => (
     <LessonCard 
       lessonDetails={lesson} 
-      onClick={() => handleLessonClick(lesson)}
-    />
+      onClick={() => navigate(`/teacher-personal-area/lesson/${lesson.id}`, { state: { lessonDetails: lesson } })}
+      />
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

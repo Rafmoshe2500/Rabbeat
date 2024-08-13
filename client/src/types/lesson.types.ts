@@ -38,6 +38,8 @@ const lessonVersion = [
   "Jerusalemite",
   "Moroccan",
   "Yemeni",
+  "Kurdish",
+  "Italian",
 ] as const;
 
 type LessonVersion = (typeof lessonVersion)[number];

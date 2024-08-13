@@ -13,12 +13,24 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/lesson", response_model=str, status_code=201)
 async def create_lesson(lesson: CreateLesson):
-
     lesson_id = mongo_db.add_lesson(Lesson(**lesson.model_dump(exclude={'teacherId'})))
     if not lesson_id:
         raise HTTPException(status_code=500, detail="Lesson not created")
     mongo_db.associate_user_to_lesson(lesson.teacherId, str(lesson_id.inserted_id))
     return str(lesson_id.inserted_id)
+
+
+@router.delete("/lesson/{lesson_id}", response_model=str, status_code=200)
+async def delete_lesson(lesson_id):
+    users = mongo_db.get_users_associations_to_lesson(lesson_id)
+    if len(users) > 1:
+        raise HTTPException(status_code=409, detail="Error, this lesson are associate to students.")
+    delete = mongo_db.delete_lesson_by_id(lesson_id)
+    if delete.deleted_count > 0:
+        delete = mongo_db.delete_lesson_details_by_id(lesson_id)
+        if delete.deleted_count > 0:
+            mongo_db.delete_user_lessons_by_lesson_id(lesson_id)
+    return "Success delete lesson"
 
 
 @router.get("/lesson/{lesson_id}", response_model=LessonResponse)

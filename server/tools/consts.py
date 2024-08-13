@@ -22,3 +22,5 @@ DEFAULT_PROFILE = {
     'versions': [],
     'aboutMe': ''
 }
+
+MB = 1024 * 1024
