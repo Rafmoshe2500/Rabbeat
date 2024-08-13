@@ -69,7 +69,6 @@ const DisplayText: React.FC<DisplayTextProps> = ({
     <Container maxWidth="lg" sx={{ width: "100%", padding: "0 !important" }}>
       <TextContainer>
         <Box
-          my={4}
           sx={{
             height: 400,
             overflow: "auto",
