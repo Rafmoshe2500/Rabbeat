@@ -69,3 +69,21 @@ export const lessonVersionsMapper: Record<LessonVersion, string> = {
   Kurdish: "כורדי",
   Italian: "איטלקי"
 };
+
+
+export const formatVerseReference = (
+  startChapter: string,
+  endChapter: string,
+  startVerse: string,
+  endVerse: string
+): string => {
+  if (startChapter === endChapter) {
+    if (startVerse === endVerse) {
+      return `${startChapter}: ${startVerse}`;
+    } else {
+      return `${startChapter}: ${startVerse} - ${endVerse}`;
+    }
+  } else {
+    return `${startChapter}: ${startVerse} - ${endChapter}: ${endVerse}`;
+  }
+}

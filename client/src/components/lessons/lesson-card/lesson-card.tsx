@@ -19,6 +19,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import AudioFileIcon from "@mui/icons-material/AudioFile";
 import CloseIcon from "@mui/icons-material/Close";
 import { lessonStatusMapper, lessonVersionsMapper } from "../../../utils/utils";
+import { formatVerseReference } from '../../../utils/utils'
 
 type LessonCardProps = {
   lessonDetails: Partial<LessonDetails>;
@@ -96,7 +97,8 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
   };
 
   const { borderColor, statusColor } = getColorsByStatus(status || "default");
-
+  const formattedString = formatVerseReference(startChapter!, endChapter!, startVerse!, endVerse!)
+  
   return (
     <Box sx={{ minWidth: 275, maxWidth: 345, margin: "1rem" }}>
       <Card
@@ -150,22 +152,8 @@ const LessonCard = ({ lessonDetails, studentId, onClick }: LessonCardProps) => {
               {pentateuch}
             </Typography>
             <Typography variant="body2" gutterBottom>
-              {startChapter === endChapter ? (
-                startVerse === endVerse ? (
-                  <>
-                    <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{startChapter}</span>: {startVerse}
-                  </>
-                ) : (
-                  <>
-                    <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{startChapter}</span>: {startVerse} - {endVerse}
-                  </>
-                )
-              ) : (
-                <>
-                  <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{startChapter}</span>: {startVerse} - <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{endChapter}</span>: {endVerse}
-                </>
-              )}
-          </Typography>
+                {formattedString}
+            </Typography>
 
             <Box
               sx={{
