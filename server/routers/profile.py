@@ -12,14 +12,23 @@ router = APIRouter(tags=["Teacher Profile"])
 @router.post("/profile/sample", response_model=str, status_code=201)
 async def add_new_sample(sample: CreateSample):
     result = mongo_db.add_new_sample(sample)
+    profile = mongo_db.get_teacher_profile(sample.teacherId)
+    new_updated_profile = UpdateProfile(key='sampleIds', value=profile['sampleIds'].append(str(result.inserted_id)))
+    mongo_db.update_profile(sample.teacherId, new_updated_profile)
     if result:
         return "Success adding new sample"
     raise HTTPException(status_code=500, detail="Failed to add new sample")
 
 
 @router.delete("/profile/sample", status_code=200)
-async def delete_sample(sample: DeleteSample):
-    result = mongo_db.remove_sample(sample.sampleId)
+async def delete_sample(del_sample: DeleteSample):
+    sample_id = del_sample.sampleId
+    sample = mongo_db.get_sample_by_id(sample_id)
+    profile = mongo_db.get_teacher_profile(sample['teacherId'])
+    sample_ids: list = profile['sampleIds']
+    sample_ids.remove(sample_id)
+    mongo_db.update_profile(sample['teacherId'], UpdateProfile(key='sampleIds', value=sample_ids))
+    result = mongo_db.remove_sample(sample_id)
     if result:
         return "Success removing new sample"
     raise HTTPException(status_code=500, detail="Failed to remove new sample")
