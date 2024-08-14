@@ -130,13 +130,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         <></>
       )}
       {audioUrl && !audioBlob && (
-        <div className={styles["last-chance"]}>
-          הנסיון האחרון:
-          <audio controls>
-            <source src={audioUrl} type="audio/wav" />
-            Your browser does not support the audio element.
-          </audio>
-        </div>
+        <audio controls>
+          <source src={audioUrl} type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
       )}
       <div className={styles["words-container"]}>
         {isLoading && <CircularProgress />}
