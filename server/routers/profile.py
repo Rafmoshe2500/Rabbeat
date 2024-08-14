@@ -13,7 +13,8 @@ router = APIRouter(tags=["Teacher Profile"])
 async def add_new_sample(sample: CreateSample):
     result = mongo_db.add_new_sample(sample)
     profile = mongo_db.get_teacher_profile(sample.teacherId)
-    new_updated_profile = UpdateProfile(key='sampleIds', value=profile['sampleIds'].append(str(result.inserted_id)))
+    profile['sampleIds'].append(str(result.inserted_id))
+    new_updated_profile = UpdateProfile(key='sampleIds', value=profile['sampleIds'])
     mongo_db.update_profile(sample.teacherId, new_updated_profile)
     if result:
         return "Success adding new sample"
