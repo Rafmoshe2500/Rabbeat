@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import MicIcon from "@mui/icons-material/Mic";
+import StopIcon from "@mui/icons-material/Stop";
+import { IconButton } from "@mui/material";
 
 interface AudioRecorderProps {
   onRecordingComplete: (
@@ -107,11 +110,12 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
 
   return (
     <div>
-      <button
+      <IconButton
+        style={{ color: "white", backgroundColor: "black" }}
         onClick={isRecording ? handleStopRecording : handleStartRecording}
       >
-        {isRecording ? "עצור הקלטה" : "התחל להקליט"}
-      </button>
+        {isRecording ? <StopIcon /> : <MicIcon />}
+      </IconButton>
       {audioURL && (
         <div>
           <audio controls src={audioURL}></audio>
