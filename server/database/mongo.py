@@ -397,5 +397,7 @@ class MongoDBApi:
     def get_samples(self, teacher_id):
         return list(self._db.teacher_samples.find({"teacherId": teacher_id}))
 
+    def get_sample_by_id(self, sample_id):
+        return self._db.teacher_samples.find_one({'_id': ObjectId(sample_id)})
 
 mongo_db = MongoDBApi(MONGO_DB_NAME, MONGO_URI)

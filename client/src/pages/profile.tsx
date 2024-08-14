@@ -155,10 +155,7 @@ const Profile: React.FC = () => {
             >
               <ProfileSamples
                 teacherId={editedProfile.id}
-                // canEdit={
-                //   canEdit &&
-                //   editedProfile.versions.length > editedProfile.sampleIds.length
-                // }
+                countSample={editedProfile.sampleIds.length}
               />
               <ProfileRecommendations
                 recommendations={editedProfile.recommendations}
