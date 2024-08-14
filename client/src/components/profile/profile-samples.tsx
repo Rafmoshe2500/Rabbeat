@@ -11,6 +11,7 @@ import { styled } from '@mui/material/styles';
 
 type ProfileSamplesProps = {
   teacherId: string;
+  countSample?: number
 };
 
 const CustomSlider = styled(Slider)(({ theme }) => ({
@@ -36,7 +37,7 @@ const CustomSlider = styled(Slider)(({ theme }) => ({
   },
 }));
 
-const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
+const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId, countSample = 0 }) => {
   const [samples, setSamples] = useState<Sample[]>([]);
   const [samplesDialogOpen, setSamplesDialogOpen] = useState(false);
   const [addSampleDialogOpen, setAddSampleDialogOpen] = useState(false);
@@ -151,7 +152,7 @@ const ProfileSamples: React.FC<ProfileSamplesProps> = ({ teacherId }) => {
       >
         <MicIcon />
         <Typography variant="caption" sx={{ ml: theme.spacing(1) }}>
-          דוגמאות שמע
+          {countSample} דוגמאות שמע
         </Typography>
       </IconButton>
       

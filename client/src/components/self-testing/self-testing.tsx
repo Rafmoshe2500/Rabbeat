@@ -19,6 +19,7 @@ import AnimatedButton from "../common/animated-button";
 import withFade from "../../hoc/withFade.hoc";
 import { useNavigate } from "react-router-dom";
 import theme from "../../theme";
+import { formatVerseReference } from '../../utils/utils'
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -35,7 +36,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const formattedString = formatVerseReference(lesson!.startChapter,
+                                                lesson!.endChapter,
+                                                lesson!.startVerse, 
+                                                lesson!.endVerse)
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
@@ -92,7 +96,8 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       >
         <Typography variant="h5">{lesson?.title}</Typography>
         <Typography variant="subtitle1" gutterBottom>
-          {`${lesson?.pentateuch} ${lesson?.startChapter}:${lesson?.startVerse} - ${lesson?.endChapter}:${lesson?.endVerse}`}
+          {`${lesson?.pentateuch} - `}
+          {formattedString}
         </Typography>
       </Box>
       <Container

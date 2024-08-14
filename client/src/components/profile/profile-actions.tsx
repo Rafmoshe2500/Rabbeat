@@ -49,7 +49,7 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
       phoneNumber = `+972${phoneNumber}`;
     }
 
-    const message = encodeURIComponent(`שלום ${profile.firstName} ${profile.lastName}, אני פונה אליך דרך אתר RabBeat. אני מעוניין ליצור איתך קשר על מנת לתאם איתך מספר שיעורים ללימוד לבר המצווה שלי. תודה`);
+    const message = encodeURIComponent(`שלום ${profile.firstName} ${profile.lastName}, אני פונה אליך דרך אתר RabBeat. שלום ${profile.firstName} ${profile.lastName} אני מעוניין ליצור איתך קשר על מנת לתאם איתך מספר שיעורים ללימוד לבר המצווה שלי. תודה`);
 
     // URLs for different platforms
     const iphoneUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
