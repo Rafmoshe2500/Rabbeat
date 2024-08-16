@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.responses import JSONResponse
 
-from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone, profile
-from routers.chat import chat_router
+# from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone, profile
+# from routers.chat import chat_router
 from routers.torah import torah_router
 from tools.consts import MB
 
@@ -32,15 +32,15 @@ async def increase_request_body_size(request: Request, call_next):
 
 
 app.include_router(torah_router)
-app.include_router(lessons.router, prefix="/api")
-app.include_router(user_lessons.router, prefix="/api")
-app.include_router(lesson_comment.router, prefix="/api")
-app.include_router(lesson_chatbot.router, prefix="/api")
-app.include_router(user.router, prefix="/api")
-app.include_router(chat_router, prefix="/api")
-app.include_router(study_zone.router, prefix="/api")
-app.include_router(student_tests.router, prefix="/api")
-app.include_router(profile.router, prefix="/api")
+# app.include_router(lessons.router, prefix="/api")
+# app.include_router(user_lessons.router, prefix="/api")
+# app.include_router(lesson_comment.router, prefix="/api")
+# app.include_router(lesson_chatbot.router, prefix="/api")
+# app.include_router(user.router, prefix="/api")
+# app.include_router(chat_router, prefix="/api")
+# app.include_router(study_zone.router, prefix="/api")
+# app.include_router(student_tests.router, prefix="/api")
+# app.include_router(profile.router, prefix="/api")
 
 
 @app.exception_handler(Exception)
