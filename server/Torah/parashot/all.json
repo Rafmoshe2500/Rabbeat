@@ -1,43 +1,43 @@
 {
   "בראשית": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "1",
       "startVerse": "1",
       "endChapter": "2",
       "endVerse": "3"
     },
-    "2": {
+    "שני": {
       "startChapter": "2",
       "startVerse": "4",
       "endChapter": "3",
       "endVerse": "21"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "3",
       "startVerse": "22",
       "endChapter": "4",
       "endVerse": "26"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "5",
       "startVerse": "1",
       "endChapter": "5",
       "endVerse": "24"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "5",
       "startVerse": "25",
       "endChapter": "6",
       "endVerse": "8"
     },
-    "6": {
+    "שישי": {
       "startChapter": "6",
       "startVerse": "9",
       "endChapter": "6",
       "endVerse": "22"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "7",
       "startVerse": "1",
       "endChapter": "8",
@@ -52,43 +52,43 @@
   },
   "נח": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "6",
       "startVerse": "9",
       "endChapter": "6",
       "endVerse": "22"
     },
-    "2": {
+    "שני": {
       "startChapter": "7",
       "startVerse": "1",
       "endChapter": "7",
       "endVerse": "16"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "7",
       "startVerse": "17",
       "endChapter": "8",
       "endVerse": "14"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "8",
       "startVerse": "15",
       "endChapter": "9",
       "endVerse": "7"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "9",
       "startVerse": "8",
       "endChapter": "9",
       "endVerse": "17"
     },
-    "6": {
+    "שישי": {
       "startChapter": "9",
       "startVerse": "18",
       "endChapter": "10",
       "endVerse": "32"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "11",
       "startVerse": "1",
       "endChapter": "11",
@@ -103,43 +103,43 @@
   },
   "לך לך": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "12",
       "startVerse": "1",
       "endChapter": "12",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "12",
       "startVerse": "14",
       "endChapter": "13",
       "endVerse": "4"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "13",
       "startVerse": "5",
       "endChapter": "13",
       "endVerse": "18"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "14",
       "startVerse": "1",
       "endChapter": "14",
       "endVerse": "20"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "14",
       "startVerse": "21",
       "endChapter": "15",
       "endVerse": "6"
     },
-    "6": {
+    "שישי": {
       "startChapter": "15",
       "startVerse": "7",
       "endChapter": "17",
       "endVerse": "6"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "17",
       "startVerse": "7",
       "endChapter": "17",
@@ -154,43 +154,43 @@
   },
   "וירא": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "18",
       "startVerse": "1",
       "endChapter": "18",
       "endVerse": "14"
     },
-    "2": {
+    "שני": {
       "startChapter": "18",
       "startVerse": "15",
       "endChapter": "18",
       "endVerse": "33"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "19",
       "startVerse": "1",
       "endChapter": "19",
       "endVerse": "20"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "19",
       "startVerse": "21",
       "endChapter": "20",
       "endVerse": "18"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "21",
       "startVerse": "1",
       "endChapter": "21",
       "endVerse": "21"
     },
-    "6": {
+    "שישי": {
       "startChapter": "21",
       "startVerse": "22",
       "endChapter": "21",
       "endVerse": "34"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "22",
       "startVerse": "1",
       "endChapter": "22",
@@ -205,43 +205,43 @@
   },
   "חיי שרה": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "23",
       "startVerse": "1",
       "endChapter": "23",
       "endVerse": "16"
     },
-    "2": {
+    "שני": {
       "startChapter": "23",
       "startVerse": "17",
       "endChapter": "24",
       "endVerse": "9"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "24",
       "startVerse": "10",
       "endChapter": "24",
       "endVerse": "26"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "24",
       "startVerse": "27",
       "endChapter": "24",
       "endVerse": "52"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "24",
       "startVerse": "53",
       "endChapter": "24",
       "endVerse": "67"
     },
-    "6": {
+    "שישי": {
       "startChapter": "25",
       "startVerse": "1",
       "endChapter": "25",
       "endVerse": "11"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "25",
       "startVerse": "12",
       "endChapter": "25",
@@ -256,43 +256,43 @@
   },
   "תולדות": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "25",
       "startVerse": "19",
       "endChapter": "26",
       "endVerse": "5"
     },
-    "2": {
+    "שני": {
       "startChapter": "26",
       "startVerse": "6",
       "endChapter": "26",
       "endVerse": "12"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "26",
       "startVerse": "13",
       "endChapter": "26",
       "endVerse": "22"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "26",
       "startVerse": "23",
       "endChapter": "26",
       "endVerse": "29"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "26",
       "startVerse": "30",
       "endChapter": "27",
       "endVerse": "27"
     },
-    "6": {
+    "שישי": {
       "startChapter": "27",
       "startVerse": "28",
       "endChapter": "28",
       "endVerse": "4"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "28",
       "startVerse": "5",
       "endChapter": "28",
@@ -307,43 +307,43 @@
   },
   "ויצא": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "28",
       "startVerse": "10",
       "endChapter": "29",
       "endVerse": "12"
     },
-    "2": {
+    "שני": {
       "startChapter": "29",
       "startVerse": "13",
       "endChapter": "29",
       "endVerse": "30"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "29",
       "startVerse": "31",
       "endChapter": "30",
       "endVerse": "21"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "30",
       "startVerse": "22",
       "endChapter": "31",
       "endVerse": "2"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "31",
       "startVerse": "3",
       "endChapter": "31",
       "endVerse": "42"
     },
-    "6": {
+    "שישי": {
       "startChapter": "31",
       "startVerse": "43",
       "endChapter": "32",
       "endVerse": "3"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "32",
       "startVerse": "4",
       "endChapter": "32",
@@ -358,43 +358,43 @@
   },
   "וישלח": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "32",
       "startVerse": "4",
       "endChapter": "32",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "32",
       "startVerse": "14",
       "endChapter": "32",
       "endVerse": "30"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "32",
       "startVerse": "31",
       "endChapter": "33",
       "endVerse": "5"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "33",
       "startVerse": "6",
       "endChapter": "33",
       "endVerse": "20"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "34",
       "startVerse": "1",
       "endChapter": "35",
       "endVerse": "11"
     },
-    "6": {
+    "שישי": {
       "startChapter": "35",
       "startVerse": "12",
       "endChapter": "36",
       "endVerse": "19"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "36",
       "startVerse": "20",
       "endChapter": "36",
@@ -409,43 +409,43 @@
   },
   "וישב": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "37",
       "startVerse": "1",
       "endChapter": "37",
       "endVerse": "11"
     },
-    "2": {
+    "שני": {
       "startChapter": "37",
       "startVerse": "12",
       "endChapter": "37",
       "endVerse": "22"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "37",
       "startVerse": "23",
       "endChapter": "37",
       "endVerse": "36"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "38",
       "startVerse": "1",
       "endChapter": "38",
       "endVerse": "30"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "39",
       "startVerse": "1",
       "endChapter": "39",
       "endVerse": "6"
     },
-    "6": {
+    "שישי": {
       "startChapter": "39",
       "startVerse": "7",
       "endChapter": "39",
       "endVerse": "23"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "40",
       "startVerse": "1",
       "endChapter": "40",
@@ -460,43 +460,43 @@
   },
   "מקץ": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "41",
       "startVerse": "1",
       "endChapter": "41",
       "endVerse": "14"
     },
-    "2": {
+    "שני": {
       "startChapter": "41",
       "startVerse": "15",
       "endChapter": "41",
       "endVerse": "38"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "41",
       "startVerse": "39",
       "endChapter": "41",
       "endVerse": "52"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "41",
       "startVerse": "53",
       "endChapter": "42",
       "endVerse": "18"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "42",
       "startVerse": "19",
       "endChapter": "43",
       "endVerse": "15"
     },
-    "6": {
+    "שישי": {
       "startChapter": "43",
       "startVerse": "16",
       "endChapter": "43",
       "endVerse": "29"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "43",
       "startVerse": "30",
       "endChapter": "44",
@@ -511,43 +511,43 @@
   },
   "ויגש": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "44",
       "startVerse": "18",
       "endChapter": "44",
       "endVerse": "30"
     },
-    "2": {
+    "שני": {
       "startChapter": "44",
       "startVerse": "31",
       "endChapter": "45",
       "endVerse": "7"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "45",
       "startVerse": "8",
       "endChapter": "45",
       "endVerse": "18"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "45",
       "startVerse": "19",
       "endChapter": "45",
       "endVerse": "27"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "45",
       "startVerse": "28",
       "endChapter": "46",
       "endVerse": "27"
     },
-    "6": {
+    "שישי": {
       "startChapter": "46",
       "startVerse": "28",
       "endChapter": "47",
       "endVerse": "10"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "47",
       "startVerse": "11",
       "endChapter": "47",
@@ -562,43 +562,43 @@
   },
   "ויחי": {
     "pentateuch": "בראשית",
-    "1": {
+    "ראשון": {
       "startChapter": "47",
       "startVerse": "28",
       "endChapter": "48",
       "endVerse": "9"
     },
-    "2": {
+    "שני": {
       "startChapter": "48",
       "startVerse": "10",
       "endChapter": "48",
       "endVerse": "16"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "48",
       "startVerse": "17",
       "endChapter": "48",
       "endVerse": "22"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "49",
       "startVerse": "1",
       "endChapter": "49",
       "endVerse": "18"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "49",
       "startVerse": "19",
       "endChapter": "49",
       "endVerse": "26"
     },
-    "6": {
+    "שישי": {
       "startChapter": "49",
       "startVerse": "27",
       "endChapter": "50",
       "endVerse": "20"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "50",
       "startVerse": "21",
       "endChapter": "50",
@@ -613,43 +613,43 @@
   },
   "שמות": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "1",
       "startVerse": "1",
       "endChapter": "1",
       "endVerse": "17"
     },
-    "2": {
+    "שני": {
       "startChapter": "1",
       "startVerse": "18",
       "endChapter": "2",
       "endVerse": "10"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "2",
       "startVerse": "11",
       "endChapter": "2",
       "endVerse": "25"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "3",
       "startVerse": "1",
       "endChapter": "3",
       "endVerse": "15"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "3",
       "startVerse": "16",
       "endChapter": "4",
       "endVerse": "17"
     },
-    "6": {
+    "שישי": {
       "startChapter": "4",
       "startVerse": "18",
       "endChapter": "4",
       "endVerse": "31"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "5",
       "startVerse": "1",
       "endChapter": "6",
@@ -664,43 +664,43 @@
   },
   "וארא": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "6",
       "startVerse": "2",
       "endChapter": "6",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "6",
       "startVerse": "14",
       "endChapter": "6",
       "endVerse": "28"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "6",
       "startVerse": "29",
       "endChapter": "7",
       "endVerse": "7"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "7",
       "startVerse": "8",
       "endChapter": "7",
       "endVerse": "25"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "7",
       "startVerse": "26",
       "endChapter": "8",
       "endVerse": "11"
     },
-    "6": {
+    "שישי": {
       "startChapter": "8",
       "startVerse": "12",
       "endChapter": "8",
       "endVerse": "28"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "9",
       "startVerse": "1",
       "endChapter": "9",
@@ -715,43 +715,43 @@
   },
   "בא": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "10",
       "startVerse": "1",
       "endChapter": "10",
       "endVerse": "11"
     },
-    "2": {
+    "שני": {
       "startChapter": "10",
       "startVerse": "12",
       "endChapter": "10",
       "endVerse": "23"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "10",
       "startVerse": "24",
       "endChapter": "11",
       "endVerse": "3"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "11",
       "startVerse": "4",
       "endChapter": "12",
       "endVerse": "20"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "12",
       "startVerse": "21",
       "endChapter": "12",
       "endVerse": "28"
     },
-    "6": {
+    "שישי": {
       "startChapter": "12",
       "startVerse": "29",
       "endChapter": "12",
       "endVerse": "51"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "13",
       "startVerse": "1",
       "endChapter": "13",
@@ -766,43 +766,43 @@
   },
   "בשלח": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "13",
       "startVerse": "17",
       "endChapter": "14",
       "endVerse": "8"
     },
-    "2": {
+    "שני": {
       "startChapter": "14",
       "startVerse": "9",
       "endChapter": "14",
       "endVerse": "14"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "14",
       "startVerse": "15",
       "endChapter": "14",
       "endVerse": "25"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "14",
       "startVerse": "26",
       "endChapter": "15",
       "endVerse": "26"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "15",
       "startVerse": "27",
       "endChapter": "16",
       "endVerse": "10"
     },
-    "6": {
+    "שישי": {
       "startChapter": "16",
       "startVerse": "11",
       "endChapter": "16",
       "endVerse": "36"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "17",
       "startVerse": "1",
       "endChapter": "17",
@@ -817,43 +817,43 @@
   },
   "יתרו": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "18",
       "startVerse": "1",
       "endChapter": "18",
       "endVerse": "12"
     },
-    "2": {
+    "שני": {
       "startChapter": "18",
       "startVerse": "13",
       "endChapter": "18",
       "endVerse": "23"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "18",
       "startVerse": "24",
       "endChapter": "19",
       "endVerse": "6"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "19",
       "startVerse": "7",
       "endChapter": "19",
       "endVerse": "19"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "19",
       "startVerse": "20",
       "endChapter": "20",
       "endVerse": "14"
     },
-    "6": {
+    "שישי": {
       "startChapter": "20",
       "startVerse": "15",
       "endChapter": "20",
       "endVerse": "23"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "21",
       "startVerse": "1",
       "endChapter": "21",
@@ -868,43 +868,43 @@
   },
   "משפטים": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "21",
       "startVerse": "1",
       "endChapter": "21",
       "endVerse": "19"
     },
-    "2": {
+    "שני": {
       "startChapter": "21",
       "startVerse": "20",
       "endChapter": "22",
       "endVerse": "3"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "22",
       "startVerse": "4",
       "endChapter": "22",
       "endVerse": "26"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "22",
       "startVerse": "27",
       "endChapter": "23",
       "endVerse": "5"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "23",
       "startVerse": "6",
       "endChapter": "23",
       "endVerse": "19"
     },
-    "6": {
+    "שישי": {
       "startChapter": "23",
       "startVerse": "20",
       "endChapter": "23",
       "endVerse": "25"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "23",
       "startVerse": "26",
       "endChapter": "24",
@@ -919,43 +919,43 @@
   },
   "תרומה": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "25",
       "startVerse": "1",
       "endChapter": "25",
       "endVerse": "16"
     },
-    "2": {
+    "שני": {
       "startChapter": "25",
       "startVerse": "17",
       "endChapter": "25",
       "endVerse": "40"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "26",
       "startVerse": "1",
       "endChapter": "26",
       "endVerse": "14"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "26",
       "startVerse": "15",
       "endChapter": "26",
       "endVerse": "30"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "26",
       "startVerse": "31",
       "endChapter": "27",
       "endVerse": "8"
     },
-    "6": {
+    "שישי": {
       "startChapter": "27",
       "startVerse": "9",
       "endChapter": "27",
       "endVerse": "19"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "28",
       "startVerse": "1",
       "endChapter": "28",
@@ -970,43 +970,43 @@
   },
   "תצוה": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "27",
       "startVerse": "20",
       "endChapter": "28",
       "endVerse": "12"
     },
-    "2": {
+    "שני": {
       "startChapter": "28",
       "startVerse": "13",
       "endChapter": "28",
       "endVerse": "30"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "28",
       "startVerse": "31",
       "endChapter": "28",
       "endVerse": "43"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "29",
       "startVerse": "1",
       "endChapter": "29",
       "endVerse": "18"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "29",
       "startVerse": "19",
       "endChapter": "29",
       "endVerse": "37"
     },
-    "6": {
+    "שישי": {
       "startChapter": "29",
       "startVerse": "38",
       "endChapter": "29",
       "endVerse": "46"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "30",
       "startVerse": "1",
       "endChapter": "30",
@@ -1021,43 +1021,43 @@
   },
   "כי תשא": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "30",
       "startVerse": "11",
       "endChapter": "31",
       "endVerse": "17"
     },
-    "2": {
+    "שני": {
       "startChapter": "31",
       "startVerse": "18",
       "endChapter": "32",
       "endVerse": "14"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "32",
       "startVerse": "15",
       "endChapter": "32",
       "endVerse": "24"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "32",
       "startVerse": "25",
       "endChapter": "33",
       "endVerse": "11"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "33",
       "startVerse": "12",
       "endChapter": "33",
       "endVerse": "23"
     },
-    "6": {
+    "שישי": {
       "startChapter": "34",
       "startVerse": "1",
       "endChapter": "34",
       "endVerse": "9"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "34",
       "startVerse": "10",
       "endChapter": "34",
@@ -1072,43 +1072,43 @@
   },
   "ויקהל": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "35",
       "startVerse": "1",
       "endChapter": "35",
       "endVerse": "20"
     },
-    "2": {
+    "שני": {
       "startChapter": "35",
       "startVerse": "21",
       "endChapter": "35",
       "endVerse": "29"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "35",
       "startVerse": "30",
       "endChapter": "36",
       "endVerse": "7"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "36",
       "startVerse": "8",
       "endChapter": "36",
       "endVerse": "19"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "36",
       "startVerse": "20",
       "endChapter": "37",
       "endVerse": "16"
     },
-    "6": {
+    "שישי": {
       "startChapter": "37",
       "startVerse": "17",
       "endChapter": "37",
       "endVerse": "29"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "38",
       "startVerse": "1",
       "endChapter": "38",
@@ -1123,43 +1123,43 @@
   },
   "פקודי": {
     "pentateuch": "שמות",
-    "1": {
+    "ראשון": {
       "startChapter": "38",
       "startVerse": "21",
       "endChapter": "39",
       "endVerse": "1"
     },
-    "2": {
+    "שני": {
       "startChapter": "39",
       "startVerse": "2",
       "endChapter": "39",
       "endVerse": "21"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "39",
       "startVerse": "22",
       "endChapter": "39",
       "endVerse": "32"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "39",
       "startVerse": "33",
       "endChapter": "39",
       "endVerse": "43"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "40",
       "startVerse": "1",
       "endChapter": "40",
       "endVerse": "16"
     },
-    "6": {
+    "שישי": {
       "startChapter": "40",
       "startVerse": "17",
       "endChapter": "40",
       "endVerse": "27"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "40",
       "startVerse": "28",
       "endChapter": "40",
@@ -1174,43 +1174,43 @@
   },
   "ויקרא": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "1",
       "startVerse": "1",
       "endChapter": "1",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "1",
       "startVerse": "14",
       "endChapter": "2",
       "endVerse": "6"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "2",
       "startVerse": "7",
       "endChapter": "2",
       "endVerse": "16"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "3",
       "startVerse": "1",
       "endChapter": "3",
       "endVerse": "17"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "4",
       "startVerse": "1",
       "endChapter": "4",
       "endVerse": "26"
     },
-    "6": {
+    "שישי": {
       "startChapter": "4",
       "startVerse": "27",
       "endChapter": "5",
       "endVerse": "10"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "5",
       "startVerse": "11",
       "endChapter": "5",
@@ -1225,43 +1225,43 @@
   },
   "צו": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "6",
       "startVerse": "1",
       "endChapter": "6",
       "endVerse": "11"
     },
-    "2": {
+    "שני": {
       "startChapter": "6",
       "startVerse": "12",
       "endChapter": "7",
       "endVerse": "10"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "7",
       "startVerse": "11",
       "endChapter": "7",
       "endVerse": "38"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "8",
       "startVerse": "1",
       "endChapter": "8",
       "endVerse": "13"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "8",
       "startVerse": "14",
       "endChapter": "8",
       "endVerse": "21"
     },
-    "6": {
+    "שישי": {
       "startChapter": "8",
       "startVerse": "22",
       "endChapter": "8",
       "endVerse": "29"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "8",
       "startVerse": "30",
       "endChapter": "8",
@@ -1276,43 +1276,43 @@
   },
   "שמיני": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "9",
       "startVerse": "1",
       "endChapter": "9",
       "endVerse": "16"
     },
-    "2": {
+    "שני": {
       "startChapter": "9",
       "startVerse": "17",
       "endChapter": "9",
       "endVerse": "23"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "9",
       "startVerse": "24",
       "endChapter": "10",
       "endVerse": "11"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "10",
       "startVerse": "12",
       "endChapter": "10",
       "endVerse": "15"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "10",
       "startVerse": "16",
       "endChapter": "10",
       "endVerse": "20"
     },
-    "6": {
+    "שישי": {
       "startChapter": "11",
       "startVerse": "1",
       "endChapter": "11",
       "endVerse": "32"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "11",
       "startVerse": "33",
       "endChapter": "11",
@@ -1327,43 +1327,43 @@
   },
   "תזריע": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "12",
       "startVerse": "1",
       "endChapter": "12",
       "endVerse": "8"
     },
-    "2": {
+    "שני": {
       "startChapter": "13",
       "startVerse": "1",
       "endChapter": "13",
       "endVerse": "17"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "13",
       "startVerse": "18",
       "endChapter": "13",
       "endVerse": "23"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "13",
       "startVerse": "24",
       "endChapter": "13",
       "endVerse": "28"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "13",
       "startVerse": "29",
       "endChapter": "13",
       "endVerse": "39"
     },
-    "6": {
+    "שישי": {
       "startChapter": "13",
       "startVerse": "40",
       "endChapter": "13",
       "endVerse": "54"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "13",
       "startVerse": "55",
       "endChapter": "13",
@@ -1378,43 +1378,43 @@
   },
   "מצורע": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "14",
       "startVerse": "1",
       "endChapter": "14",
       "endVerse": "12"
     },
-    "2": {
+    "שני": {
       "startChapter": "14",
       "startVerse": "13",
       "endChapter": "14",
       "endVerse": "20"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "14",
       "startVerse": "21",
       "endChapter": "14",
       "endVerse": "32"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "14",
       "startVerse": "33",
       "endChapter": "14",
       "endVerse": "53"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "14",
       "startVerse": "54",
       "endChapter": "15",
       "endVerse": "15"
     },
-    "6": {
+    "שישי": {
       "startChapter": "15",
       "startVerse": "16",
       "endChapter": "15",
       "endVerse": "28"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "15",
       "startVerse": "29",
       "endChapter": "15",
@@ -1429,43 +1429,43 @@
   },
   "אחרי מות": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "16",
       "startVerse": "1",
       "endChapter": "16",
       "endVerse": "17"
     },
-    "2": {
+    "שני": {
       "startChapter": "16",
       "startVerse": "18",
       "endChapter": "16",
       "endVerse": "24"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "16",
       "startVerse": "25",
       "endChapter": "16",
       "endVerse": "34"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "17",
       "startVerse": "1",
       "endChapter": "17",
       "endVerse": "7"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "17",
       "startVerse": "8",
       "endChapter": "18",
       "endVerse": "5"
     },
-    "6": {
+    "שישי": {
       "startChapter": "18",
       "startVerse": "6",
       "endChapter": "18",
       "endVerse": "21"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "18",
       "startVerse": "22",
       "endChapter": "18",
@@ -1480,43 +1480,43 @@
   },
   "קדושים": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "19",
       "startVerse": "1",
       "endChapter": "19",
       "endVerse": "14"
     },
-    "2": {
+    "שני": {
       "startChapter": "19",
       "startVerse": "15",
       "endChapter": "19",
       "endVerse": "22"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "19",
       "startVerse": "23",
       "endChapter": "19",
       "endVerse": "32"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "19",
       "startVerse": "33",
       "endChapter": "19",
       "endVerse": "37"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "20",
       "startVerse": "1",
       "endChapter": "20",
       "endVerse": "7"
     },
-    "6": {
+    "שישי": {
       "startChapter": "20",
       "startVerse": "8",
       "endChapter": "20",
       "endVerse": "22"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "20",
       "startVerse": "23",
       "endChapter": "20",
@@ -1531,43 +1531,43 @@
   },
   "אמור": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "21",
       "startVerse": "1",
       "endChapter": "21",
       "endVerse": "15"
     },
-    "2": {
+    "שני": {
       "startChapter": "21",
       "startVerse": "16",
       "endChapter": "22",
       "endVerse": "16"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "22",
       "startVerse": "17",
       "endChapter": "22",
       "endVerse": "33"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "23",
       "startVerse": "1",
       "endChapter": "23",
       "endVerse": "22"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "23",
       "startVerse": "23",
       "endChapter": "23",
       "endVerse": "32"
     },
-    "6": {
+    "שישי": {
       "startChapter": "23",
       "startVerse": "33",
       "endChapter": "23",
       "endVerse": "44"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "24",
       "startVerse": "1",
       "endChapter": "24",
@@ -1582,43 +1582,43 @@
   },
   "בהר": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "25",
       "startVerse": "1",
       "endChapter": "25",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "25",
       "startVerse": "14",
       "endChapter": "25",
       "endVerse": "18"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "25",
       "startVerse": "19",
       "endChapter": "25",
       "endVerse": "24"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "25",
       "startVerse": "25",
       "endChapter": "25",
       "endVerse": "28"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "25",
       "startVerse": "29",
       "endChapter": "25",
       "endVerse": "38"
     },
-    "6": {
+    "שישי": {
       "startChapter": "25",
       "startVerse": "39",
       "endChapter": "25",
       "endVerse": "46"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "25",
       "startVerse": "47",
       "endChapter": "26",
@@ -1633,43 +1633,43 @@
   },
   "בחוקותי": {
     "pentateuch": "ויקרא",
-    "1": {
+    "ראשון": {
       "startChapter": "26",
       "startVerse": "3",
       "endChapter": "26",
       "endVerse": "5"
     },
-    "2": {
+    "שני": {
       "startChapter": "26",
       "startVerse": "6",
       "endChapter": "26",
       "endVerse": "9"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "26",
       "startVerse": "10",
       "endChapter": "26",
       "endVerse": "46"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "27",
       "startVerse": "1",
       "endChapter": "27",
       "endVerse": "15"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "27",
       "startVerse": "16",
       "endChapter": "27",
       "endVerse": "21"
     },
-    "6": {
+    "שישי": {
       "startChapter": "27",
       "startVerse": "22",
       "endChapter": "27",
       "endVerse": "28"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "27",
       "startVerse": "29",
       "endChapter": "27",
@@ -1684,43 +1684,43 @@
   },
   "במדבר": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "1",
       "startVerse": "1",
       "endChapter": "1",
       "endVerse": "19"
     },
-    "2": {
+    "שני": {
       "startChapter": "1",
       "startVerse": "20",
       "endChapter": "1",
       "endVerse": "54"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "2",
       "startVerse": "1",
       "endChapter": "2",
       "endVerse": "34"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "3",
       "startVerse": "1",
       "endChapter": "3",
       "endVerse": "13"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "3",
       "startVerse": "14",
       "endChapter": "3",
       "endVerse": "39"
     },
-    "6": {
+    "שישי": {
       "startChapter": "3",
       "startVerse": "40",
       "endChapter": "3",
       "endVerse": "51"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "4",
       "startVerse": "1",
       "endChapter": "4",
@@ -1735,43 +1735,43 @@
   },
   "נשא": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "4",
       "startVerse": "21",
       "endChapter": "4",
       "endVerse": "37"
     },
-    "2": {
+    "שני": {
       "startChapter": "4",
       "startVerse": "38",
       "endChapter": "4",
       "endVerse": "49"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "5",
       "startVerse": "1",
       "endChapter": "5",
       "endVerse": "10"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "5",
       "startVerse": "11",
       "endChapter": "6",
       "endVerse": "27"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "7",
       "startVerse": "1",
       "endChapter": "7",
       "endVerse": "41"
     },
-    "6": {
+    "שישי": {
       "startChapter": "7",
       "startVerse": "42",
       "endChapter": "7",
       "endVerse": "71"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "7",
       "startVerse": "72",
       "endChapter": "7",
@@ -1786,43 +1786,43 @@
   },
   "בהעלותך": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "8",
       "startVerse": "1",
       "endChapter": "8",
       "endVerse": "14"
     },
-    "2": {
+    "שני": {
       "startChapter": "8",
       "startVerse": "15",
       "endChapter": "8",
       "endVerse": "26"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "9",
       "startVerse": "1",
       "endChapter": "9",
       "endVerse": "14"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "9",
       "startVerse": "15",
       "endChapter": "10",
       "endVerse": "10"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "10",
       "startVerse": "11",
       "endChapter": "10",
       "endVerse": "34"
     },
-    "6": {
+    "שישי": {
       "startChapter": "10",
       "startVerse": "35",
       "endChapter": "11",
       "endVerse": "15"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "11",
       "startVerse": "16",
       "endChapter": "12",
@@ -1837,43 +1837,43 @@
   },
   "שלח": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "13",
       "startVerse": "1",
       "endChapter": "13",
       "endVerse": "20"
     },
-    "2": {
+    "שני": {
       "startChapter": "13",
       "startVerse": "21",
       "endChapter": "14",
       "endVerse": "7"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "14",
       "startVerse": "8",
       "endChapter": "14",
       "endVerse": "25"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "14",
       "startVerse": "26",
       "endChapter": "15",
       "endVerse": "7"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "15",
       "startVerse": "8",
       "endChapter": "15",
       "endVerse": "16"
     },
-    "6": {
+    "שישי": {
       "startChapter": "15",
       "startVerse": "17",
       "endChapter": "15",
       "endVerse": "26"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "15",
       "startVerse": "27",
       "endChapter": "15",
@@ -1888,43 +1888,43 @@
   },
   "קרח": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "16",
       "startVerse": "1",
       "endChapter": "16",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "16",
       "startVerse": "14",
       "endChapter": "16",
       "endVerse": "19"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "16",
       "startVerse": "20",
       "endChapter": "17",
       "endVerse": "8"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "17",
       "startVerse": "9",
       "endChapter": "17",
       "endVerse": "15"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "17",
       "startVerse": "16",
       "endChapter": "17",
       "endVerse": "24"
     },
-    "6": {
+    "שישי": {
       "startChapter": "17",
       "startVerse": "25",
       "endChapter": "18",
       "endVerse": "20"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "18",
       "startVerse": "21",
       "endChapter": "18",
@@ -1939,43 +1939,43 @@
   },
   "חקת": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "19",
       "startVerse": "1",
       "endChapter": "19",
       "endVerse": "17"
     },
-    "2": {
+    "שני": {
       "startChapter": "19",
       "startVerse": "18",
       "endChapter": "20",
       "endVerse": "6"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "20",
       "startVerse": "7",
       "endChapter": "20",
       "endVerse": "13"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "20",
       "startVerse": "14",
       "endChapter": "20",
       "endVerse": "21"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "20",
       "startVerse": "22",
       "endChapter": "21",
       "endVerse": "10"
     },
-    "6": {
+    "שישי": {
       "startChapter": "21",
       "startVerse": "11",
       "endChapter": "21",
       "endVerse": "20"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "21",
       "startVerse": "21",
       "endChapter": "22",
@@ -1990,43 +1990,43 @@
   },
   "בלק": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "22",
       "startVerse": "2",
       "endChapter": "22",
       "endVerse": "12"
     },
-    "2": {
+    "שני": {
       "startChapter": "22",
       "startVerse": "13",
       "endChapter": "22",
       "endVerse": "20"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "22",
       "startVerse": "21",
       "endChapter": "22",
       "endVerse": "38"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "22",
       "startVerse": "39",
       "endChapter": "23",
       "endVerse": "12"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "23",
       "startVerse": "13",
       "endChapter": "23",
       "endVerse": "26"
     },
-    "6": {
+    "שישי": {
       "startChapter": "23",
       "startVerse": "27",
       "endChapter": "24",
       "endVerse": "13"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "24",
       "startVerse": "14",
       "endChapter": "25",
@@ -2041,43 +2041,43 @@
   },
   "פינחס": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "25",
       "startVerse": "10",
       "endChapter": "26",
       "endVerse": "4"
     },
-    "2": {
+    "שני": {
       "startChapter": "26",
       "startVerse": "5",
       "endChapter": "26",
       "endVerse": "51"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "26",
       "startVerse": "52",
       "endChapter": "27",
       "endVerse": "5"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "27",
       "startVerse": "6",
       "endChapter": "27",
       "endVerse": "23"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "28",
       "startVerse": "1",
       "endChapter": "28",
       "endVerse": "15"
     },
-    "6": {
+    "שישי": {
       "startChapter": "28",
       "startVerse": "16",
       "endChapter": "29",
       "endVerse": "11"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "29",
       "startVerse": "12",
       "endChapter": "30",
@@ -2092,43 +2092,43 @@
   },
   "מטות": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "30",
       "startVerse": "2",
       "endChapter": "30",
       "endVerse": "17"
     },
-    "2": {
+    "שני": {
       "startChapter": "31",
       "startVerse": "1",
       "endChapter": "31",
       "endVerse": "12"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "31",
       "startVerse": "13",
       "endChapter": "31",
       "endVerse": "24"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "31",
       "startVerse": "25",
       "endChapter": "31",
       "endVerse": "41"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "31",
       "startVerse": "42",
       "endChapter": "31",
       "endVerse": "54"
     },
-    "6": {
+    "שישי": {
       "startChapter": "32",
       "startVerse": "1",
       "endChapter": "32",
       "endVerse": "19"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "32",
       "startVerse": "20",
       "endChapter": "32",
@@ -2143,43 +2143,43 @@
   },
   "מסעי": {
     "pentateuch": "במדבר",
-    "1": {
+    "ראשון": {
       "startChapter": "33",
       "startVerse": "1",
       "endChapter": "33",
       "endVerse": "10"
     },
-    "2": {
+    "שני": {
       "startChapter": "33",
       "startVerse": "11",
       "endChapter": "33",
       "endVerse": "49"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "33",
       "startVerse": "50",
       "endChapter": "34",
       "endVerse": "15"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "34",
       "startVerse": "16",
       "endChapter": "34",
       "endVerse": "29"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "35",
       "startVerse": "1",
       "endChapter": "35",
       "endVerse": "8"
     },
-    "6": {
+    "שישי": {
       "startChapter": "35",
       "startVerse": "9",
       "endChapter": "35",
       "endVerse": "34"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "36",
       "startVerse": "1",
       "endChapter": "36",
@@ -2194,43 +2194,43 @@
   },
   "דברים": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "1",
       "startVerse": "1",
       "endChapter": "1",
       "endVerse": "10"
     },
-    "2": {
+    "שני": {
       "startChapter": "1",
       "startVerse": "11",
       "endChapter": "1",
       "endVerse": "21"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "1",
       "startVerse": "22",
       "endChapter": "1",
       "endVerse": "38"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "1",
       "startVerse": "39",
       "endChapter": "2",
       "endVerse": "1"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "2",
       "startVerse": "2",
       "endChapter": "2",
       "endVerse": "30"
     },
-    "6": {
+    "שישי": {
       "startChapter": "2",
       "startVerse": "31",
       "endChapter": "3",
       "endVerse": "14"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "3",
       "startVerse": "15",
       "endChapter": "3",
@@ -2245,43 +2245,43 @@
   },
   "ואתחנן": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "3",
       "startVerse": "23",
       "endChapter": "4",
       "endVerse": "4"
     },
-    "2": {
+    "שני": {
       "startChapter": "4",
       "startVerse": "5",
       "endChapter": "4",
       "endVerse": "40"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "4",
       "startVerse": "41",
       "endChapter": "4",
       "endVerse": "49"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "5",
       "startVerse": "1",
       "endChapter": "5",
       "endVerse": "18"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "5",
       "startVerse": "19",
       "endChapter": "6",
       "endVerse": "3"
     },
-    "6": {
+    "שישי": {
       "startChapter": "6",
       "startVerse": "4",
       "endChapter": "6",
       "endVerse": "25"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "7",
       "startVerse": "1",
       "endChapter": "7",
@@ -2296,43 +2296,43 @@
   },
   "עקב": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "7",
       "startVerse": "12",
       "endChapter": "8",
       "endVerse": "10"
     },
-    "2": {
+    "שני": {
       "startChapter": "8",
       "startVerse": "11",
       "endChapter": "9",
       "endVerse": "3"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "9",
       "startVerse": "4",
       "endChapter": "9",
       "endVerse": "29"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "10",
       "startVerse": "1",
       "endChapter": "10",
       "endVerse": "11"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "10",
       "startVerse": "12",
       "endChapter": "11",
       "endVerse": "9"
     },
-    "6": {
+    "שישי": {
       "startChapter": "11",
       "startVerse": "10",
       "endChapter": "11",
       "endVerse": "21"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "11",
       "startVerse": "22",
       "endChapter": "11",
@@ -2347,43 +2347,43 @@
   },
   "ראה": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "11",
       "startVerse": "26",
       "endChapter": "12",
       "endVerse": "10"
     },
-    "2": {
+    "שני": {
       "startChapter": "12",
       "startVerse": "11",
       "endChapter": "12",
       "endVerse": "28"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "12",
       "startVerse": "29",
       "endChapter": "13",
       "endVerse": "19"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "14",
       "startVerse": "1",
       "endChapter": "14",
       "endVerse": "21"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "14",
       "startVerse": "22",
       "endChapter": "14",
       "endVerse": "29"
     },
-    "6": {
+    "שישי": {
       "startChapter": "15",
       "startVerse": "1",
       "endChapter": "15",
       "endVerse": "18"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "15",
       "startVerse": "19",
       "endChapter": "16",
@@ -2398,43 +2398,43 @@
   },
   "שופטים": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "16",
       "startVerse": "18",
       "endChapter": "17",
       "endVerse": "13"
     },
-    "2": {
+    "שני": {
       "startChapter": "17",
       "startVerse": "14",
       "endChapter": "17",
       "endVerse": "20"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "18",
       "startVerse": "1",
       "endChapter": "18",
       "endVerse": "5"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "18",
       "startVerse": "6",
       "endChapter": "18",
       "endVerse": "13"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "18",
       "startVerse": "14",
       "endChapter": "19",
       "endVerse": "13"
     },
-    "6": {
+    "שישי": {
       "startChapter": "19",
       "startVerse": "14",
       "endChapter": "20",
       "endVerse": "9"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "21",
       "startVerse": "1",
       "endChapter": "21",
@@ -2449,43 +2449,43 @@
   },
   "כי תצא": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "21",
       "startVerse": "10",
       "endChapter": "21",
       "endVerse": "21"
     },
-    "2": {
+    "שני": {
       "startChapter": "21",
       "startVerse": "22",
       "endChapter": "22",
       "endVerse": "7"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "22",
       "startVerse": "8",
       "endChapter": "23",
       "endVerse": "7"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "23",
       "startVerse": "8",
       "endChapter": "23",
       "endVerse": "24"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "23",
       "startVerse": "25",
       "endChapter": "24",
       "endVerse": "4"
     },
-    "6": {
+    "שישי": {
       "startChapter": "24",
       "startVerse": "5",
       "endChapter": "24",
       "endVerse": "13"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "24",
       "startVerse": "14",
       "endChapter": "25",
@@ -2500,43 +2500,43 @@
   },
   "כי תבוא": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "26",
       "startVerse": "1",
       "endChapter": "26",
       "endVerse": "11"
     },
-    "2": {
+    "שני": {
       "startChapter": "26",
       "startVerse": "12",
       "endChapter": "26",
       "endVerse": "15"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "26",
       "startVerse": "16",
       "endChapter": "26",
       "endVerse": "19"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "27",
       "startVerse": "1",
       "endChapter": "27",
       "endVerse": "10"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "27",
       "startVerse": "11",
       "endChapter": "28",
       "endVerse": "6"
     },
-    "6": {
+    "שישי": {
       "startChapter": "28",
       "startVerse": "7",
       "endChapter": "28",
       "endVerse": "69"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "29",
       "startVerse": "1",
       "endChapter": "29",
@@ -2551,43 +2551,43 @@
   },
   "נצבים": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "29",
       "startVerse": "9",
       "endChapter": "29",
       "endVerse": "28"
     },
-    "2": {
+    "שני": {
       "startChapter": "30",
       "startVerse": "1",
       "endChapter": "30",
       "endVerse": "6"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "30",
       "startVerse": "7",
       "endChapter": "30",
       "endVerse": "10"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "30",
       "startVerse": "11",
       "endChapter": "30",
       "endVerse": "14"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "30",
       "startVerse": "15",
       "endChapter": "30",
       "endVerse": "20"
     },
-    "6": {
+    "שישי": {
       "startChapter": "31",
       "startVerse": "1",
       "endChapter": "31",
       "endVerse": "6"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "31",
       "startVerse": "7",
       "endChapter": "31",
@@ -2602,43 +2602,43 @@
   },
   "וילך": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "31",
       "startVerse": "1",
       "endChapter": "31",
       "endVerse": "6"
     },
-    "2": {
+    "שני": {
       "startChapter": "31",
       "startVerse": "7",
       "endChapter": "31",
       "endVerse": "13"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "31",
       "startVerse": "14",
       "endChapter": "31",
       "endVerse": "19"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "31",
       "startVerse": "20",
       "endChapter": "31",
       "endVerse": "24"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "31",
       "startVerse": "25",
       "endChapter": "31",
       "endVerse": "30"
     },
-    "6": {
+    "שישי": {
       "startChapter": "32",
       "startVerse": "1",
       "endChapter": "32",
       "endVerse": "3"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "32",
       "startVerse": "4",
       "endChapter": "32",
@@ -2653,43 +2653,43 @@
   },
   "האזינו": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "32",
       "startVerse": "1",
       "endChapter": "32",
       "endVerse": "6"
     },
-    "2": {
+    "שני": {
       "startChapter": "32",
       "startVerse": "7",
       "endChapter": "32",
       "endVerse": "12"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "32",
       "startVerse": "13",
       "endChapter": "32",
       "endVerse": "18"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "32",
       "startVerse": "19",
       "endChapter": "32",
       "endVerse": "28"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "32",
       "startVerse": "29",
       "endChapter": "32",
       "endVerse": "39"
     },
-    "6": {
+    "שישי": {
       "startChapter": "32",
       "startVerse": "40",
       "endChapter": "32",
       "endVerse": "43"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "32",
       "startVerse": "44",
       "endChapter": "32",
@@ -2704,43 +2704,43 @@
   },
   "וזאת הברכה": {
     "pentateuch": "דברים",
-    "1": {
+    "ראשון": {
       "startChapter": "33",
       "startVerse": "1",
       "endChapter": "33",
       "endVerse": "7"
     },
-    "2": {
+    "שני": {
       "startChapter": "33",
       "startVerse": "8",
       "endChapter": "33",
       "endVerse": "12"
     },
-    "3": {
+    "שלישי": {
       "startChapter": "33",
       "startVerse": "13",
       "endChapter": "33",
       "endVerse": "17"
     },
-    "4": {
+    "רביעי": {
       "startChapter": "33",
       "startVerse": "18",
       "endChapter": "33",
       "endVerse": "21"
     },
-    "5": {
+    "חמישי": {
       "startChapter": "33",
       "startVerse": "22",
       "endChapter": "33",
       "endVerse": "26"
     },
-    "6": {
+    "שישי": {
       "startChapter": "33",
       "startVerse": "27",
       "endChapter": "33",
       "endVerse": "29"
     },
-    "7": {
+    "שביעי": {
       "startChapter": "34",
       "startVerse": "1",
       "endChapter": "34",
