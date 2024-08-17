@@ -1,3 +1,5 @@
+import json
+
 from fastapi import HTTPException
 from hebrew import Hebrew
 from starlette.responses import JSONResponse
@@ -34,6 +36,29 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
     except Exception as e:
         print(e)
         raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
+
+
+@torah_router.get('/alia/{parashah}/{aliyah}', tags=['Torah'])
+async def get_verses_by_alia(parashah, aliyah):
+    response = {}
+    with open(f"Torah/parashot/all.json", "r", encoding="utf-8") as f:
+        torah_data = json.load(f)
+
+    """
+    Retrieve aliyah information for a given parashah and aliyah.
+    """
+    if parashah not in torah_data:
+        raise HTTPException(status_code=404, detail="Parashah not found")
+
+    parashah_data = torah_data[parashah]
+
+    if aliyah not in parashah_data:
+        raise HTTPException(status_code=404, detail="Aliyah not found")
+    torah_processor = TorahTextProcessor(parashah_data["pentateuch"])
+    return torah_processor.get_all_torah_text_variants(parashah_data[aliyah]["startChapter"],
+                                                       parashah_data[aliyah]["startVerse"],
+                                                       parashah_data[aliyah]["endChapter"],
+                                                       parashah_data[aliyah]["endVerse"])
 
 
 @torah_router.post('/compare-two-texts')

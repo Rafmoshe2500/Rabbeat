@@ -1,0 +1,2756 @@
+{
+  "בראשית": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "1",
+      "startVerse": "1",
+      "endChapter": "2",
+      "endVerse": "3"
+    },
+    "שני": {
+      "startChapter": "2",
+      "startVerse": "4",
+      "endChapter": "3",
+      "endVerse": "21"
+    },
+    "שלישי": {
+      "startChapter": "3",
+      "startVerse": "22",
+      "endChapter": "4",
+      "endVerse": "26"
+    },
+    "רביעי": {
+      "startChapter": "5",
+      "startVerse": "1",
+      "endChapter": "5",
+      "endVerse": "24"
+    },
+    "חמישי": {
+      "startChapter": "5",
+      "startVerse": "25",
+      "endChapter": "6",
+      "endVerse": "8"
+    },
+    "שישי": {
+      "startChapter": "6",
+      "startVerse": "9",
+      "endChapter": "6",
+      "endVerse": "22"
+    },
+    "שביעי": {
+      "startChapter": "7",
+      "startVerse": "1",
+      "endChapter": "8",
+      "endVerse": "14"
+    },
+    "מפטיר": {
+      "startChapter": "8",
+      "startVerse": "15",
+      "endChapter": "8",
+      "endVerse": "22"
+    }
+  },
+  "נח": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "6",
+      "startVerse": "9",
+      "endChapter": "6",
+      "endVerse": "22"
+    },
+    "שני": {
+      "startChapter": "7",
+      "startVerse": "1",
+      "endChapter": "7",
+      "endVerse": "16"
+    },
+    "שלישי": {
+      "startChapter": "7",
+      "startVerse": "17",
+      "endChapter": "8",
+      "endVerse": "14"
+    },
+    "רביעי": {
+      "startChapter": "8",
+      "startVerse": "15",
+      "endChapter": "9",
+      "endVerse": "7"
+    },
+    "חמישי": {
+      "startChapter": "9",
+      "startVerse": "8",
+      "endChapter": "9",
+      "endVerse": "17"
+    },
+    "שישי": {
+      "startChapter": "9",
+      "startVerse": "18",
+      "endChapter": "10",
+      "endVerse": "32"
+    },
+    "שביעי": {
+      "startChapter": "11",
+      "startVerse": "1",
+      "endChapter": "11",
+      "endVerse": "32"
+    },
+    "מפטיר": {
+      "startChapter": "11",
+      "startVerse": "29",
+      "endChapter": "11",
+      "endVerse": "32"
+    }
+  },
+  "לך לך": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "12",
+      "startVerse": "1",
+      "endChapter": "12",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "12",
+      "startVerse": "14",
+      "endChapter": "13",
+      "endVerse": "4"
+    },
+    "שלישי": {
+      "startChapter": "13",
+      "startVerse": "5",
+      "endChapter": "13",
+      "endVerse": "18"
+    },
+    "רביעי": {
+      "startChapter": "14",
+      "startVerse": "1",
+      "endChapter": "14",
+      "endVerse": "20"
+    },
+    "חמישי": {
+      "startChapter": "14",
+      "startVerse": "21",
+      "endChapter": "15",
+      "endVerse": "6"
+    },
+    "שישי": {
+      "startChapter": "15",
+      "startVerse": "7",
+      "endChapter": "17",
+      "endVerse": "6"
+    },
+    "שביעי": {
+      "startChapter": "17",
+      "startVerse": "7",
+      "endChapter": "17",
+      "endVerse": "27"
+    },
+    "מפטיר": {
+      "startChapter": "17",
+      "startVerse": "24",
+      "endChapter": "17",
+      "endVerse": "27"
+    }
+  },
+  "וירא": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "18",
+      "startVerse": "1",
+      "endChapter": "18",
+      "endVerse": "14"
+    },
+    "שני": {
+      "startChapter": "18",
+      "startVerse": "15",
+      "endChapter": "18",
+      "endVerse": "33"
+    },
+    "שלישי": {
+      "startChapter": "19",
+      "startVerse": "1",
+      "endChapter": "19",
+      "endVerse": "20"
+    },
+    "רביעי": {
+      "startChapter": "19",
+      "startVerse": "21",
+      "endChapter": "20",
+      "endVerse": "18"
+    },
+    "חמישי": {
+      "startChapter": "21",
+      "startVerse": "1",
+      "endChapter": "21",
+      "endVerse": "21"
+    },
+    "שישי": {
+      "startChapter": "21",
+      "startVerse": "22",
+      "endChapter": "21",
+      "endVerse": "34"
+    },
+    "שביעי": {
+      "startChapter": "22",
+      "startVerse": "1",
+      "endChapter": "22",
+      "endVerse": "24"
+    },
+    "מפטיר": {
+      "startChapter": "22",
+      "startVerse": "20",
+      "endChapter": "22",
+      "endVerse": "24"
+    }
+  },
+  "חיי שרה": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "23",
+      "startVerse": "1",
+      "endChapter": "23",
+      "endVerse": "16"
+    },
+    "שני": {
+      "startChapter": "23",
+      "startVerse": "17",
+      "endChapter": "24",
+      "endVerse": "9"
+    },
+    "שלישי": {
+      "startChapter": "24",
+      "startVerse": "10",
+      "endChapter": "24",
+      "endVerse": "26"
+    },
+    "רביעי": {
+      "startChapter": "24",
+      "startVerse": "27",
+      "endChapter": "24",
+      "endVerse": "52"
+    },
+    "חמישי": {
+      "startChapter": "24",
+      "startVerse": "53",
+      "endChapter": "24",
+      "endVerse": "67"
+    },
+    "שישי": {
+      "startChapter": "25",
+      "startVerse": "1",
+      "endChapter": "25",
+      "endVerse": "11"
+    },
+    "שביעי": {
+      "startChapter": "25",
+      "startVerse": "12",
+      "endChapter": "25",
+      "endVerse": "18"
+    },
+    "מפטיר": {
+      "startChapter": "25",
+      "startVerse": "16",
+      "endChapter": "25",
+      "endVerse": "18"
+    }
+  },
+  "תולדות": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "25",
+      "startVerse": "19",
+      "endChapter": "26",
+      "endVerse": "5"
+    },
+    "שני": {
+      "startChapter": "26",
+      "startVerse": "6",
+      "endChapter": "26",
+      "endVerse": "12"
+    },
+    "שלישי": {
+      "startChapter": "26",
+      "startVerse": "13",
+      "endChapter": "26",
+      "endVerse": "22"
+    },
+    "רביעי": {
+      "startChapter": "26",
+      "startVerse": "23",
+      "endChapter": "26",
+      "endVerse": "29"
+    },
+    "חמישי": {
+      "startChapter": "26",
+      "startVerse": "30",
+      "endChapter": "27",
+      "endVerse": "27"
+    },
+    "שישי": {
+      "startChapter": "27",
+      "startVerse": "28",
+      "endChapter": "28",
+      "endVerse": "4"
+    },
+    "שביעי": {
+      "startChapter": "28",
+      "startVerse": "5",
+      "endChapter": "28",
+      "endVerse": "9"
+    },
+    "מפטיר": {
+      "startChapter": "28",
+      "startVerse": "7",
+      "endChapter": "28",
+      "endVerse": "9"
+    }
+  },
+  "ויצא": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "28",
+      "startVerse": "10",
+      "endChapter": "29",
+      "endVerse": "12"
+    },
+    "שני": {
+      "startChapter": "29",
+      "startVerse": "13",
+      "endChapter": "29",
+      "endVerse": "30"
+    },
+    "שלישי": {
+      "startChapter": "29",
+      "startVerse": "31",
+      "endChapter": "30",
+      "endVerse": "21"
+    },
+    "רביעי": {
+      "startChapter": "30",
+      "startVerse": "22",
+      "endChapter": "31",
+      "endVerse": "2"
+    },
+    "חמישי": {
+      "startChapter": "31",
+      "startVerse": "3",
+      "endChapter": "31",
+      "endVerse": "42"
+    },
+    "שישי": {
+      "startChapter": "31",
+      "startVerse": "43",
+      "endChapter": "32",
+      "endVerse": "3"
+    },
+    "שביעי": {
+      "startChapter": "32",
+      "startVerse": "4",
+      "endChapter": "32",
+      "endVerse": "13"
+    },
+    "מפטיר": {
+      "startChapter": "32",
+      "startVerse": "10",
+      "endChapter": "32",
+      "endVerse": "13"
+    }
+  },
+  "וישלח": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "32",
+      "startVerse": "4",
+      "endChapter": "32",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "32",
+      "startVerse": "14",
+      "endChapter": "32",
+      "endVerse": "30"
+    },
+    "שלישי": {
+      "startChapter": "32",
+      "startVerse": "31",
+      "endChapter": "33",
+      "endVerse": "5"
+    },
+    "רביעי": {
+      "startChapter": "33",
+      "startVerse": "6",
+      "endChapter": "33",
+      "endVerse": "20"
+    },
+    "חמישי": {
+      "startChapter": "34",
+      "startVerse": "1",
+      "endChapter": "35",
+      "endVerse": "11"
+    },
+    "שישי": {
+      "startChapter": "35",
+      "startVerse": "12",
+      "endChapter": "36",
+      "endVerse": "19"
+    },
+    "שביעי": {
+      "startChapter": "36",
+      "startVerse": "20",
+      "endChapter": "36",
+      "endVerse": "43"
+    },
+    "מפטיר": {
+      "startChapter": "36",
+      "startVerse": "40",
+      "endChapter": "36",
+      "endVerse": "43"
+    }
+  },
+  "וישב": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "37",
+      "startVerse": "1",
+      "endChapter": "37",
+      "endVerse": "11"
+    },
+    "שני": {
+      "startChapter": "37",
+      "startVerse": "12",
+      "endChapter": "37",
+      "endVerse": "22"
+    },
+    "שלישי": {
+      "startChapter": "37",
+      "startVerse": "23",
+      "endChapter": "37",
+      "endVerse": "36"
+    },
+    "רביעי": {
+      "startChapter": "38",
+      "startVerse": "1",
+      "endChapter": "38",
+      "endVerse": "30"
+    },
+    "חמישי": {
+      "startChapter": "39",
+      "startVerse": "1",
+      "endChapter": "39",
+      "endVerse": "6"
+    },
+    "שישי": {
+      "startChapter": "39",
+      "startVerse": "7",
+      "endChapter": "39",
+      "endVerse": "23"
+    },
+    "שביעי": {
+      "startChapter": "40",
+      "startVerse": "1",
+      "endChapter": "40",
+      "endVerse": "23"
+    },
+    "מפטיר": {
+      "startChapter": "40",
+      "startVerse": "20",
+      "endChapter": "40",
+      "endVerse": "23"
+    }
+  },
+  "מקץ": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "41",
+      "startVerse": "1",
+      "endChapter": "41",
+      "endVerse": "14"
+    },
+    "שני": {
+      "startChapter": "41",
+      "startVerse": "15",
+      "endChapter": "41",
+      "endVerse": "38"
+    },
+    "שלישי": {
+      "startChapter": "41",
+      "startVerse": "39",
+      "endChapter": "41",
+      "endVerse": "52"
+    },
+    "רביעי": {
+      "startChapter": "41",
+      "startVerse": "53",
+      "endChapter": "42",
+      "endVerse": "18"
+    },
+    "חמישי": {
+      "startChapter": "42",
+      "startVerse": "19",
+      "endChapter": "43",
+      "endVerse": "15"
+    },
+    "שישי": {
+      "startChapter": "43",
+      "startVerse": "16",
+      "endChapter": "43",
+      "endVerse": "29"
+    },
+    "שביעי": {
+      "startChapter": "43",
+      "startVerse": "30",
+      "endChapter": "44",
+      "endVerse": "17"
+    },
+    "מפטיר": {
+      "startChapter": "44",
+      "startVerse": "14",
+      "endChapter": "44",
+      "endVerse": "17"
+    }
+  },
+  "ויגש": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "44",
+      "startVerse": "18",
+      "endChapter": "44",
+      "endVerse": "30"
+    },
+    "שני": {
+      "startChapter": "44",
+      "startVerse": "31",
+      "endChapter": "45",
+      "endVerse": "7"
+    },
+    "שלישי": {
+      "startChapter": "45",
+      "startVerse": "8",
+      "endChapter": "45",
+      "endVerse": "18"
+    },
+    "רביעי": {
+      "startChapter": "45",
+      "startVerse": "19",
+      "endChapter": "45",
+      "endVerse": "27"
+    },
+    "חמישי": {
+      "startChapter": "45",
+      "startVerse": "28",
+      "endChapter": "46",
+      "endVerse": "27"
+    },
+    "שישי": {
+      "startChapter": "46",
+      "startVerse": "28",
+      "endChapter": "47",
+      "endVerse": "10"
+    },
+    "שביעי": {
+      "startChapter": "47",
+      "startVerse": "11",
+      "endChapter": "47",
+      "endVerse": "27"
+    },
+    "מפטיר": {
+      "startChapter": "47",
+      "startVerse": "25",
+      "endChapter": "47",
+      "endVerse": "27"
+    }
+  },
+  "ויחי": {
+    "pentateuch": "בראשית",
+    "ראשון": {
+      "startChapter": "47",
+      "startVerse": "28",
+      "endChapter": "48",
+      "endVerse": "9"
+    },
+    "שני": {
+      "startChapter": "48",
+      "startVerse": "10",
+      "endChapter": "48",
+      "endVerse": "16"
+    },
+    "שלישי": {
+      "startChapter": "48",
+      "startVerse": "17",
+      "endChapter": "48",
+      "endVerse": "22"
+    },
+    "רביעי": {
+      "startChapter": "49",
+      "startVerse": "1",
+      "endChapter": "49",
+      "endVerse": "18"
+    },
+    "חמישי": {
+      "startChapter": "49",
+      "startVerse": "19",
+      "endChapter": "49",
+      "endVerse": "26"
+    },
+    "שישי": {
+      "startChapter": "49",
+      "startVerse": "27",
+      "endChapter": "50",
+      "endVerse": "20"
+    },
+    "שביעי": {
+      "startChapter": "50",
+      "startVerse": "21",
+      "endChapter": "50",
+      "endVerse": "26"
+    },
+    "מפטיר": {
+      "startChapter": "50",
+      "startVerse": "23",
+      "endChapter": "50",
+      "endVerse": "26"
+    }
+  },
+  "שמות": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "1",
+      "startVerse": "1",
+      "endChapter": "1",
+      "endVerse": "17"
+    },
+    "שני": {
+      "startChapter": "1",
+      "startVerse": "18",
+      "endChapter": "2",
+      "endVerse": "10"
+    },
+    "שלישי": {
+      "startChapter": "2",
+      "startVerse": "11",
+      "endChapter": "2",
+      "endVerse": "25"
+    },
+    "רביעי": {
+      "startChapter": "3",
+      "startVerse": "1",
+      "endChapter": "3",
+      "endVerse": "15"
+    },
+    "חמישי": {
+      "startChapter": "3",
+      "startVerse": "16",
+      "endChapter": "4",
+      "endVerse": "17"
+    },
+    "שישי": {
+      "startChapter": "4",
+      "startVerse": "18",
+      "endChapter": "4",
+      "endVerse": "31"
+    },
+    "שביעי": {
+      "startChapter": "5",
+      "startVerse": "1",
+      "endChapter": "6",
+      "endVerse": "1"
+    },
+    "מפטיר": {
+      "startChapter": "5",
+      "startVerse": "22",
+      "endChapter": "6",
+      "endVerse": "1"
+    }
+  },
+  "וארא": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "6",
+      "startVerse": "2",
+      "endChapter": "6",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "6",
+      "startVerse": "14",
+      "endChapter": "6",
+      "endVerse": "28"
+    },
+    "שלישי": {
+      "startChapter": "6",
+      "startVerse": "29",
+      "endChapter": "7",
+      "endVerse": "7"
+    },
+    "רביעי": {
+      "startChapter": "7",
+      "startVerse": "8",
+      "endChapter": "7",
+      "endVerse": "25"
+    },
+    "חמישי": {
+      "startChapter": "7",
+      "startVerse": "26",
+      "endChapter": "8",
+      "endVerse": "11"
+    },
+    "שישי": {
+      "startChapter": "8",
+      "startVerse": "12",
+      "endChapter": "8",
+      "endVerse": "28"
+    },
+    "שביעי": {
+      "startChapter": "9",
+      "startVerse": "1",
+      "endChapter": "9",
+      "endVerse": "35"
+    },
+    "מפטיר": {
+      "startChapter": "9",
+      "startVerse": "33",
+      "endChapter": "9",
+      "endVerse": "35"
+    }
+  },
+  "בא": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "10",
+      "startVerse": "1",
+      "endChapter": "10",
+      "endVerse": "11"
+    },
+    "שני": {
+      "startChapter": "10",
+      "startVerse": "12",
+      "endChapter": "10",
+      "endVerse": "23"
+    },
+    "שלישי": {
+      "startChapter": "10",
+      "startVerse": "24",
+      "endChapter": "11",
+      "endVerse": "3"
+    },
+    "רביעי": {
+      "startChapter": "11",
+      "startVerse": "4",
+      "endChapter": "12",
+      "endVerse": "20"
+    },
+    "חמישי": {
+      "startChapter": "12",
+      "startVerse": "21",
+      "endChapter": "12",
+      "endVerse": "28"
+    },
+    "שישי": {
+      "startChapter": "12",
+      "startVerse": "29",
+      "endChapter": "12",
+      "endVerse": "51"
+    },
+    "שביעי": {
+      "startChapter": "13",
+      "startVerse": "1",
+      "endChapter": "13",
+      "endVerse": "16"
+    },
+    "מפטיר": {
+      "startChapter": "13",
+      "startVerse": "14",
+      "endChapter": "13",
+      "endVerse": "16"
+    }
+  },
+  "בשלח": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "13",
+      "startVerse": "17",
+      "endChapter": "14",
+      "endVerse": "8"
+    },
+    "שני": {
+      "startChapter": "14",
+      "startVerse": "9",
+      "endChapter": "14",
+      "endVerse": "14"
+    },
+    "שלישי": {
+      "startChapter": "14",
+      "startVerse": "15",
+      "endChapter": "14",
+      "endVerse": "25"
+    },
+    "רביעי": {
+      "startChapter": "14",
+      "startVerse": "26",
+      "endChapter": "15",
+      "endVerse": "26"
+    },
+    "חמישי": {
+      "startChapter": "15",
+      "startVerse": "27",
+      "endChapter": "16",
+      "endVerse": "10"
+    },
+    "שישי": {
+      "startChapter": "16",
+      "startVerse": "11",
+      "endChapter": "16",
+      "endVerse": "36"
+    },
+    "שביעי": {
+      "startChapter": "17",
+      "startVerse": "1",
+      "endChapter": "17",
+      "endVerse": "16"
+    },
+    "מפטיר": {
+      "startChapter": "17",
+      "startVerse": "14",
+      "endChapter": "17",
+      "endVerse": "16"
+    }
+  },
+  "יתרו": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "18",
+      "startVerse": "1",
+      "endChapter": "18",
+      "endVerse": "12"
+    },
+    "שני": {
+      "startChapter": "18",
+      "startVerse": "13",
+      "endChapter": "18",
+      "endVerse": "23"
+    },
+    "שלישי": {
+      "startChapter": "18",
+      "startVerse": "24",
+      "endChapter": "19",
+      "endVerse": "6"
+    },
+    "רביעי": {
+      "startChapter": "19",
+      "startVerse": "7",
+      "endChapter": "19",
+      "endVerse": "19"
+    },
+    "חמישי": {
+      "startChapter": "19",
+      "startVerse": "20",
+      "endChapter": "20",
+      "endVerse": "14"
+    },
+    "שישי": {
+      "startChapter": "20",
+      "startVerse": "15",
+      "endChapter": "20",
+      "endVerse": "23"
+    },
+    "שביעי": {
+      "startChapter": "21",
+      "startVerse": "1",
+      "endChapter": "21",
+      "endVerse": "19"
+    },
+    "מפטיר": {
+      "startChapter": "21",
+      "startVerse": "17",
+      "endChapter": "21",
+      "endVerse": "19"
+    }
+  },
+  "משפטים": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "21",
+      "startVerse": "1",
+      "endChapter": "21",
+      "endVerse": "19"
+    },
+    "שני": {
+      "startChapter": "21",
+      "startVerse": "20",
+      "endChapter": "22",
+      "endVerse": "3"
+    },
+    "שלישי": {
+      "startChapter": "22",
+      "startVerse": "4",
+      "endChapter": "22",
+      "endVerse": "26"
+    },
+    "רביעי": {
+      "startChapter": "22",
+      "startVerse": "27",
+      "endChapter": "23",
+      "endVerse": "5"
+    },
+    "חמישי": {
+      "startChapter": "23",
+      "startVerse": "6",
+      "endChapter": "23",
+      "endVerse": "19"
+    },
+    "שישי": {
+      "startChapter": "23",
+      "startVerse": "20",
+      "endChapter": "23",
+      "endVerse": "25"
+    },
+    "שביעי": {
+      "startChapter": "23",
+      "startVerse": "26",
+      "endChapter": "24",
+      "endVerse": "18"
+    },
+    "מפטיר": {
+      "startChapter": "24",
+      "startVerse": "16",
+      "endChapter": "24",
+      "endVerse": "18"
+    }
+  },
+  "תרומה": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "25",
+      "startVerse": "1",
+      "endChapter": "25",
+      "endVerse": "16"
+    },
+    "שני": {
+      "startChapter": "25",
+      "startVerse": "17",
+      "endChapter": "25",
+      "endVerse": "40"
+    },
+    "שלישי": {
+      "startChapter": "26",
+      "startVerse": "1",
+      "endChapter": "26",
+      "endVerse": "14"
+    },
+    "רביעי": {
+      "startChapter": "26",
+      "startVerse": "15",
+      "endChapter": "26",
+      "endVerse": "30"
+    },
+    "חמישי": {
+      "startChapter": "26",
+      "startVerse": "31",
+      "endChapter": "27",
+      "endVerse": "8"
+    },
+    "שישי": {
+      "startChapter": "27",
+      "startVerse": "9",
+      "endChapter": "27",
+      "endVerse": "19"
+    },
+    "שביעי": {
+      "startChapter": "28",
+      "startVerse": "1",
+      "endChapter": "28",
+      "endVerse": "30"
+    },
+    "מפטיר": {
+      "startChapter": "28",
+      "startVerse": "28",
+      "endChapter": "28",
+      "endVerse": "30"
+    }
+  },
+  "תצוה": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "27",
+      "startVerse": "20",
+      "endChapter": "28",
+      "endVerse": "12"
+    },
+    "שני": {
+      "startChapter": "28",
+      "startVerse": "13",
+      "endChapter": "28",
+      "endVerse": "30"
+    },
+    "שלישי": {
+      "startChapter": "28",
+      "startVerse": "31",
+      "endChapter": "28",
+      "endVerse": "43"
+    },
+    "רביעי": {
+      "startChapter": "29",
+      "startVerse": "1",
+      "endChapter": "29",
+      "endVerse": "18"
+    },
+    "חמישי": {
+      "startChapter": "29",
+      "startVerse": "19",
+      "endChapter": "29",
+      "endVerse": "37"
+    },
+    "שישי": {
+      "startChapter": "29",
+      "startVerse": "38",
+      "endChapter": "29",
+      "endVerse": "46"
+    },
+    "שביעי": {
+      "startChapter": "30",
+      "startVerse": "1",
+      "endChapter": "30",
+      "endVerse": "10"
+    },
+    "מפטיר": {
+      "startChapter": "30",
+      "startVerse": "8",
+      "endChapter": "30",
+      "endVerse": "10"
+    }
+  },
+  "כי תשא": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "30",
+      "startVerse": "11",
+      "endChapter": "31",
+      "endVerse": "17"
+    },
+    "שני": {
+      "startChapter": "31",
+      "startVerse": "18",
+      "endChapter": "32",
+      "endVerse": "14"
+    },
+    "שלישי": {
+      "startChapter": "32",
+      "startVerse": "15",
+      "endChapter": "32",
+      "endVerse": "24"
+    },
+    "רביעי": {
+      "startChapter": "32",
+      "startVerse": "25",
+      "endChapter": "33",
+      "endVerse": "11"
+    },
+    "חמישי": {
+      "startChapter": "33",
+      "startVerse": "12",
+      "endChapter": "33",
+      "endVerse": "23"
+    },
+    "שישי": {
+      "startChapter": "34",
+      "startVerse": "1",
+      "endChapter": "34",
+      "endVerse": "9"
+    },
+    "שביעי": {
+      "startChapter": "34",
+      "startVerse": "10",
+      "endChapter": "34",
+      "endVerse": "35"
+    },
+    "מפטיר": {
+      "startChapter": "34",
+      "startVerse": "33",
+      "endChapter": "34",
+      "endVerse": "35"
+    }
+  },
+  "ויקהל": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "35",
+      "startVerse": "1",
+      "endChapter": "35",
+      "endVerse": "20"
+    },
+    "שני": {
+      "startChapter": "35",
+      "startVerse": "21",
+      "endChapter": "35",
+      "endVerse": "29"
+    },
+    "שלישי": {
+      "startChapter": "35",
+      "startVerse": "30",
+      "endChapter": "36",
+      "endVerse": "7"
+    },
+    "רביעי": {
+      "startChapter": "36",
+      "startVerse": "8",
+      "endChapter": "36",
+      "endVerse": "19"
+    },
+    "חמישי": {
+      "startChapter": "36",
+      "startVerse": "20",
+      "endChapter": "37",
+      "endVerse": "16"
+    },
+    "שישי": {
+      "startChapter": "37",
+      "startVerse": "17",
+      "endChapter": "37",
+      "endVerse": "29"
+    },
+    "שביעי": {
+      "startChapter": "38",
+      "startVerse": "1",
+      "endChapter": "38",
+      "endVerse": "20"
+    },
+    "מפטיר": {
+      "startChapter": "38",
+      "startVerse": "18",
+      "endChapter": "38",
+      "endVerse": "20"
+    }
+  },
+  "פקודי": {
+    "pentateuch": "שמות",
+    "ראשון": {
+      "startChapter": "38",
+      "startVerse": "21",
+      "endChapter": "39",
+      "endVerse": "1"
+    },
+    "שני": {
+      "startChapter": "39",
+      "startVerse": "2",
+      "endChapter": "39",
+      "endVerse": "21"
+    },
+    "שלישי": {
+      "startChapter": "39",
+      "startVerse": "22",
+      "endChapter": "39",
+      "endVerse": "32"
+    },
+    "רביעי": {
+      "startChapter": "39",
+      "startVerse": "33",
+      "endChapter": "39",
+      "endVerse": "43"
+    },
+    "חמישי": {
+      "startChapter": "40",
+      "startVerse": "1",
+      "endChapter": "40",
+      "endVerse": "16"
+    },
+    "שישי": {
+      "startChapter": "40",
+      "startVerse": "17",
+      "endChapter": "40",
+      "endVerse": "27"
+    },
+    "שביעי": {
+      "startChapter": "40",
+      "startVerse": "28",
+      "endChapter": "40",
+      "endVerse": "38"
+    },
+    "מפטיר": {
+      "startChapter": "40",
+      "startVerse": "34",
+      "endChapter": "40",
+      "endVerse": "38"
+    }
+  },
+  "ויקרא": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "1",
+      "startVerse": "1",
+      "endChapter": "1",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "1",
+      "startVerse": "14",
+      "endChapter": "2",
+      "endVerse": "6"
+    },
+    "שלישי": {
+      "startChapter": "2",
+      "startVerse": "7",
+      "endChapter": "2",
+      "endVerse": "16"
+    },
+    "רביעי": {
+      "startChapter": "3",
+      "startVerse": "1",
+      "endChapter": "3",
+      "endVerse": "17"
+    },
+    "חמישי": {
+      "startChapter": "4",
+      "startVerse": "1",
+      "endChapter": "4",
+      "endVerse": "26"
+    },
+    "שישי": {
+      "startChapter": "4",
+      "startVerse": "27",
+      "endChapter": "5",
+      "endVerse": "10"
+    },
+    "שביעי": {
+      "startChapter": "5",
+      "startVerse": "11",
+      "endChapter": "5",
+      "endVerse": "26"
+    },
+    "מפטיר": {
+      "startChapter": "5",
+      "startVerse": "24",
+      "endChapter": "5",
+      "endVerse": "26"
+    }
+  },
+  "צו": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "6",
+      "startVerse": "1",
+      "endChapter": "6",
+      "endVerse": "11"
+    },
+    "שני": {
+      "startChapter": "6",
+      "startVerse": "12",
+      "endChapter": "7",
+      "endVerse": "10"
+    },
+    "שלישי": {
+      "startChapter": "7",
+      "startVerse": "11",
+      "endChapter": "7",
+      "endVerse": "38"
+    },
+    "רביעי": {
+      "startChapter": "8",
+      "startVerse": "1",
+      "endChapter": "8",
+      "endVerse": "13"
+    },
+    "חמישי": {
+      "startChapter": "8",
+      "startVerse": "14",
+      "endChapter": "8",
+      "endVerse": "21"
+    },
+    "שישי": {
+      "startChapter": "8",
+      "startVerse": "22",
+      "endChapter": "8",
+      "endVerse": "29"
+    },
+    "שביעי": {
+      "startChapter": "8",
+      "startVerse": "30",
+      "endChapter": "8",
+      "endVerse": "36"
+    },
+    "מפטיר": {
+      "startChapter": "8",
+      "startVerse": "33",
+      "endChapter": "8",
+      "endVerse": "36"
+    }
+  },
+  "שמיני": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "9",
+      "startVerse": "1",
+      "endChapter": "9",
+      "endVerse": "16"
+    },
+    "שני": {
+      "startChapter": "9",
+      "startVerse": "17",
+      "endChapter": "9",
+      "endVerse": "23"
+    },
+    "שלישי": {
+      "startChapter": "9",
+      "startVerse": "24",
+      "endChapter": "10",
+      "endVerse": "11"
+    },
+    "רביעי": {
+      "startChapter": "10",
+      "startVerse": "12",
+      "endChapter": "10",
+      "endVerse": "15"
+    },
+    "חמישי": {
+      "startChapter": "10",
+      "startVerse": "16",
+      "endChapter": "10",
+      "endVerse": "20"
+    },
+    "שישי": {
+      "startChapter": "11",
+      "startVerse": "1",
+      "endChapter": "11",
+      "endVerse": "32"
+    },
+    "שביעי": {
+      "startChapter": "11",
+      "startVerse": "33",
+      "endChapter": "11",
+      "endVerse": "47"
+    },
+    "מפטיר": {
+      "startChapter": "11",
+      "startVerse": "45",
+      "endChapter": "11",
+      "endVerse": "47"
+    }
+  },
+  "תזריע": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "12",
+      "startVerse": "1",
+      "endChapter": "12",
+      "endVerse": "8"
+    },
+    "שני": {
+      "startChapter": "13",
+      "startVerse": "1",
+      "endChapter": "13",
+      "endVerse": "17"
+    },
+    "שלישי": {
+      "startChapter": "13",
+      "startVerse": "18",
+      "endChapter": "13",
+      "endVerse": "23"
+    },
+    "רביעי": {
+      "startChapter": "13",
+      "startVerse": "24",
+      "endChapter": "13",
+      "endVerse": "28"
+    },
+    "חמישי": {
+      "startChapter": "13",
+      "startVerse": "29",
+      "endChapter": "13",
+      "endVerse": "39"
+    },
+    "שישי": {
+      "startChapter": "13",
+      "startVerse": "40",
+      "endChapter": "13",
+      "endVerse": "54"
+    },
+    "שביעי": {
+      "startChapter": "13",
+      "startVerse": "55",
+      "endChapter": "13",
+      "endVerse": "59"
+    },
+    "מפטיר": {
+      "startChapter": "13",
+      "startVerse": "57",
+      "endChapter": "13",
+      "endVerse": "59"
+    }
+  },
+  "מצורע": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "14",
+      "startVerse": "1",
+      "endChapter": "14",
+      "endVerse": "12"
+    },
+    "שני": {
+      "startChapter": "14",
+      "startVerse": "13",
+      "endChapter": "14",
+      "endVerse": "20"
+    },
+    "שלישי": {
+      "startChapter": "14",
+      "startVerse": "21",
+      "endChapter": "14",
+      "endVerse": "32"
+    },
+    "רביעי": {
+      "startChapter": "14",
+      "startVerse": "33",
+      "endChapter": "14",
+      "endVerse": "53"
+    },
+    "חמישי": {
+      "startChapter": "14",
+      "startVerse": "54",
+      "endChapter": "15",
+      "endVerse": "15"
+    },
+    "שישי": {
+      "startChapter": "15",
+      "startVerse": "16",
+      "endChapter": "15",
+      "endVerse": "28"
+    },
+    "שביעי": {
+      "startChapter": "15",
+      "startVerse": "29",
+      "endChapter": "15",
+      "endVerse": "33"
+    },
+    "מפטיר": {
+      "startChapter": "15",
+      "startVerse": "31",
+      "endChapter": "15",
+      "endVerse": "33"
+    }
+  },
+  "אחרי מות": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "16",
+      "startVerse": "1",
+      "endChapter": "16",
+      "endVerse": "17"
+    },
+    "שני": {
+      "startChapter": "16",
+      "startVerse": "18",
+      "endChapter": "16",
+      "endVerse": "24"
+    },
+    "שלישי": {
+      "startChapter": "16",
+      "startVerse": "25",
+      "endChapter": "16",
+      "endVerse": "34"
+    },
+    "רביעי": {
+      "startChapter": "17",
+      "startVerse": "1",
+      "endChapter": "17",
+      "endVerse": "7"
+    },
+    "חמישי": {
+      "startChapter": "17",
+      "startVerse": "8",
+      "endChapter": "18",
+      "endVerse": "5"
+    },
+    "שישי": {
+      "startChapter": "18",
+      "startVerse": "6",
+      "endChapter": "18",
+      "endVerse": "21"
+    },
+    "שביעי": {
+      "startChapter": "18",
+      "startVerse": "22",
+      "endChapter": "18",
+      "endVerse": "30"
+    },
+    "מפטיר": {
+      "startChapter": "18",
+      "startVerse": "28",
+      "endChapter": "18",
+      "endVerse": "30"
+    }
+  },
+  "קדושים": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "19",
+      "startVerse": "1",
+      "endChapter": "19",
+      "endVerse": "14"
+    },
+    "שני": {
+      "startChapter": "19",
+      "startVerse": "15",
+      "endChapter": "19",
+      "endVerse": "22"
+    },
+    "שלישי": {
+      "startChapter": "19",
+      "startVerse": "23",
+      "endChapter": "19",
+      "endVerse": "32"
+    },
+    "רביעי": {
+      "startChapter": "19",
+      "startVerse": "33",
+      "endChapter": "19",
+      "endVerse": "37"
+    },
+    "חמישי": {
+      "startChapter": "20",
+      "startVerse": "1",
+      "endChapter": "20",
+      "endVerse": "7"
+    },
+    "שישי": {
+      "startChapter": "20",
+      "startVerse": "8",
+      "endChapter": "20",
+      "endVerse": "22"
+    },
+    "שביעי": {
+      "startChapter": "20",
+      "startVerse": "23",
+      "endChapter": "20",
+      "endVerse": "27"
+    },
+    "מפטיר": {
+      "startChapter": "20",
+      "startVerse": "25",
+      "endChapter": "20",
+      "endVerse": "27"
+    }
+  },
+  "אמור": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "21",
+      "startVerse": "1",
+      "endChapter": "21",
+      "endVerse": "15"
+    },
+    "שני": {
+      "startChapter": "21",
+      "startVerse": "16",
+      "endChapter": "22",
+      "endVerse": "16"
+    },
+    "שלישי": {
+      "startChapter": "22",
+      "startVerse": "17",
+      "endChapter": "22",
+      "endVerse": "33"
+    },
+    "רביעי": {
+      "startChapter": "23",
+      "startVerse": "1",
+      "endChapter": "23",
+      "endVerse": "22"
+    },
+    "חמישי": {
+      "startChapter": "23",
+      "startVerse": "23",
+      "endChapter": "23",
+      "endVerse": "32"
+    },
+    "שישי": {
+      "startChapter": "23",
+      "startVerse": "33",
+      "endChapter": "23",
+      "endVerse": "44"
+    },
+    "שביעי": {
+      "startChapter": "24",
+      "startVerse": "1",
+      "endChapter": "24",
+      "endVerse": "23"
+    },
+    "מפטיר": {
+      "startChapter": "24",
+      "startVerse": "21",
+      "endChapter": "24",
+      "endVerse": "23"
+    }
+  },
+  "בהר": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "25",
+      "startVerse": "1",
+      "endChapter": "25",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "25",
+      "startVerse": "14",
+      "endChapter": "25",
+      "endVerse": "18"
+    },
+    "שלישי": {
+      "startChapter": "25",
+      "startVerse": "19",
+      "endChapter": "25",
+      "endVerse": "24"
+    },
+    "רביעי": {
+      "startChapter": "25",
+      "startVerse": "25",
+      "endChapter": "25",
+      "endVerse": "28"
+    },
+    "חמישי": {
+      "startChapter": "25",
+      "startVerse": "29",
+      "endChapter": "25",
+      "endVerse": "38"
+    },
+    "שישי": {
+      "startChapter": "25",
+      "startVerse": "39",
+      "endChapter": "25",
+      "endVerse": "46"
+    },
+    "שביעי": {
+      "startChapter": "25",
+      "startVerse": "47",
+      "endChapter": "26",
+      "endVerse": "2"
+    },
+    "מפטיר": {
+      "startChapter": "25",
+      "startVerse": "55",
+      "endChapter": "26",
+      "endVerse": "2"
+    }
+  },
+  "בחוקותי": {
+    "pentateuch": "ויקרא",
+    "ראשון": {
+      "startChapter": "26",
+      "startVerse": "3",
+      "endChapter": "26",
+      "endVerse": "5"
+    },
+    "שני": {
+      "startChapter": "26",
+      "startVerse": "6",
+      "endChapter": "26",
+      "endVerse": "9"
+    },
+    "שלישי": {
+      "startChapter": "26",
+      "startVerse": "10",
+      "endChapter": "26",
+      "endVerse": "46"
+    },
+    "רביעי": {
+      "startChapter": "27",
+      "startVerse": "1",
+      "endChapter": "27",
+      "endVerse": "15"
+    },
+    "חמישי": {
+      "startChapter": "27",
+      "startVerse": "16",
+      "endChapter": "27",
+      "endVerse": "21"
+    },
+    "שישי": {
+      "startChapter": "27",
+      "startVerse": "22",
+      "endChapter": "27",
+      "endVerse": "28"
+    },
+    "שביעי": {
+      "startChapter": "27",
+      "startVerse": "29",
+      "endChapter": "27",
+      "endVerse": "34"
+    },
+    "מפטיר": {
+      "startChapter": "27",
+      "startVerse": "32",
+      "endChapter": "27",
+      "endVerse": "34"
+    }
+  },
+  "במדבר": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "1",
+      "startVerse": "1",
+      "endChapter": "1",
+      "endVerse": "19"
+    },
+    "שני": {
+      "startChapter": "1",
+      "startVerse": "20",
+      "endChapter": "1",
+      "endVerse": "54"
+    },
+    "שלישי": {
+      "startChapter": "2",
+      "startVerse": "1",
+      "endChapter": "2",
+      "endVerse": "34"
+    },
+    "רביעי": {
+      "startChapter": "3",
+      "startVerse": "1",
+      "endChapter": "3",
+      "endVerse": "13"
+    },
+    "חמישי": {
+      "startChapter": "3",
+      "startVerse": "14",
+      "endChapter": "3",
+      "endVerse": "39"
+    },
+    "שישי": {
+      "startChapter": "3",
+      "startVerse": "40",
+      "endChapter": "3",
+      "endVerse": "51"
+    },
+    "שביעי": {
+      "startChapter": "4",
+      "startVerse": "1",
+      "endChapter": "4",
+      "endVerse": "20"
+    },
+    "מפטיר": {
+      "startChapter": "4",
+      "startVerse": "17",
+      "endChapter": "4",
+      "endVerse": "20"
+    }
+  },
+  "נשא": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "4",
+      "startVerse": "21",
+      "endChapter": "4",
+      "endVerse": "37"
+    },
+    "שני": {
+      "startChapter": "4",
+      "startVerse": "38",
+      "endChapter": "4",
+      "endVerse": "49"
+    },
+    "שלישי": {
+      "startChapter": "5",
+      "startVerse": "1",
+      "endChapter": "5",
+      "endVerse": "10"
+    },
+    "רביעי": {
+      "startChapter": "5",
+      "startVerse": "11",
+      "endChapter": "6",
+      "endVerse": "27"
+    },
+    "חמישי": {
+      "startChapter": "7",
+      "startVerse": "1",
+      "endChapter": "7",
+      "endVerse": "41"
+    },
+    "שישי": {
+      "startChapter": "7",
+      "startVerse": "42",
+      "endChapter": "7",
+      "endVerse": "71"
+    },
+    "שביעי": {
+      "startChapter": "7",
+      "startVerse": "72",
+      "endChapter": "7",
+      "endVerse": "89"
+    },
+    "מפטיר": {
+      "startChapter": "7",
+      "startVerse": "87",
+      "endChapter": "7",
+      "endVerse": "89"
+    }
+  },
+  "בהעלותך": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "8",
+      "startVerse": "1",
+      "endChapter": "8",
+      "endVerse": "14"
+    },
+    "שני": {
+      "startChapter": "8",
+      "startVerse": "15",
+      "endChapter": "8",
+      "endVerse": "26"
+    },
+    "שלישי": {
+      "startChapter": "9",
+      "startVerse": "1",
+      "endChapter": "9",
+      "endVerse": "14"
+    },
+    "רביעי": {
+      "startChapter": "9",
+      "startVerse": "15",
+      "endChapter": "10",
+      "endVerse": "10"
+    },
+    "חמישי": {
+      "startChapter": "10",
+      "startVerse": "11",
+      "endChapter": "10",
+      "endVerse": "34"
+    },
+    "שישי": {
+      "startChapter": "10",
+      "startVerse": "35",
+      "endChapter": "11",
+      "endVerse": "15"
+    },
+    "שביעי": {
+      "startChapter": "11",
+      "startVerse": "16",
+      "endChapter": "12",
+      "endVerse": "16"
+    },
+    "מפטיר": {
+      "startChapter": "12",
+      "startVerse": "14",
+      "endChapter": "12",
+      "endVerse": "16"
+    }
+  },
+  "שלח": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "13",
+      "startVerse": "1",
+      "endChapter": "13",
+      "endVerse": "20"
+    },
+    "שני": {
+      "startChapter": "13",
+      "startVerse": "21",
+      "endChapter": "14",
+      "endVerse": "7"
+    },
+    "שלישי": {
+      "startChapter": "14",
+      "startVerse": "8",
+      "endChapter": "14",
+      "endVerse": "25"
+    },
+    "רביעי": {
+      "startChapter": "14",
+      "startVerse": "26",
+      "endChapter": "15",
+      "endVerse": "7"
+    },
+    "חמישי": {
+      "startChapter": "15",
+      "startVerse": "8",
+      "endChapter": "15",
+      "endVerse": "16"
+    },
+    "שישי": {
+      "startChapter": "15",
+      "startVerse": "17",
+      "endChapter": "15",
+      "endVerse": "26"
+    },
+    "שביעי": {
+      "startChapter": "15",
+      "startVerse": "27",
+      "endChapter": "15",
+      "endVerse": "41"
+    },
+    "מפטיר": {
+      "startChapter": "15",
+      "startVerse": "37",
+      "endChapter": "15",
+      "endVerse": "41"
+    }
+  },
+  "קרח": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "16",
+      "startVerse": "1",
+      "endChapter": "16",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "16",
+      "startVerse": "14",
+      "endChapter": "16",
+      "endVerse": "19"
+    },
+    "שלישי": {
+      "startChapter": "16",
+      "startVerse": "20",
+      "endChapter": "17",
+      "endVerse": "8"
+    },
+    "רביעי": {
+      "startChapter": "17",
+      "startVerse": "9",
+      "endChapter": "17",
+      "endVerse": "15"
+    },
+    "חמישי": {
+      "startChapter": "17",
+      "startVerse": "16",
+      "endChapter": "17",
+      "endVerse": "24"
+    },
+    "שישי": {
+      "startChapter": "17",
+      "startVerse": "25",
+      "endChapter": "18",
+      "endVerse": "20"
+    },
+    "שביעי": {
+      "startChapter": "18",
+      "startVerse": "21",
+      "endChapter": "18",
+      "endVerse": "32"
+    },
+    "מפטיר": {
+      "startChapter": "18",
+      "startVerse": "30",
+      "endChapter": "18",
+      "endVerse": "32"
+    }
+  },
+  "חקת": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "19",
+      "startVerse": "1",
+      "endChapter": "19",
+      "endVerse": "17"
+    },
+    "שני": {
+      "startChapter": "19",
+      "startVerse": "18",
+      "endChapter": "20",
+      "endVerse": "6"
+    },
+    "שלישי": {
+      "startChapter": "20",
+      "startVerse": "7",
+      "endChapter": "20",
+      "endVerse": "13"
+    },
+    "רביעי": {
+      "startChapter": "20",
+      "startVerse": "14",
+      "endChapter": "20",
+      "endVerse": "21"
+    },
+    "חמישי": {
+      "startChapter": "20",
+      "startVerse": "22",
+      "endChapter": "21",
+      "endVerse": "10"
+    },
+    "שישי": {
+      "startChapter": "21",
+      "startVerse": "11",
+      "endChapter": "21",
+      "endVerse": "20"
+    },
+    "שביעי": {
+      "startChapter": "21",
+      "startVerse": "21",
+      "endChapter": "22",
+      "endVerse": "1"
+    },
+    "מפטיר": {
+      "startChapter": "21",
+      "startVerse": "34",
+      "endChapter": "22",
+      "endVerse": "1"
+    }
+  },
+  "בלק": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "22",
+      "startVerse": "2",
+      "endChapter": "22",
+      "endVerse": "12"
+    },
+    "שני": {
+      "startChapter": "22",
+      "startVerse": "13",
+      "endChapter": "22",
+      "endVerse": "20"
+    },
+    "שלישי": {
+      "startChapter": "22",
+      "startVerse": "21",
+      "endChapter": "22",
+      "endVerse": "38"
+    },
+    "רביעי": {
+      "startChapter": "22",
+      "startVerse": "39",
+      "endChapter": "23",
+      "endVerse": "12"
+    },
+    "חמישי": {
+      "startChapter": "23",
+      "startVerse": "13",
+      "endChapter": "23",
+      "endVerse": "26"
+    },
+    "שישי": {
+      "startChapter": "23",
+      "startVerse": "27",
+      "endChapter": "24",
+      "endVerse": "13"
+    },
+    "שביעי": {
+      "startChapter": "24",
+      "startVerse": "14",
+      "endChapter": "25",
+      "endVerse": "9"
+    },
+    "מפטיר": {
+      "startChapter": "25",
+      "startVerse": "7",
+      "endChapter": "25",
+      "endVerse": "9"
+    }
+  },
+  "פינחס": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "25",
+      "startVerse": "10",
+      "endChapter": "26",
+      "endVerse": "4"
+    },
+    "שני": {
+      "startChapter": "26",
+      "startVerse": "5",
+      "endChapter": "26",
+      "endVerse": "51"
+    },
+    "שלישי": {
+      "startChapter": "26",
+      "startVerse": "52",
+      "endChapter": "27",
+      "endVerse": "5"
+    },
+    "רביעי": {
+      "startChapter": "27",
+      "startVerse": "6",
+      "endChapter": "27",
+      "endVerse": "23"
+    },
+    "חמישי": {
+      "startChapter": "28",
+      "startVerse": "1",
+      "endChapter": "28",
+      "endVerse": "15"
+    },
+    "שישי": {
+      "startChapter": "28",
+      "startVerse": "16",
+      "endChapter": "29",
+      "endVerse": "11"
+    },
+    "שביעי": {
+      "startChapter": "29",
+      "startVerse": "12",
+      "endChapter": "30",
+      "endVerse": "1"
+    },
+    "מפטיר": {
+      "startChapter": "29",
+      "startVerse": "35",
+      "endChapter": "30",
+      "endVerse": "1"
+    }
+  },
+  "מטות": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "30",
+      "startVerse": "2",
+      "endChapter": "30",
+      "endVerse": "17"
+    },
+    "שני": {
+      "startChapter": "31",
+      "startVerse": "1",
+      "endChapter": "31",
+      "endVerse": "12"
+    },
+    "שלישי": {
+      "startChapter": "31",
+      "startVerse": "13",
+      "endChapter": "31",
+      "endVerse": "24"
+    },
+    "רביעי": {
+      "startChapter": "31",
+      "startVerse": "25",
+      "endChapter": "31",
+      "endVerse": "41"
+    },
+    "חמישי": {
+      "startChapter": "31",
+      "startVerse": "42",
+      "endChapter": "31",
+      "endVerse": "54"
+    },
+    "שישי": {
+      "startChapter": "32",
+      "startVerse": "1",
+      "endChapter": "32",
+      "endVerse": "19"
+    },
+    "שביעי": {
+      "startChapter": "32",
+      "startVerse": "20",
+      "endChapter": "32",
+      "endVerse": "42"
+    },
+    "מפטיר": {
+      "startChapter": "32",
+      "startVerse": "39",
+      "endChapter": "32",
+      "endVerse": "42"
+    }
+  },
+  "מסעי": {
+    "pentateuch": "במדבר",
+    "ראשון": {
+      "startChapter": "33",
+      "startVerse": "1",
+      "endChapter": "33",
+      "endVerse": "10"
+    },
+    "שני": {
+      "startChapter": "33",
+      "startVerse": "11",
+      "endChapter": "33",
+      "endVerse": "49"
+    },
+    "שלישי": {
+      "startChapter": "33",
+      "startVerse": "50",
+      "endChapter": "34",
+      "endVerse": "15"
+    },
+    "רביעי": {
+      "startChapter": "34",
+      "startVerse": "16",
+      "endChapter": "34",
+      "endVerse": "29"
+    },
+    "חמישי": {
+      "startChapter": "35",
+      "startVerse": "1",
+      "endChapter": "35",
+      "endVerse": "8"
+    },
+    "שישי": {
+      "startChapter": "35",
+      "startVerse": "9",
+      "endChapter": "35",
+      "endVerse": "34"
+    },
+    "שביעי": {
+      "startChapter": "36",
+      "startVerse": "1",
+      "endChapter": "36",
+      "endVerse": "13"
+    },
+    "מפטיר": {
+      "startChapter": "36",
+      "startVerse": "11",
+      "endChapter": "36",
+      "endVerse": "13"
+    }
+  },
+  "דברים": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "1",
+      "startVerse": "1",
+      "endChapter": "1",
+      "endVerse": "10"
+    },
+    "שני": {
+      "startChapter": "1",
+      "startVerse": "11",
+      "endChapter": "1",
+      "endVerse": "21"
+    },
+    "שלישי": {
+      "startChapter": "1",
+      "startVerse": "22",
+      "endChapter": "1",
+      "endVerse": "38"
+    },
+    "רביעי": {
+      "startChapter": "1",
+      "startVerse": "39",
+      "endChapter": "2",
+      "endVerse": "1"
+    },
+    "חמישי": {
+      "startChapter": "2",
+      "startVerse": "2",
+      "endChapter": "2",
+      "endVerse": "30"
+    },
+    "שישי": {
+      "startChapter": "2",
+      "startVerse": "31",
+      "endChapter": "3",
+      "endVerse": "14"
+    },
+    "שביעי": {
+      "startChapter": "3",
+      "startVerse": "15",
+      "endChapter": "3",
+      "endVerse": "22"
+    },
+    "מפטיר": {
+      "startChapter": "3",
+      "startVerse": "20",
+      "endChapter": "3",
+      "endVerse": "22"
+    }
+  },
+  "ואתחנן": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "3",
+      "startVerse": "23",
+      "endChapter": "4",
+      "endVerse": "4"
+    },
+    "שני": {
+      "startChapter": "4",
+      "startVerse": "5",
+      "endChapter": "4",
+      "endVerse": "40"
+    },
+    "שלישי": {
+      "startChapter": "4",
+      "startVerse": "41",
+      "endChapter": "4",
+      "endVerse": "49"
+    },
+    "רביעי": {
+      "startChapter": "5",
+      "startVerse": "1",
+      "endChapter": "5",
+      "endVerse": "18"
+    },
+    "חמישי": {
+      "startChapter": "5",
+      "startVerse": "19",
+      "endChapter": "6",
+      "endVerse": "3"
+    },
+    "שישי": {
+      "startChapter": "6",
+      "startVerse": "4",
+      "endChapter": "6",
+      "endVerse": "25"
+    },
+    "שביעי": {
+      "startChapter": "7",
+      "startVerse": "1",
+      "endChapter": "7",
+      "endVerse": "11"
+    },
+    "מפטיר": {
+      "startChapter": "7",
+      "startVerse": "9",
+      "endChapter": "7",
+      "endVerse": "11"
+    }
+  },
+  "עקב": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "7",
+      "startVerse": "12",
+      "endChapter": "8",
+      "endVerse": "10"
+    },
+    "שני": {
+      "startChapter": "8",
+      "startVerse": "11",
+      "endChapter": "9",
+      "endVerse": "3"
+    },
+    "שלישי": {
+      "startChapter": "9",
+      "startVerse": "4",
+      "endChapter": "9",
+      "endVerse": "29"
+    },
+    "רביעי": {
+      "startChapter": "10",
+      "startVerse": "1",
+      "endChapter": "10",
+      "endVerse": "11"
+    },
+    "חמישי": {
+      "startChapter": "10",
+      "startVerse": "12",
+      "endChapter": "11",
+      "endVerse": "9"
+    },
+    "שישי": {
+      "startChapter": "11",
+      "startVerse": "10",
+      "endChapter": "11",
+      "endVerse": "21"
+    },
+    "שביעי": {
+      "startChapter": "11",
+      "startVerse": "22",
+      "endChapter": "11",
+      "endVerse": "25"
+    },
+    "מפטיר": {
+      "startChapter": "11",
+      "startVerse": "22",
+      "endChapter": "11",
+      "endVerse": "25"
+    }
+  },
+  "ראה": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "11",
+      "startVerse": "26",
+      "endChapter": "12",
+      "endVerse": "10"
+    },
+    "שני": {
+      "startChapter": "12",
+      "startVerse": "11",
+      "endChapter": "12",
+      "endVerse": "28"
+    },
+    "שלישי": {
+      "startChapter": "12",
+      "startVerse": "29",
+      "endChapter": "13",
+      "endVerse": "19"
+    },
+    "רביעי": {
+      "startChapter": "14",
+      "startVerse": "1",
+      "endChapter": "14",
+      "endVerse": "21"
+    },
+    "חמישי": {
+      "startChapter": "14",
+      "startVerse": "22",
+      "endChapter": "14",
+      "endVerse": "29"
+    },
+    "שישי": {
+      "startChapter": "15",
+      "startVerse": "1",
+      "endChapter": "15",
+      "endVerse": "18"
+    },
+    "שביעי": {
+      "startChapter": "15",
+      "startVerse": "19",
+      "endChapter": "16",
+      "endVerse": "17"
+    },
+    "מפטיר": {
+      "startChapter": "16",
+      "startVerse": "13",
+      "endChapter": "16",
+      "endVerse": "17"
+    }
+  },
+  "שופטים": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "16",
+      "startVerse": "18",
+      "endChapter": "17",
+      "endVerse": "13"
+    },
+    "שני": {
+      "startChapter": "17",
+      "startVerse": "14",
+      "endChapter": "17",
+      "endVerse": "20"
+    },
+    "שלישי": {
+      "startChapter": "18",
+      "startVerse": "1",
+      "endChapter": "18",
+      "endVerse": "5"
+    },
+    "רביעי": {
+      "startChapter": "18",
+      "startVerse": "6",
+      "endChapter": "18",
+      "endVerse": "13"
+    },
+    "חמישי": {
+      "startChapter": "18",
+      "startVerse": "14",
+      "endChapter": "19",
+      "endVerse": "13"
+    },
+    "שישי": {
+      "startChapter": "19",
+      "startVerse": "14",
+      "endChapter": "20",
+      "endVerse": "9"
+    },
+    "שביעי": {
+      "startChapter": "21",
+      "startVerse": "1",
+      "endChapter": "21",
+      "endVerse": "9"
+    },
+    "מפטיר": {
+      "startChapter": "21",
+      "startVerse": "7",
+      "endChapter": "21",
+      "endVerse": "9"
+    }
+  },
+  "כי תצא": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "21",
+      "startVerse": "10",
+      "endChapter": "21",
+      "endVerse": "21"
+    },
+    "שני": {
+      "startChapter": "21",
+      "startVerse": "22",
+      "endChapter": "22",
+      "endVerse": "7"
+    },
+    "שלישי": {
+      "startChapter": "22",
+      "startVerse": "8",
+      "endChapter": "23",
+      "endVerse": "7"
+    },
+    "רביעי": {
+      "startChapter": "23",
+      "startVerse": "8",
+      "endChapter": "23",
+      "endVerse": "24"
+    },
+    "חמישי": {
+      "startChapter": "23",
+      "startVerse": "25",
+      "endChapter": "24",
+      "endVerse": "4"
+    },
+    "שישי": {
+      "startChapter": "24",
+      "startVerse": "5",
+      "endChapter": "24",
+      "endVerse": "13"
+    },
+    "שביעי": {
+      "startChapter": "24",
+      "startVerse": "14",
+      "endChapter": "25",
+      "endVerse": "19"
+    },
+    "מפטיר": {
+      "startChapter": "25",
+      "startVerse": "17",
+      "endChapter": "25",
+      "endVerse": "19"
+    }
+  },
+  "כי תבוא": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "26",
+      "startVerse": "1",
+      "endChapter": "26",
+      "endVerse": "11"
+    },
+    "שני": {
+      "startChapter": "26",
+      "startVerse": "12",
+      "endChapter": "26",
+      "endVerse": "15"
+    },
+    "שלישי": {
+      "startChapter": "26",
+      "startVerse": "16",
+      "endChapter": "26",
+      "endVerse": "19"
+    },
+    "רביעי": {
+      "startChapter": "27",
+      "startVerse": "1",
+      "endChapter": "27",
+      "endVerse": "10"
+    },
+    "חמישי": {
+      "startChapter": "27",
+      "startVerse": "11",
+      "endChapter": "28",
+      "endVerse": "6"
+    },
+    "שישי": {
+      "startChapter": "28",
+      "startVerse": "7",
+      "endChapter": "28",
+      "endVerse": "69"
+    },
+    "שביעי": {
+      "startChapter": "29",
+      "startVerse": "1",
+      "endChapter": "29",
+      "endVerse": "8"
+    },
+    "מפטיר": {
+      "startChapter": "29",
+      "startVerse": "6",
+      "endChapter": "29",
+      "endVerse": "8"
+    }
+  },
+  "נצבים": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "29",
+      "startVerse": "9",
+      "endChapter": "29",
+      "endVerse": "28"
+    },
+    "שני": {
+      "startChapter": "30",
+      "startVerse": "1",
+      "endChapter": "30",
+      "endVerse": "6"
+    },
+    "שלישי": {
+      "startChapter": "30",
+      "startVerse": "7",
+      "endChapter": "30",
+      "endVerse": "10"
+    },
+    "רביעי": {
+      "startChapter": "30",
+      "startVerse": "11",
+      "endChapter": "30",
+      "endVerse": "14"
+    },
+    "חמישי": {
+      "startChapter": "30",
+      "startVerse": "15",
+      "endChapter": "30",
+      "endVerse": "20"
+    },
+    "שישי": {
+      "startChapter": "31",
+      "startVerse": "1",
+      "endChapter": "31",
+      "endVerse": "6"
+    },
+    "שביעי": {
+      "startChapter": "31",
+      "startVerse": "7",
+      "endChapter": "31",
+      "endVerse": "13"
+    },
+    "מפטיר": {
+      "startChapter": "31",
+      "startVerse": "10",
+      "endChapter": "31",
+      "endVerse": "13"
+    }
+  },
+  "וילך": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "31",
+      "startVerse": "1",
+      "endChapter": "31",
+      "endVerse": "6"
+    },
+    "שני": {
+      "startChapter": "31",
+      "startVerse": "7",
+      "endChapter": "31",
+      "endVerse": "13"
+    },
+    "שלישי": {
+      "startChapter": "31",
+      "startVerse": "14",
+      "endChapter": "31",
+      "endVerse": "19"
+    },
+    "רביעי": {
+      "startChapter": "31",
+      "startVerse": "20",
+      "endChapter": "31",
+      "endVerse": "24"
+    },
+    "חמישי": {
+      "startChapter": "31",
+      "startVerse": "25",
+      "endChapter": "31",
+      "endVerse": "30"
+    },
+    "שישי": {
+      "startChapter": "32",
+      "startVerse": "1",
+      "endChapter": "32",
+      "endVerse": "3"
+    },
+    "שביעי": {
+      "startChapter": "32",
+      "startVerse": "4",
+      "endChapter": "32",
+      "endVerse": "6"
+    },
+    "מפטיר": {
+      "startChapter": "31",
+      "startVerse": "28",
+      "endChapter": "32",
+      "endVerse": "3"
+    }
+  },
+  "האזינו": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "32",
+      "startVerse": "1",
+      "endChapter": "32",
+      "endVerse": "6"
+    },
+    "שני": {
+      "startChapter": "32",
+      "startVerse": "7",
+      "endChapter": "32",
+      "endVerse": "12"
+    },
+    "שלישי": {
+      "startChapter": "32",
+      "startVerse": "13",
+      "endChapter": "32",
+      "endVerse": "18"
+    },
+    "רביעי": {
+      "startChapter": "32",
+      "startVerse": "19",
+      "endChapter": "32",
+      "endVerse": "28"
+    },
+    "חמישי": {
+      "startChapter": "32",
+      "startVerse": "29",
+      "endChapter": "32",
+      "endVerse": "39"
+    },
+    "שישי": {
+      "startChapter": "32",
+      "startVerse": "40",
+      "endChapter": "32",
+      "endVerse": "43"
+    },
+    "שביעי": {
+      "startChapter": "32",
+      "startVerse": "44",
+      "endChapter": "32",
+      "endVerse": "52"
+    },
+    "מפטיר": {
+      "startChapter": "32",
+      "startVerse": "48",
+      "endChapter": "32",
+      "endVerse": "52"
+    }
+  },
+  "וזאת הברכה": {
+    "pentateuch": "דברים",
+    "ראשון": {
+      "startChapter": "33",
+      "startVerse": "1",
+      "endChapter": "33",
+      "endVerse": "7"
+    },
+    "שני": {
+      "startChapter": "33",
+      "startVerse": "8",
+      "endChapter": "33",
+      "endVerse": "12"
+    },
+    "שלישי": {
+      "startChapter": "33",
+      "startVerse": "13",
+      "endChapter": "33",
+      "endVerse": "17"
+    },
+    "רביעי": {
+      "startChapter": "33",
+      "startVerse": "18",
+      "endChapter": "33",
+      "endVerse": "21"
+    },
+    "חמישי": {
+      "startChapter": "33",
+      "startVerse": "22",
+      "endChapter": "33",
+      "endVerse": "26"
+    },
+    "שישי": {
+      "startChapter": "33",
+      "startVerse": "27",
+      "endChapter": "33",
+      "endVerse": "29"
+    },
+    "שביעי": {
+      "startChapter": "34",
+      "startVerse": "1",
+      "endChapter": "34",
+      "endVerse": "12"
+    },
+    "מפטיר": {
+      "startChapter": "34",
+      "startVerse": "10",
+      "endChapter": "34",
+      "endVerse": "12"
+    }
+  }
+}
