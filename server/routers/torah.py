@@ -38,7 +38,7 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
         raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
 
 
-@torah_router.get('/parasha/{parashah}/{aliyah}', tags=['Torah'])
+@torah_router.get('/alia/{parashah}/{aliyah}', tags=['Torah'])
 async def get_verses_by_alia(parashah, aliyah):
     response = {}
     with open(f"Torah/parashot/all.json", "r", encoding="utf-8") as f:
