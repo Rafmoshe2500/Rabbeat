@@ -19,7 +19,8 @@ import AnimatedButton from "../common/animated-button";
 import withFade from "../../hoc/withFade.hoc";
 import { useNavigate } from "react-router-dom";
 import theme from "../../theme";
-import { formatVerseReference } from '../../utils/utils'
+import { formatVerseReference } from "../../utils/utils";
+import { confetti } from "../../utils/confetti";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -36,10 +37,12 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const formattedString = formatVerseReference(lesson!.startChapter,
-                                                lesson!.endChapter,
-                                                lesson!.startVerse, 
-                                                lesson!.endVerse)
+  const formattedString = formatVerseReference(
+    lesson!.startChapter,
+    lesson!.endChapter,
+    lesson!.startVerse,
+    lesson!.endVerse
+  );
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
@@ -61,6 +64,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   useEffect(() => {
     transcript && refetch();
   }, [transcript]);
+
+  useEffect(() => {
+    data && data.every(([_, isCorrect]) => !!isCorrect) && confetti.start();
+  }, [data]);
 
   const shouldStopRecording = (transcript: string) => {
     const transcriptWords = transcript.split(" ");
@@ -148,11 +155,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
               {text}
             </div>
           ))}
-      </div>
-
-      <div>
-        {data &&
-          (data.every(([_, isCorrect]) => !!isCorrect) ? "הצלחת" : "נסה שוב")}
       </div>
     </div>
   );
