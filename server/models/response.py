@@ -52,3 +52,11 @@ class ResponseSample(Sample):
 
 class ResponseSamples(BaseModel):
     samples: List[ResponseSample]
+
+
+class ResponseVersesByALia(BaseModel):
+    pentateuch: str
+    startChapter: str
+    startVerse: str
+    endChapter: str
+    endVerse: str

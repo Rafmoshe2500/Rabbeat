@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
+from models.response import ResponseVersesByALia
 from models.torah import TextCompare
 from routers import torah_router
 from workflows.get_torah import TorahTextProcessor
@@ -38,7 +39,7 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
         raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
 
 
-@torah_router.get('/alia/{parasha}/{aliya}', tags=['Torah'])
+@torah_router.get('/alia/{parasha}/{aliya}', tags=['Torah'], status_code=200, response_model=ResponseVersesByALia)
 async def get_verses_by_alia(parasha, aliya):
     response = {}
     with open(f"Torah/parashot/all.json", "r", encoding="utf-8") as f:
