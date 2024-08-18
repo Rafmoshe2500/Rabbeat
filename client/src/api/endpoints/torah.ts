@@ -17,6 +17,20 @@ export const getTorahSection = async (
   }
 };
 
+export const getTorahParashot = async (
+  parasha: string,
+  alia: string
+): Promise<messageContext> => {
+  try {
+    const response = await apiClient.get<messageContext>(
+      `/torah/alia/${parasha}/${alia}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const compareTexts = async (
   source: string,
   tested: string

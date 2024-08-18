@@ -18,11 +18,14 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { styled } from "@mui/material/styles";
 import withFade from "../hoc/withFade.hoc";
 import { lessonVersionsMapper } from "../utils/utils";
+import BibleParashotSelector from "../components/bible-selector/aliot-selector";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -80,6 +83,7 @@ const UploadLessonPage: React.FC = () => {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
+  const [bibleSelectorMode, setBibleSelectorMode] = useState(false);
   const navigate = useNavigate();
   const { mutate } = useCreateOrUpdateLesson(userDetails?.id!);
 
@@ -121,6 +125,21 @@ const UploadLessonPage: React.FC = () => {
     }));
   };
 
+  const setTitle = (newTitle: string) => {
+    setLesson((prevLesson) => ({
+      ...prevLesson,
+      title: newTitle,
+    }));
+  };
+
+  const handleBibleSelector = (
+    event: React.MouseEvent<HTMLElement>,
+    newMode: boolean
+  ) => {
+    setTitle("");
+    setBibleSelectorMode(!newMode);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -149,7 +168,7 @@ const UploadLessonPage: React.FC = () => {
 
   const isFormComplete = (): boolean => {
     return (
-      !!lesson.title &&
+      ((bibleSelectorMode && !!lesson.title) || !bibleSelectorMode) &&
       !!torahSection.endVerse &&
       !!lesson.version &&
       audioBlob !== null &&
@@ -168,33 +187,24 @@ const UploadLessonPage: React.FC = () => {
       >
         העלאת שיעור חדש
       </Typography>
-      <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
-        <UploadButton
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={!isFormComplete()}
-          onClick={handleSubmit}
-        >
-          <UploadFileIcon fontSize="large" />
-        </UploadButton>
-      </Box>
       <StyledPaper elevation={0}>
-        <Box component="form" noValidate sx={{ mt: 3 }}>
+        <Box component="form" noValidate sx={{ mt: 3, mb: 3 }}>
           <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <StyledTextField
-                style={{ direction: "rtl" }}
-                required
-                fullWidth
-                id="title"
-                name="title"
-                label="כותרת"
-                value={lesson.title}
-                onChange={handleChange}
-                variant="outlined"
-              />
-            </Grid>
+            {bibleSelectorMode && (
+              <Grid item xs={12}>
+                <StyledTextField
+                  style={{ direction: "rtl" }}
+                  required
+                  fullWidth
+                  id="title"
+                  name="title"
+                  label="כותרת"
+                  value={lesson.title}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <FormControl fullWidth variant="outlined">
                 <InputLabel id="version-label">נוסח</InputLabel>
@@ -216,12 +226,26 @@ const UploadLessonPage: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </StyledPaper>
-      <StyledPaper elevation={0}>
-        <Typography variant="h2" component="h2" gutterBottom sx={{ mb: 3 }}>
-          הקלטת השיעור
-        </Typography>
-        <BibleSelector setTorahSection={setTorahSection} />
+
+        <div>
+          <ToggleButton
+            onClick={handleBibleSelector}
+            sx={{ outline: "none !important" }}
+            value={bibleSelectorMode}
+            selected={bibleSelectorMode}
+          >
+            {bibleSelectorMode ? "בחר עליה" : "התאמה אישית"}
+          </ToggleButton>
+        </div>
+
+        {!bibleSelectorMode ? (
+          <BibleParashotSelector
+            setTorahSection={setTorahSection}
+            setLessonTitle={setTitle}
+          />
+        ) : (
+          <BibleSelector setTorahSection={setTorahSection} />
+        )}
         <Box sx={{ mt: 4 }}>
           <AudioRecorder
             onRecordingComplete={handleRecordingComplete}
@@ -230,6 +254,17 @@ const UploadLessonPage: React.FC = () => {
           />
         </Box>
       </StyledPaper>
+      <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
+        <UploadButton
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!isFormComplete()}
+          onClick={handleSubmit}
+        >
+          <UploadFileIcon fontSize="large" />
+        </UploadButton>
+      </Box>
     </Container>
   );
 };
