@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
+from models.response import ResponseVersesByALia
 from models.torah import TextCompare
 from routers import torah_router
 from workflows.get_torah import TorahTextProcessor
@@ -38,27 +39,25 @@ def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVe
         raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
 
 
-@torah_router.get('/alia/{parashah}/{aliyah}', tags=['Torah'])
-async def get_verses_by_alia(parashah, aliyah):
+@torah_router.get('/alia/{parasha}/{aliya}', tags=['Torah'], status_code=200, response_model=ResponseVersesByALia)
+async def get_verses_by_alia(parasha, aliya):
     response = {}
     with open(f"Torah/parashot/all.json", "r", encoding="utf-8") as f:
         torah_data = json.load(f)
 
-    """
-    Retrieve aliyah information for a given parashah and aliyah.
-    """
-    if parashah not in torah_data:
+    if parasha not in torah_data:
         raise HTTPException(status_code=404, detail="Parashah not found")
 
-    parashah_data = torah_data[parashah]
+    parasha_data = torah_data[parasha]
 
-    if aliyah not in parashah_data:
+    if aliya not in parasha_data:
         raise HTTPException(status_code=404, detail="Aliyah not found")
-    torah_processor = TorahTextProcessor(parashah_data["pentateuch"])
-    return torah_processor.get_all_torah_text_variants(parashah_data[aliyah]["startChapter"],
-                                                       parashah_data[aliyah]["startVerse"],
-                                                       parashah_data[aliyah]["endChapter"],
-                                                       parashah_data[aliyah]["endVerse"])
+    response.update({"pentateuch": parasha_data["pentateuch"],
+                     "startChapter": parasha_data[aliya]["startChapter"],
+                     "startVerse": parasha_data[aliya]["startVerse"],
+                     "endChapter": parasha_data[aliya]["endChapter"],
+                     "endVerse": parasha_data[aliya]["endVerse"]})
+    return response
 
 
 @torah_router.post('/compare-two-texts')
