@@ -60,3 +60,8 @@ class ResponseVersesByALia(BaseModel):
     startVerse: str
     endChapter: str
     endVerse: str
+
+
+class AudioCompareResponse(BaseModel):
+    score: float
+    rating: str

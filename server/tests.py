@@ -3,27 +3,9 @@ import io
 
 import librosa
 import numpy as np
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import HTTPException
 from pydub import AudioSegment
 from scipy.spatial.distance import cosine
-
-from database.mongo import mongo_db
-from workflows.text_comparator import HebrewTextComparator
-
-app = FastAPI()
-
-
-class AudioCompareRequest(BaseModel):
-    sourceText: str
-    sttText: str
-    testAudio: str  # base64 encoded audio
-    lessonId: str  # base64 encoded audio
-
-
-class AudioCompareResponse(BaseModel):
-    score: float
-    rating: str
 
 
 class AudioComparator:
@@ -98,42 +80,3 @@ class AudioComparator:
             return 'Nice'
         else:
             return 'Excellent'
-
-
-comparator = AudioComparator()
-
-
-@app.post("/compare-audio/", response_model=AudioCompareResponse)
-async def compare_audio(request: AudioCompareRequest):
-    try:
-        audio1 = comparator.decode_base64_audio(request.testAudio)
-        lesson = mongo_db.get_lesson_by_id(request.lessonId)
-        audio2 = comparator.decode_base64_audio(lesson['audio'])
-        text_comparator = HebrewTextComparator(request.sourceText, request.sttText).run()
-
-        success_word_counter = 0
-        for word in text_comparator:
-            if word[1]:
-                success_word_counter += 1
-
-        text_score = (success_word_counter / len(text_comparator)) * 100
-        print(f'text_score: {text_score}')
-        audio_score = comparator.compare_audios(audio1, audio2)
-        print(f'audio_score: {audio_score}')
-        total_score = audio_score * 0.6 + text_score * 0.4
-        print(f'total_score: {total_score}')
-        rating = comparator.get_rating(total_score)
-
-        return AudioCompareResponse(score=total_score, rating=rating)
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-
-
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -5,10 +5,11 @@ from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
-from models.response import ResponseVersesByALia
+from models.response import ResponseVersesByALia, AudioCompareResponse
+from models.tests import AudioCompareRequest
 from models.torah import TextCompare
 from routers import torah_router
-from tests import AudioComparator, AudioCompareRequest, AudioCompareResponse
+from tests import AudioComparator
 from workflows.get_torah import TorahTextProcessor
 from workflows.text_comparator import HebrewTextComparator
 
@@ -71,7 +72,7 @@ def compare_two_texts(texts: TextCompare):
         raise HTTPException(500, 'אופס, נראה שמשהו השתבש במהלך האנליזה של ההקלטה... סליחה על אי הנוחות')
 
 
-@torah_router.post("/compare-audio", response_model=AudioCompareResponse)
+@torah_router.post("/compare-audio/", response_model=AudioCompareResponse)
 async def compare_audio(request: AudioCompareRequest):
     comparator = AudioComparator()
     try:
