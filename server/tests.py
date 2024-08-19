@@ -8,12 +8,17 @@ from pydantic import BaseModel
 from pydub import AudioSegment
 from scipy.spatial.distance import cosine
 
+from database.mongo import mongo_db
+from workflows.text_comparator import HebrewTextComparator
+
 app = FastAPI()
 
 
 class AudioCompareRequest(BaseModel):
-    audio1: str  # base64 encoded audio
-    audio2: str  # base64 encoded audio
+    sourceText: str
+    sttText: str
+    testAudio: str  # base64 encoded audio
+    lessonId: str  # base64 encoded audio
 
 
 class AudioCompareResponse(BaseModel):
@@ -84,14 +89,15 @@ class AudioComparator:
 
         return score
 
-    def get_rating(self, score):
+    @staticmethod
+    def get_rating(total_score):
         """Convert numerical score to rating."""
-        if score < 50:
-            return "Failed"
-        elif score < 75:
-            return "Reasonable"
+        if total_score < 50:
+            return 'Failed'
+        elif total_score < 70:
+            return 'Nice'
         else:
-            return "Excellent"
+            return 'Excellent'
 
 
 comparator = AudioComparator()
@@ -100,17 +106,31 @@ comparator = AudioComparator()
 @app.post("/compare-audio/", response_model=AudioCompareResponse)
 async def compare_audio(request: AudioCompareRequest):
     try:
-        audio1 = comparator.decode_base64_audio(request.audio1)
-        audio2 = comparator.decode_base64_audio(request.audio2)
+        audio1 = comparator.decode_base64_audio(request.testAudio)
+        lesson = mongo_db.get_lesson_by_id(request.lessonId)
+        audio2 = comparator.decode_base64_audio(lesson['audio'])
+        text_comparator = HebrewTextComparator(request.sourceText, request.sttText).run()
 
-        score = comparator.compare_audios(audio1, audio2)
-        rating = comparator.get_rating(score)
+        success_word_counter = 0
+        for word in text_comparator:
+            if word[1]:
+                success_word_counter += 1
 
-        return AudioCompareResponse(score=score, rating=rating)
+        text_score = (success_word_counter / len(text_comparator)) * 100
+        print(f'text_score: {text_score}')
+        audio_score = comparator.compare_audios(audio1, audio2)
+        print(f'audio_score: {audio_score}')
+        total_score = audio_score * 0.6 + text_score * 0.4
+        print(f'total_score: {total_score}')
+        rating = comparator.get_rating(total_score)
+
+        return AudioCompareResponse(score=total_score, rating=rating)
     except HTTPException as he:
         raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
 
 
 if __name__ == "__main__":
