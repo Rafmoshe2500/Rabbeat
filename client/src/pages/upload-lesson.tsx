@@ -18,7 +18,6 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
-  ToggleButtonGroup,
   ToggleButton,
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -136,6 +135,7 @@ const UploadLessonPage: React.FC = () => {
     event: React.MouseEvent<HTMLElement>,
     newMode: boolean
   ) => {
+    event
     setTitle("");
     setBibleSelectorMode(!newMode);
   };
