@@ -71,3 +71,7 @@ li {
   margin: 5px 0;
   text-align: left;
 }
+
+[data-testid="ArrowDropDownIcon"] {
+  right: 0 !important;
+}

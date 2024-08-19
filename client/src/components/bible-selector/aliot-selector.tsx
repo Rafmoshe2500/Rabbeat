@@ -50,11 +50,10 @@ const BibleParashotSelector = ({
   }, [book]);
 
   useEffect(() => {
+    setTorahSection({
+      ...aliaDetails,
+    });
     if (data) {
-      setTorahSection({
-        ...aliaDetails,
-      });
-
       setLessonTitle(`${alia}, ${parasha}`);
     }
   }, [data]);

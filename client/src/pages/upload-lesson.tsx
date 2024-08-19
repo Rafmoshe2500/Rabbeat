@@ -187,6 +187,19 @@ const UploadLessonPage: React.FC = () => {
       >
         העלאת שיעור חדש
       </Typography>
+
+      {isFormComplete() && (
+        <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
+          <UploadButton
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            <UploadFileIcon fontSize="large" />
+          </UploadButton>
+        </Box>
+      )}
       <StyledPaper elevation={0}>
         <Box component="form" noValidate sx={{ mt: 3, mb: 3 }}>
           <Grid container spacing={4}>
@@ -254,17 +267,6 @@ const UploadLessonPage: React.FC = () => {
           />
         </Box>
       </StyledPaper>
-      <Box sx={{ mt: 4, mb: 6, display: "flex", justifyContent: "center" }}>
-        <UploadButton
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={!isFormComplete()}
-          onClick={handleSubmit}
-        >
-          <UploadFileIcon fontSize="large" />
-        </UploadButton>
-      </Box>
     </Container>
   );
 };
