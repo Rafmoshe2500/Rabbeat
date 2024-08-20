@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert';
 
 interface NotificationProps {
   open: boolean;
-  message: string;
+  message: string | string[];
   severity: 'success' | 'error' | 'info' | 'warning';
   onClose: () => void;
 }
@@ -27,9 +27,10 @@ const Notification: React.FC<NotificationProps> = ({ open, message, severity, on
         bottom: 0,
       }}
     >
-      <Alert onClose={onClose} severity={severity} sx={{ width: '100%', maxWidth: '300px' }}>
-        {message}
-      </Alert>
+      <Alert onClose={onClose} severity={severity} sx={{ width: '100%', maxWidth: '600px' }}>
+      {typeof message === 'string' ? message : message.map((msg, index) => (
+          <div key={index} dangerouslySetInnerHTML={{ __html: msg }} />
+        ))}      </Alert>
     </Snackbar>
   );
 };
