@@ -32,3 +32,8 @@ export const markAudioAsRead = async (audioId: string): Promise<void> => {
   const response = await apiClient.put(`/test-audio/${audioId}/read`);
   return response.data;
 };
+
+export const compareAudio = async (data: CompareAudio): Promise<CompareAudioResponse> => {
+  const response = await apiClient.post<CompareAudioResponse>('/torah/compare-audio/', data);
+  return response.data;
+};

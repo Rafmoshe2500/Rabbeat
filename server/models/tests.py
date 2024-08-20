@@ -19,3 +19,10 @@ class ChatStudentTeacher(BaseModel):
     lessonId: str
     userId: str
     messages: List[Message] = []
+
+
+class AudioCompareRequest(BaseModel):
+    sourceText: str
+    sttText: str
+    testAudio: str  # base64 encoded audio
+    lessonId: str

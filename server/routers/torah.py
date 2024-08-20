@@ -4,12 +4,14 @@ from fastapi import HTTPException
 from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
-from models.response import ResponseVersesByALia
+from database.mongo import mongo_db
+from models.response import ResponseVersesByALia, AudioCompareResponse
+from models.tests import AudioCompareRequest
 from models.torah import TextCompare
 from routers import torah_router
 from workflows.get_torah import TorahTextProcessor
 from workflows.text_comparator import HebrewTextComparator
-
+from workflows.compare_audios import AudioComparator
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
 def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVerse: str):
@@ -67,3 +69,32 @@ def compare_two_texts(texts: TextCompare):
         return JSONResponse(content=text_comparator)
     except Exception as e:
         raise HTTPException(500, 'אופס, נראה שמשהו השתבש במהלך האנליזה של ההקלטה... סליחה על אי הנוחות')
+
+
+@torah_router.post("/compare-audio/", response_model=AudioCompareResponse)
+async def compare_audio(request: AudioCompareRequest):
+    comparator = AudioComparator()
+    try:
+        audio1 = comparator.decode_base64_audio(request.testAudio)
+        lesson = mongo_db.get_lesson_by_id(request.lessonId)
+        audio2 = comparator.decode_base64_audio(lesson['audio'])
+        text_comparator = HebrewTextComparator(request.sourceText, request.sttText).run()
+
+        success_word_counter = 0
+        for word in text_comparator:
+            if word[1]:
+                success_word_counter += 1
+
+        text_score = (success_word_counter / len(text_comparator)) * 100
+        print(f'text_score: {text_score}')
+        audio_score = comparator.compare_audios(audio1, audio2)
+        print(f'audio_score: {audio_score}')
+        total_score = audio_score * 0.6 + text_score * 0.4
+        print(f'total_score: {total_score}')
+        feedback = comparator.get_feedback(text_score, audio_score)
+
+        return AudioCompareResponse(score=total_score, feedback=feedback)
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
