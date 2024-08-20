@@ -92,10 +92,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     });
   };
 
-  useEffect(() => {
-    data && data.every(([_, isCorrect]) => !!isCorrect) && confetti.start();
-  }, [data]);
-
   const shouldStopRecording = (transcript: string) => {
     const transcriptWords = transcript.split(" ");
     return transcriptWords.length === length + 3;
