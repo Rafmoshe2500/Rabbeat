@@ -54,7 +54,7 @@ const BibleParashotSelector = ({
       ...aliaDetails,
     });
     if (data) {
-      setLessonTitle(`${alia}, ${parasha}`);
+      setLessonTitle(`${parasha}, ${alia}`);
     }
   }, [data]);
 
