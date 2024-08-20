@@ -29,7 +29,7 @@ const AutoWidthSelect = ({
         onChange={onChange}
         autoWidth
         label={label}
-        sx={{ direction: "rtl" }}
+        sx={{ right: "0 !important" }}
       >
         {options.map((option) => (
           <MenuItem key={option} value={option}>

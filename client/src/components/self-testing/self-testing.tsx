@@ -22,6 +22,7 @@ import { formatVerseReference } from '../../utils/utils';
 import { useCompareAudio } from "../../hooks/useTestAudio";
 import Notification from "../common/notification";
 
+
 type SelfTestingProps = {
   lesson?: Lesson;
 };
@@ -46,7 +47,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
   const [notificationSeverity, setNotificationSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('info');
-
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
@@ -91,6 +91,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         lessonId: lesson?.id || '',
     });
   };
+
+  useEffect(() => {
+    data && data.every(([_, isCorrect]) => !!isCorrect) && confetti.start();
+  }, [data]);
 
   const shouldStopRecording = (transcript: string) => {
     const transcriptWords = transcript.split(" ");
@@ -164,7 +168,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           Your browser does not support the audio element.
         </audio>
       )}
-
       {compareAudioMutation.isPending && (
         <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
           <CircularProgress />

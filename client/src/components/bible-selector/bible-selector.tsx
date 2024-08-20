@@ -96,82 +96,84 @@ const BibleSelector = ({ setTorahSection }: BibleSelectorProps) => {
   );
 
   return (
-    <div className={styles["selectors-container"]}>
-      <AutoWidthSelect
-        label="חומש"
-        value={pentateuch}
-        options={Bible.map((b) => b.name)}
-        onChange={(e) =>
-          dispatch({ type: "SET_BOOK", payload: e.target.value })
-        }
-      />
-
-      {pentateuch && (
+    <div>
+      <div className={styles["selectors-container"]}>
         <AutoWidthSelect
-          label="מפרק"
-          value={startChapter}
-          options={chapters.map((_, index) =>
-            gematriya(index + 1, { geresh: false, punctuate: false })
-          )}
+          label="חומש"
+          value={pentateuch}
+          options={Bible.map((b) => b.name)}
           onChange={(e) =>
-            dispatch({
-              type: "SET_FROM_CHAPTER",
-              payload: e.target.value,
-            })
+            dispatch({ type: "SET_BOOK", payload: e.target.value })
           }
         />
-      )}
 
-      {startChapter && (
-        <AutoWidthSelect
-          label="פסוק"
-          value={startVerse}
-          options={fromVerses}
-          onChange={(e) =>
-            dispatch({
-              type: "SET_FROM_VERSE",
-              payload: e.target.value,
-            })
-          }
-        />
-      )}
+        {pentateuch && (
+          <AutoWidthSelect
+            label="מפרק"
+            value={startChapter}
+            options={chapters.map((_, index) =>
+              gematriya(index + 1, { geresh: false, punctuate: false })
+            )}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_FROM_CHAPTER",
+                payload: e.target.value,
+              })
+            }
+          />
+        )}
 
-      {startVerse && (
-        <AutoWidthSelect
-          label="עד פרק"
-          value={endChapter}
-          options={chapters.slice(gematriya(startChapter)).map((_, index) =>
-            gematriya(index + gematriya(startChapter), {
-              geresh: false,
-              punctuate: false,
-            })
-          )}
-          onChange={(e) =>
-            dispatch({
-              type: "SET_TO_CHAPTER",
-              payload: e.target.value,
-            })
-          }
-        />
-      )}
+        {startChapter && (
+          <AutoWidthSelect
+            label="פסוק"
+            value={startVerse}
+            options={fromVerses}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_FROM_VERSE",
+                payload: e.target.value,
+              })
+            }
+          />
+        )}
 
-      {endChapter && (
-        <AutoWidthSelect
-          label="פסוק"
-          value={endVerse}
-          options={
-            startChapter === endChapter
-              ? toVerses.slice(gematriya(startVerse) - 1)
-              : toVerses
-          }
-          onChange={(e) =>
-            dispatch({
-              type: "SET_TO_VERSE",
-              payload: e.target.value,
-            })
-          }
-        />
-      )}
+        {startVerse && (
+          <AutoWidthSelect
+            label="עד פרק"
+            value={endChapter}
+            options={chapters.slice(gematriya(startChapter)).map((_, index) =>
+              gematriya(index + gematriya(startChapter), {
+                geresh: false,
+                punctuate: false,
+              })
+            )}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_TO_CHAPTER",
+                payload: e.target.value,
+              })
+            }
+          />
+        )}
+
+        {endChapter && (
+          <AutoWidthSelect
+            label="פסוק"
+            value={endVerse}
+            options={
+              startChapter === endChapter
+                ? toVerses.slice(gematriya(startVerse) - 1)
+                : toVerses
+            }
+            onChange={(e) =>
+              dispatch({
+                type: "SET_TO_VERSE",
+                payload: e.target.value,
+              })
+            }
+          />
+        )}
+      </div>
       <div>
         {isLoading && <p>Loading...</p>}
         {error && <p>Error loading data</p>}

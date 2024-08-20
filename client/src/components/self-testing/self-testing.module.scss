@@ -8,15 +8,19 @@
 
 .words-container {
     direction: rtl;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    gap: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .correct-word {
+    margin-left: 3px;
     color: green;
 }
 
 .wrong-word {
+    margin-left: 3px;
     color: red;
 }
