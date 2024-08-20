@@ -16,7 +16,7 @@ import HighlightedText from "../../highlighted-text/highlighted-text";
 import withFade from "../../../hoc/withFade.hoc";
 import styles from "./lesson-content.module.css";
 import { useUser } from "../../../contexts/user-context";
-import { formatVerseReference } from '../../../utils/utils'
+import { formatVerseReference } from "../../../utils/utils";
 
 interface LessonContentProps {
   lesson?: Lesson;
@@ -30,10 +30,12 @@ const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { userDetails } = useUser();
-  const formattedString = formatVerseReference(lesson!.startChapter,
-                                                lesson!.endChapter,
-                                                lesson!.startVerse, 
-                                                lesson!.endVerse)
+  const formattedString = formatVerseReference(
+    lesson!.startChapter,
+    lesson!.endChapter,
+    lesson!.startVerse,
+    lesson!.endVerse
+  );
   const toggleNotesPanel = () => {
     setIsNotesPanelOpen((prev) => !prev);
   };
