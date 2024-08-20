@@ -135,7 +135,7 @@ const UploadLessonPage: React.FC = () => {
     event: React.MouseEvent<HTMLElement>,
     newMode: boolean
   ) => {
-    event
+    event;
     setTitle("");
     setBibleSelectorMode(!newMode);
   };
@@ -155,7 +155,9 @@ const UploadLessonPage: React.FC = () => {
     mutate(lessonToUpload, {
       onSuccess: async (data) => {
         if (data) {
-          navigate(`/teacher-personal-area/lesson/${data}`);
+          navigate(`/teacher-personal-area/lesson/${data}`, {
+            state: { lessonDetails: { title: lesson.title, ...torahSection } },
+          });
         } else {
           console.error("Lesson ID not received in the response");
         }
