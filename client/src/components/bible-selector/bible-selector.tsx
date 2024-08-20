@@ -5,10 +5,17 @@ import styles from "./bible-selector.module.css";
 import { useTorahSection } from "../../hooks/useTorahSection";
 import Chapter from "../bible-displayer/chapter";
 import gematriya from "gematriya";
+import { Box, Typography, styled } from "@mui/material";
 
 type BibleSelectorProps = {
   setTorahSection: any;
 };
+
+const TextContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+}));
 
 type State = {
   pentateuch: string;
@@ -179,15 +186,39 @@ const BibleSelector = ({ setTorahSection }: BibleSelectorProps) => {
         {error && <p>Error loading data</p>}
 
         {data && (
-          <div>
-            {Object.entries(data.both).map(([chapterKey, chapter]) => (
-              <Chapter
-                key={chapterKey}
-                chapterKey={chapterKey}
-                chapter={chapter}
-              />
-            ))}
-          </div>
+          <TextContainer>
+            <Box
+              sx={{
+                height: 400,
+                overflow: "auto",
+                overflowX: "hidden",
+                p: 3,
+                borderRadius: 2,
+                border: "1px solid",
+                borderColor: "divider",
+              }}
+            >
+              <Typography
+                variant="body1"
+                component="div"
+                sx={{
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "1.25rem",
+                  direction: "rtl",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                }}
+              >
+                {Object.entries(data.both).map(([chapterKey, chapter]) => (
+                  <Chapter
+                    key={chapterKey}
+                    chapterKey={chapterKey}
+                    chapter={chapter}
+                  />
+                ))}
+              </Typography>
+            </Box>
+          </TextContainer>
         )}
       </div>
     </div>
