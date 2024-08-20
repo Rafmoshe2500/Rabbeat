@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../../hooks/lessons/useFlattedLessonText";
-import { useCompareTexts } from "../../hooks/useCompareTexts";
 import {
   Box,
-  CircularProgress,
   Container,
   Typography,
   useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";
 import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
@@ -19,11 +18,14 @@ import AnimatedButton from "../common/animated-button";
 import withFade from "../../hoc/withFade.hoc";
 import { useNavigate } from "react-router-dom";
 import theme from "../../theme";
-import { formatVerseReference } from '../../utils/utils'
+import { formatVerseReference } from '../../utils/utils';
+import { useCompareAudio } from "../../hooks/useTestAudio";
+import Notification from "../common/notification";
 
 type SelfTestingProps = {
   lesson?: Lesson;
 };
+
 
 const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { userDetails } = useUser();
@@ -32,14 +34,19 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { data: testAudio } = useTestAudio(lesson?.testAudioId!);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [transcript, setTranscript] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const formattedString = formatVerseReference(lesson!.startChapter,
                                                 lesson!.endChapter,
                                                 lesson!.startVerse, 
-                                                lesson!.endVerse)
+                                                lesson!.endVerse);
+  
+  const compareAudioMutation = useCompareAudio();
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
+  const [notificationSeverity, setNotificationSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('info');
+
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
@@ -51,23 +58,43 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     }
   }, [lesson?.testAudioId, testAudio]);
 
-  const { data, isLoading, refetch } = useCompareTexts(flattedText, transcript);
-
-  const handleRecordingComplete = (audioBlob: Blob, transcript: string) => {
-    setAudioBlob(audioBlob);
-    setTranscript(transcript);
-  };
-
   useEffect(() => {
-    transcript && refetch();
-  }, [transcript]);
+    if (compareAudioMutation.isSuccess) {
+        const { score, feedback } = compareAudioMutation.data;
+        let notificationSeverity: 'success' | 'error' | 'info' | 'warning' = 'info';
+        if (score <= 50) {
+            notificationSeverity = 'error';
+        } else if (score <= 70) {
+            notificationSeverity = 'warning';
+        } else {
+            notificationSeverity = 'success';
+        }
+        setNotificationMessage([...feedback, '<b> אל תשכח לשמור את האודיו כדי שהמורה יוכל לבדוק אותו. </b>']);
+        setNotificationSeverity(notificationSeverity);
+        setNotificationOpen(true);
+    } else if (compareAudioMutation.isError) {
+        setNotificationMessage(["Error comparing audio. Please try again."]);
+        setNotificationSeverity('error');
+        setNotificationOpen(true);
+    }
+  }, [compareAudioMutation.isSuccess, compareAudioMutation.isError, compareAudioMutation.data]);
+
+  const handleRecordingComplete = async (audioBlob: Blob, transcript: string) => {
+    setAudioBlob(audioBlob);
+
+    const base64Audio = await convertBlobToBase64(audioBlob);
+
+    compareAudioMutation.mutate({
+        sourceText: flattedText,
+        sttText: transcript,
+        testAudio: base64Audio,
+        lessonId: lesson?.id || '',
+    });
+  };
 
   const shouldStopRecording = (transcript: string) => {
     const transcriptWords = transcript.split(" ");
-    if (transcriptWords.length === length) {
-      return true;
-    }
-    return false;
+    return transcriptWords.length === length + 3;
   };
 
   const handleUpload = async () => {
@@ -81,6 +108,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         }, 1000);
       },
     });
+  };
+
+  const handleNotificationClose = () => {
+    setNotificationOpen(false);
   };
 
   return (
@@ -111,7 +142,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         {lesson && <DisplayText text={lesson.text!} />}
       </Container>
 
-      {userDetails?.type !== "teacher" ? (
+      {userDetails?.type !== "teacher" && (
         <div className={styles["record-container"]}>
           {audioBlob && (
             <AnimatedButton
@@ -126,8 +157,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
             shouldDisplayTranscript
           />
         </div>
-      ) : (
-        <></>
       )}
       {audioUrl && !audioBlob && (
         <audio controls>
@@ -135,25 +164,20 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           Your browser does not support the audio element.
         </audio>
       )}
-      <div className={styles["words-container"]}>
-        {isLoading && <CircularProgress />}
-        {data &&
-          data.map(([text, isCorrect], index) => (
-            <div
-              key={index}
-              className={
-                isCorrect ? styles["correct-word"] : styles["wrong-word"]
-              }
-            >
-              {text}
-            </div>
-          ))}
-      </div>
 
-      <div>
-        {data &&
-          (data.every(([_, isCorrect]) => !!isCorrect) ? "הצלחת" : "נסה שוב")}
-      </div>
+      {compareAudioMutation.isPending && (
+        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+          <CircularProgress />
+          <Typography ml={2}>Comparing audio...</Typography>
+        </Box>
+      )}
+
+      <Notification
+        open={notificationOpen}
+        message={notificationMessage}
+        severity={notificationSeverity}
+        onClose={handleNotificationClose}
+      />
     </div>
   );
 };
