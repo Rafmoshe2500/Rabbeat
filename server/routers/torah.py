@@ -9,10 +9,9 @@ from models.response import ResponseVersesByALia, AudioCompareResponse
 from models.tests import AudioCompareRequest
 from models.torah import TextCompare
 from routers import torah_router
-from tests import AudioComparator
 from workflows.get_torah import TorahTextProcessor
 from workflows.text_comparator import HebrewTextComparator
-
+from workflows.compare_audios import AudioComparator
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
 def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVerse: str):
@@ -92,9 +91,9 @@ async def compare_audio(request: AudioCompareRequest):
         print(f'audio_score: {audio_score}')
         total_score = audio_score * 0.6 + text_score * 0.4
         print(f'total_score: {total_score}')
-        rating = comparator.get_rating(total_score)
+        feedback = comparator.get_feedback(text_score, audio_score)
 
-        return AudioCompareResponse(score=total_score, rating=rating)
+        return AudioCompareResponse(score=total_score, feedback=feedback)
     except HTTPException as he:
         raise he
     except Exception as e:

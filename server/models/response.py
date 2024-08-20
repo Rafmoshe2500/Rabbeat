@@ -64,4 +64,4 @@ class ResponseVersesByALia(BaseModel):
 
 class AudioCompareResponse(BaseModel):
     score: float
-    rating: str
+    feedback: tuple
