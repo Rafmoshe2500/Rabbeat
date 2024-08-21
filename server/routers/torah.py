@@ -5,40 +5,23 @@ from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
+from exceptions.exceptions import NotFound
 from models.response import ResponseVersesByALia, AudioCompareResponse
 from models.tests import AudioCompareRequest
 from models.torah import TextCompare
 from routers import torah_router
+from workflows.compare_audios import AudioComparator
 from workflows.get_torah import TorahTextProcessor
 from workflows.text_comparator import HebrewTextComparator
-from workflows.compare_audios import AudioComparator
+
 
 @torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
-def get_verses(pentateuch: str, startCh: str, startVerse: str, endCh: str, endVerse: str):
-    """
-    <h4><ul>
-    <li>pentateuch: חומש</li>
-    <li>startCh: פרק התחלה</li>
-    <li>startVerse: פסוק התחלה</li>
-    <li>endCh: פרק סופי</li>
-    <li>endVerse: פסוק סופי</li>
-    </h4></ul
-    :param pentateuch:
-    :param startCh:
-    :param startVerse:
-    :param endCh:
-    :param endVerse:
-    :return:
-    """
+def get_verses(pentateuch: str, start_chapter: str, start_verse: str, end_chapter: str, end_verse: str):
     torah_processor = TorahTextProcessor(pentateuch)
-    startCh, startVerse = str(Hebrew(startCh).gematria()), str(Hebrew(startVerse).gematria())
-    endCh, endVerse = str(Hebrew(endCh).gematria()), str(Hebrew(endVerse).gematria())
-    try:
-        response = torah_processor.get_all_torah_text_variants(startCh, startVerse, endCh, endVerse)
-        return JSONResponse(content=response)
-    except Exception as e:
-        print(e)
-        raise HTTPException(404, 'נראה שהכנסת פרקים/פסוקים שלא תואמים את המציאות.')
+    start_chapter, start_verse = str(Hebrew(start_chapter).gematria()), str(Hebrew(start_verse).gematria())
+    end_chapter, end_verse = str(Hebrew(end_chapter).gematria()), str(Hebrew(end_verse).gematria())
+    response = torah_processor.get_all_torah_text_variants(start_chapter, start_verse, end_chapter, end_verse)
+    return JSONResponse(content=response)
 
 
 @torah_router.get('/alia/{parasha}/{aliya}', tags=['Torah'], status_code=200, response_model=ResponseVersesByALia)
@@ -86,11 +69,8 @@ async def compare_audio(request: AudioCompareRequest):
                 success_word_counter += 1
 
         text_score = (success_word_counter / len(text_comparator)) * 100
-        print(f'text_score: {text_score}')
         audio_score = comparator.compare_audios(audio1, audio2)
-        print(f'audio_score: {audio_score}')
         total_score = audio_score * 0.6 + text_score * 0.4
-        print(f'total_score: {total_score}')
         feedback = comparator.get_feedback(text_score, audio_score)
 
         return AudioCompareResponse(score=total_score, feedback=feedback)

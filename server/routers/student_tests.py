@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
+from exceptions.exceptions import NotFound
 from models.tests import Message, LessonTestAudio
 
 router = APIRouter(tags=['Student - Tests'])
@@ -42,7 +43,7 @@ async def get_chat_notifications(chat_id: str, user_type):
 async def get_all_messages(chat_id: str):
     result = mongo_db.get_test_chat_by_id(chat_id)
     if not result:
-        raise HTTPException(status_code=404, detail="Chat not found")
+        raise NotFound(detail="Chat not found")
     return result['messages']
 
 
@@ -50,7 +51,7 @@ async def get_all_messages(chat_id: str):
 def get_self_test_audio(audio_id: str):
     result = mongo_db.get_lesson_test_audio(audio_id)
     if not result:
-        raise HTTPException(status_code=404, detail="Audio not found")
+        raise NotFound(detail="Audio not found")
     del result['_id']
     return result
 
@@ -62,7 +63,7 @@ def update_self_test_audio(audio_id: str, audio: LessonTestAudio):
     mongo_db.update_notification_by_id(study_zone['notificationsId'],
                                        {'audioNotification': True})
     if not result:
-        raise HTTPException(status_code=404, detail="Audio not found")
+        raise NotFound(detail="Audio not found")
     return "Success to update test audio"
 
 
@@ -74,7 +75,7 @@ async def teacher_read_audio(audio_id):
     if not result:
         raise HTTPException(status_code=500, detail="Something went wrong")
     if result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="Audio not found")
+        raise NotFound(detail="Audio not found")
     if result.modified_count == 0:
         raise HTTPException(status_code=304, detail="Audio notification not modified")
     return "Audio notification marked as read"

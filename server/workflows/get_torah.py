@@ -4,6 +4,7 @@ from typing import Dict, List, Any
 
 from hebrew import Hebrew
 
+from exceptions.exceptions import OperationFailed
 from tools.consts import TEXT_VARIANTS
 from tools.utils import no_p_and_s, merge_or_trim_lists
 
@@ -56,15 +57,18 @@ class TorahTextProcessor:
 
     def get_all_torah_text_variants(self, start_chapter: str, start_verse: str,
                                     end_chapter: str, end_verse: str) -> Dict[str, Dict[str, Dict[str, str]]]:
-        response = {}
+        try:
+            response = {}
 
-        for text_type in TEXT_VARIANTS:
-            if text_type not in self.data_cache:
-                with open(f"Torah/{text_type}/{self.pentateuch}.json", "r", encoding="utf-8") as f:
-                    self.data_cache[text_type] = json.load(f)
+            for text_type in TEXT_VARIANTS:
+                if text_type not in self.data_cache:
+                    with open(f"Torah/{text_type}/{self.pentateuch}.json", "r", encoding="utf-8") as f:
+                        self.data_cache[text_type] = json.load(f)
 
-            response[text_type] = self._process_variant(self.data_cache[text_type], start_chapter, start_verse,
-                                                        end_chapter, end_verse)
+                response[text_type] = self._process_variant(self.data_cache[text_type], start_chapter, start_verse,
+                                                            end_chapter, end_verse)
+        except IndexError:
+            raise OperationFailed('קיימת שגיאה בין הנתונים שהתקבלו לבין הטקסט בפועל, סליחה על אי הנוחות.')
 
         return response
 

@@ -5,6 +5,7 @@ from pymongo.errors import DuplicateKeyError
 from starlette import status
 
 from database.mongo import mongo_db
+from exceptions.exceptions import NotFound, OperationFailed
 from models.response import ResponseTeacherProfile
 from models.user import UserRegister, UserCredentials, User
 from tools.utils import create_jwt_token
@@ -19,7 +20,7 @@ async def register(user: UserRegister):
     try:
         result = RegisterWorkflow(user).run()
         if not result:
-            raise HTTPException(status_code=500, detail="Failed to create user")
+            raise OperationFailed(detail="Failed to create user")
         token = create_jwt_token(user.dict())
         return token
     except DuplicateKeyError:
@@ -57,8 +58,6 @@ def get_teacher_with_profile_details():
 @router.get("/students/search")
 async def search_student_by_email(email: str):
     student = mongo_db.get_user_by_email(email)
-    if not student:
-        raise HTTPException(status_code=404, detail="Student not found")
+    if not student and student['type'] != 'student':
+        raise NotFound(detail="Student not found")
     return {'id': student['id'], 'name': f'{student["firstName"]} {student["lastName"]}'}
-
-
