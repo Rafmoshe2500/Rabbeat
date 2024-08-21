@@ -4,14 +4,22 @@ import { useUser } from "../contexts/user-context";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/common/loader";
 import DisplayCards from "../components/common/display-cards/display-cards";
-import { useMediaQuery, TextField, Radio, RadioGroup, FormControlLabel, FormControl, IconButton, Typography } from "@mui/material";
+import {
+  useMediaQuery,
+  TextField,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import LessonCard from "../components/lessons/lesson-card/lesson-card";
 import withFade from "../hoc/withFade.hoc";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import FloatingActionButton from '../components/common/floating-action-button';
-import DialogComponent from '../components/common/dialog';
-
+import FloatingActionButton from "../components/common/floating-action-button";
+import DialogComponent from "../components/common/dialog";
 
 const TeacherPersonalArea = () => {
   const { userDetails } = useUser();
@@ -27,9 +35,11 @@ const TeacherPersonalArea = () => {
 
   useEffect(() => {
     if (lessons) {
-      const filtered = lessons.filter((lesson) => 
-        lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedPentateuch === "all" || lesson.pentateuch === selectedPentateuch)
+      const filtered = lessons.filter(
+        (lesson) =>
+          lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          (selectedPentateuch === "all" ||
+            lesson.pentateuch === selectedPentateuch)
       );
       setFilteredLessons(filtered);
     }
@@ -40,10 +50,14 @@ const TeacherPersonalArea = () => {
   };
 
   const renderStudentCard = (lesson: LessonDetails) => (
-    <LessonCard 
-      lessonDetails={lesson} 
-      onClick={() => navigate(`/teacher-personal-area/lesson/${lesson.id}`, { state: { lessonDetails: lesson } })}
-      />
+    <LessonCard
+      lessonDetails={lesson}
+      onClick={() =>
+        navigate(`/teacher-personal-area/lesson/${lesson.id}`, {
+          state: { lessonDetails: lesson },
+        })
+      }
+    />
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +72,9 @@ const TeacherPersonalArea = () => {
     setFilterOpen(false);
   };
 
-  const handlePentateuchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePentateuchChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSelectedPentateuch(event.target.value);
   };
 
@@ -68,12 +84,20 @@ const TeacherPersonalArea = () => {
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
-      <Typography variant="h1" gutterBottom>השיעורים שלי</Typography>
+      <Typography variant="h1" gutterBottom>
+        השיעורים שלי
+      </Typography>
 
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "2rem",
+        }}
+      >
         <TextField
           label="חיפוש שיעור לפי כותרת"
-          sx={{textAlign: 'right', direction: 'rtl'}}
+          sx={{ textAlign: "right", direction: "rtl" }}
           variant="outlined"
           value={searchTerm}
           onChange={handleSearchChange}
@@ -105,8 +129,8 @@ const TeacherPersonalArea = () => {
         </p>
       )}
 
-      <FloatingActionButton 
-        onClick={handleNavigate} 
+      <FloatingActionButton
+        onClick={handleNavigate}
         icon={<UploadFileIcon />}
         ariaLabel="add lesson"
       />
@@ -125,7 +149,11 @@ const TeacherPersonalArea = () => {
             onChange={handlePentateuchChange}
           >
             <FormControlLabel value="all" control={<Radio />} label="הכל" />
-            <FormControlLabel value="בראשית" control={<Radio />} label="בראשית" />
+            <FormControlLabel
+              value="בראשית"
+              control={<Radio />}
+              label="בראשית"
+            />
             <FormControlLabel value="שמות" control={<Radio />} label="שמות" />
             <FormControlLabel value="ויקרא" control={<Radio />} label="ויקרא" />
             <FormControlLabel value="במדבר" control={<Radio />} label="במדבר" />
