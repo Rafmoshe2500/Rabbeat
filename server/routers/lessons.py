@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
 from exceptions.exceptions import NotFound, OperationFailed
-from models.lesson import Lesson, CreateLesson, LessonDetails
+from models.lesson import CreateLesson, LessonDetails
 from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonDetailsResponse
 from tools.utils import sorted_lessons
 from workflows.create_lesson import CreateLessonWorkflow

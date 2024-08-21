@@ -1,4 +1,4 @@
-from base_exception import BackEndExceptions
+from exceptions.base_exception import BackEndExceptions
 
 
 class OperationFailed(BackEndExceptions):

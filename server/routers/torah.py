@@ -5,7 +5,6 @@ from hebrew import Hebrew
 from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
-from exceptions.exceptions import NotFound
 from models.response import ResponseVersesByALia, AudioCompareResponse
 from models.tests import AudioCompareRequest
 from models.torah import TextCompare
@@ -15,7 +14,7 @@ from workflows.get_torah import TorahTextProcessor
 from workflows.text_comparator import HebrewTextComparator
 
 
-@torah_router.get('/pentateuch/{pentateuch}/{startCh}/{startVerse}/{endCh}/{endVerse}', tags=['Torah'])
+@torah_router.get('/pentateuch/{pentateuch}/{start_chapter}/{start_verse}/{end_chapter}/{end_verse}', tags=['Torah'])
 def get_verses(pentateuch: str, start_chapter: str, start_verse: str, end_chapter: str, end_verse: str):
     torah_processor = TorahTextProcessor(pentateuch)
     start_chapter, start_verse = str(Hebrew(start_chapter).gematria()), str(Hebrew(start_verse).gematria())

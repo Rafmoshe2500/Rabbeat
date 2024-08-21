@@ -67,7 +67,7 @@ class TorahTextProcessor:
 
                 response[text_type] = self._process_variant(self.data_cache[text_type], start_chapter, start_verse,
                                                             end_chapter, end_verse)
-        except IndexError:
+        except Exception:
             raise OperationFailed('קיימת שגיאה בין הנתונים שהתקבלו לבין הטקסט בפועל, סליחה על אי הנוחות.')
 
         return response

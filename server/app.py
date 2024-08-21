@@ -52,12 +52,12 @@ async def custom_exception_handler(_, exc: BackEndExceptions):
     )
 
 
-@app.exception_handler(Exception)
-async def validation_exception_handler(_, exc):
-    return JSONResponse(
-        status_code=500,
-        content={"detail": 'Oops. something went wrong. try again later.'}
-    )
+# @app.exception_handler(Exception)
+# async def validation_exception_handler(_, exc):
+#     return JSONResponse(
+#         status_code=500,
+#         content={"detail": 'Oops. something went wrong. try again later.'}
+#     )
 
 
 if __name__ == "__main__":

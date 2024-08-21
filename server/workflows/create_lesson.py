@@ -11,10 +11,10 @@ class CreateLessonWorkflow(BaseWorkflow):
 
     def __validate_lesson(self):
         torah_processor = TorahTextProcessor(self.lesson.details.pentateuch)
-        torah_processor.get_all_torah_text_variants(self.lesson.details.start_chapter,
-                                                    self.lesson.details.start_verse,
-                                                    self.lesson.details.end_chapter,
-                                                    self.lesson.details.end_verse)
+        torah_processor.get_all_torah_text_variants(self.lesson.details.startChapter,
+                                                    self.lesson.details.startVerse,
+                                                    self.lesson.details.endChapter,
+                                                    self.lesson.details.endVerse)
         return True
 
     def run(self):
