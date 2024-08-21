@@ -18,15 +18,14 @@ import AnimatedButton from "../common/animated-button";
 import withFade from "../../hoc/withFade.hoc";
 import { useNavigate } from "react-router-dom";
 import theme from "../../theme";
-import { formatVerseReference } from '../../utils/utils';
+import { formatVerseReference } from "../../utils/utils";
 import { useCompareAudio } from "../../hooks/useTestAudio";
 import Notification from "../common/notification";
-
+import { confetti } from "../../utils/confetti";
 
 type SelfTestingProps = {
   lesson?: Lesson;
 };
-
 
 const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const { userDetails } = useUser();
@@ -38,15 +37,19 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const formattedString = formatVerseReference(lesson!.startChapter,
-                                                lesson!.endChapter,
-                                                lesson!.startVerse, 
-                                                lesson!.endVerse);
-  
+  const formattedString = formatVerseReference(
+    lesson!.startChapter,
+    lesson!.endChapter,
+    lesson!.startVerse,
+    lesson!.endVerse
+  );
+
   const compareAudioMutation = useCompareAudio();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
-  const [notificationSeverity, setNotificationSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('info');
+  const [notificationSeverity, setNotificationSeverity] = useState<
+    "success" | "error" | "info" | "warning"
+  >("info");
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
@@ -60,35 +63,47 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   useEffect(() => {
     if (compareAudioMutation.isSuccess) {
-        const { score, feedback } = compareAudioMutation.data;
-        let notificationSeverity: 'success' | 'error' | 'info' | 'warning' = 'info';
-        if (score <= 50) {
-            notificationSeverity = 'error';
-        } else if (score <= 70) {
-            notificationSeverity = 'warning';
-        } else {
-            notificationSeverity = 'success';
-        }
-        setNotificationMessage([...feedback, '<b> אל תשכח לשמור את האודיו כדי שהמורה יוכל לבדוק אותו. </b>']);
-        setNotificationSeverity(notificationSeverity);
-        setNotificationOpen(true);
+      const { score, feedback } = compareAudioMutation.data;
+      let notificationSeverity: "success" | "error" | "info" | "warning" =
+        "info";
+      if (score <= 50) {
+        notificationSeverity = "error";
+      } else if (score <= 70) {
+        notificationSeverity = "warning";
+      } else {
+        confetti.start();
+        notificationSeverity = "success";
+      }
+      setNotificationMessage([
+        ...feedback,
+        "<b> אל תשכח לשמור את האודיו כדי שהמורה יוכל לבדוק אותו. </b>",
+      ]);
+      setNotificationSeverity(notificationSeverity);
+      setNotificationOpen(true);
     } else if (compareAudioMutation.isError) {
-        setNotificationMessage(["Error comparing audio. Please try again."]);
-        setNotificationSeverity('error');
-        setNotificationOpen(true);
+      setNotificationMessage(["Error comparing audio. Please try again."]);
+      setNotificationSeverity("error");
+      setNotificationOpen(true);
     }
-  }, [compareAudioMutation.isSuccess, compareAudioMutation.isError, compareAudioMutation.data]);
+  }, [
+    compareAudioMutation.isSuccess,
+    compareAudioMutation.isError,
+    compareAudioMutation.data,
+  ]);
 
-  const handleRecordingComplete = async (audioBlob: Blob, transcript: string) => {
+  const handleRecordingComplete = async (
+    audioBlob: Blob,
+    transcript: string
+  ) => {
     setAudioBlob(audioBlob);
 
     const base64Audio = await convertBlobToBase64(audioBlob);
 
     compareAudioMutation.mutate({
-        sourceText: flattedText,
-        sttText: transcript,
-        testAudio: base64Audio,
-        lessonId: lesson?.id || '',
+      sourceText: flattedText,
+      sttText: transcript,
+      testAudio: base64Audio,
+      lessonId: lesson?.id || "",
     });
   };
 
