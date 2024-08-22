@@ -24,6 +24,7 @@ import { confetti } from "../../utils/confetti";
 import useToaster from "../../hooks/useToaster";
 import Toaster from "../common/toaster";
 import AnalysisLoader from "../common/analysis-loader";
+import Loader from "../common/loader";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -39,6 +40,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [loading, setLoading] = useState(false);
   const formattedString = formatVerseReference(
     lesson!.startChapter,
     lesson!.endChapter,
@@ -117,9 +119,11 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   const handleUpload = async () => {
     const convertedAudio = await convertBlobToBase64(audioBlob!);
+    setLoading(true)
     updateTestAudioMutation.mutate(convertedAudio, {
       onSuccess: () => {
         setIsSuccess(true);
+        setLoading(false)
         setToaster({
           open: true,
           message: "נשמר ושלח לבדיקת המורה.",
@@ -131,6 +135,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         }, 1000);
       },
     onError: () => {
+      setLoading(false)
       setToaster({
         open: true,
         message: "אופס, התרחשה בעיה. נסה שוב.",
@@ -148,6 +153,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       <AnalysisLoader />
   )
 
+  if (loading) return (
+    <Loader message="מעלה את הבדיקה שלך  כדי שהמורה יוכל לבדוק."/>
+  )
+  
   return (
     <div>
       <Box
