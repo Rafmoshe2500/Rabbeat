@@ -50,12 +50,22 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   );
 
   const compareAudioMutation = useCompareAudio();
-  const { toaster, setToaster, handleCloseToaster } = useToaster()
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
   const [notificationSeverity, setNotificationSeverity] = useState<
     "success" | "error" | "info" | "warning"
   >("info");
+
+  useEffect(() => {
+    if (isMobile) {
+      setNotificationMessage([
+        "שים לב שחלק מיכולות בחינה עצמית אינן פעילות במכשיר הסלולרי",
+      ]);
+      setNotificationOpen(true);
+    }
+  }, []);
+
   useEffect(() => {
     if (testAudio) {
       const url = URL.createObjectURL(testAudio);
@@ -120,29 +130,29 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   const handleUpload = async () => {
     const convertedAudio = await convertBlobToBase64(audioBlob!);
-    setLoading(true)
+    setLoading(true);
     updateTestAudioMutation.mutate(convertedAudio, {
       onSuccess: () => {
         setIsSuccess(true);
-        setLoading(false)
+        setLoading(false);
         setToaster({
           open: true,
           message: "נשמר ושלח לבדיקת המורה.",
-          color: "success"
-        })
+          color: "success",
+        });
         console.log(isSuccess);
         setTimeout(() => {
           navigate("/student-personal-area");
         }, 1000);
       },
-    onError: () => {
-      setLoading(false)
-      setToaster({
-        open: true,
-        message: "אופס, התרחשה בעיה. נסה שוב.",
-        color: "error"
-      })
-    }
+      onError: () => {
+        setLoading(false);
+        setToaster({
+          open: true,
+          message: "אופס, התרחשה בעיה. נסה שוב.",
+          color: "error",
+        });
+      },
     });
   };
 
@@ -182,6 +192,8 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         sx={{
           marginLeft: isMobile ? 0 : 24,
           marginRight: isMobile ? 0 : 24,
+          paddingLeft: isMobile ? 0 : "16px",
+          paddingRight: isMobile ? 0 : "16px",
           width: isMobile ? "100%" : "auto",
         }}
       >
@@ -218,14 +230,13 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         onClose={handleNotificationClose}
       />
       {toaster.open && (
-        <Toaster 
+        <Toaster
           message={toaster.message}
           open={toaster.open}
           color={toaster.color}
           onClose={handleCloseToaster}
         />
-    )
-  }
+      )}
     </div>
   );
 };

@@ -1,28 +1,17 @@
 import { useEffect, useState } from "react";
-import {
-  Autocomplete,
-  Box,
-  TextField,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import AutoWidthSelect from "../select/auto-width-select";
 import styles from "./bible-selector.module.css";
 import { UseAlia } from "../../hooks/useAlia";
 import Chapter from "../bible-displayer/chapter";
 import { BibleParashot, Aliot } from "../../constants/bible.constants";
 import { useTorahSection } from "../../hooks/useTorahSection";
+import TextContainer from "../common/text-container";
 
 type BibleSelectorProps = {
   setTorahSection: any;
   setLessonTitle: (newTitle: string) => void;
 };
-
-const TextContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-}));
 
 const BibleParashotSelector = ({
   setTorahSection,
