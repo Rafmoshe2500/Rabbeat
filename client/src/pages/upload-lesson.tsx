@@ -25,6 +25,8 @@ import { styled } from "@mui/material/styles";
 import withFade from "../hoc/withFade.hoc";
 import { lessonVersionsMapper } from "../utils/utils";
 import BibleParashotSelector from "../components/bible-selector/aliot-selector";
+import useToaster from "../hooks/useToaster";
+import Toaster from "../components/common/toaster";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -85,6 +87,7 @@ const UploadLessonPage: React.FC = () => {
   const [bibleSelectorMode, setBibleSelectorMode] = useState(false);
   const navigate = useNavigate();
   const { mutate } = useCreateOrUpdateLesson(userDetails?.id!);
+  const { toaster, setToaster, handleCloseToaster } = useToaster()
 
   const [lesson, setLesson] = useState({
     title: "",
@@ -155,6 +158,11 @@ const UploadLessonPage: React.FC = () => {
     mutate(lessonToUpload, {
       onSuccess: async (data) => {
         if (data) {
+          setToaster({
+            open: true,
+            message: "השיעור עלה בהצלחה.",
+            color: "success"
+          })
           navigate(`/teacher-personal-area/lesson/${data}`, {
             state: { lessonDetails: { title: lesson.title, ...torahSection } },
           });
@@ -164,6 +172,11 @@ const UploadLessonPage: React.FC = () => {
       },
       onError: (error) => {
         console.error("Error creating lesson:", error);
+        setToaster({
+          open: true,
+          message: "קיימת בעיה בהעלאת השיעור.",
+          color: "error"
+        })
       },
     });
   };
@@ -269,8 +282,17 @@ const UploadLessonPage: React.FC = () => {
           />
         </Box>
       </StyledPaper>
+      {toaster.open && (
+        <Toaster 
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
+        />
+    )
+  }
     </Container>
-  );
+  )
 };
 
 export default withFade(UploadLessonPage);
