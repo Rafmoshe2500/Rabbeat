@@ -1,6 +1,5 @@
-from fastapi import HTTPException
-
 from chatbot.bot import get_answer
+from exceptions.exceptions import OperationFailed
 from models.chat import ChatModule
 from routers import chat_router
 
@@ -10,5 +9,5 @@ def get_prompt(chat: ChatModule):
     try:
         response = get_answer(chat.message, chat.conversation_topic)
         return {'message': response.text}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Oops... something went wrong")
+    except Exception:
+        raise OperationFailed(detail="Oops... something went wrong")

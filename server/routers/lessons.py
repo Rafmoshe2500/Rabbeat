@@ -3,9 +3,11 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
-from models.lesson import Lesson, CreateLesson, LessonDetails
+from exceptions.exceptions import BackendNotFound, OperationFailed
+from models.lesson import CreateLesson, LessonDetails
 from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonDetailsResponse
 from tools.utils import sorted_lessons
+from workflows.create_lesson import CreateLessonWorkflow
 from workflows.get_torah import TorahTextProcessor
 
 router = APIRouter(tags=['Lesson'])
@@ -13,11 +15,7 @@ router = APIRouter(tags=['Lesson'])
 
 @router.post("/lesson", response_model=str, status_code=201)
 async def create_lesson(lesson: CreateLesson):
-    lesson_id = mongo_db.add_lesson(Lesson(**lesson.model_dump(exclude={'teacherId'})))
-    if not lesson_id:
-        raise HTTPException(status_code=500, detail="Lesson not created")
-    mongo_db.associate_user_to_lesson(lesson.teacherId, str(lesson_id.inserted_id))
-    return str(lesson_id.inserted_id)
+    return CreateLessonWorkflow(lesson).run()
 
 
 @router.delete("/lesson/{lesson_id}", response_model=str, status_code=200)
@@ -37,7 +35,7 @@ async def delete_lesson(lesson_id):
 async def get_lesson_by_id(lesson_id: str):
     lesson = mongo_db.get_lesson_by_id(lesson_id)
     if not lesson:
-        raise HTTPException(status_code=404, detail="Lesson not found")
+        raise BackendNotFound(detail="Lesson not found")
 
     lesson_details = mongo_db.get_lesson_details_by_id(lesson_id)
     lesson["_id"] = str(lesson["_id"])
@@ -80,4 +78,4 @@ async def get_lessons_details_by_user_id(user_id: str):
         return sorted_lessons(lessons)
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise OperationFailed(detail=str(e))

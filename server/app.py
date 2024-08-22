@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.responses import JSONResponse
 
+from exceptions.base_exception import BackEndExceptions, BackendDBBaseException
 from routers import lessons, user_lessons, lesson_comment, lesson_chatbot, user, student_tests, study_zone, profile
 from routers.chat import chat_router
 from routers.torah import torah_router
@@ -43,11 +44,19 @@ app.include_router(student_tests.router, prefix="/api")
 app.include_router(profile.router, prefix="/api")
 
 
-@app.exception_handler(Exception)
-async def validation_exception_handler(_, exc):
+@app.exception_handler(BackEndExceptions)
+async def custom_exception_handler(_, exc: BackEndExceptions):
     return JSONResponse(
-        status_code=500,
-        content={"detail": 'Oops. something went wrong. try again later.'}
+        status_code=exc.status_code,
+        content={"detail": exc.detail}
+    )
+
+
+@app.exception_handler(BackendDBBaseException)
+async def validation_exception_handler(_, exc: BackendDBBaseException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.message}
     )
 
 
