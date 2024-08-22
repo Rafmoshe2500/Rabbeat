@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DisplayText from "../display-lesson-text/display-lesson-text";
 import { useFlattedLessonText } from "../../hooks/lessons/useFlattedLessonText";
 import {
+  Backdrop,
   Box,
   Container,
   Typography,
@@ -149,16 +150,18 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     setNotificationOpen(false);
   };
 
-  if (compareAudioMutation.isPending) return  (
-      <CubeLoader />
-  )
-
   if (loading) return (
     <Loader message="מעלה את הבדיקה שלך  כדי שהמורה יוכל לבדוק."/>
   )
   
   return (
     <div>
+
+      <Backdrop sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
+        open={compareAudioMutation.isPending}>
+        <CubeLoader />
+      </Backdrop>
+
       <Box
         mr={"10px"}
         sx={{

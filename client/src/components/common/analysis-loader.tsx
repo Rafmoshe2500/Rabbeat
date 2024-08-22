@@ -115,7 +115,7 @@ const CubeLoader: React.FC<CubeLoaderProps> = ({ size = 100 }) => {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div ref={mountRef} style={{ width: size, height: size }} />
       <Typography variant="body1" sx={{ mt: 2, fontWeight: 'bold', direction: 'rtl' }}>
-        מנתח אינפורציה{dots}
+        בתהליך עיבוד {dots}
       </Typography>
     </Box>
     )
