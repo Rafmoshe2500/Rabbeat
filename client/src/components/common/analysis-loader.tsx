@@ -30,12 +30,13 @@ const CubeLoader: React.FC<CubeLoaderProps> = ({ size = 100 }) => {
 
     // Blue gradient colors
     const colors = [
-      0x0000FF, // Pure blue
-      0x4169E1, // Royal blue
-      0x1E90FF, // Dodger blue
-      0x00BFFF, // Deep sky blue
-      0x87CEEB, // Sky blue
-      0xADD8E6, // Light blue
+      0x8B4513,
+      0xA0522D,
+      0xCD853F,
+      0xD2B48C,
+      0xDEB887,
+      0xD3D3D3,
+      
     ];
 
     // Create small cubes

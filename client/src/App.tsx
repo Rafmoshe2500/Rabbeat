@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { ThemeProvider } from '@mui/material/styles'; // Add this import
 import CssBaseline from '@mui/material/CssBaseline'; // Add this import
 import theme from './theme'; // Add this import
+import CubeLoader from "./components/common/analysis-loader";
 
 const App: React.FC = () => {
   const { userDetails } = useUser();
@@ -40,7 +41,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RouterProvider router={router} key={userDetails ? userDetails.id : 'logged-out'} />
+      <CubeLoader />
     </ThemeProvider>
   );
 };
