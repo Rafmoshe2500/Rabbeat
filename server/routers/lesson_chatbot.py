@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
-from exceptions.exceptions import NotFound, OperationFailed
+from exceptions.exceptions import BackendNotFound, OperationFailed
 from models.lesson import ChatBotMessages
 
 router = APIRouter(tags=['User-Lessons | Additives'])
@@ -28,5 +28,5 @@ async def get_all_lesson_messages_from_lesson_by_user_id(user_id: str, lesson_id
 async def delete_all_lesson_messages_from_lesson_by_user_id(lesson_id: str, user_id: str):
     delete_result = mongo_db.delete_lesson_messages(lesson_id, user_id)
     if not delete_result:
-        raise NotFound(detail="No Chatbot Messages found for the given lessonId and userId")
+        raise BackendNotFound(detail="No Chatbot Messages found for the given lessonId and userId")
     return {"message": f"{delete_result.deleted_count} Chatbot Messages successfully deleted"}

@@ -45,7 +45,7 @@ async def associate_student_to_teacher(new_student: AssociateNewStudent):
 
 @router.get("/is-connection/student/{student_id}/teacher/{teacher_id}", response_model=bool)
 async def check_if_student_have_connection_to_teacher(student_id, teacher_id):
-    result = mongo_db.get_connection(student_id, teacher_id)
+    result = mongo_db.check_connection_between_users(student_id, teacher_id)
     if result:
         return True
     return False

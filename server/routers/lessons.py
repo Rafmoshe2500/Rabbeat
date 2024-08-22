@@ -3,7 +3,7 @@ from typing import Union, List
 from fastapi import APIRouter, HTTPException
 
 from database.mongo import mongo_db
-from exceptions.exceptions import NotFound, OperationFailed
+from exceptions.exceptions import BackendNotFound, OperationFailed
 from models.lesson import CreateLesson, LessonDetails
 from models.response import LessonDetailsResponse, LessonResponse, ExtendLessonDetailsResponse
 from tools.utils import sorted_lessons
@@ -35,7 +35,7 @@ async def delete_lesson(lesson_id):
 async def get_lesson_by_id(lesson_id: str):
     lesson = mongo_db.get_lesson_by_id(lesson_id)
     if not lesson:
-        raise NotFound(detail="Lesson not found")
+        raise BackendNotFound(detail="Lesson not found")
 
     lesson_details = mongo_db.get_lesson_details_by_id(lesson_id)
     lesson["_id"] = str(lesson["_id"])

@@ -5,7 +5,7 @@ from pymongo.errors import DuplicateKeyError
 from starlette import status
 
 from database.mongo import mongo_db
-from exceptions.exceptions import NotFound, OperationFailed
+from exceptions.exceptions import BackendNotFound, OperationFailed
 from models.response import ResponseTeacherProfile
 from models.user import UserRegister, UserCredentials, User
 from tools.utils import create_jwt_token
@@ -39,10 +39,7 @@ async def login(user_cred: UserCredentials):
 
 @router.get("/user/{user_id}", response_model=User)
 async def get_user_by_id(user_id: str):
-    user = mongo_db.get_user_by_id(user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return user
+    return mongo_db.get_user_by_id(user_id)
 
 
 @router.get("/users", response_model=List[User])
@@ -59,5 +56,5 @@ def get_teacher_with_profile_details():
 async def search_student_by_email(email: str):
     student = mongo_db.get_user_by_email(email)
     if not student and student['type'] != 'student':
-        raise NotFound(detail="Student not found")
+        raise BackendNotFound(detail="Student not found")
     return {'id': student['id'], 'name': f'{student["firstName"]} {student["lastName"]}'}

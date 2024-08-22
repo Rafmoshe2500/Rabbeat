@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 
 from database.mongo import mongo_db
-from exceptions.exceptions import NotFound, OperationFailed
+from exceptions.exceptions import BackendNotFound, OperationFailed
 from models.lesson import LessonComments, UpdateComment
 
 router = APIRouter(tags=['User-Lessons | Additives'])
@@ -31,7 +31,7 @@ async def get_lesson_comments_by_ids(user_id: str, lesson_id: str):
 async def delete_lesson_comment_by_id(comment_id: str):
     delete_result = mongo_db.delete_lesson_comment_by_id(comment_id)
     if not delete_result:
-        raise NotFound(detail="Comment not found")
+        raise BackendNotFound(detail="Comment not found")
 
     return {"message": "Comment successfully deleted"}
 
@@ -42,7 +42,7 @@ async def update_lesson_status(comment_id, update: UpdateComment):
     if not update_result:
         raise HTTPException(status_code=404, detail="Something went wrong")
     if update_result.matched_count == 0:
-        raise NotFound(detail="Comment not found")
+        raise BackendNotFound(detail="Comment not found")
     if update_result.modified_count == 0:
         raise HTTPException(status_code=304, detail="Comment not modified")
     return {"message": "Comment successfully updated"}

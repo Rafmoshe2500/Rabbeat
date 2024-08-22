@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import HTTPException, APIRouter
 
 from database.mongo import mongo_db
-from exceptions.exceptions import OperationFailed, NotFound
+from exceptions.exceptions import OperationFailed, BackendNotFound
 from models.profile import UpdateProfile, CreateSample, DeleteSample
 from models.response import ResponseSamples
 
@@ -49,7 +49,7 @@ async def get_samples_by_teacher_id(teacher_id):
 async def get_profile(user_id: str):
     user: dict = mongo_db.get_user_by_id(user_id)
     if not user:
-        raise NotFound(detail="User not found")
+        raise BackendNotFound(detail="User not found")
     profile: dict = mongo_db.get_teacher_profile(user_id)
     if profile:
         user.update(profile)

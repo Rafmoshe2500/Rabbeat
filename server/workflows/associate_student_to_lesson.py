@@ -10,7 +10,7 @@ class AssociateUserToLessonFlow(BaseWorkflow):
         self.lesson_id = lesson_id
 
     def __is_connected(self) -> bool:
-        return mongo_db.get_connection(self.student_id, self.teacher_id)
+        return mongo_db.check_connection_between_users(self.student_id, self.teacher_id)
 
     def __associate_user_to_lesson(self) -> None:
         mongo_db.associate_user_to_lesson(self.student_id, self.lesson_id)
