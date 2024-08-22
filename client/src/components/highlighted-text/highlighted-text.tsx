@@ -51,7 +51,14 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({
   }, [audioRef.current, lesson?.text]);
 
   return (
-    <Container maxWidth="md" sx={{ width: isMobile ? "100%" : "auto" }}>
+    <Container
+      maxWidth="md"
+      sx={{
+        paddingLeft: isMobile ? 0 : "16px",
+        paddingRight: isMobile ? 0 : "16px",
+        width: isMobile ? "100%" : "auto",
+      }}
+    >
       {lesson?.text && (
         <DisplayText
           text={lesson.text}

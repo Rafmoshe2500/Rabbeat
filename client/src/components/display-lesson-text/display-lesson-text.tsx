@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { Box, Typography, Container, useTheme, styled } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Container,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import VersionSelector from "../text-version-selector/text-version-selector";
+import TextContainer from "../common/text-container";
 
 interface DisplayTextProps {
   text: TextSection;
   highlightedWord?: WordToMark;
   audioRef?: React.RefObject<HTMLAudioElement>;
 }
-
-const TextContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-}));
 
 const DisplayText: React.FC<DisplayTextProps> = ({
   text: textSection,
@@ -22,6 +23,7 @@ const DisplayText: React.FC<DisplayTextProps> = ({
   const [version, setVersion] = useState<Version>("none");
   const [isTorahFontEnabled, setIsTorahFontEnabled] = useState<boolean>(false);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const handleVersionChange = (newVersion: Version) => {
     setVersion(newVersion);
   };
@@ -73,7 +75,7 @@ const DisplayText: React.FC<DisplayTextProps> = ({
             height: 400,
             overflow: "auto",
             overflowX: "hidden",
-            p: 3,
+            p: isMobile ? 1 : 3,
             borderRadius: 2,
             border: "1px solid",
             borderColor: "divider",
