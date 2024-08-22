@@ -4,6 +4,7 @@ from typing import Dict, List, Any
 
 from hebrew import Hebrew
 
+from exceptions.exceptions import OperationFailed
 from tools.consts import TEXT_VARIANTS
 from tools.utils import no_p_and_s, merge_or_trim_lists
 
@@ -26,33 +27,35 @@ class TorahTextProcessor:
         times, merge_words = merge_or_trim_lists(times, all_torah_words)
 
         words_for_highlight = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
+        try:
+            for variant in TEXT_VARIANTS:
+                counter = 0
+                for chapter, verses in verses_by_variants[variant].items():
+                    for verse, text in verses.items():
+                        words = text.split()
+                        i = 0
+                        while i < len(words):
+                            word = words[i]
+                            if word != "׀":
+                                merged_word = merge_words[counter]
+                                merged_word_len = len(merged_word.split())
 
-        for variant in TEXT_VARIANTS:
-            counter = 0
-            for chapter, verses in verses_by_variants[variant].items():
-                for verse, text in verses.items():
-                    words = text.split()
-                    i = 0
-                    while i < len(words):
-                        word = words[i]
-                        if word != "׀":
-                            merged_word = merge_words[counter]
-                            merged_word_len = len(merged_word.split())
+                                if merged_word_len > 1:
+                                    word = " ".join(words[i:i + merged_word_len])
+                                    i += merged_word_len - 1
 
-                            if merged_word_len > 1:
-                                word = " ".join(words[i:i + merged_word_len])
-                                i += merged_word_len - 1
+                                words_for_highlight[chapter][verse][counter].update({
+                                    'time': times[counter],
+                                    variant: word
+                                })
+                                counter += 1
+                            else:
+                                words_for_highlight[chapter][verse][counter - 1][variant] += f" {word}"
+                            i += 1
 
-                            words_for_highlight[chapter][verse][counter].update({
-                                'time': times[counter],
-                                variant: word
-                            })
-                            counter += 1
-                        else:
-                            words_for_highlight[chapter][verse][counter - 1][variant] += f" {word}"
-                        i += 1
-
-        return words_for_highlight
+            return words_for_highlight
+        except Exception:
+            raise OperationFailed('קיימת שגיאה בין הנתונים שהתקבלו לבין הטקסט בפועל, סליחה על אי הנוחות.')
 
     def get_all_torah_text_variants(self, start_chapter: str, start_verse: str,
                                     end_chapter: str, end_verse: str) -> Dict[str, Dict[str, Dict[str, str]]]:

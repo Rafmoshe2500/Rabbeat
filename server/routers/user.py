@@ -5,6 +5,7 @@ from pymongo.errors import DuplicateKeyError
 from starlette import status
 
 from database.mongo import mongo_db
+from exceptions.exceptions import BackendNotFound, OperationFailed
 from models.response import ResponseTeacherProfile
 from models.user import UserRegister, UserCredentials, User
 from tools.utils import create_jwt_token
@@ -19,7 +20,7 @@ async def register(user: UserRegister):
     try:
         result = RegisterWorkflow(user).run()
         if not result:
-            raise HTTPException(status_code=500, detail="Failed to create user")
+            raise OperationFailed(detail="Failed to create user")
         token = create_jwt_token(user.dict())
         return token
     except DuplicateKeyError:
@@ -38,10 +39,7 @@ async def login(user_cred: UserCredentials):
 
 @router.get("/user/{user_id}", response_model=User)
 async def get_user_by_id(user_id: str):
-    user = mongo_db.get_user_by_id(user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return user
+    return mongo_db.get_user_by_id(user_id)
 
 
 @router.get("/users", response_model=List[User])
@@ -57,8 +55,6 @@ def get_teacher_with_profile_details():
 @router.get("/students/search")
 async def search_student_by_email(email: str):
     student = mongo_db.get_user_by_email(email)
-    if not student:
-        raise HTTPException(status_code=404, detail="Student not found")
+    if not student and student['type'] != 'student':
+        raise BackendNotFound(detail="Student not found")
     return {'id': student['id'], 'name': f'{student["firstName"]} {student["lastName"]}'}
-
-

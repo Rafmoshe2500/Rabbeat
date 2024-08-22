@@ -6,7 +6,6 @@ import {
   Container,
   Typography,
   useMediaQuery,
-  CircularProgress,
 } from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";
 import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
@@ -22,6 +21,10 @@ import { formatVerseReference } from "../../utils/utils";
 import { useCompareAudio } from "../../hooks/useTestAudio";
 import Notification from "../common/notification";
 import { confetti } from "../../utils/confetti";
+import useToaster from "../../hooks/useToaster";
+import Toaster from "../common/toaster";
+import AnalysisLoader from "../common/analysis-loader";
+import Loader from "../common/loader";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -37,6 +40,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [loading, setLoading] = useState(false);
   const formattedString = formatVerseReference(
     lesson!.startChapter,
     lesson!.endChapter,
@@ -45,6 +49,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   );
 
   const compareAudioMutation = useCompareAudio();
+  const { toaster, setToaster, handleCloseToaster } = useToaster()
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
   const [notificationSeverity, setNotificationSeverity] = useState<
@@ -114,14 +119,29 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   const handleUpload = async () => {
     const convertedAudio = await convertBlobToBase64(audioBlob!);
+    setLoading(true)
     updateTestAudioMutation.mutate(convertedAudio, {
       onSuccess: () => {
         setIsSuccess(true);
+        setLoading(false)
+        setToaster({
+          open: true,
+          message: "נשמר ושלח לבדיקת המורה.",
+          color: "success"
+        })
         console.log(isSuccess);
         setTimeout(() => {
           navigate("/student-personal-area");
         }, 1000);
       },
+    onError: () => {
+      setLoading(false)
+      setToaster({
+        open: true,
+        message: "אופס, התרחשה בעיה. נסה שוב.",
+        color: "error"
+      })
+    }
     });
   };
 
@@ -129,6 +149,14 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     setNotificationOpen(false);
   };
 
+  if (compareAudioMutation.isPending) return  (
+      <AnalysisLoader />
+  )
+
+  if (loading) return (
+    <Loader message="מעלה את הבדיקה שלך  כדי שהמורה יוכל לבדוק."/>
+  )
+  
   return (
     <div>
       <Box
@@ -179,12 +207,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           Your browser does not support the audio element.
         </audio>
       )}
-      {compareAudioMutation.isPending && (
-        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-          <CircularProgress />
-          <Typography ml={2}>Comparing audio...</Typography>
-        </Box>
-      )}
 
       <Notification
         open={notificationOpen}
@@ -192,6 +214,15 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         severity={notificationSeverity}
         onClose={handleNotificationClose}
       />
+      {toaster.open && (
+        <Toaster 
+          message={toaster.message}
+          open={toaster.open}
+          color={toaster.color}
+          onClose={handleCloseToaster}
+        />
+    )
+  }
     </div>
   );
 };
