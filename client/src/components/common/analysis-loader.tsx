@@ -1,53 +1,123 @@
-import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import React, { useRef, useEffect, useState } from 'react';
+import * as THREE from 'three';
+import { Box, Typography } from '@mui/material';
 
-const AnalysisContainer = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(4),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.background.default,
-  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-  overflow: "hidden",
-  position: "relative",
-  width: "100%",
-  height: "300px",
-}));
+interface CubeLoaderProps {
+  size?: number;
+}
 
-const ProcessingBar = styled(Box)(({ theme }) => ({
-  width: "100%",
-  height: "5px",
-  backgroundColor: theme.palette.grey[300],
-  position: "relative",
-  overflow: "hidden",
-}));
+const CubeLoader: React.FC<CubeLoaderProps> = ({ size = 100 }) => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const [dots, setDots] = useState('.');
 
-const Bar = styled(Box)(({ theme }) => ({
-  width: "20%",
-  height: "100%",
-  backgroundColor: theme.palette.primary.main,
-  position: "absolute",
-  animation: "moveBar 3s linear infinite",
-  "@keyframes moveBar": {
-    "0%": {
-      left: "-20%",
-    },
-    "100%": {
-      left: "100%",
-    },
-  },
-}));
+  useEffect(() => {
+    if (!mountRef.current) return;
 
-const AnalysisLoader: React.FC = () => {
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ 
+      alpha: true,
+      antialias: true // Enable antialiasing
+    });
+    renderer.setSize(size, size);
+    renderer.setPixelRatio(window.devicePixelRatio); // Adjust for high DPI displays
+    mountRef.current.appendChild(renderer.domElement);
+
+    // Main cube group
+    const mainCube = new THREE.Group();
+    scene.add(mainCube);
+
+    // Blue gradient colors
+    const colors = [
+      0x0000FF, // Pure blue
+      0x4169E1, // Royal blue
+      0x1E90FF, // Dodger blue
+      0x00BFFF, // Deep sky blue
+      0x87CEEB, // Sky blue
+      0xADD8E6, // Light blue
+    ];
+
+    // Create small cubes
+    const smallCubeGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+    const cubes: THREE.Mesh[] = [];
+
+    for (let x = -1; x <= 1; x++) {
+      for (let y = -1; y <= 1; y++) {
+        for (let z = -1; z <= 1; z++) {
+          const colorIndex = Math.abs(x) + Math.abs(y) + Math.abs(z);
+          const material = new THREE.MeshPhongMaterial({ 
+            color: colors[colorIndex],
+            shininess: 100,
+            specular: 0x111111
+          });
+          const cube = new THREE.Mesh(smallCubeGeometry, material);
+          cube.position.set(x, y, z);
+          mainCube.add(cube);
+          cubes.push(cube);
+        }
+      }
+    }
+
+    // Add lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
+    camera.position.z = 5;
+
+    // Animation loop
+    const clock = new THREE.Clock();
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      const elapsedTime = clock.getElapsedTime();
+
+      // Rotate main cube
+      mainCube.rotation.x += 0.005;
+      mainCube.rotation.y += 0.005;
+
+      // Pulsate and separate small cubes
+      const pulseFactor = Math.sin(elapsedTime * 2) * 0.2;
+      cubes.forEach((cube) => {
+        const originalPos = new THREE.Vector3(
+          Math.round(cube.position.x),
+          Math.round(cube.position.y),
+          Math.round(cube.position.z)
+        );
+        cube.position.copy(originalPos).multiplyScalar(1.1 + pulseFactor);
+      });
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    const dotInterval = setInterval(() => {
+      setDots(prevDots => {
+        if (prevDots.length >= 3) return '.';
+        return prevDots + '.';
+      });
+    }, 500);
+
+    // Clean up
+    return () => {
+      mountRef.current?.removeChild(renderer.domElement);
+      clearInterval(dotInterval);
+    };
+  }, [size]);
+
   return (
-    <AnalysisContainer elevation={3}>
-      <Typography variant="h4" align="center" gutterBottom sx={{direction: 'rtl'}}>
-        מנתח את הנתונים, זה עלול לקחת מספר דקות.
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div ref={mountRef} style={{ width: size, height: size }} />
+      <Typography variant="body1" sx={{ mt: 2, fontWeight: 'bold', direction: 'rtl' }}>
+        מנתח אינפורציה{dots}
       </Typography>
-      <ProcessingBar>
-        <Bar />
-      </ProcessingBar>
-    </AnalysisContainer>
-  );
+    </Box>
+    )
 };
 
-export default AnalysisLoader;
+export default CubeLoader;
