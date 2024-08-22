@@ -18,7 +18,7 @@ const TeacherLessonView = () => {
     [lesson, passedLessonDetails]
   );
 
-  if (isLoading && !passedLessonDetails) {
+  if (isLoading) {
     return <LessonSkeleton />;
   }
 
