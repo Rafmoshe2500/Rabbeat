@@ -27,6 +27,7 @@ import { lessonVersionsMapper } from "../utils/utils";
 import BibleParashotSelector from "../components/bible-selector/aliot-selector";
 import useToaster from "../hooks/useToaster";
 import Toaster from "../components/common/toaster";
+import Loader from "../components/common/loader";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -85,6 +86,7 @@ const UploadLessonPage: React.FC = () => {
   const [transcript, setTranscript] = useState<string>("");
   const [timestamps, setTimestamps] = useState<number[]>([0.0]);
   const [bibleSelectorMode, setBibleSelectorMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { mutate } = useCreateOrUpdateLesson(userDetails?.id!);
   const { toaster, setToaster, handleCloseToaster } = useToaster()
@@ -145,7 +147,7 @@ const UploadLessonPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     const lessonToUpload = {
       ...lesson,
       ...torahSection,
@@ -157,6 +159,7 @@ const UploadLessonPage: React.FC = () => {
 
     mutate(lessonToUpload, {
       onSuccess: async (data) => {
+        setLoading(false)
         if (data) {
           setToaster({
             open: true,
@@ -171,6 +174,7 @@ const UploadLessonPage: React.FC = () => {
         }
       },
       onError: (error) => {
+        setLoading(false)
         console.error("Error creating lesson:", error);
         setToaster({
           open: true,
@@ -190,6 +194,10 @@ const UploadLessonPage: React.FC = () => {
       timestamps.length > 1
     );
   };
+
+  if (loading) return  (
+    <Loader message="מעלה את האודיו, זה עלול לקחת מספר רגעים"/>
+)
 
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>

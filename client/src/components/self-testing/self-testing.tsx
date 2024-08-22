@@ -6,7 +6,6 @@ import {
   Container,
   Typography,
   useMediaQuery,
-  CircularProgress,
 } from "@mui/material";
 import AudioRecorder from "../audio-recorder/audio-recorder";
 import { useUpdateTestAudio } from "../../hooks/useUpdateTestAudio";
@@ -24,6 +23,7 @@ import Notification from "../common/notification";
 import { confetti } from "../../utils/confetti";
 import useToaster from "../../hooks/useToaster";
 import Toaster from "../common/toaster";
+import Loader from "../common/loader";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -144,6 +144,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     setNotificationOpen(false);
   };
 
+  if (compareAudioMutation.isPending) return  (
+      <Loader message="מבצע ניתוח לאודיו שלך..."/>
+  )
+
   return (
     <div>
       <Box
@@ -193,12 +197,6 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
           <source src={audioUrl} type="audio/wav" />
           Your browser does not support the audio element.
         </audio>
-      )}
-      {compareAudioMutation.isPending && (
-        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-          <CircularProgress />
-          <Typography ml={2}>Comparing audio...</Typography>
-        </Box>
       )}
 
       <Notification
