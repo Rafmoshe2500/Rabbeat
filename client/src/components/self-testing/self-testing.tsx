@@ -23,7 +23,7 @@ import Notification from "../common/notification";
 import { confetti } from "../../utils/confetti";
 import useToaster from "../../hooks/useToaster";
 import Toaster from "../common/toaster";
-import Loader from "../common/loader";
+import AnalysisLoader from "../common/analysis-loader";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -145,7 +145,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   };
 
   if (compareAudioMutation.isPending) return  (
-      <Loader message="מבצע ניתוח לאודיו שלך..."/>
+      <AnalysisLoader />
   )
 
   return (
