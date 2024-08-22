@@ -9,6 +9,8 @@ import { storeToken, decodeToken, isTokenValid, getToken } from "../utils/jwt-co
 import { useLogin, useRegister } from "../hooks/useAuth";
 import withFade from "../hoc/withFade.hoc";
 import CardSkeleton from "../components/skeletons/cards-skeleton";
+import Toaster from "../components/common/toaster";
+import useToaster from "../hooks/useToaster";
 
 const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
   ({ theme, isflipped }) => ({
@@ -60,26 +62,6 @@ const ButtonContainer = styled("div")({
   paddingTop: "24px",
 });
 
-const MessageOverlay = styled("div")<{ isError?: boolean }>(({ theme, isError }) => ({
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  backgroundColor: isError
-    ? "rgba(244, 67, 54, 0.9)"
-    : "rgba(76, 175, 80, 0.9)",
-  color: "white",
-  padding: "16px 24px",
-  borderRadius: "8px",
-  fontSize: "18px",
-  zIndex: 4,
-  textAlign: "center",
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '16px',
-    padding: '12px 18px',
-  },
-}));
-
 const InputField = styled(TextField)<TextFieldProps>(({ theme }) => ({
   margin: theme.spacing(1, 0),
   [theme.breakpoints.down('sm')]: {
@@ -104,11 +86,8 @@ const AuthForm: React.FC = () => {
   const location = useLocation();
   const { setUserDetails } = useUser();
   const [isLogin, setIsLogin] = useState(location.pathname === "/register");
-  const [message, setMessage] = useState<{
-    text: string;
-    isError: boolean;
-  } | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toaster, setToaster, handleCloseToaster } = useToaster()
 
   const loginMutation = useLogin();
   const registerMutation = useRegister();
@@ -141,7 +120,6 @@ const AuthForm: React.FC = () => {
     const newPath = isLogin ? "/register" : "/login";
     navigate(newPath);
     setIsLogin(!isLogin);
-    setMessage(null);
   };
 
   const handleSuccess = (token: string) => {
@@ -149,10 +127,11 @@ const AuthForm: React.FC = () => {
     const decodedUser = decodeToken(token);
     if (decodedUser) {
       setUserDetails(decodedUser);
-      setMessage({
-        text: isLogin ? "התחברת בהצלחה!" : "נרשמת בהצלחה!",
-        isError: false,
-      });
+      setToaster({
+        open: true,
+        message: "התחברת בהצלחה.",
+        color: "success"
+      })
       navigate(decodedUser.type === 'student' ? "/student-personal-area" : "/my-students")
     } else {
       handleError("אירעה שגיאה בעיבוד פרטי המשתמש");
@@ -160,10 +139,11 @@ const AuthForm: React.FC = () => {
   };
 
   const handleError = (errorMessage: string) => {
-    setMessage({ text: errorMessage, isError: true });
-    setTimeout(() => {
-      setMessage(null);
-    }, 2000);
+    setToaster({
+      open: true,
+      message: errorMessage,
+      color: "error"
+    })
   };
 
   const handleSubmit = async (data: UserCredentials | UserRegister) => {
@@ -178,8 +158,8 @@ const AuthForm: React.FC = () => {
     } catch (error) {
       handleError(
         isLogin
-          ? "Login failed. Please check your credentials."
-          : "Registration failed. Please try again."
+          ? "נראה שהסיסמה/אימייל שגויים."
+          : "ההרשמה נכשלה, בבקשה נסה שנית."
       );
     }
   };
@@ -192,11 +172,6 @@ const AuthForm: React.FC = () => {
     <Box>
       <RotatingPaper isflipped={!isLogin} elevation={3}>
         <FrontSide>
-          {message && (
-            <MessageOverlay isError={message.isError}>
-              {message.text}
-            </MessageOverlay>
-          )}
           <Box>
             <LoginForm onSubmit={handleSubmit} InputField={InputField} />
             <ButtonContainer>
@@ -213,11 +188,6 @@ const AuthForm: React.FC = () => {
           </Box>
         </FrontSide>
         <BackSide>
-          {message && (
-            <MessageOverlay isError={message.isError}>
-              {message.text}
-            </MessageOverlay>
-          )}
           <Box>
             <RegisterForm onSubmit={handleSubmit} InputField={InputField} />
             <ButtonContainer>
@@ -234,6 +204,14 @@ const AuthForm: React.FC = () => {
           </Box>
         </BackSide>
       </RotatingPaper>
+      {toaster.open && (
+        <Toaster 
+          message={toaster.message}
+          open={toaster.open}
+          color={toaster.color}
+          onClose={handleCloseToaster}
+        />
+      )}
     </Box>
   );
 };

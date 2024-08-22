@@ -22,6 +22,8 @@ import { formatVerseReference } from "../../utils/utils";
 import { useCompareAudio } from "../../hooks/useTestAudio";
 import Notification from "../common/notification";
 import { confetti } from "../../utils/confetti";
+import useToaster from "../../hooks/useToaster";
+import Toaster from "../common/toaster";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -45,6 +47,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
   );
 
   const compareAudioMutation = useCompareAudio();
+  const { toaster, setToaster, handleCloseToaster } = useToaster()
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
   const [notificationSeverity, setNotificationSeverity] = useState<
@@ -117,11 +120,23 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     updateTestAudioMutation.mutate(convertedAudio, {
       onSuccess: () => {
         setIsSuccess(true);
+        setToaster({
+          open: true,
+          message: "נשמר ושלח לבדיקת המורה.",
+          color: "success"
+        })
         console.log(isSuccess);
         setTimeout(() => {
           navigate("/student-personal-area");
         }, 1000);
       },
+    onError: () => {
+      setToaster({
+        open: true,
+        message: "אופס, התרחשה בעיה. נסה שוב.",
+        color: "error"
+      })
+    }
     });
   };
 
@@ -192,6 +207,15 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         severity={notificationSeverity}
         onClose={handleNotificationClose}
       />
+      {toaster.open && (
+        <Toaster 
+          message={toaster.message}
+          open={toaster.open}
+          color={toaster.color}
+          onClose={handleCloseToaster}
+        />
+    )
+  }
     </div>
   );
 };
