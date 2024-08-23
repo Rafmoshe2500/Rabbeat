@@ -39,42 +39,46 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
 
   const handleWhatsAppClick = () => {
     let phoneNumber = profile.phoneNumber;
-    
+  
     phoneNumber = phoneNumber.replace(/\D/g, '');
-    
-    if (!phoneNumber.startsWith('972')) {
-      phoneNumber = phoneNumber.startsWith('0') ? phoneNumber.slice(1) : phoneNumber;
-      phoneNumber = `+972${phoneNumber}`;
+  
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = phoneNumber.slice(1);
     }
-
+    phoneNumber = `+972${phoneNumber}`;
+  
     const message = `שלום ${profile.firstName} ${profile.lastName}, כאן ${userDetails?.firstName} ${userDetails?.lastName} מהאתר RabBeat. אני מתעניין בלימודי בר מצווה ואשמח לשוחח ולהתחיל ללמוד. תודה!`;
     const encodedMessage = encodeURIComponent(message);
-
-    const iphoneUrl = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-    const androidUrl = `intent://send/?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end`;
-    const webUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-
+  
+    const webUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+  
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
     const isIPhone = /iPhone/i.test(userAgent);
     const isAndroid = /Android/i.test(userAgent);
-
+  
     let urlToUse = webUrl;
-    if (isIPhone) urlToUse = iphoneUrl;
-    if (isAndroid) urlToUse = androidUrl;
-
+  
+    if (isIPhone) {
+      urlToUse = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+    } else if (isAndroid) {
+      urlToUse = `intent://send/?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end`;
+    }
+  
     const link = document.createElement('a');
     link.href = urlToUse;
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-
+  
     setTimeout(() => {
       if (!document.hidden) {
         setOpenSnackbar(true);
       }
     }, 2000);
   };
+  
+  
 
   return (
     <Box className="profile-actions" sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
