@@ -97,7 +97,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       setNotificationSeverity(notificationSeverity);
       setNotificationOpen(true);
     } else if (compareAudioMutation.isError) {
-      setNotificationMessage(["Error comparing audio. Please try again."]);
+      setNotificationMessage(["התרחשה תקלה. בבקשה נסה שנית."]);
       setNotificationSeverity("error");
       setNotificationOpen(true);
     }
@@ -115,7 +115,7 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
     const base64Audio = await convertBlobToBase64(audioBlob);
 
-    compareAudioMutation.mutate({
+    !isMobile && compareAudioMutation.mutate({
       sourceText: flattedText,
       sttText: transcript,
       testAudio: base64Audio,

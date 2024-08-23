@@ -40,23 +40,20 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
   const handleWhatsAppClick = () => {
     let phoneNumber = profile.phoneNumber;
     
-    // Remove any non-digit characters
     phoneNumber = phoneNumber.replace(/\D/g, '');
     
-    // If the number doesn't start with 972, add it
     if (!phoneNumber.startsWith('972')) {
       phoneNumber = phoneNumber.startsWith('0') ? phoneNumber.slice(1) : phoneNumber;
       phoneNumber = `+972${phoneNumber}`;
     }
 
-    const message = encodeURIComponent(`שלום ${profile.firstName} ${profile.lastName}, אני פונה אליך דרך אתר RabBeat. שלום ${profile.firstName} ${profile.lastName} אני מעוניין ליצור איתך קשר על מנת לתאם איתך מספר שיעורים ללימוד לבר המצווה שלי. תודה`);
+    const message = `שלום ${profile.firstName} ${profile.lastName}, כאן ${userDetails?.firstName} ${userDetails?.lastName} מהאתר RabBeat. אני מתעניין בלימודי בר מצווה ואשמח לשוחח ולהתחיל ללמוד. תודה!`;
+    const encodedMessage = encodeURIComponent(message);
 
-    // URLs for different platforms
-    const iphoneUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
-    const androidUrl = `intent://send/${phoneNumber}#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end`;
-    const webUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+    const iphoneUrl = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+    const androidUrl = `intent://send/?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end`;
+    const webUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
 
-    // Detect platform
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
     const isIPhone = /iPhone/i.test(userAgent);
     const isAndroid = /Android/i.test(userAgent);
@@ -65,7 +62,6 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
     if (isIPhone) urlToUse = iphoneUrl;
     if (isAndroid) urlToUse = androidUrl;
 
-    // Try to open WhatsApp
     const link = document.createElement('a');
     link.href = urlToUse;
     link.target = '_blank';
@@ -73,7 +69,6 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
     link.click();
     document.body.removeChild(link);
 
-    // Set a timeout to check if WhatsApp opened
     setTimeout(() => {
       if (!document.hidden) {
         setOpenSnackbar(true);
