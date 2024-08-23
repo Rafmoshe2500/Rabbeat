@@ -30,12 +30,13 @@ const CubeLoader: React.FC<CubeLoaderProps> = ({ size = 100 }) => {
 
     // Blue gradient colors
     const colors = [
-      0x0000FF, // Pure blue
-      0x4169E1, // Royal blue
-      0x1E90FF, // Dodger blue
-      0x00BFFF, // Deep sky blue
-      0x87CEEB, // Sky blue
-      0xADD8E6, // Light blue
+      0x8B4513, /* חום כהה */
+      0xA0522D, /* חום חם */
+      0xCD853F, /* חום בינוני */
+      0xD2B48C, /* בז' כהה */
+      0xDEB887, /* בז' בהיר */
+      0xD3D3D3, /* אפרפר בהיר */
+      
     ];
 
     // Create small cubes
@@ -114,7 +115,7 @@ const CubeLoader: React.FC<CubeLoaderProps> = ({ size = 100 }) => {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div ref={mountRef} style={{ width: size, height: size }} />
       <Typography variant="body1" sx={{ mt: 2, fontWeight: 'bold', direction: 'rtl' }}>
-        מנתח אינפורציה{dots}
+        מעבד נתונים {dots}
       </Typography>
     </Box>
     )

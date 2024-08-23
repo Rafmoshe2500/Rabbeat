@@ -5,7 +5,7 @@ import styles from "./bible-selector.module.css";
 import { useTorahSection } from "../../hooks/useTorahSection";
 import Chapter from "../bible-displayer/chapter";
 import gematriya from "gematriya";
-import { Box, Typography, styled } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import TextContainer from "../common/text-container";
 
 type BibleSelectorProps = {
