@@ -67,7 +67,7 @@ const BookLoader: React.FC<BookLoaderProps> = ({ size = 80 }) => {
   const pageHeight = size * 1.25;
 
   return (
-    <LoaderContainer sx={{ width: coverWidth * 2, height: coverHeight, margin: `${size / 2}px auto` }}>
+    <LoaderContainer sx={{ width: coverWidth * 2, height: coverHeight, margin: `${size / 2}px auto`, direction: 'ltr'}}>
     <Cover sx={{ 
         right: 0, 
         width: coverWidth, 

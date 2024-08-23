@@ -1,5 +1,5 @@
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import BookLoader from "./book-loader";
 
 type LoaderProps = {
   message?: string;
@@ -8,9 +8,9 @@ type LoaderProps = {
 const Loader = ({ message }: LoaderProps) => {
   return (
     <Box>
-      <CircularProgress dir="rtl" />
+      <BookLoader />
       <br/>
-      {message}
+      <div dir="rtl">{message}</div>
     </Box>
   );
 };
