@@ -26,6 +26,7 @@ import useToaster from "../../hooks/useToaster";
 import Toaster from "../common/toaster";
 import CubeLoader from "../common/analysis-loader";
 import Loader from "../common/loader";
+import useNotification from "../../hooks/useNotification";
 
 type SelfTestingProps = {
   lesson?: Lesson;
@@ -51,18 +52,16 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
   const compareAudioMutation = useCompareAudio();
   const { toaster, setToaster, handleCloseToaster } = useToaster();
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState<string[]>([]);
-  const [notificationSeverity, setNotificationSeverity] = useState<
-    "success" | "error" | "info" | "warning"
-  >("info");
+  const { notification, setNotification, handleCloseNotification } =
+    useNotification();
 
   useEffect(() => {
     if (isMobile) {
-      setNotificationMessage([
-        "שים לב שחלק מיכולות בחינה עצמית אינן פעילות במכשיר הסלולרי",
-      ]);
-      setNotificationOpen(true);
+      setNotification({
+        isOpen: true,
+        message: ["שים לב שחלק מיכולות בחינה עצמית אינן פעילות במכשיר הסלולרי"],
+        severity: "info",
+      });
     }
   }, []);
 
@@ -90,16 +89,20 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         confetti.start();
         notificationSeverity = "success";
       }
-      setNotificationMessage([
-        ...feedback,
-        "<b> אל תשכח לשמור את האודיו כדי שהמורה יוכל לבדוק אותו. </b>",
-      ]);
-      setNotificationSeverity(notificationSeverity);
-      setNotificationOpen(true);
+      setNotification({
+        isOpen: true,
+        message: [
+          ...feedback,
+          "<b> אל תשכח לשמור את האודיו כדי שהמורה יוכל לבדוק אותו. </b>",
+        ],
+        severity: notificationSeverity,
+      });
     } else if (compareAudioMutation.isError) {
-      setNotificationMessage(["התרחשה תקלה. בבקשה נסה שנית."]);
-      setNotificationSeverity("error");
-      setNotificationOpen(true);
+      setNotification({
+        isOpen: true,
+        message: ["התרחשה תקלה. בבקשה נסה שנית."],
+        severity: "error",
+      });
     }
   }, [
     compareAudioMutation.isSuccess,
@@ -115,12 +118,13 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
 
     const base64Audio = await convertBlobToBase64(audioBlob);
 
-    !isMobile && compareAudioMutation.mutate({
-      sourceText: flattedText,
-      sttText: transcript,
-      testAudio: base64Audio,
-      lessonId: lesson?.id || "",
-    });
+    !isMobile &&
+      compareAudioMutation.mutate({
+        sourceText: flattedText,
+        sttText: transcript,
+        testAudio: base64Audio,
+        lessonId: lesson?.id || "",
+      });
   };
 
   const shouldStopRecording = (transcript: string) => {
@@ -156,19 +160,15 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
     });
   };
 
-  const handleNotificationClose = () => {
-    setNotificationOpen(false);
-  };
+  if (loading)
+    return <Loader message="מעלה את הבדיקה שלך  כדי שהמורה יוכל לבדוק." />;
 
-  if (loading) return (
-    <Loader message="מעלה את הבדיקה שלך  כדי שהמורה יוכל לבדוק."/>
-  )
-  
   return (
     <div>
-
-      <Backdrop sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
-        open={compareAudioMutation.isPending}>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={compareAudioMutation.isPending}
+      >
         <CubeLoader />
       </Backdrop>
 
@@ -224,10 +224,10 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
       )}
 
       <Notification
-        open={notificationOpen}
-        message={notificationMessage}
-        severity={notificationSeverity}
-        onClose={handleNotificationClose}
+        open={notification.isOpen}
+        message={notification.message}
+        severity={notification.severity}
+        onClose={handleCloseNotification}
       />
       {toaster.open && (
         <Toaster

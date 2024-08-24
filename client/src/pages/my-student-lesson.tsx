@@ -10,6 +10,7 @@ import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
 import SelfTestSkeleton from "../components/skeletons/self-test-skeleton";
 import { useMarkAudioAsRead } from "../hooks/useUpdateTestAudio";
 import Notification from "../components/common/notification";
+import useNotification from "../hooks/useNotification";
 
 const MyStudentLesson = () => {
   const location = useLocation();
@@ -22,32 +23,28 @@ const MyStudentLesson = () => {
 
   const [checked, setChecked] = useState(lessonDetails.status === "finished");
 
-  const [openNotification, setOpen] = useState(false);
-  const [messageNotification, setMessage] = useState("");
-  const [severityNotification, setSeverity] = useState<
-    "success" | "error" | "info" | "warning"
-  >("info");
+  const { notification, setNotification, handleCloseNotification } =
+    useNotification();
 
   useEffect(() => {
     if (lessonDetails.audioNotification && lessonDetails.testAudioId) {
       markAudioAsReadMutation.mutate(lessonDetails.testAudioId);
-      setMessage(
-        "שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך."
-      );
-      setSeverity("success");
-      setOpen(true);
+
+      setNotification({
+        isOpen: true,
+        message: [
+          "שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך.",
+        ],
+        severity: "success",
+      });
 
       const timer = setTimeout(() => {
-        setOpen(false);
+        handleCloseNotification();
       }, 3000);
 
       return () => clearTimeout(timer);
     }
   }, [lessonDetails.audioNotification, lessonDetails.testAudioId]);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked;
@@ -91,10 +88,10 @@ const MyStudentLesson = () => {
     >
       <div>
         <Notification
-          open={openNotification}
-          message={messageNotification}
-          severity={severityNotification}
-          onClose={handleClose}
+          open={notification.isOpen}
+          message={notification.message}
+          severity={notification.severity}
+          onClose={handleCloseNotification}
         />
       </div>
       <div>
