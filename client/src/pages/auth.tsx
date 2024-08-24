@@ -5,7 +5,12 @@ import { styled } from "@mui/material/styles";
 import LoginForm from "../components/auth/login-form";
 import RegisterForm from "../components/auth/register-form";
 import { useUser } from "../contexts/user-context";
-import { storeToken, decodeToken, isTokenValid, getToken } from "../utils/jwt-cookies";
+import {
+  storeToken,
+  decodeToken,
+  isTokenValid,
+  getToken,
+} from "../utils/jwt-cookies";
 import { useLogin, useRegister } from "../hooks/useAuth";
 import withFade from "../hoc/withFade.hoc";
 import CardSkeleton from "../components/skeletons/cards-skeleton";
@@ -16,7 +21,7 @@ const RotatingPaper = styled(Paper)<{ isflipped: boolean }>(
   ({ theme, isflipped }) => ({
     width: "100%",
     maxWidth: 800,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       maxWidth: 1000, // Increased width for desktop
     },
     minHeight: 600,
@@ -40,7 +45,7 @@ const FormSide = styled("div")(({ theme }) => ({
   justifyContent: "center",
   overflowY: "auto",
   padding: theme.spacing(3),
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2), // Less padding on mobile
   },
 }));
@@ -64,19 +69,19 @@ const ButtonContainer = styled("div")({
 
 const InputField = styled(TextField)<TextFieldProps>(({ theme }) => ({
   margin: theme.spacing(1, 0),
-  [theme.breakpoints.down('sm')]: {
-    '& .MuiInputBase-input': {
-      fontSize: '0.875rem',
+  [theme.breakpoints.down("sm")]: {
+    "& .MuiInputBase-input": {
+      fontSize: "0.875rem",
     },
-    '& .MuiInputLabel-root': {
-      fontSize: '0.875rem',
+    "& .MuiInputLabel-root": {
+      fontSize: "0.875rem",
     },
   },
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '0.875rem', // Smaller font size on mobile
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.875rem", // Smaller font size on mobile
     padding: theme.spacing(1, 2), // Less padding on mobile
   },
 }));
@@ -87,7 +92,7 @@ const AuthForm: React.FC = () => {
   const { setUserDetails } = useUser();
   const [isLogin, setIsLogin] = useState(location.pathname === "/register");
   const [loading, setLoading] = useState(true);
-  const { toaster, setToaster, handleCloseToaster } = useToaster()
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
 
   const loginMutation = useLogin();
   const registerMutation = useRegister();
@@ -98,8 +103,12 @@ const AuthForm: React.FC = () => {
         const valid = await isTokenValid();
         if (valid) {
           const token = getToken();
-          const decodedUser = decodeToken(token!)
-          navigate(decodedUser!.type === 'student' ? "/student-personal-area" : "/my-students")
+          const decodedUser = decodeToken(token!);
+          navigate(
+            decodedUser!.type === "student"
+              ? "/student-personal-area"
+              : "/my-students"
+          );
         } else {
           setLoading(false);
         }
@@ -130,9 +139,13 @@ const AuthForm: React.FC = () => {
       setToaster({
         open: true,
         message: "התחברת בהצלחה.",
-        color: "success"
-      })
-      navigate(decodedUser.type === 'student' ? "/student-personal-area" : "/my-students")
+        color: "success",
+      });
+      navigate(
+        decodedUser.type === "student"
+          ? "/student-personal-area"
+          : "/my-students"
+      );
     } else {
       handleError("אירעה שגיאה בעיבוד פרטי המשתמש");
     }
@@ -142,8 +155,8 @@ const AuthForm: React.FC = () => {
     setToaster({
       open: true,
       message: errorMessage,
-      color: "error"
-    })
+      color: "error",
+    });
   };
 
   const handleSubmit = async (data: UserCredentials | UserRegister) => {
@@ -204,14 +217,12 @@ const AuthForm: React.FC = () => {
           </Box>
         </BackSide>
       </RotatingPaper>
-      {toaster.open && (
-        <Toaster 
-          message={toaster.message}
-          open={toaster.open}
-          color={toaster.color}
-          onClose={handleCloseToaster}
-        />
-      )}
+      <Toaster
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
+      />
     </Box>
   );
 };

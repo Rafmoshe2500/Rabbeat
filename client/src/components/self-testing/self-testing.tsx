@@ -229,14 +229,12 @@ const SelfTesting = ({ lesson }: SelfTestingProps) => {
         severity={notification.severity}
         onClose={handleCloseNotification}
       />
-      {toaster.open && (
-        <Toaster
-          message={toaster.message}
-          open={toaster.open}
-          color={toaster.color}
-          onClose={handleCloseToaster}
-        />
-      )}
+      <Toaster
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
+      />
     </div>
   );
 };
