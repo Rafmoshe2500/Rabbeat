@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import DialogComponent from '../common/dialog';
-import { useSearchStudentByEmail, useAssociateStudentToTeacher } from '../../hooks/useStudents';
-import { useUser } from '../../contexts/user-context';
-import { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import RTLDatePicker from '../common/rtl-inputs/rtl-date-picker'
-import { TextField } from '@mui/material';
+import React, { useState } from "react";
+import DialogComponent from "../common/dialog";
+import {
+  useSearchStudentByEmail,
+  useAssociateStudentToTeacher,
+} from "../../hooks/useStudents";
+import { useUser } from "../../contexts/user-context";
+import { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import RTLDatePicker from "../common/rtl-inputs/rtl-date-picker";
+import { TextField } from "@mui/material";
 
 interface AddStudentDialogProps {
   open: boolean;
-  onClose: () => void;
+  onClose: (studentAdded: boolean) => void;
 }
 
-const AddStudentDialog: React.FC<AddStudentDialogProps> = ({ open, onClose }) => {
-  const [email, setEmail] = useState('');
+const AddStudentDialog: React.FC<AddStudentDialogProps> = ({
+  open,
+  onClose,
+}) => {
+  const [email, setEmail] = useState("");
   const [expiredDate, setExpiredDate] = useState<Dayjs | null>(null);
   const { mutate: accosiateStudentToTeacher } = useAssociateStudentToTeacher();
   const { data: student } = useSearchStudentByEmail(email);
@@ -28,7 +34,7 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({ open, onClose }) =>
         teacherId: userDetails!.id,
         expired_date: formattedDate,
       });
-      onClose();
+      onClose(true);
     }
   };
 
@@ -36,7 +42,7 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({ open, onClose }) =>
     <DialogComponent
       open={open}
       title="הוספת תלמיד חדש"
-      onClose={onClose}
+      onClose={() => onClose(false)}
       onConfirm={handleConfirm}
     >
       <TextField
@@ -49,16 +55,14 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({ open, onClose }) =>
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      {student && (
-        <p>נמצא תלמיד: {student.name}</p>
-      )}
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-  <RTLDatePicker
-    label="תאריך תפוגה"
-    value={expiredDate}
-    onChange={(newValue: Dayjs | null) => setExpiredDate(newValue)}
-  />
-</LocalizationProvider>
+      {student && <p>נמצא תלמיד: {student.name}</p>}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RTLDatePicker
+          label="תאריך תפוגה"
+          value={expiredDate}
+          onChange={(newValue: Dayjs | null) => setExpiredDate(newValue)}
+        />
+      </LocalizationProvider>
     </DialogComponent>
   );
 };

@@ -16,6 +16,8 @@ import FloatingActionButton from "../components/common/floating-action-button";
 import DialogContent from "../components/teacher-lessons/dialog-content";
 import AddIcon from "@mui/icons-material/Add";
 import { useGetStudents } from "../hooks/useStudents";
+import useToaster from "../hooks/useToaster";
+import Toaster from "../components/common/toaster";
 
 const MyStudentLessons: React.FC = () => {
   const { userDetails } = useUser();
@@ -26,6 +28,7 @@ const MyStudentLessons: React.FC = () => {
     () => fetchedStudents.find((student) => student.id === studentId),
     [fetchedStudents]
   );
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
 
   const {
     data: studentLessons,
@@ -44,7 +47,6 @@ const MyStudentLessons: React.FC = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";
@@ -54,25 +56,44 @@ const MyStudentLessons: React.FC = () => {
 
   const handleLessonClick = async (lessonId: string, isAssociated: boolean) => {
     if (!isAssociated) {
-      console.log(selectedLessonId);
-      setSelectedLessonId(lessonId);
-
+      const lessonTitle = teacherLessons?.find((x) => x.id === lessonId)?.title;
       try {
         await associateLessonMutation.mutateAsync(lessonId);
         await refetchStudentLessons();
+        setToaster({
+          open: true,
+          message: `השיעור "${lessonTitle}" נוסף בהצלחה`,
+          color: "success",
+        });
       } catch (error) {
         console.error("Failed to associate lesson:", error);
+        setToaster({
+          open: true,
+          message: `תקלה בעת הוספת השיעור "${lessonTitle}", אנא נסה שנית`,
+          color: "error",
+        });
       }
     }
   };
 
   const handleDisassociate = async (lessonId: string) => {
     if (window.confirm("האם אתה בטוח שברצונך לבטל את פתיחת השיעור הזה?")) {
+      const lessonTitle = studentLessons?.find((x) => x.id === lessonId)?.title;
       try {
         await disassociateLessonMutation.mutateAsync(lessonId);
         await refetchStudentLessons();
+        setToaster({
+          open: true,
+          message: `השיעור "${lessonTitle}" הוסר בהצלחה`,
+          color: "success",
+        });
       } catch (error) {
         console.error("Failed to disassociate lesson:", error);
+        setToaster({
+          open: true,
+          message: `תקלה בעת הסרת השיעור "${lessonTitle}", אנא נסה שנית`,
+          color: "error",
+        });
       }
     }
   };
@@ -97,7 +118,10 @@ const MyStudentLessons: React.FC = () => {
           placeContent: "center",
         }}
       >
-        <Typography variant="h1" gutterBottom> {`${studentDetails?.firstName} ${studentDetails?.lastName}`}</Typography>
+        <Typography variant="h1" gutterBottom>
+          {" "}
+          {`${studentDetails?.firstName} ${studentDetails?.lastName}`}
+        </Typography>
       </div>
 
       <DisplayCards
@@ -133,6 +157,12 @@ const MyStudentLessons: React.FC = () => {
           onDisassociate={handleDisassociate}
         />
       </DialogComponent>
+      <Toaster
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
+      />
     </div>
   );
 };

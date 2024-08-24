@@ -1,9 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, IconButton, Divider, List, ListItem, ListItemText, ListItemSecondaryAction, TextField } from '@mui/material';
-import { Add as AddIcon, Comment as CommentIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import DialogComponent from '../common/dialog';
-import { useTheme } from '@mui/material/styles';
-import { useGetConnection, useUpdateProfile } from '../../hooks/useProfile';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  TextField,
+} from "@mui/material";
+import {
+  Add as AddIcon,
+  Comment as CommentIcon,
+  Delete as DeleteIcon,
+} from "@mui/icons-material";
+import DialogComponent from "../common/dialog";
+import { useTheme } from "@mui/material/styles";
+import { useGetConnection, useUpdateProfile } from "../../hooks/useProfile";
+import useToaster from "../../hooks/useToaster";
+import Toaster from "../common/toaster";
 
 type Recommendation = {
   text: string;
@@ -16,51 +32,79 @@ type ProfileRecommendationsProps = {
   currentUserId?: string;
 };
 
-const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({ 
-  recommendations, 
+const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
+  recommendations,
   teacherId,
-  currentUserId, 
+  currentUserId,
 }) => {
-  const [recommendationsDialogOpen, setRecommendationsDialogOpen] = useState(false);
-  const [newRecommendation, setNewRecommendation] = useState('');
+  const [recommendationsDialogOpen, setRecommendationsDialogOpen] =
+    useState(false);
+  const [newRecommendation, setNewRecommendation] = useState("");
   const theme = useTheme();
-  const userConnection = useGetConnection(currentUserId, teacherId)
+  const userConnection = useGetConnection(currentUserId, teacherId);
   const updateProfileMutation = useUpdateProfile();
-  const [localRecommendations, setLocalRecommendations] = useState<Recommendation[]>(recommendations);
+  const [localRecommendations, setLocalRecommendations] =
+    useState<Recommendation[]>(recommendations);
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
 
   useEffect(() => {
     setLocalRecommendations(recommendations);
   }, [recommendations]);
 
-  const handleRecommendationsUpdate = (updatedRecommendations: Recommendation[]) => {
+  const handleRecommendationsUpdate = (
+    updatedRecommendations: Recommendation[]
+  ) => {
     const updateData: updateProfile = {
       id: teacherId,
-      key: 'recommendations',
-      value: updatedRecommendations
+      key: "recommendations",
+      value: updatedRecommendations,
     };
     updateProfileMutation.mutate(updateData, {
       onSuccess: () => {
         setLocalRecommendations(updatedRecommendations);
-      }
+        setToaster({
+          open: true,
+          message: "ההמלצות עודכנו בהצלחה",
+          color: "success",
+        });
+      },
+      onError: () => {
+        setToaster({
+          open: true,
+          message: "קרתה תקלה בעת עדכון ההמלצות, אנא נסה שנית",
+          color: "error",
+        });
+      },
     });
   };
-  
+
   const handleAddRecommendation = () => {
     if (newRecommendation && currentUserId) {
-      const updatedRecommendations = [...localRecommendations, { text: newRecommendation, studentId: currentUserId }];
+      const updatedRecommendations = [
+        ...localRecommendations,
+        { text: newRecommendation, studentId: currentUserId },
+      ];
       handleRecommendationsUpdate(updatedRecommendations);
-      setNewRecommendation('');
+      setNewRecommendation("");
     }
   };
 
   const handleDeleteRecommendation = (studentId: string) => {
-    const updatedRecommendations = localRecommendations.filter(rec => rec.studentId !== studentId);
+    const updatedRecommendations = localRecommendations.filter(
+      (rec) => rec.studentId !== studentId
+    );
     handleRecommendationsUpdate(updatedRecommendations);
   };
 
   return (
-    <Box sx={{ marginTop: theme.spacing(2.5), display: 'flex', justifyContent: 'center' }}>
-      <IconButton 
+    <Box
+      sx={{
+        marginTop: theme.spacing(2.5),
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <IconButton
         onClick={() => setRecommendationsDialogOpen(true)}
         sx={{ color: theme.palette.text.primary }}
       >
@@ -75,15 +119,20 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
         onClose={() => setRecommendationsDialogOpen(false)}
         onConfirm={() => setRecommendationsDialogOpen(false)}
       >
-        <Box sx={{ marginTop: theme.spacing(2.5), width: '100%' }}>
+        <Box sx={{ marginTop: theme.spacing(2.5), width: "100%" }}>
           <List>
             {localRecommendations.map((recommendation, index) => (
               <React.Fragment key={index}>
-                <ListItem sx={{textAlign: 'right'}}>
+                <ListItem sx={{ textAlign: "right" }}>
                   <ListItemText primary={recommendation.text} />
                   {currentUserId === recommendation.studentId && (
                     <ListItemSecondaryAction>
-                      <IconButton edge="end" onClick={() => handleDeleteRecommendation(recommendation.studentId)}>
+                      <IconButton
+                        edge="end"
+                        onClick={() =>
+                          handleDeleteRecommendation(recommendation.studentId)
+                        }
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -94,8 +143,16 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
             ))}
           </List>
           {userConnection.data && (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: theme.spacing(2) }}>
-              <TextField dir='rtl'
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mt: theme.spacing(2),
+              }}
+            >
+              <TextField
+                dir="rtl"
                 value={newRecommendation}
                 onChange={(e) => setNewRecommendation(e.target.value)}
                 variant="outlined"
@@ -114,6 +171,12 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
           )}
         </Box>
       </DialogComponent>
+      <Toaster
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
+      />
     </Box>
   );
 };

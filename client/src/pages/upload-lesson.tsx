@@ -89,7 +89,7 @@ const UploadLessonPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { mutate } = useCreateOrUpdateLesson(userDetails?.id!);
-  const { toaster, setToaster, handleCloseToaster } = useToaster()
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
 
   const [lesson, setLesson] = useState({
     title: "",
@@ -159,13 +159,13 @@ const UploadLessonPage: React.FC = () => {
 
     mutate(lessonToUpload, {
       onSuccess: async (data) => {
-        setLoading(false)
+        setLoading(false);
         if (data) {
           setToaster({
             open: true,
             message: "השיעור עלה בהצלחה.",
-            color: "success"
-          })
+            color: "success",
+          });
           navigate(`/teacher-personal-area/lesson/${data}`, {
             state: { lessonDetails: { title: lesson.title, ...torahSection } },
           });
@@ -174,13 +174,13 @@ const UploadLessonPage: React.FC = () => {
         }
       },
       onError: (error) => {
-        setLoading(false)
+        setLoading(false);
         console.error("Error creating lesson:", error);
         setToaster({
           open: true,
           message: "קיימת בעיה בהעלאת השיעור.",
-          color: "error"
-        })
+          color: "error",
+        });
       },
     });
   };
@@ -195,9 +195,8 @@ const UploadLessonPage: React.FC = () => {
     );
   };
 
-  if (loading) return  (
-    <Loader message="מעלה את האודיו, זה עלול לקחת מספר רגעים"/>
-)
+  if (loading)
+    return <Loader message="מעלה את האודיו, זה עלול לקחת מספר רגעים" />;
 
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
@@ -290,17 +289,14 @@ const UploadLessonPage: React.FC = () => {
           />
         </Box>
       </StyledPaper>
-      {toaster.open && (
-        <Toaster 
+      <Toaster
         message={toaster.message}
         open={toaster.open}
         color={toaster.color}
         onClose={handleCloseToaster}
-        />
-    )
-  }
+      />
     </Container>
-  )
+  );
 };
 
 export default withFade(UploadLessonPage);
