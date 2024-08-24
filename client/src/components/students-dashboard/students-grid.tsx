@@ -14,6 +14,8 @@ import {
   useGetStudents,
   useAssociateStudentToTeacher,
 } from "../../hooks/useStudents";
+import useToaster from "../../hooks/useToaster";
+import Toaster from "../common/toaster";
 
 const StudentGrid: React.FC = () => {
   const { userDetails } = useUser();
@@ -24,6 +26,8 @@ const StudentGrid: React.FC = () => {
     refetch,
   } = useGetStudents(userDetails!.id);
   const associateStudentMutation = useAssociateStudentToTeacher();
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
+
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const viewMode = isSmallScreen ? "list" : "grid";
 
@@ -63,7 +67,23 @@ const StudentGrid: React.FC = () => {
       teacherId: userDetails!.id,
       studentId,
       expired_date: newExpiredDate,
-    });
+    },{
+      onSuccess: () => {
+        setToaster({
+          open: true,
+          message: "תאריך סיום עודכן בהצלחה",
+          color: "success",
+        });
+      },
+      onError: () => {
+        setToaster({
+          open: true,
+          message: "קרתה תקלה בעת עדכון תאריך הסיום, אנא נסה שנית",
+          color: "error",
+        });
+      },
+    }
+  );
     refetch();
   };
 
@@ -132,6 +152,12 @@ const StudentGrid: React.FC = () => {
         xs={12}
         sm={6}
         md={3}
+      />
+      <Toaster
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
       />
     </Box>
   );
