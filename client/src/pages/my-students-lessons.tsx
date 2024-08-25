@@ -13,7 +13,7 @@ import DialogComponent from "../components/common/dialog";
 import withFade from "../hoc/withFade.hoc";
 import { useLessonsDetailsByUser } from "../hooks/lessons/useLessonsDetailsByUser";
 import FloatingActionButton from "../components/common/floating-action-button";
-import DialogContent from "../components/teacher-lessons/dialog-content";
+import OpenLessonDialogContent from '../components/teacher-lessons/open-lesson-dialog-content';
 import AddIcon from "@mui/icons-material/Add";
 import { useGetStudents } from "../hooks/useStudents";
 import useToaster from "../hooks/useToaster";
@@ -112,14 +112,14 @@ const MyStudentLessons: React.FC = () => {
     <div>
       <div
         style={{
-          pointerEvents: "none",
-          display: "flex",
-          flexDirection: "column",
-          placeContent: "center",
+          pointerEvents: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          placeContent: 'center',
         }}
       >
         <Typography variant="h1" gutterBottom>
-          {" "}
+          {' '}
           {`${studentDetails?.firstName} ${studentDetails?.lastName}`}
         </Typography>
       </div>
@@ -129,7 +129,7 @@ const MyStudentLessons: React.FC = () => {
         renderCard={renderStudentCard}
         viewMode={viewMode}
         isLoading={isStudentLessonsLoading}
-        noItemsMessage={"טרם הוספת שיעורים לתלמיד זה"}
+        noItemsMessage={'טרם הוספת שיעורים לתלמיד זה'}
         xs={12}
         sm={6}
         md={3}
@@ -146,7 +146,7 @@ const MyStudentLessons: React.FC = () => {
         title="פתיחת שיעור לתלמיד"
         onClose={closeDialog}
       >
-        <DialogContent
+        <OpenLessonDialogContent
           searchTerm={searchTerm}
           onSearchChange={(e) => setSearchTerm(e.target.value)}
           isLoading={isTeacherLessonsLoading}

@@ -1,7 +1,14 @@
-// LessonList.tsx
 import React from 'react';
-import { List, ListItem, ListItemText, IconButton, Box } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 interface LessonListProps {
   lessons: LessonDetails[];
@@ -10,53 +17,58 @@ interface LessonListProps {
   onDisassociate: (lessonId: string) => void;
 }
 
-const LessonList: React.FC<LessonListProps> = ({ lessons, studentLessons, onLessonClick, onDisassociate }) => (
-  <Box sx={{ height: '300px', overflowY: 'auto' }}>
-    <List>
+const LessonList: React.FC<LessonListProps> = ({
+  lessons,
+  studentLessons,
+  onLessonClick,
+  onDisassociate,
+}) => {
+  return (
+    <List sx={{ maxHeight: 400, overflow: 'auto' }}>
       {lessons.map((lesson) => {
-        const isAssigned = studentLessons?.some(l => l.id === lesson.id) || false;
+        const isAssociated = studentLessons?.some((sl) => sl.id === lesson.id);
         return (
           <ListItem
             key={lesson.id}
             sx={{
-              backgroundColor: isAssigned ? 'rgba(0, 255, 0, 0.1)' : 'inherit',
+              mb: 1,
+              borderRadius: 1,
+              border: '2px solid',
+              borderColor: 'grey.300',
               '&:hover': {
-                backgroundColor: isAssigned ? 'rgba(0, 255, 0, 0.2)' : 'rgba(0, 0, 0, 0.04)',
+                backgroundColor: 'action.hover',
               },
-              border: '1px solid #D3D3D3',
-              borderRadius: '4px',
-              marginBottom: '8px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingLeft: '16px',
             }}
           >
-            {isAssigned && (
-              <IconButton 
-                edge="start" 
-                aria-label="delete" 
-                onClick={() => onDisassociate(lesson.id!!)}
-                sx={{ marginRight: 'auto', order: -1 }} 
+            <ListItemIcon>
+              <IconButton
+                edge="start"
+                aria-label={isAssociated ? 'disassociate' : 'associate'}
+                onClick={() =>
+                  isAssociated
+                    ? onDisassociate(lesson.id!)
+                    : onLessonClick(lesson.id!, false)
+                }
               >
-                <DeleteIcon />
+                {isAssociated ? (
+                  <RemoveCircleOutlineIcon sx={{ color: 'error.main' }} />
+                ) : (
+                  <AddCircleOutlineIcon sx={{ color: 'primary.main' }} />
+                )}
               </IconButton>
-            )}
+            </ListItemIcon>
             <ListItemText
-              primary={lesson.title}
-              secondary={isAssigned ? 'כבר הוקצה' : ''}
-              onClick={() => !isAssigned && onLessonClick(lesson.id!!, isAssigned)}
-              sx={{ 
-                cursor: isAssigned ? 'default' : 'pointer',
-                flex: 1,
-                textAlign: 'right',
-              }}
+              primary={
+                <Typography variant="subtitle1" component="div">
+                  {lesson.title}
+                </Typography>
+              }
             />
           </ListItem>
         );
       })}
     </List>
-  </Box>
-);
+  );
+};
 
 export default LessonList;

@@ -2,8 +2,10 @@ import React from 'react';
 import { TextField } from "@mui/material";
 import Loader from "../common/loader";
 import LessonList from './display-lessons';
+import SearchIcon from '@mui/icons-material/Search';
+import { InputAdornment } from '@mui/material';
 
-interface DialogContentProps {
+interface OpenLessonDialogContentProps {
   searchTerm: string;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
@@ -13,14 +15,14 @@ interface DialogContentProps {
   onDisassociate: (lessonId: string) => void;
 }
 
-const DialogContent: React.FC<DialogContentProps> = ({
+const OpenLessonDialogContent: React.FC<OpenLessonDialogContentProps> = ({
   searchTerm,
   onSearchChange,
   isLoading,
   filteredLessons,
   studentLessons,
   onLessonClick,
-  onDisassociate
+  onDisassociate,
 }) => (
   <>
     <TextField
@@ -29,9 +31,17 @@ const DialogContent: React.FC<DialogContentProps> = ({
       label="חיפוש שיעורים"
       type="text"
       fullWidth
-      variant="standard"
+      variant="outlined" // Changed to outlined for better visibility
       value={searchTerm}
       onChange={onSearchChange}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        ),
+      }}
+      sx={{ mb: 2 }} // Add some margin at the bottom
     />
     {isLoading ? (
       <Loader message="טוען שיעורים..." />
@@ -46,4 +56,4 @@ const DialogContent: React.FC<DialogContentProps> = ({
   </>
 );
 
-export default DialogContent;
+export default OpenLessonDialogContent;
