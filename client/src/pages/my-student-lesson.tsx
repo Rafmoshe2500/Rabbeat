@@ -1,16 +1,18 @@
-import { useLocation } from "react-router-dom";
-import { useMemo, useState, useEffect } from "react";
-import { useLessonsById } from "../hooks/lessons/useLessonById";
-import SelfTesting from "../components/self-testing/self-testing";
-import Chat from "../components/chat/chat";
-import TabsWrapper from "../components/common/tabs-wrapper/tabs-wrapper";
-import withFade from "../hoc/withFade.hoc";
-import Checkbox from "@mui/material/Checkbox";
-import { useUpdateLessonStatus } from "../hooks/lessons/useUpdateLessonStatus";
-import SelfTestSkeleton from "../components/skeletons/self-test-skeleton";
-import { useMarkAudioAsRead } from "../hooks/useUpdateTestAudio";
-import Notification from "../components/common/notification";
-import useNotification from "../hooks/useNotification";
+import { useLocation } from 'react-router-dom';
+import { useMemo, useState, useEffect } from 'react';
+import { useLessonsById } from '../hooks/lessons/useLessonById';
+import SelfTesting from '../components/self-testing/self-testing';
+import Chat from '../components/chat/chat';
+import TabsWrapper from '../components/common/tabs-wrapper/tabs-wrapper';
+import withFade from '../hoc/withFade.hoc';
+import Checkbox from '@mui/material/Checkbox';
+import { useUpdateLessonStatus } from '../hooks/lessons/useUpdateLessonStatus';
+import SelfTestSkeleton from '../components/skeletons/self-test-skeleton';
+import { useMarkAudioAsRead } from '../hooks/useUpdateTestAudio';
+import Notification from '../components/common/notification';
+import useNotification from '../hooks/useNotification';
+import useToaster from '../hooks/useToaster';
+import Toaster from '../components/common/toaster';
 
 const MyStudentLesson = () => {
   const location = useLocation();
@@ -21,7 +23,8 @@ const MyStudentLesson = () => {
   const { mutate: updateLessonStatus } = useUpdateLessonStatus();
   const markAudioAsReadMutation = useMarkAudioAsRead();
 
-  const [checked, setChecked] = useState(lessonDetails.status === "finished");
+  const [checked, setChecked] = useState(lessonDetails.status === 'finished');
+  const { toaster, setToaster, handleCloseToaster } = useToaster();
 
   const { notification, setNotification, handleCloseNotification } =
     useNotification();
@@ -33,9 +36,9 @@ const MyStudentLesson = () => {
       setNotification({
         isOpen: true,
         message: [
-          "שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך.",
+          'שלום לך המורה, אל תשכח לשמוע את האודיו החדש שהתלמיד השאיר לך.',
         ],
-        severity: "success",
+        severity: 'success',
       });
 
       const timer = setTimeout(() => {
@@ -53,10 +56,24 @@ const MyStudentLesson = () => {
       {
         lessonId: lessonDetails.id!,
         userId: studentId,
-        newStatus: isChecked ? "finished" : "in-progress",
+        newStatus: isChecked ? 'finished' : 'in-progress',
       },
       {
-        onSuccess: () => setChecked(isChecked),
+        onSuccess: () => {
+          setChecked(isChecked);
+          setToaster({
+            open: true,
+            message: 'הסטטוס עודכן בהצלחה.',
+            color: 'success',
+          });
+        },
+        onError: () => {
+          setToaster({
+            open: true,
+            message: 'משהו השתבש בעת עדכון הסטטוס.',
+            color: 'error',
+          });
+        },
       }
     );
   };
@@ -66,13 +83,13 @@ const MyStudentLesson = () => {
       ({
         ...(lesson || {}),
         ...(lessonDetails || {}),
-      } as Lesson),
+      }) as Lesson,
     [lesson, lessonDetails]
   );
 
   const tabs = [
     {
-      name: "בחינה עצמית",
+      name: 'בחינה עצמית',
       component: <SelfTesting lesson={lessonForView} />,
     },
   ];
@@ -80,10 +97,10 @@ const MyStudentLesson = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <div>
@@ -100,12 +117,18 @@ const MyStudentLesson = () => {
           checked={checked}
           onChange={handleChange}
           color="success"
-          inputProps={{ "aria-label": "controlled" }}
+          inputProps={{ 'aria-label': 'controlled' }}
         />
       </div>
       {isLoading ? <SelfTestSkeleton /> : <TabsWrapper tabs={tabs} />}
 
       <Chat chatId={lessonDetails.chatId!} />
+      <Toaster
+        message={toaster.message}
+        open={toaster.open}
+        color={toaster.color}
+        onClose={handleCloseToaster}
+      />
     </div>
   );
 };
