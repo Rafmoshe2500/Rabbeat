@@ -111,15 +111,20 @@ const MyStudentLesson = () => {
           onClose={handleCloseNotification}
         />
       </div>
-      <div>
-        שיעור הושלם בהצלחה
-        <Checkbox
-          checked={checked}
-          onChange={handleChange}
-          color="success"
-          inputProps={{ 'aria-label': 'controlled' }}
-        />
-      </div>
+      {lessonDetails.status !== 'not-started' ? (
+        <div>
+          שיעור הושלם בהצלחה
+          <Checkbox
+            checked={checked}
+            onChange={handleChange}
+            color="success"
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        </div>) : (
+          <>
+          <span>התלמיד עוד לא התחיל את השיעור</span>
+          </>      
+      )}
       {isLoading ? <SelfTestSkeleton /> : <TabsWrapper tabs={tabs} />}
 
       <Chat chatId={lessonDetails.chatId!} />
