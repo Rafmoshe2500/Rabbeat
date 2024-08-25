@@ -1,11 +1,19 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, useTheme, useMediaQuery } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 
 type DialogComponentProps = {
   open: boolean;
   title: string;
-  onClose: () => void;
-  onConfirm: () => void;
+  onClose?: () => void;
+  onConfirm?: () => void;
   children: React.ReactNode;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
@@ -16,7 +24,7 @@ const DialogComponent: React.FC<DialogComponentProps> = ({
   onClose,
   onConfirm,
   children,
-  maxWidth = 'sm'
+  maxWidth = 'sm',
 }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -39,22 +47,37 @@ const DialogComponent: React.FC<DialogComponentProps> = ({
         },
       }}
     >
-      <DialogTitle sx={{ 
-        marginBottom: '10px', 
-        fontSize: { xs: '1.2rem', sm: '1.5rem' },
-        fontWeight: 'bold',
-        padding: '16px 24px',
-      }}>
+      <DialogTitle
+        sx={{
+          marginBottom: '10px',
+          fontSize: { xs: '1.2rem', sm: '1.5rem' },
+          fontWeight: 'bold',
+          padding: '16px 24px',
+        }}
+      >
         {title}
       </DialogTitle>
       <DialogContent sx={{ padding: '16px 24px' }}>{children}</DialogContent>
       <DialogActions sx={{ justifyContent: 'center', padding: '16px' }}>
-        <Button onClick={onClose} variant="outlined" sx={{ minWidth: '80px' }}>
-          ביטול
-        </Button>
-        <Button onClick={onConfirm} color="primary" variant="contained" sx={{ minWidth: '80px' }}>
-          אישור
-        </Button>
+        {onClose && (
+          <Button
+            onClick={onClose}
+            variant="outlined"
+            sx={{ minWidth: '80px' }}
+          >
+            סגור
+          </Button>
+        )}
+        {onConfirm && (
+          <Button
+            onClick={onConfirm}
+            color="primary"
+            variant="contained"
+            sx={{ minWidth: '80px' }}
+          >
+            שלח
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

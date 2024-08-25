@@ -78,10 +78,6 @@ const TeacherPersonalArea = () => {
     setSelectedPentateuch(event.target.value);
   };
 
-  const handleFilterConfirm = () => {
-    handleFilterClose();
-  };
-
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
       <Typography variant="h1" gutterBottom>
@@ -139,7 +135,6 @@ const TeacherPersonalArea = () => {
         open={filterOpen}
         title="סנן לפי חומש"
         onClose={handleFilterClose}
-        onConfirm={handleFilterConfirm}
       >
         <FormControl component="fieldset">
           <RadioGroup

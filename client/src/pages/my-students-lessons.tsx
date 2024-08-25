@@ -145,7 +145,6 @@ const MyStudentLessons: React.FC = () => {
         open={isDialogOpen}
         title="פתיחת שיעור לתלמיד"
         onClose={closeDialog}
-        onConfirm={closeDialog}
       >
         <DialogContent
           searchTerm={searchTerm}

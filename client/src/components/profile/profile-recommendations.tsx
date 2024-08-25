@@ -117,7 +117,6 @@ const ProfileRecommendations: React.FC<ProfileRecommendationsProps> = ({
         open={recommendationsDialogOpen}
         title="תגובות סטודנטים"
         onClose={() => setRecommendationsDialogOpen(false)}
-        onConfirm={() => setRecommendationsDialogOpen(false)}
       >
         <Box sx={{ marginTop: theme.spacing(2.5), width: "100%" }}>
           <List>

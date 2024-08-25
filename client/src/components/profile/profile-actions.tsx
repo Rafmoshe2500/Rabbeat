@@ -103,7 +103,6 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
         open={contactVisible}
         onClose={closeContact}
         title='פרטים ליצירת קשר'
-        onConfirm={closeContact}
       >
         <Box className="contact-info" sx={{ direction: 'rtl', marginTop: '20px', width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
