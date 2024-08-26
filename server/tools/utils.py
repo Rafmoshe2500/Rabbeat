@@ -55,6 +55,8 @@ def create_jwt_token(user: dict):
 
 
 def decode_token(token):
+    print(token)
+    print(SECRET_KEY)
     return jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
 
 
