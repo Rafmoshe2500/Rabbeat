@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   useTheme,
   useMediaQuery,
   Box,
   Typography,
-} from "@mui/material";
-import ProfileImage from "../components/profile/profile-image";
-import ProfileInfo from "../components/profile/profile-info";
-import ProfileVersions from "../components/profile/profile-versions";
-import ProfileSamples from "../components/profile/profile-samples";
-import ProfileRecommendations from "../components/profile/profile-recommendations";
-import ProfileActions from "../components/profile/profile-actions";
-import Loader from "../components/common/loader";
-import "../components/profile/user-profile.scss";
-import { useUser } from "../contexts/user-context";
-import { useGetProfile, useUpdateProfile } from "../hooks/useProfile";
-import Divider from "@mui/material/Divider";
-import withFade from "../hoc/withFade.hoc";
+} from '@mui/material';
+import ProfileImage from '../components/profile/profile-image';
+import ProfileInfo from '../components/profile/profile-info';
+import ProfileVersions from '../components/profile/profile-versions';
+import ProfileSamples from '../components/profile/profile-samples';
+import ProfileRecommendations from '../components/profile/profile-recommendations';
+import ProfileActions from '../components/profile/profile-actions';
+import Loader from '../components/common/loader';
+import '../components/profile/user-profile.scss';
+import { useUser } from '../contexts/user-context';
+import { useGetProfile, useUpdateProfile } from '../hooks/useProfile';
+import Divider from '@mui/material/Divider';
+import withFade from '../hoc/withFade.hoc';
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { userDetails } = useUser();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: profile, isLoading, error } = useGetProfile(id);
   const updateProfileMutation = useUpdateProfile();
   const [editedProfile, setEditedProfile] = useState<teacherProfile | null>(
@@ -41,7 +41,6 @@ const Profile: React.FC = () => {
       window.history.replaceState(null, '', newUrl);
     }
   }, [profile, navigate]);
-
 
   useEffect(() => {
     if (profile) {
@@ -60,9 +59,9 @@ const Profile: React.FC = () => {
 
   const isUserConnected =
     userDetails &&
-    (userDetails.type === "student" || userDetails.type === "teacher");
+    (userDetails.type === 'student' || userDetails.type === 'teacher');
   const canEdit =
-    userDetails?.type === "teacher" && userDetails.id === profile.id;
+    userDetails?.type === 'teacher' && userDetails.id === profile.id;
 
   const handleProfileUpdate = (key: keyof teacherProfile, value: any) => {
     if (!editedProfile) return;
@@ -78,29 +77,32 @@ const Profile: React.FC = () => {
     };
     updateProfileMutation.mutate(updateData, {
       onError: (error) => {
-        console.error("Failed to update profile:", error);
+        console.error('Failed to update profile:', error);
         setEditedProfile(profile);
       },
     });
   };
 
   const calculateAge = (birthDay: string) => {
-    const [day, month, year] = birthDay.split("-").map(Number);
+    const [year, month, day] = birthDay.split('-').map(Number);
     const birthDate = new Date(year, month - 1, day);
     const today = new Date();
+
     let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
+    const hasBirthdayPassedThisYear =
+      today.getMonth() > birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() &&
+        today.getDate() >= birthDate.getDate());
+
+    if (!hasBirthdayPassedThisYear) {
       age--;
     }
-    return age;
+
+    return age >= 0 ? age : 0;
   };
 
   return (
-    <Container className="profile-page" maxWidth={isMobile ? "xs" : "sm"}>
+    <Container className="profile-page" maxWidth={isMobile ? 'xs' : 'sm'}>
       <Box
         className="profile-card"
         sx={{
@@ -109,7 +111,7 @@ const Profile: React.FC = () => {
           borderRadius: theme.shape.borderRadius,
         }}
       >
-        {profile.type === "teacher" && (
+        {profile.type === 'teacher' && (
           <ProfileImage
             profile={editedProfile}
             canEdit={canEdit}
@@ -123,7 +125,7 @@ const Profile: React.FC = () => {
             marginBottom: theme.spacing(2),
           }}
         >
-          {profile.firstName} {profile.lastName},{" "}
+          {profile.firstName} {profile.lastName},{' '}
           {calculateAge(profile.birthDay)}
         </Typography>
         <Divider
@@ -139,17 +141,17 @@ const Profile: React.FC = () => {
           canEdit={canEdit}
           onUpdate={handleProfileUpdate}
         />
-        {profile.type === "teacher" && (
+        {profile.type === 'teacher' && (
           <>
             <ProfileVersions
               versions={editedProfile.versions}
               canEdit={canEdit}
-              onUpdate={(value) => handleProfileUpdate("versions", value)}
+              onUpdate={(value) => handleProfileUpdate('versions', value)}
             />
             <Box
               sx={{
-                display: "flex",
-                flexDirection: isMobile ? "column" : "row",
+                display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
                 gap: theme.spacing(2),
               }}
             >
