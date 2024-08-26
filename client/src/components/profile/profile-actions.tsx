@@ -37,47 +37,54 @@ const ProfileActions: React.FC<ProfileActionsProps> = ({ profile, canEdit, onUpd
     setIsEditing(false);
   };
 
-  const handleWhatsAppClick = () => {
-    let phoneNumber = profile.phoneNumber;
-  
-    phoneNumber = phoneNumber.replace(/\D/g, '');
-  
-    if (phoneNumber.startsWith('0')) {
-      phoneNumber = phoneNumber.slice(1);
+const handleWhatsAppClick = () => {
+  let phoneNumber = profile.phoneNumber;
+
+  // Remove any non-digit characters
+  phoneNumber = phoneNumber.replace(/\D/g, '');
+
+  // Remove leading zero and add country code
+  if (phoneNumber.startsWith('0')) {
+    phoneNumber = phoneNumber.slice(1);
+  }
+  phoneNumber = `972${phoneNumber}`; // Assuming this is an Israeli number
+
+  const message = `שלום ${profile.firstName} ${profile.lastName}, כאן ${userDetails?.firstName} ${userDetails?.lastName} מהאתר RabBeat. אני מתעניין בלימודי בר מצווה ואשמח לשוחח ולהתחיל ללמוד. תודה!`;
+  const encodedMessage = encodeURIComponent(message);
+
+  // URL for WhatsApp Web
+  const webUrl = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}&app_absent=0`;
+
+  // Detect user's device
+  const userAgent =
+    navigator.userAgent || navigator.vendor || (window as any).opera;
+  const isIPhone = /iPhone/i.test(userAgent);
+  const isAndroid = /Android/i.test(userAgent);
+
+  let urlToUse = webUrl;
+
+  // Adjust URL for mobile devices
+  if (isIPhone) {
+    urlToUse = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+  } else if (isAndroid) {
+    urlToUse = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+  }
+
+  // Create a temporary link to open the URL
+  const link = document.createElement('a');
+  link.href = urlToUse;
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // Show Snackbar if WhatsApp does not open
+  setTimeout(() => {
+    if (!document.hidden) {
+      setOpenSnackbar(true); // Ensure `setOpenSnackbar` is defined in your component's state
     }
-    phoneNumber = `+972${phoneNumber}`;
-  
-    const message = `שלום ${profile.firstName} ${profile.lastName}, כאן ${userDetails?.firstName} ${userDetails?.lastName} מהאתר RabBeat. אני מתעניין בלימודי בר מצווה ואשמח לשוחח ולהתחיל ללמוד. תודה!`;
-    const encodedMessage = encodeURIComponent(message);
-  
-    const webUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-  
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    const isIPhone = /iPhone/i.test(userAgent);
-    const isAndroid = /Android/i.test(userAgent);
-  
-    let urlToUse = webUrl;
-  
-    if (isIPhone) {
-      urlToUse = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-    } else if (isAndroid) {
-      urlToUse = `intent://send/?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end`;
-    }
-  
-    const link = document.createElement('a');
-    link.href = urlToUse;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  
-    setTimeout(() => {
-      if (!document.hidden) {
-        setOpenSnackbar(true);
-      }
-    }, 2000);
-  };
-  
+  }, 2000);
+};
   
 
   return (
