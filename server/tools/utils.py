@@ -1,8 +1,10 @@
 from typing import List, Tuple, Dict, Union
 
 import jwt
+import keyring
 
 from models.response import ExtendLessonDetailsResponse, LessonDetailsResponse
+from tools.consts import SECRET_KEY
 
 
 def object_id_str(obj):
@@ -49,7 +51,11 @@ def trim_numbers(numbers: List[float], words: List[str], difference: int) -> Tup
 
 
 def create_jwt_token(user: dict):
-    return jwt.encode(user, 'your_secret_key', algorithm='HS256')
+    return jwt.encode(user, SECRET_KEY, algorithm='HS256')
+
+
+def decode_token(token):
+    return jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
 
 
 def sorted_lessons(lessons: List[Union[LessonDetailsResponse, ExtendLessonDetailsResponse, Dict]]):
