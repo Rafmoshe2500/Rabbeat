@@ -12,13 +12,11 @@ def get_prompt(chat: ChatModule, request: Request):
     try:
         auth_header = request.headers.get('Authorization')
         if auth_header is None or not auth_header.startswith('Bearer '):
-            print('error in auth header')
             raise
 
         token = auth_header[len("Bearer "):]
         d_token = decode_token(token)
         if d_token['type'] != 'student':
-            print('error in decode token')
             raise
 
         response = get_answer(chat.message, chat.conversation_topic)

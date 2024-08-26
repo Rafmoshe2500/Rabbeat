@@ -12,8 +12,9 @@ MONGO_URI = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/
 
 TEXT_VARIANTS = ['both', 'none', 'nikud', 'teamim']
 PROJECT_ID = keyring.get_password('key', 'google')
-SECRET_KEY = keyring.get_password('jwt', 'key')
+SECRET_KEY = keyring.set_password('jwt', 'key', 'your_secret_key')
 GOD = 'יהוה'
+
 
 DEFAULT_PROFILE = {
     'image': '',
