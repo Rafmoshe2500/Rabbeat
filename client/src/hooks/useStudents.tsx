@@ -1,5 +1,9 @@
 import { useQuery, useQueryClient, useMutation  } from '@tanstack/react-query';
-import { fetchStudents, searchStudentByEmail, associateStudentToTeacher } from '../api/endpoints/teacher';
+import {
+  fetchStudents,
+  searchStudents,
+  associateStudentToTeacher,
+} from '../api/endpoints/teacher';
 
 export const useGetStudents = (teacherId: string) => {
 
@@ -11,11 +15,11 @@ export const useGetStudents = (teacherId: string) => {
   });
 }
 
-export const useSearchStudentByEmail = (email: string) => {
-  return useQuery({
-    queryKey: ['studentSearch', email],
-    queryFn: () => searchStudentByEmail(email),
-    enabled: email.length > 0,
+export const useSearchStudents = (query: string) => {
+  return useQuery<SearchStudent[]>({
+    queryKey: ['studentSearch', query],
+    queryFn: () => searchStudents(query),
+    enabled: query.length > 0,
   });
 };
 

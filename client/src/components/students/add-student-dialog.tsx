@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import DialogComponent from "../common/dialog";
+import React, { useState } from 'react';
+import DialogComponent from '../common/dialog';
 import {
-  useSearchStudentByEmail,
+  useSearchStudents,
   useAssociateStudentToTeacher,
-} from "../../hooks/useStudents";
-import { useUser } from "../../contexts/user-context";
-import { Dayjs } from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import RTLDatePicker from "../common/rtl-inputs/rtl-date-picker";
-import { TextField } from "@mui/material";
+} from '../../hooks/useStudents';
+import { useUser } from '../../contexts/user-context';
+import { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import RTLDatePicker from '../common/rtl-inputs/rtl-date-picker';
+import { TextField, Autocomplete } from '@mui/material';
 
 interface AddStudentDialogProps {
   open: boolean;
@@ -20,17 +20,20 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({
   open,
   onClose,
 }) => {
-  const [email, setEmail] = useState("");
+  const [query, setQuery] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState<SearchStudent | null>(
+    null
+  );
   const [expiredDate, setExpiredDate] = useState<Dayjs | null>(null);
-  const { mutate: accosiateStudentToTeacher } = useAssociateStudentToTeacher();
-  const { data: student } = useSearchStudentByEmail(email);
+  const { mutate: associateStudentToTeacher } = useAssociateStudentToTeacher();
+  const { data: students, isLoading } = useSearchStudents(query);
   const { userDetails } = useUser();
 
   const handleConfirm = () => {
-    if (student && expiredDate) {
+    if (selectedStudent && expiredDate) {
       const formattedDate = expiredDate.toISOString();
-      accosiateStudentToTeacher({
-        studentId: student.id,
+      associateStudentToTeacher({
+        studentId: selectedStudent.id,
         teacherId: userDetails!.id,
         expired_date: formattedDate,
       });
@@ -45,17 +48,21 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({
       onClose={() => onClose(false)}
       onConfirm={handleConfirm}
     >
-      <TextField
-        autoFocus
-        margin="dense"
-        label="אימייל התלמיד"
-        type="email"
-        fullWidth
-        variant="outlined"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+      <Autocomplete<SearchStudent>
+        options={students || []}
+        getOptionLabel={(option) => `${option.name} (${option.email})`}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            sx={{marginBottom: '5px'}}
+            label="חיפוש תלמיד"
+            variant="outlined"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        )}
+        loading={isLoading}
+        onChange={(_, newValue) => setSelectedStudent(newValue)}
       />
-      {student && <p>נמצא תלמיד: {student.name}</p>}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <RTLDatePicker
           label="תאריך תפוגה"

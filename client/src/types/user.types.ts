@@ -42,3 +42,9 @@ type AssociateNewStudent = {
   teacherId: string;
   expired_date: string;
 }
+
+type SearchStudent = {
+  id: string;
+  name: string;
+  email: string;
+}
