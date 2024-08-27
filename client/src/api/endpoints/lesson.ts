@@ -1,9 +1,9 @@
-import { convertBase64ToBlob } from "../../utils/audio-parser";
-import apiClient from "../config";
+import { convertBase64ToBlob } from '../../utils/audio-parser';
+import apiClient from '../config';
 
 export const getAllLessons = async (): Promise<Lesson[]> => {
   try {
-    const response = await apiClient.get<Lesson[]>("/lessons");
+    const response = await apiClient.get<Lesson[]>('/lessons');
     return response.data;
   } catch (error) {
     throw error;
@@ -22,7 +22,8 @@ export const getLessonsDetailsByUser = async (
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
       const { chatId, status, testAudioId } = les.studyZoneDetails || {};
-      const {audioNotification, messageNotifications} = les.notificationsDetails || {}
+      const { audioNotification, messageNotifications } =
+        les.notificationsDetails || {};
 
       lessons.push({
         id: les.lessonId,
@@ -38,7 +39,7 @@ export const getLessonsDetailsByUser = async (
         chatId: chatId,
         testAudioId: testAudioId,
         audioNotification: audioNotification,
-        messageNotifications: messageNotifications
+        messageNotifications: messageNotifications,
       } as LessonDetails);
     }
 
@@ -89,7 +90,7 @@ export const createOrUpdateLesson = async (
       },
       teacherId: teacherId,
     };
-    const response = await apiClient.post<FormattedLesson>("/lesson", dbLesson);
+    const response = await apiClient.post<FormattedLesson>('/lesson', dbLesson);
 
     return response.data as FormattedLesson;
   } catch (error) {
@@ -110,7 +111,8 @@ export const getSharedLessonsDetails = async (
     for (let i = 0; i < Object.entries(response.data).length; i++) {
       const les = Object.values(response.data)[i] as unknown as any;
       const { chatId, status, testAudioId } = les.studyZoneDetails;
-      const {audioNotification, messageNotifications} = les.notificationsDetails || {}
+      const { audioNotification, messageNotifications } =
+        les.notificationsDetails || {};
 
       lessons.push({
         id: les.lessonId,
@@ -126,7 +128,7 @@ export const getSharedLessonsDetails = async (
         chatId: chatId,
         testAudioId: testAudioId,
         audioNotification: audioNotification,
-        messageNotifications: messageNotifications
+        messageNotifications: messageNotifications,
       } as LessonDetails);
     }
 
@@ -136,13 +138,26 @@ export const getSharedLessonsDetails = async (
   }
 };
 
-export const associateLesson = async (studentId: string, teacherId: string, lessonId: string): Promise<string> => {
-  const response = await apiClient.post('/associate-lesson', { studentId, teacherId, lessonId });
+export const associateLesson = async (
+  studentId: string,
+  teacherId: string,
+  lessonId: string
+): Promise<string> => {
+  const response = await apiClient.post('/associate-lesson', {
+    studentId,
+    teacherId,
+    lessonId,
+  });
   return response.data;
 };
 
-export const disassociateLesson = async (lessonId: string, studentId: string): Promise<string> => {
-  const response = await apiClient.delete('/disassociate-lesson', { data: { lessonId, studentId } });
+export const disassociateLesson = async (
+  lessonId: string,
+  studentId: string
+): Promise<string> => {
+  const response = await apiClient.delete('/disassociate-lesson', {
+    data: { lessonId, studentId },
+  });
   return response.data;
 };
 
@@ -159,6 +174,15 @@ export const updateLessonStatus = async (
     });
 
     return response.data ? true : false;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteLesson = async (lessonId: string) => {
+  try {
+    const response = await apiClient.delete(`/lesson/${lessonId}`);
+    return response.data;
   } catch (error) {
     throw error;
   }
