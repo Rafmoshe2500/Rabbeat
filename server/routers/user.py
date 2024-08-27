@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pymongo.errors import DuplicateKeyError
 from starlette import status
 
@@ -53,8 +53,15 @@ def get_teacher_with_profile_details():
 
 
 @router.get("/students/search")
-async def search_student_by_email(email: str):
-    student = mongo_db.get_user_by_email(email)
-    if not student and student['type'] != 'student':
-        raise BackendNotFound(detail="Student not found")
-    return {'id': student['id'], 'name': f'{student["firstName"]} {student["lastName"]}'}
+async def search_students(query: str = Query(..., min_length=1)):
+    students = mongo_db.get_all_students(query)
+    if not students:
+        raise BackendNotFound(detail="Students not found")
+    return [
+        {
+            'id': str(student['_id']),
+            'name': f"{student['firstName']} {student['lastName']}",
+            'email': student['email']
+        }
+        for student in students
+    ]

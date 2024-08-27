@@ -347,6 +347,16 @@ class MongoDBApi:
     def get_all_users(self):
         return list(self._db.users.find())
 
+    def get_all_students(self, query):
+        return self._db.users.find({
+            "type": "student",
+            "$or": [
+                {"firstName": {"$regex": query, "$options": "i"}},
+                {"lastName": {"$regex": query, "$options": "i"}},
+                {"email": {"$regex": query, "$options": "i"}}
+            ]
+        })
+
     def add_user(self, user: User):
         try:
             result = self._db.users.insert_one(user.dict())
