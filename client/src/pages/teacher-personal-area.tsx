@@ -66,14 +66,29 @@ const TeacherPersonalArea = () => {
       onSuccess: () => {
         setToaster({
           open: true,
-          message: 'ההמלצות עודכנו בהצלחה',
+          message: 'השיעור נמחק בהצלחה.',
           color: 'success',
         });
       },
-      onError: () => {
+      onError: (error: any) => {
+        let errorMessage = 'קרתה תקלה בעת עדכון ההמלצות, אנא נסה שנית'; // Default error message
+
+        if (error?.response?.status) {
+          switch (error.response.status) {
+            case 400:
+              errorMessage = 'השיעור כבר משוייך לתלמיד ולכן לא ניתן להסירו.';
+              break;
+            case 500:
+              errorMessage = 'שגיאת שרת, אנא נסה שוב מאוחר יותר.';
+              break;
+            default:
+              errorMessage = 'שגיאה לא צפויה, אנא נסה שוב.';
+          }
+        }
+
         setToaster({
           open: true,
-          message: 'קרתה תקלה בעת עדכון ההמלצות, אנא נסה שנית',
+          message: errorMessage,
           color: 'error',
         });
       },
