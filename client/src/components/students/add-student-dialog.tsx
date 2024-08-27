@@ -54,12 +54,14 @@ const AddStudentDialog: React.FC<AddStudentDialogProps> = ({
         renderInput={(params) => (
           <TextField
             {...params}
-            sx={{marginBottom: '5px'}}
+            sx={{ marginBottom: '5px', direction: 'rtl' }}
             label="חיפוש תלמיד"
             variant="outlined"
             onChange={(e) => setQuery(e.target.value)}
           />
         )}
+        loadingText="טוען תלמידים..."
+        noOptionsText="לא נמצאו תוצאות"
         loading={isLoading}
         onChange={(_, newValue) => setSelectedStudent(newValue)}
       />
