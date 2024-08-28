@@ -59,7 +59,7 @@ async def search_students(query: str = Query(..., min_length=1)):
         raise BackendNotFound(detail="Students not found")
     return [
         {
-            'id': str(student['_id']),
+            'id': student['id'],
             'name': f"{student['firstName']} {student['lastName']}",
             'email': student['email']
         }
