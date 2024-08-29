@@ -11,8 +11,13 @@ import TeacherStudents from "../pages/teacher-students";
 import MyStudentLessons from "../pages/my-students-lessons";
 import MyStudentLesson from "../pages/my-student-lesson";
 import TeacherLessonView from "../pages/teacher-lesson-view";
+import Default from "../pages/default";
 
 const commonRoutes = [
+  {
+    path: '/',
+    element: <Default />
+  },
   {
     path: "/search",
     element: <TeacherSearch />,
