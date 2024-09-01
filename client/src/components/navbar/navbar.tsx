@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -14,17 +14,17 @@ import {
   Container,
   useTheme,
   useMediaQuery,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SchoolIcon from "@mui/icons-material/School";
-import SearchIcon from "@mui/icons-material/Search";
-import PersonIcon from "@mui/icons-material/Person";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { useUser } from "../../contexts/user-context";
-import RabBeatLogo from "../../assets/images/RabBeat-logo.png";
-import styles from "./navbar.module.scss";
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import SchoolIcon from '@mui/icons-material/School';
+import SearchIcon from '@mui/icons-material/Search';
+import PersonIcon from '@mui/icons-material/Person';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { useUser } from '../../contexts/user-context';
+import RabBeatLogo from '../../assets/images/RabBeat-logo.png';
+import styles from './navbar.module.scss';
 
 type PageLink = {
   label: string;
@@ -35,7 +35,7 @@ type PageLink = {
 
 const Navbar = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const { userDetails, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -61,8 +61,12 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate('/login');
     handleCloseUserMenu();
+  };
+
+  const onLogoClicked = () => {
+    navigate('/');
   };
 
   const handleScroll = useCallback(() => {
@@ -74,25 +78,25 @@ const Navbar = () => {
   }, [lastScrollPos]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
   const searchTeacherPage = {
-    label: "חיפוש מורה",
-    path: "/search",
+    label: 'חיפוש מורה',
+    path: '/search',
     icon: <SearchIcon />,
   };
 
   const loggedInCommonPages = [
     {
-      label: "התנתק",
+      label: 'התנתק',
       path: `/login`,
       icon: <ExitToAppRoundedIcon />,
       onClick: handleLogout,
     },
     {
-      label: "פרופיל",
+      label: 'פרופיל',
       path: `/profile/${userDetails?.id}`,
       icon: <AccountCircleOutlinedIcon />,
     },
@@ -101,33 +105,33 @@ const Navbar = () => {
   const studentPages = [
     searchTeacherPage,
     {
-      label: "השיעורים שלי",
-      path: "/student-personal-area",
+      label: 'השיעורים שלי',
+      path: '/student-personal-area',
       icon: <PersonIcon />,
     },
   ];
 
   const teacherPages = [
     {
-      label: "אזור מורה",
-      path: "/teacher-personal-area",
+      label: 'אזור מורה',
+      path: '/teacher-personal-area',
       icon: <PersonIcon />,
     },
     {
-      label: "העלאת שיעור",
-      path: "/upload-lesson",
+      label: 'העלאת שיעור',
+      path: '/upload-lesson',
       icon: <UploadFileIcon />,
     },
     {
-      label: "התלמידים שלי",
-      path: "/my-students",
+      label: 'התלמידים שלי',
+      path: '/my-students',
       icon: <SchoolIcon />,
     },
   ];
 
   const guestPages = [
-    { label: "הרשמה", path: "/register", icon: <PersonIcon /> },
-    { label: "התחברות", path: "/login", icon: <PersonIcon /> },
+    { label: 'הרשמה', path: '/register', icon: <PersonIcon /> },
+    { label: 'התחברות', path: '/login', icon: <PersonIcon /> },
     searchTeacherPage,
   ];
 
@@ -135,7 +139,7 @@ const Navbar = () => {
     if (!userDetails) return guestPages;
 
     const userSpecificPages =
-      userDetails.type === "student" ? studentPages : teacherPages;
+      userDetails.type === 'student' ? studentPages : teacherPages;
 
     return isMobile
       ? [...loggedInCommonPages, ...userSpecificPages]
@@ -150,28 +154,28 @@ const Navbar = () => {
       sx={{
         zIndex: 1,
         backgroundColor: theme.palette.primary.main,
-        transition: "top 0.3s",
-        top: visible ? 0 : "-64px",
-        marginBottom: "3rem",
+        transition: 'top 0.3s',
+        top: visible ? 0 : '-64px',
+        marginBottom: '3rem',
       }}
     >
       <Box
         sx={{
           flexGrow: 1,
-          display: "flex",
-          justifyContent: "center",
+          display: 'flex',
+          justifyContent: 'center',
           backgroundColor: theme.palette.background.default,
-          border: "none",
+          border: 'none',
         }}
       >
-        <div className={styles["logo-container"]}>
+        <div onClick={onLogoClicked} className={styles['logo-container']}>
           <img src={RabBeatLogo} alt="RabBeat Logo" />
         </div>
       </Box>
-      <Container maxWidth="xl" sx={{ padding: "0 0 0 20px !important" }}>
+      <Container maxWidth="xl" sx={{ padding: '0 0 0 20px !important' }}>
         <Toolbar
           variant="dense"
-          sx={{ padding: "0 !important", flexDirection: "row-reverse" }}
+          sx={{ padding: '0 !important', flexDirection: 'row-reverse' }}
         >
           {isMobile ? (
             <>
@@ -182,19 +186,19 @@ const Navbar = () => {
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
                 sx={{
-                  outline: "none !important",
-                  padding: "0 20px 0 0 !important",
+                  outline: 'none !important',
+                  padding: '0 20px 0 0 !important',
                 }}
               >
                 <MenuIcon color="secondary" />
               </IconButton>
               <Menu
                 id="menu-appbar"
-                sx={{ marginTop: "none" }}
+                sx={{ marginTop: 'none' }}
                 anchorEl={anchorElNav}
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 keepMounted
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
               >
@@ -204,7 +208,7 @@ const Navbar = () => {
                     onClick={page.onClick ? page.onClick : handleCloseNavMenu}
                     component={Link}
                     to={page.path}
-                    sx={{ direction: "rtl" }}
+                    sx={{ direction: 'rtl' }}
                   >
                     {page.icon}
 
@@ -220,8 +224,8 @@ const Navbar = () => {
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: "flex",
-                  justifyContent: "flex-end",
+                  display: 'flex',
+                  justifyContent: 'flex-end',
                 }}
               >
                 {pages.map((page) => (
@@ -230,15 +234,15 @@ const Navbar = () => {
                     component={Link}
                     to={page.path}
                     sx={{
-                      color: "white",
+                      color: 'white',
                       marginRight: 2,
-                      display: "flex",
-                      alignItems: "center",
-                      direction: "rtl",
+                      display: 'flex',
+                      alignItems: 'center',
+                      direction: 'rtl',
                     }}
                   >
                     {page.icon}
-                    <Typography sx={{ marginRight: "1px" }}>
+                    <Typography sx={{ marginRight: '1px' }}>
                       {page.label}
                     </Typography>
                   </Button>
@@ -258,13 +262,13 @@ const Navbar = () => {
                     id="menu-appbar"
                     anchorEl={anchorElUser}
                     anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
+                      vertical: 'top',
+                      horizontal: 'left',
                     }}
                     keepMounted
                     transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
+                      vertical: 'top',
+                      horizontal: 'left',
                     }}
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
@@ -277,7 +281,7 @@ const Navbar = () => {
                         }
                         component={Link}
                         to={page.path}
-                        sx={{ direction: "rtl" }}
+                        sx={{ direction: 'rtl' }}
                       >
                         {page.icon}
 
